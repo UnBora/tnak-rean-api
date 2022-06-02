@@ -11,6 +11,7 @@
     <groupId>com.kshrd.tnakrean</groupId>
     <artifactId>tnakrean</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
     <name>tnakrean</name>
     <description>tnakrean</description>
     <properties>
