@@ -106,6 +106,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>klassroom</finalName>
     </build>
 
 </project>
