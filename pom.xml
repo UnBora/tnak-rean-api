@@ -106,7 +106,7 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>klassroom</finalName>
+        <finalName>tnakrean</finalName>
     </build>
 
 </project>
