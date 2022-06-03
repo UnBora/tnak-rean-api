@@ -3,12 +3,14 @@ package com.kshrd.tnakrean.model.apiresponse;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
+import lombok.experimental.Accessors;
+
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Accessors(chain = true)
 public class ApiResponse<T> {
 
     public enum Status {
@@ -98,7 +100,6 @@ public class ApiResponse<T> {
 
     public void setErrorMsgToResponse(String errorMsg, Exception ex) {
         DateTimeFormatter dft = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-
         ResponseError error = new ResponseError()
 
                 .setDetails(errorMsg)

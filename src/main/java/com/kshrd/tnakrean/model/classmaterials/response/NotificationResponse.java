@@ -7,13 +7,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class NotificationResponse {
-    NotificationTypes notificationTypes;
-    Integer receiverId;
-    Content content;
-    Timestamp timestamp;
+    private NotificationTypes notificationTypes;
+    private Integer receiverId;
+    private Content content;
+    private Date timestamp;
 }
