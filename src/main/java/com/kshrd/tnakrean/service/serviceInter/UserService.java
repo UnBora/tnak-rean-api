@@ -6,6 +6,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService extends UserDetailsService {
 
+    void resetPassword(AppUserResponse appUserResponse);
+
     void userRegister(UserRegisterRequest userRegisterRequest);
 
 }

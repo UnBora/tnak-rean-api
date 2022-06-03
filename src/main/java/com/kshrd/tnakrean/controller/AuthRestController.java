@@ -1,21 +1,17 @@
-package com.kshrd.tnakrean.controller;
+package com.kshrd.tnakrean.controller.dto;
 
 import com.kshrd.tnakrean.configuration.security.JwtTokenUtil;
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.user.request.UserLoginRequest;
-import com.kshrd.tnakrean.model.user.request.UserRegisterRequest;
 import com.kshrd.tnakrean.model.user.response.AppUserResponse;
-import com.kshrd.tnakrean.model.user.response.UserRegisterResponse;
 import com.kshrd.tnakrean.service.serviceImplementation.UserServiceImp;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.expression.spel.SpelEvaluationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,6 +49,13 @@ public class AuthRestController {
         return ResponseEntity.ok(response);
 
     }
+
+    @PostMapping("/edit")
+    public ResponseEntity<String> createUser(@RequestBody AppUserResponse appUserResponse){
+        userServiceImp.resetPassword(appUserResponse);
+        return ResponseEntity.ok().body("testing success");
+    }
+
 
     @PostMapping("/register")
     ApiResponse<UserRegisterResponse> register(@RequestBody UserRegisterRequest userRegisterRequest) {
