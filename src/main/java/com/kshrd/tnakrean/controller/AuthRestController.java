@@ -1,7 +1,6 @@
-package com.kshrd.tnakrean.controller.dto;
+package com.kshrd.tnakrean.controller;
 
 import com.kshrd.tnakrean.configuration.security.JwtTokenUtil;
-import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.user.request.UserLoginRequest;
 import com.kshrd.tnakrean.model.user.response.AppUserResponse;
 import com.kshrd.tnakrean.service.serviceImplementation.UserServiceImp;

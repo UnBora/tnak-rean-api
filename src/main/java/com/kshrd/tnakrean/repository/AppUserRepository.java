@@ -1,11 +1,9 @@
 package com.kshrd.tnakrean.repository;
 
-import com.kshrd.tnakrean.model.user.request.UserLoginRequest;
 import com.kshrd.tnakrean.model.user.response.AppUserResponse;
 import com.kshrd.tnakrean.model.user.response.RoleResponse;
 import com.kshrd.tnakrean.repository.provider.RoleProvider;
 import org.apache.ibatis.annotations.*;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 @Mapper
 public interface AppUserRepository {
