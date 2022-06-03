@@ -25,4 +25,5 @@ public interface NotificationRepository {
 
     @Select("SELECT * FROM notification_type WHERE id = #{id}")
     NotificationTypes getNotificationTypeById(int id);
+
 }
