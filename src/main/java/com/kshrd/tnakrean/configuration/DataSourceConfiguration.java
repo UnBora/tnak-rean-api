@@ -11,7 +11,7 @@ public class DataSourceConfiguration {
     @Bean
     public javax.sql.DataSource myPostgresDb() {
 
-        DataSourceBuilder dataSource = DataSourceBuilder.create();
+        DataSourceBuilder<?> dataSource = DataSourceBuilder.create();
         dataSource.driverClassName("org.postgresql.Driver");
 
         dataSource.url("jdbc:postgresql://110.74.194.124:5430/klassrooms");
