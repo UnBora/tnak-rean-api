@@ -24,8 +24,8 @@ public class ApiResponse<T> {
         DUPLICATE_ENTRY, SUCCESS_DELETE, CREATE_SUCCESS, UPDATE_SUCCESS
     }
 
-    private T payload;
-    private Object error;
+    private T data;
+    private ResponseError error;
     private boolean success = false;
     private Object metadata;
     private Status status;
@@ -98,15 +98,11 @@ public class ApiResponse<T> {
         return response;
     }
 
-    public void setErrorMsgToResponse(String errorMsg, Exception ex) {
+    public void setErrorMsgToResponse(String errorMsg) {
         DateTimeFormatter dft = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         ResponseError error = new ResponseError()
-
                 .setDetails(errorMsg)
-                .setMessage(ex.getMessage())
                 .setTimestamp(new Date());
-
-
     }
 
     // we need this class for the pagination purpose
