@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,11 +29,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     JwtAuthenticationEntryPoint jwtEntryPoint;
 
     // override three methods
-    @Autowired
     final
     UserServiceImp userServiceImp;
 
-    public WebSecurityConfig(UserServiceImp userServiceImp) {
+    public WebSecurityConfig(@Lazy UserServiceImp userServiceImp) {
         this.userServiceImp = userServiceImp;
     }
 
@@ -74,6 +74,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new JwtRequestFilter();
     }
 
+    @Override
     @Bean
     public AuthenticationManager authenticationManager() throws Exception {
         return super.authenticationManager();
@@ -82,7 +83,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     //    ignore resources
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/swagger-ui/**", "/v3/api-docs/**");
+//        web.ignoring().antMatchers("/swagger-ui/**", "/v3/api-docs/**");
     }
 
 

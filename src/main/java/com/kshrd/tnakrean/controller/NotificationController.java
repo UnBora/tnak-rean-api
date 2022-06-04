@@ -24,10 +24,14 @@ public class NotificationController {
     ApiResponse<List<NotificationResponse>> getNotification(int userId) {
         List<NotificationResponse> notificationResponseList = notificationImp.notificationList(userId);
         System.out.println(notificationResponseList);
-        if (notificationResponseList.isEmpty()) {
-            return ApiResponse.<List<NotificationResponse>>notFound().setData(notificationResponseList);
+        try {
+            if (notificationResponseList.isEmpty()) {
+                return ApiResponse.<List<NotificationResponse>>notFound().setData(notificationResponseList);
+            }
+            return ApiResponse.<List<NotificationResponse>>ok().setData(notificationResponseList);
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
         }
-        return ApiResponse.<List<NotificationResponse>>ok().setData(notificationResponseList).setSuccess(true);
 
     }
 }

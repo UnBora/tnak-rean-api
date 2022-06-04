@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.Accessors;
+import org.springframework.http.HttpStatus;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Date;
 
 @NoArgsConstructor
@@ -21,36 +23,36 @@ public class ApiResponse<T> {
         WRONG_CREDENTIAL,
         ACCESS_DENIED,
         NOT_FOUND,
-        DUPLICATE_ENTRY, SUCCESS_DELETE, CREATE_SUCCESS, UPDATE_SUCCESS
+        DUPLICATE_ENTRY, DELETED, CREATED, UPDATED
     }
 
+    private int responseCode;
+    private String responseMsg;
     private T data;
-    private ResponseError error;
-    private boolean success = false;
     private Object metadata;
-    private Status status;
 
 
     // for bad request
     // for bad request
     public static <T> ApiResponse<T> badRequest() {
         ApiResponse<T> response = new ApiResponse<>();
-        response.setStatus(Status.BAD_REQUEST);
+        response.setResponseMsg(Status.BAD_REQUEST.toString());
+        response.setResponseCode(400);
         return response;
     }
 
     public static <T> ApiResponse<T> ok() {
         ApiResponse<T> response = new ApiResponse<>();
-        response.setStatus(Status.OK);
-        response.setSuccess(true);
+        response.setResponseMsg(Status.OK.toString());
+        response.setResponseCode(200);
         return response;
     }
 
     public static <T> ApiResponse<T> successDelete() {
 
         ApiResponse<T> response = new ApiResponse<>();
-        response.setStatus(Status.SUCCESS_DELETE);
-        response.setSuccess(true);
+        response.setResponseMsg(Status.DELETED.toString());
+        response.setResponseCode(200);
         return response;
 
     }
@@ -59,50 +61,52 @@ public class ApiResponse<T> {
     public static <T> ApiResponse<T> successCreate() {
 
         ApiResponse<T> response = new ApiResponse<>();
-        response.setStatus(Status.CREATE_SUCCESS);
+        response.setResponseMsg(Status.CREATED.toString());
+        response.setResponseCode(201);
         return response;
     }
 
     //DuplicateEntry
     public static <T> ApiResponse<T> duplicateEntry() {
         ApiResponse<T> response = new ApiResponse<>();
-        response.setStatus(Status.DUPLICATE_ENTRY);
+        response.setResponseMsg(Status.DUPLICATE_ENTRY.toString());
+        response.setResponseCode(403);
         return response;
 
+    }
+
+    //UpdateSuccess
+    public static <T> ApiResponse<T> updateSuccess() {
+
+        ApiResponse<T> response = new ApiResponse<>();
+        response.setResponseMsg(Status.UPDATED.toString());
+        response.setResponseCode(200);
+        return response;
     }
 
 
     //notFound
     public static <T> ApiResponse<T> notFound() {
-
         ApiResponse<T> response = new ApiResponse<>();
-        response.setStatus(Status.NOT_FOUND);
+        response.setResponseMsg(Status.NOT_FOUND.toString());
+        response.setResponseCode(404);
         return response;
 
     }
-
 
     //Exception Error
-    public static <T> ApiResponse<T> exception() {
-
+    public static <T> ApiResponse<T> exception(Exception errorMsg) {
         ApiResponse<T> response = new ApiResponse<>();
-        response.setStatus(Status.EXCEPTION);
-        return response;
-
-    }
-
-    public static <T> ApiResponse<T> updateSuccess() {
-
-        ApiResponse<T> response = new ApiResponse<>();
-        response.setStatus(Status.UPDATE_SUCCESS);
+        response.setResponseCode(500);
+        response.setResponseMsg(HttpStatus.FORBIDDEN.toString());
         return response;
     }
 
-    public void setErrorMsgToResponse(String errorMsg) {
-        DateTimeFormatter dft = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        ResponseError error = new ResponseError()
-                .setDetails(errorMsg)
-                .setTimestamp(new Date());
+
+    public static <T> ApiResponse<T> setError(String errorMsg) {
+        ApiResponse<T> response = new ApiResponse<>();
+        response.setResponseMsg(errorMsg);
+        return response;
     }
 
     // we need this class for the pagination purpose
