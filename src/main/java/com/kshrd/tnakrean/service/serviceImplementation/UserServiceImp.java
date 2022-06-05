@@ -1,13 +1,11 @@
 package com.kshrd.tnakrean.service.serviceImplementation;
 
-import com.kshrd.tnakrean.model.user.request.UserLoginRequest;
-import com.kshrd.tnakrean.model.user.response.AppUserResponse;
 import com.kshrd.tnakrean.repository.AppUserRepository;
 import com.kshrd.tnakrean.service.serviceInter.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class UserServiceImp implements UserService {
@@ -23,7 +21,7 @@ public class UserServiceImp implements UserService {
         return appUserRepository.loginByUserName(username);
     }
     @Override
-    public void resetPassword(AppUserResponse appUserResponse) {
-        appUserRepository.editPassword(appUserResponse);
+    public void resetPassword(String new_password,int user_id) {
+        appUserRepository.editPassword(new_password,user_id);
     }
 }

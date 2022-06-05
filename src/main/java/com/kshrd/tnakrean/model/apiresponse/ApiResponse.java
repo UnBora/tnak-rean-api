@@ -98,12 +98,12 @@ public class ApiResponse<T> {
         return response;
     }
 
-    public void setErrorMsgToResponse(String errorMsg, Exception ex) {
+    public void setErrorMsgToResponse(String errorMsg) {
         DateTimeFormatter dft = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         ResponseError error = new ResponseError()
 
                 .setDetails(errorMsg)
-                .setMessage(ex.getMessage())
+//                .setMessage(ex.getMessage())
                 .setTimestamp(new Date());
 
 
