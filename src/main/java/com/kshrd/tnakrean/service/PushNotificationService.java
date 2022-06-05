@@ -1,23 +1,13 @@
 package com.kshrd.tnakrean.service;
 
-import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.Scanner;
 
-/**
- * Create by Weslei Dias.
- **/
 @Service
 public class PushNotificationService {
 
@@ -44,7 +34,7 @@ public class PushNotificationService {
         HttpURLConnection con = httpURLConnection("POST");
         String strJsonBody = "{"
                 + "\"app_id\": \"" + APP_ID + "\","
-                + "\"included_segments\": [\"All\"],"
+                + "\"included_segments\": [\"Subscribed Users\"],"
                 + "\"data\": {\"foo\": \"bar\"},"
                 + "\"contents\": {\"en\": \"" + message + "\"}"
                 + "}";
