@@ -7,6 +7,7 @@ import com.kshrd.tnakrean.model.user.request.UserRegisterRequest;
 import com.kshrd.tnakrean.model.user.request.UserUpdatePasswordRequestModel;
 import com.kshrd.tnakrean.model.user.response.AppUserResponse;
 import com.kshrd.tnakrean.model.user.response.UserRegisterResponse;
+import com.kshrd.tnakrean.repository.AppUserRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.UserServiceImp;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,10 @@ public class AuthRestController {
     @Autowired
     UserServiceImp userServiceImp;
 
+    @Autowired
+    AppUserRepository appUserRepository;
+
+
     ModelMapper modelMapper = new ModelMapper();
 
 
@@ -45,6 +50,7 @@ public class AuthRestController {
 
 
     static int user_id;
+
     @PostMapping("/login")
     ResponseEntity<AppUserResponse> login(@RequestBody UserLoginRequest request) {
 
@@ -69,19 +75,18 @@ public class AuthRestController {
 
 
     @PostMapping("/resetpassword/")
-    public Object resetPassword(@RequestBody UserUpdatePasswordRequestModel userUpdatePasswordRequestModel){
+    public Object resetPassword(@RequestBody UserUpdatePasswordRequestModel userUpdatePasswordRequestModel) {
 //        System.out.println("user_id"+user_id);
-        System.out.println("old:"+userUpdatePasswordRequestModel.getOld_password()+"new"+userUpdatePasswordRequestModel.getNew_password());
+        System.out.println("old:" + userUpdatePasswordRequestModel.getOld_password() + "new" + userUpdatePasswordRequestModel.getNew_password());
         ApiResponse<String> response = new ApiResponse<>();
-        String password = userServiceImp.getPassword(user_id);
+        String password = appUserRepository.getPassword(user_id);
 //        System.out.println("getpass "+password);
-        boolean is_match = passwordEncoder.matches(userUpdatePasswordRequestModel.getOld_password(),password);
-        if(is_match){
+        boolean is_match = passwordEncoder.matches(userUpdatePasswordRequestModel.getOld_password(), password);
+        if (is_match) {
             String new_pass = passwordEncoder.encode(userUpdatePasswordRequestModel.getNew_password());
-            userServiceImp.resetPassword(new_pass,user_id);
-           return ApiResponse.updateSuccess();
-        }
-        else {
+            userServiceImp.resetPassword(new_pass, user_id);
+            return ApiResponse.updateSuccess();
+        } else {
             return "Miss Match";
         }
     }
