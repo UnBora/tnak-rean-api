@@ -1,14 +1,14 @@
 package com.kshrd.tnakrean.controller.notification;
 
-import com.kshrd.tnakrean.model.OneSignalPushNotification;
+import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.OneSignalNotificationResponse;
 import com.kshrd.tnakrean.repository.OneSignalPushNotificationRepository;
+import com.kshrd.tnakrean.service.PushNotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Create by Weslei Dias.
@@ -20,43 +20,60 @@ public class OneSignalPushNotificationController {
     @Autowired
     private OneSignalPushNotificationRepository repository;
 
-    @PostMapping("/sendMessageToAllUsers/{message}")
-    public void sendMessageToAllUsers(@PathVariable("message") String message)
-    {
-        PushNotificationOptions.sendMessageToAllUsers(message);
-    }
+//    @PostMapping("/sendMessageToAllUsers/{message}")
+//    public void sendMessageToAllUsers(@PathVariable("message") String message)
+//    {
+//        PushNotificationOptions.sendMessageToAllUsers(message);
+//
+//    }
+
+//    @PostMapping("/sendMessageToUser/{userId}/{message}")
+//    public void sendMessageToUser(@PathVariable("userId") String userId,
+//                                  @PathVariable("message") String message) {
+//        PushNotificationOptions.sendMessageToUser(message, userId);
+//        OneSignalPushNotification notification = new OneSignalPushNotification();
+//    }
 
     @PostMapping("/sendMessageToUser/{userId}/{message}")
-    public void sendMessageToUser(@PathVariable("userId") String userId,
-                                  @PathVariable("message") String message)
-    {
-        PushNotificationOptions.sendMessageToUser(message, userId);
-        OneSignalPushNotification notification = new OneSignalPushNotification();
+    ApiResponse<OneSignalNotificationResponse> sendMessageToUser
+            (@PathVariable("userId") String userId,
+             @PathVariable("message") String message) {
+        OneSignalNotificationResponse response = new OneSignalNotificationResponse();
+        try {
+            PushNotificationService.sendMessageToUser(message, userId);
+            return ApiResponse.<OneSignalNotificationResponse>ok().setData(response);
+        } catch (IOException e) {
+            return ApiResponse.<OneSignalNotificationResponse>exception(e).setData(response);
+        }
+    }
 
+    @PostMapping("/sendMessageToAllUsers/{message}")
+    ApiResponse<OneSignalNotificationResponse> sendMessageToAllUsers(@PathVariable("message") String message) {
+        OneSignalNotificationResponse notification = new OneSignalNotificationResponse();
+        try {
+            notification.setMessage(message);
+            PushNotificationService.sendMessageToAllUsers(message);
+            return ApiResponse.<OneSignalNotificationResponse>ok().setData(notification);
+        } catch (IOException e) {
+            return ApiResponse.<OneSignalNotificationResponse>exception(e).setData(notification);
+        }
 
     }
 
-//    @PostMapping("/saveUserId/{userId}")
-//    public void saveUserId(@PathVariable("userId") String userId)
-//    {
-//        OneSignalPushNotification notification = new OneSignalPushNotification();
-//        notification.setIdOneSignal(userId);
-//        notification.setUserName("User: " + userId);
-//        repository.save(notification);
-//    }
-//
-//    @GetMapping("/getUsers")
-//    public List<Object> getUsers()
-//    {
-//        List<Object> listValues = new ArrayList<>();
-//        for (OneSignalPushNotification notification : repository.findAll()){
-//            Map<String, Object> mapValues = new HashMap<>();
-//            mapValues.put("userName", notification.getUserName());
-//            mapValues.put("idOneSignal", notification.getIdOneSignal());
-//            listValues.add(mapValues);
-//        }
-//
-//        return listValues;
-//    }
+    @PostMapping("/createSegments/{message}/{classId}")
+    ApiResponse<OneSignalNotificationResponse>
+    sendMessageFilterToAllUsers(@PathVariable("message") String message,
+                                @PathVariable("classId") int classId) {
+        OneSignalNotificationResponse notification = new OneSignalNotificationResponse();
+        try {
+            notification.setMessage(message);
+            notification.setClassId(classId);
+            PushNotificationService.sendMessageFilterToAllUsers(message, classId);
+            return ApiResponse.<OneSignalNotificationResponse>ok().setData(notification);
+        } catch (IOException e) {
+            return ApiResponse.<OneSignalNotificationResponse>setError(e.getMessage()).setData(notification);
+        }
+
+    }
 
 }

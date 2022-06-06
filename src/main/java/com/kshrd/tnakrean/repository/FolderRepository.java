@@ -7,7 +7,6 @@ import com.kshrd.tnakrean.model.classmaterials.request.FolderRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.FolderDetailResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.FolderResponse;
 import com.kshrd.tnakrean.repository.provider.FolderProvider;
-import io.swagger.v3.core.util.Json;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
