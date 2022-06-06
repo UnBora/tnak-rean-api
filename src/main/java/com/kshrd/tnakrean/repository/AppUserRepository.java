@@ -6,7 +6,6 @@ import com.kshrd.tnakrean.model.user.response.RoleResponse;
 import com.kshrd.tnakrean.repository.provider.UserProvider;
 import org.apache.ibatis.annotations.*;
 
-
 @Mapper
 public interface AppUserRepository {
     @Select("select * from users where username=#{username}")
