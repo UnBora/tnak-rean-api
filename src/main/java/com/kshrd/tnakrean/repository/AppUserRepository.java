@@ -1,7 +1,9 @@
 package com.kshrd.tnakrean.repository;
 
+import com.kshrd.tnakrean.model.user.request.UserRegisterRequest;
 import com.kshrd.tnakrean.model.user.response.AppUserResponse;
 import com.kshrd.tnakrean.model.user.response.RoleResponse;
+import com.kshrd.tnakrean.repository.provider.UserProvider;
 import org.apache.ibatis.annotations.*;
 
 
@@ -16,12 +18,11 @@ public interface AppUserRepository {
 
 
     @Update("UPDATE users SET password = #{new_password} WHERE id=#{user_id}")
-    void editPassword(@Param("new_password") String new_password,@Param("user_id") int user_id);
+    void editPassword(@Param("new_password") String new_password, @Param("user_id") int user_id);
 
     @Select("select password from users WHERE id=#{user_id}")
     String getPassword(@Param("user_id") int user_id);
 
-    RoleResponse selectRoleById(int id);
 
     @InsertProvider(type = UserProvider.class, method = "userRegister")
     void userRegister(@Param("userRegister") UserRegisterRequest userRegisterRequest);

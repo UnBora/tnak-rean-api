@@ -3,9 +3,10 @@ package com.kshrd.tnakrean.controller;
 import com.kshrd.tnakrean.configuration.security.JwtTokenUtil;
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.user.request.UserLoginRequest;
+import com.kshrd.tnakrean.model.user.request.UserRegisterRequest;
 import com.kshrd.tnakrean.model.user.request.UserUpdatePasswordRequestModel;
 import com.kshrd.tnakrean.model.user.response.AppUserResponse;
-import com.kshrd.tnakrean.repository.AppUserRepository;
+import com.kshrd.tnakrean.model.user.response.UserRegisterResponse;
 import com.kshrd.tnakrean.service.serviceImplementation.UserServiceImp;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +73,7 @@ public class AuthRestController {
 //        System.out.println("user_id"+user_id);
         System.out.println("old:"+userUpdatePasswordRequestModel.getOld_password()+"new"+userUpdatePasswordRequestModel.getNew_password());
         ApiResponse<String> response = new ApiResponse<>();
-        String password = appUserRepository.getPassword(user_id);
+        String password = userServiceImp.getPassword(user_id);
 //        System.out.println("getpass "+password);
         boolean is_match = passwordEncoder.matches(userUpdatePasswordRequestModel.getOld_password(),password);
         if(is_match){
