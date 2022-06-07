@@ -72,7 +72,6 @@ public class AuthRestController {
 //        System.out.println("old:"+userUpdatePasswordRequestModel.getOld_password()+"new"+userUpdatePasswordRequestModel.getNew_password());
         ApiResponse<String> response = new ApiResponse<>();
         String password = appUserRepository.getPassword(user_id);
-//        System.out.println("getpass "+password);
         boolean is_match = passwordEncoder.matches(userUpdatePasswordRequestModel.getOld_password(),password);
         try {
             if(is_match){
