@@ -66,7 +66,7 @@ public class AuthRestController {
 
 
     @PostMapping("/updatepassword")
-    public ApiResponse resetPassword(@RequestBody UserUpdatePasswordRequestModel userUpdatePasswordRequestModel){
+    public ApiResponse<String> resetPassword(@RequestBody UserUpdatePasswordRequestModel userUpdatePasswordRequestModel) {
 
 //        System.out.println("user_id"+user_id);
 //        System.out.println("old:"+userUpdatePasswordRequestModel.getOld_password()+"new"+userUpdatePasswordRequestModel.getNew_password());
@@ -78,13 +78,12 @@ public class AuthRestController {
                 String new_pass = passwordEncoder.encode(userUpdatePasswordRequestModel.getNew_password());
                 userServiceImp.resetPassword(new_pass,user_id);
                 return ApiResponse.updateSuccess();
-            }
-            else {
-                return response.setError("Missed Match");
+            } else {
+                return response.setError("Your old password did not matched!");
             }
 
-        }catch (Exception e){
-            return response.setPayload("Your In Put Invalid!");
+        } catch (Exception e) {
+            return response.setError(e.getMessage());
         }
 
     }
