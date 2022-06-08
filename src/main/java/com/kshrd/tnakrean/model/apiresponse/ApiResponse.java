@@ -9,7 +9,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
+@Builder
 @Accessors(chain = true)
 public class ApiResponse<T> {
 

@@ -2,8 +2,10 @@ package com.kshrd.tnakrean.repository;
 
 
 import com.kshrd.tnakrean.configuration.JsonTypeHandler;
+import com.kshrd.tnakrean.model.NotificationTypes;
 import com.kshrd.tnakrean.model.classmaterials.response.NotificationResponse;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.One;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Select;
 
