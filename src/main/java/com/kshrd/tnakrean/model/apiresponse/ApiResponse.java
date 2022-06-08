@@ -1,17 +1,17 @@
 package com.kshrd.tnakrean.model.apiresponse;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.Accessors;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.sql.Timestamp;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Data
-@Builder
 @Accessors(chain = true)
 public class ApiResponse<T> {
 
@@ -23,92 +23,95 @@ public class ApiResponse<T> {
         WRONG_CREDENTIAL,
         ACCESS_DENIED,
         NOT_FOUND,
-        DUPLICATE_ENTRY, SUCCESS_DELETE, CREATE_SUCCESS, UPDATE_SUCCESS
+        DUPLICATE_ENTRY, DELETED, CREATED, UPDATED
     }
 
-    private T payload;
-    private Object error;
-    private boolean success = false;
+    private int responseCode;
+    private String responseMsg;
+    private T data;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
     private Object metadata;
-    private Status status;
 
 
     // for bad request
-    // for bad request
-    public static <T> ApiResponse<T> badRequest() {
+    public static <T> ApiResponse<T> badRequest(String className) {
         ApiResponse<T> response = new ApiResponse<>();
-        response.setStatus(Status.BAD_REQUEST);
+        response.setResponseMsg(Status.BAD_REQUEST.toString());
+        BaseMessage.obj = className;
+        response.setResponseCode(400);
         return response;
     }
 
-    public static <T> ApiResponse<T> ok() {
+    public static <T> ApiResponse<T> ok(String className) {
         ApiResponse<T> response = new ApiResponse<>();
-        response.setStatus(Status.OK);
-        response.setSuccess(true);
+        BaseMessage.obj = className;
+        response.setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage());
+        response.setResponseCode(200);
         return response;
     }
 
-    public static <T> ApiResponse<T> successDelete() {
-
+    public static <T> ApiResponse<T> successDelete(String className) {
         ApiResponse<T> response = new ApiResponse<>();
-        response.setStatus(Status.SUCCESS_DELETE);
-        response.setSuccess(true);
+        BaseMessage.obj = className;
+        response.setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage());
+        response.setResponseCode(200);
         return response;
 
     }
     // SUCCESS
 
-    public static <T> ApiResponse<T> successCreate() {
-
+    public static <T> ApiResponse<T> successCreate(String className) {
         ApiResponse<T> response = new ApiResponse<>();
-        response.setStatus(Status.CREATE_SUCCESS);
+        BaseMessage.obj = className;
+        response.setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage());
+        response.setResponseCode(201);
         return response;
     }
 
     //DuplicateEntry
-    public static <T> ApiResponse<T> duplicateEntry() {
+    public static <T> ApiResponse<T> duplicateEntry(String className) {
         ApiResponse<T> response = new ApiResponse<>();
-        response.setStatus(Status.DUPLICATE_ENTRY);
+        BaseMessage.obj = className;
+        response.setResponseMsg(Status.DUPLICATE_ENTRY.toString());
+        response.setResponseCode(403);
         return response;
 
+    }
+
+    //UpdateSuccess
+    public static <T> ApiResponse<T> updateSuccess(String className) {
+        ApiResponse<T> response = new ApiResponse<>();
+        BaseMessage.obj = className;
+        response.setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage());
+        response.setResponseCode(200);
+        return response;
     }
 
 
     //notFound
-    public static <T> ApiResponse<T> notFound() {
-
+    public static <T> ApiResponse<T> notFound(String className) {
         ApiResponse<T> response = new ApiResponse<>();
-        response.setStatus(Status.NOT_FOUND);
+        BaseMessage.obj = className;
+        response.setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
+        response.setResponseCode(404);
         return response;
 
     }
-
 
     //Exception Error
-    public static <T> ApiResponse<T> exception() {
-
+    public static <T> ApiResponse<T> exception(Exception errorMsg) {
         ApiResponse<T> response = new ApiResponse<>();
-        response.setStatus(Status.EXCEPTION);
-        return response;
-
-    }
-
-    public static <T> ApiResponse<T> updateSuccess() {
-
-        ApiResponse<T> response = new ApiResponse<>();
-        response.setStatus(Status.UPDATE_SUCCESS);
+        response.setResponseCode(500);
+        response.setResponseMsg(HttpStatus.FORBIDDEN.toString());
         return response;
     }
 
-    public void setErrorMsgToResponse(String errorMsg) {
-        DateTimeFormatter dft = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        ResponseError error = new ResponseError()
 
-                .setDetails(errorMsg)
-//                .setMessage(ex.getMessage())
-                .setTimestamp(new Date());
-
-
+    public static <T> ApiResponse<T> setError(String errorMsg) {
+        ApiResponse<T> response = new ApiResponse<>();
+        response.setResponseMsg(errorMsg);
+        return response;
     }
 
     // we need this class for the pagination purpose

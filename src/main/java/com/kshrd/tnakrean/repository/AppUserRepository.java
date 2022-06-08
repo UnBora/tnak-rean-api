@@ -1,9 +1,10 @@
 package com.kshrd.tnakrean.repository;
 
+import com.kshrd.tnakrean.model.user.request.UserRegisterRequest;
 import com.kshrd.tnakrean.model.user.response.AppUserResponse;
 import com.kshrd.tnakrean.model.user.response.RoleResponse;
+import com.kshrd.tnakrean.repository.provider.UserProvider;
 import org.apache.ibatis.annotations.*;
-
 
 @Mapper
 public interface AppUserRepository {
@@ -21,4 +22,6 @@ public interface AppUserRepository {
     @Select("select password from users WHERE id=#{user_id}")
     String getPassword(@Param("user_id") int user_id);
 
+    @InsertProvider(type = UserProvider.class, method = "userRegister")
+    void userRegister(@Param("userRegister") UserRegisterRequest userRegisterRequest);
 }

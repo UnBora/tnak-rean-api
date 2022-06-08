@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface NotificationService {
     List<NotificationResponse> notificationList(int id);
+
 }

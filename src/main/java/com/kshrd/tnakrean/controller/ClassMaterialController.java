@@ -6,7 +6,7 @@ import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialUpdateRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialResponse;
 import com.kshrd.tnakrean.repository.ClassMaterialRepository;
-import com.kshrd.tnakrean.service.serviceInter.ClassMaterialService;
+import com.kshrd.tnakrean.service.serviceImplementation.ClassMaterialImp;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -19,25 +19,32 @@ public class ClassMaterialController {
 
     final
     ClassMaterialRepository classMaterialRepository;
-    final ClassMaterialService classMaterialService;
+    final ClassMaterialImp classMaterialServiceImp;
 
-    public ClassMaterialController(ClassMaterialService classMaterialService, ClassMaterialRepository classMaterialRepository) {
-        this.classMaterialService = classMaterialService;
+    public ClassMaterialController(ClassMaterialImp classMaterialService, ClassMaterialRepository classMaterialRepository) {
+        this.classMaterialServiceImp = classMaterialService;
         this.classMaterialRepository = classMaterialRepository;
     }
 
     @GetMapping("/getById")
-    ApiResponse<List<ClassMaterialResponse>> getClassMaterial(int createdId) {
-        List<ClassMaterialResponse> classMaterialResponses = classMaterialService.classMaterial(createdId);
-        return ApiResponse.<List<ClassMaterialResponse>>ok().setPayload(classMaterialResponses).setSuccess(true);
+    ApiResponse<List<ClassMaterialResponse>> getClassMaterial(int id) {
+        try {
+            List<ClassMaterialResponse> classMaterialResponses = classMaterialServiceImp.getClassMaterial(id);
+            return ApiResponse.<List<ClassMaterialResponse>>ok(ClassMaterialResponse.class.getSimpleName())
+                    .setData(classMaterialResponses);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ApiResponse.setError(e.getMessage());
+        }
     }
 
     @PostMapping("insert")
     ApiResponse<ClassMaterialRequest> insertClassMaterial(
             @RequestBody ClassMaterialRequest classMaterialRequest
     ) {
-        classMaterialService.insertClassMaterial(classMaterialRequest);
-        return ApiResponse.<ClassMaterialRequest>ok().setPayload(classMaterialRequest).setSuccess(true);
+        classMaterialServiceImp.insertClassMaterial(classMaterialRequest);
+        return ApiResponse.<ClassMaterialRequest>ok(ClassMaterialRequest.class.getSimpleName())
+                .setData(classMaterialRequest);
     }
 
     @PutMapping("update")
@@ -45,8 +52,9 @@ public class ClassMaterialController {
             @RequestBody ClassMaterialUpdateRequest classMaterialUpdateRequest
     ) {
         ClassMaterialResponse response = classMaterialRepository.selectResponseAfterUpdate(classMaterialUpdateRequest.getId());
-        classMaterialService.updateClassMaterial(classMaterialUpdateRequest);
-        return ApiResponse.<ClassMaterialResponse>ok().setPayload(response).setSuccess(true);
+        classMaterialServiceImp.updateClassMaterial(classMaterialUpdateRequest);
+        return ApiResponse.<ClassMaterialResponse>
+                ok(ClassMaterialResponse.class.getSimpleName()).setData(response);
     }
 
 }
