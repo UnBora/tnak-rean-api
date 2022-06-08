@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ClassMaterialService {
 
-    List<ClassMaterialResponse> classMaterial(int createdId);
+    List<ClassMaterialResponse> getClassMaterial(int createdId);
 
     boolean insertClassMaterial(ClassMaterialRequest classMaterialRequest);
 

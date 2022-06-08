@@ -18,12 +18,11 @@ import java.util.spi.LocaleServiceProvider;
 @NoArgsConstructor
 @Builder
 public class ClassMaterialResponse {
-
-    private ClassMaterialType classMaterialType;
-    private ClassMaterialContent classMaterialContent;
     private Integer id;
     private String title;
     private Integer created_by;
     private String description;
+    private ClassMaterialType classMaterialType;
+    private ClassMaterialContent classMaterialContent;
     private Date created_date;
 }

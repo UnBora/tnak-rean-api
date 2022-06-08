@@ -25,9 +25,9 @@ public class NotificationController {
         System.out.println(notificationResponseList);
         try {
             if (notificationResponseList.isEmpty()) {
-                return ApiResponse.<List<NotificationResponse>>notFound().setData(notificationResponseList);
+                return ApiResponse.<List<NotificationResponse>>notFound(NotificationResponse.class.getSimpleName()).setData(notificationResponseList);
             }
-            return ApiResponse.<List<NotificationResponse>>ok().setData(notificationResponseList);
+            return ApiResponse.<List<NotificationResponse>>ok(NotificationResponse.class.getSimpleName()).setData(notificationResponseList);
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }

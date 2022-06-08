@@ -4,9 +4,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class BaseMessage {
-    static String obj;
+    public static String obj;
     public enum Success{
-
         INSERT_SUCCESS("A Record of " +obj+" has been inserted successfully"),
         UPDATE_SUCCESS("A Record of " +obj+" has  been updated successfully"),
         SELECT_ALL_RECORD_SUCCESS("All Records of " +obj+" has have been found"),
@@ -16,7 +15,6 @@ public class BaseMessage {
         private String message;
 
         Success(String message) {
-
             this.message = message;
         }
 

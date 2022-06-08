@@ -8,13 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.List;
-
-/**
- * Create by Weslei Dias.
- **/
 @RestController
-@RequestMapping("/pushnotification")
+@RequestMapping("/api/v1/notification")
 public class OneSignalPushNotificationController {
 
     @Autowired
@@ -34,33 +29,36 @@ public class OneSignalPushNotificationController {
 //        OneSignalPushNotification notification = new OneSignalPushNotification();
 //    }
 
-    @PostMapping("/sendMessageToUser/{userId}/{message}")
+    @PostMapping("/to-user/{userId}/{message}")
     ApiResponse<OneSignalNotificationResponse> sendMessageToUser
             (@PathVariable("userId") String userId,
              @PathVariable("message") String message) {
         OneSignalNotificationResponse response = new OneSignalNotificationResponse();
         try {
             PushNotificationService.sendMessageToUser(message, userId);
-            return ApiResponse.<OneSignalNotificationResponse>ok().setData(response);
+            return ApiResponse.<OneSignalNotificationResponse>
+                    ok(OneSignalNotificationResponse.class.getSimpleName()).setData(response);
         } catch (IOException e) {
             return ApiResponse.<OneSignalNotificationResponse>exception(e).setData(response);
         }
     }
 
-    @PostMapping("/sendMessageToAllUsers/{message}")
+    @PostMapping("/to-all-users/{message}")
     ApiResponse<OneSignalNotificationResponse> sendMessageToAllUsers(@PathVariable("message") String message) {
         OneSignalNotificationResponse notification = new OneSignalNotificationResponse();
         try {
             notification.setMessage(message);
             PushNotificationService.sendMessageToAllUsers(message);
-            return ApiResponse.<OneSignalNotificationResponse>ok().setData(notification);
+            return ApiResponse.<OneSignalNotificationResponse>
+                            ok(OneSignalNotificationResponse.class.getSimpleName())
+                    .setData(notification);
         } catch (IOException e) {
             return ApiResponse.<OneSignalNotificationResponse>exception(e).setData(notification);
         }
 
     }
 
-    @PostMapping("/createSegments/{message}/{classId}")
+    @PostMapping("/send-by-class/{message}/{classId}")
     ApiResponse<OneSignalNotificationResponse>
     sendMessageFilterToAllUsers(@PathVariable("message") String message,
                                 @PathVariable("classId") int classId) {
@@ -69,7 +67,8 @@ public class OneSignalPushNotificationController {
             notification.setMessage(message);
             notification.setClassId(classId);
             PushNotificationService.sendMessageFilterToAllUsers(message, classId);
-            return ApiResponse.<OneSignalNotificationResponse>ok().setData(notification);
+            return ApiResponse.<OneSignalNotificationResponse>
+                    ok(OneSignalNotificationResponse.class.getSimpleName()).setData(notification);
         } catch (IOException e) {
             return ApiResponse.<OneSignalNotificationResponse>setError(e.getMessage()).setData(notification);
         }
