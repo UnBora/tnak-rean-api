@@ -60,7 +60,7 @@ public class AuthRestController {
             System.out.println(userRegisterRequest);
             userServiceImp.userRegister(userRegisterRequest);
 
-            return ApiResponse.<UserRegisterResponse>successCreate()
+            return ApiResponse.<UserRegisterResponse>successCreate(UserRegisterResponse.class.getName())
                     .setData(modelMapper.map(userRegisterRequest, UserRegisterResponse.class));
 
         } catch (Exception e) {
