@@ -10,16 +10,16 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ClassMaterialImpl implements ClassMaterialService {
+public class ClassMaterialImp implements ClassMaterialService {
     final ClassMaterialRepository classMaterialRepository;
 
-    public ClassMaterialImpl(ClassMaterialRepository classMaterialRepository) {
+    public ClassMaterialImp(ClassMaterialRepository classMaterialRepository) {
         this.classMaterialRepository = classMaterialRepository;
     }
 
     @Override
-    public List<ClassMaterialResponse> classMaterial(int createdId) {
-        return classMaterialRepository.classMaterialRepo(createdId);
+    public List<ClassMaterialResponse> getClassMaterial(int createdId) {
+        return classMaterialRepository.getClassMaterials(createdId);
     }
 
     @Override
