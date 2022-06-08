@@ -5,13 +5,9 @@ import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialUpdateRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.NotificationResponse;
 import com.kshrd.tnakrean.repository.ClassMaterialRepository;
-import com.kshrd.tnakrean.service.serviceImplementation.ClassMaterialImpl;
 import com.kshrd.tnakrean.service.serviceInter.ClassMaterialService;
-import lombok.Builder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,7 +33,7 @@ public class ClassMaterialController {
     }
 
     @PostMapping("insert")
-    ApiResponse<?> insertClassMaterial(
+    ApiResponse<ClassMaterialRequest> insertClassMaterial(
             @RequestBody ClassMaterialRequest classMaterialRequest
     ) {
         classMaterialService.insertClassMaterial(classMaterialRequest);
@@ -45,12 +41,11 @@ public class ClassMaterialController {
     }
 
     @PutMapping("update")
-    ApiResponse<?> updateClassMaterial(
+    ApiResponse<ClassMaterialResponse> updateClassMaterial(
             @RequestBody ClassMaterialUpdateRequest classMaterialUpdateRequest
     ) {
         ClassMaterialResponse response = classMaterialRepository.selectResponseAfterUpdate(classMaterialUpdateRequest.getId());
         classMaterialService.updateClassMaterial(classMaterialUpdateRequest);
-        System.out.println("LLL" + response);
         return ApiResponse.<ClassMaterialResponse>ok().setPayload(response).setSuccess(true);
     }
 

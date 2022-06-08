@@ -24,13 +24,11 @@ public class ClassMaterialImpl implements ClassMaterialService {
 
     @Override
     public boolean insertClassMaterial(ClassMaterialRequest classMaterialRequest) {
-        ClassMaterialResponse response = classMaterialRepository.selectClass(classMaterialRequest.getId());
         return classMaterialRepository.insertClassMaterial(classMaterialRequest);
     }
 
     @Override
     public boolean updateClassMaterial(ClassMaterialUpdateRequest classMaterialUpdateRequest) {
-        ClassMaterialResponse response = classMaterialRepository.selectResponseAfterUpdate(classMaterialUpdateRequest.getId());
         return classMaterialRepository.updateClassMaterial(classMaterialUpdateRequest);
     }
 }

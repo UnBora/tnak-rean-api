@@ -19,8 +19,8 @@ public interface ClassMaterialRepository {
     @Result(property = "classMaterialType", column = "class_materials_type_id", one = @One(select = "getClassMaterialTypeById"))
     List<ClassMaterialResponse> classMaterialRepo(int createdId);
 
-    @Select("SELECT * FROM class_materials_type WHERE id = #{id}")
-    ClassMaterialType getClassMaterialTypeById(int id);
+//    @Select("SELECT * FROM class_materials_type WHERE id = #{id}")
+//    ClassMaterialType getClassMaterialTypeById(int id);
 
     // insert
     @Insert("INSERT INTO class_materials(created_date,created_by,title,description,class_materials_type_id,content) " + "VALUES (#{classMaterial.created_date},#{classMaterial.created_by},#{classMaterial.title},#{classMaterial.description},#{classMaterial.class_materials_type_id},#{classMaterial.classMaterialContent,jdbcType=OTHER, typeHandler = com.kshrd.tnakrean.configuration.JsonTypeHandler})")
