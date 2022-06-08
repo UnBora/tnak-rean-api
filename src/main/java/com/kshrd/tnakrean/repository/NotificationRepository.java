@@ -16,7 +16,14 @@ public interface NotificationRepository {
 
     @Select("SELECT *" +
             "FROM notification where received_id = #{id}")
-    @Result(property = "timestamp",column = "received_date")
+    @Result(property = "timestamp", column = "received_date")
     @Result(property = "content", column = "content", typeHandler = JsonTypeHandler.class)
+    @Result(property = "notificationTypes", column = "notification_type_id",
+            one = @One(select = "getNotificationTypeById"))
     List<NotificationResponse> notificationResponseList(int id);
+
+
+    @Select("SELECT * FROM notification_type WHERE id = #{id}")
+    NotificationTypes getNotificationTypeById(int id);
+
 }

@@ -5,13 +5,15 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.sql.DataSource;
+
 
 @Configuration
 public class DataSourceConfiguration {
     @Bean
-    public javax.sql.DataSource myPostgresDb() {
+    public DataSource myPostgresDb() {
 
-        DataSourceBuilder dataSource = DataSourceBuilder.create();
+        DataSourceBuilder<?> dataSource = DataSourceBuilder.create();
         dataSource.driverClassName("org.postgresql.Driver");
 
         dataSource.url("jdbc:postgresql://110.74.194.124:5430/klassrooms");
