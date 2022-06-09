@@ -19,7 +19,7 @@ public class StudentServiceImp implements StudentService {
     }
 
     @Override
-    public List<StudentResponse> getStudent(StudentResponse user_role_id) {
+    public List<StudentResponse> getStudent(Integer user_role_id) {
         return studentRepository.getStudentFromDB(user_role_id);
     }
 }

@@ -11,5 +11,5 @@ import java.util.List;
 public interface StudentRepository {
 
     @Select("Select * from users where user_role_id= #{user_role_id}")
-    List<StudentResponse> getStudentFromDB(@Param("user_role_id") StudentResponse user_role_id);
+    List<StudentResponse> getStudentFromDB(@Param("user_role_id") Integer id);
 }

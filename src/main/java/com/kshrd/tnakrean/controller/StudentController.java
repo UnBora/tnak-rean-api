@@ -19,16 +19,27 @@ public class StudentController {
 
     final StudentRepository studentRepository;
     final StudentServiceImp studentServiceImp;
+
     @Autowired
     public StudentController(StudentRepository studentRepository, StudentServiceImp studentServiceImp) {
         this.studentRepository = studentRepository;
         this.studentServiceImp = studentServiceImp;
     }
 
-    @GetMapping("/get-all/{id}")
-    public ApiResponse<List<StudentResponse>> getAllStudentFromDB(StudentResponse id){
-        List<StudentResponse> studentResponse= studentServiceImp.getStudent(id);
-        return ApiResponse.<List<StudentResponse>>successCreate(StudentResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage()).setData(studentResponse);
+    @GetMapping("/get-all")
+    public ApiResponse<List<StudentResponse>> getAllStudentFromDB(Integer id) {
+        try {
+            List<StudentResponse> studentResponses = studentServiceImp.getStudent(id);
+            if (studentResponses.isEmpty()) {
+                return ApiResponse.<List<StudentResponse>>ok(StudentResponse.class.getSimpleName()).setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setData(studentResponses);
+            } else {
+                return ApiResponse.<List<StudentResponse>>ok(StudentResponse.class.getSimpleName())
+                        .setData(studentResponses);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ApiResponse.setError(e.getMessage());
+        }
     }
 }
