@@ -32,4 +32,9 @@ public class StudentServiceImp implements StudentService {
     public StudentResponse deleteStudent(Integer id) {
         return studentRepository.deleteStudent(id);
     }
+
+    @Override
+    public StudentResponse updateClassID(Integer id) {
+        return studentRepository.updateClassID(id);
+    }
 }

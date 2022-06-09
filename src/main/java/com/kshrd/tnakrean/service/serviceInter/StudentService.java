@@ -14,4 +14,8 @@ public interface StudentService {
 //    Delete Student User
     StudentResponse deleteStudent(Integer id);
 
+//    Update Student Class ID
+    StudentResponse updateClassID(Integer id);
+
+
 }

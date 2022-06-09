@@ -1,10 +1,7 @@
 package com.kshrd.tnakrean.repository;
 
 import com.kshrd.tnakrean.model.student.response.StudentResponse;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -21,4 +18,8 @@ public interface StudentRepository {
 //    Delete Student By ID
     @Delete("Delete From users where user_role_id=1 and id = #{id}")
     StudentResponse deleteStudent(@Param("id") Integer id);
+
+//    User Update Class ID
+    @Update("UPDATE student SET class_id = #{id} WHERE users_id = 3")
+    StudentResponse updateClassID(@Param("id") Integer id);
 }

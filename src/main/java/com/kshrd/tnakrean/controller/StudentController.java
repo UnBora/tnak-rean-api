@@ -8,9 +8,7 @@ import com.kshrd.tnakrean.repository.StudentRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.StudentServiceImp;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -58,5 +56,9 @@ public class StudentController {
         }
     }
 
-
+    @PutMapping("/update-class-id")
+    public ApiResponse<StudentResponse> updateClassID(@RequestBody Integer id){
+        StudentResponse studentResponse= studentServiceImp.updateClassID(id);
+        return  ApiResponse.<StudentResponse>ok(StudentResponse.class.getSimpleName()).setData(studentResponse);
+    }
 }
