@@ -3,6 +3,7 @@ package com.kshrd.tnakrean.controller;
 
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
+import com.kshrd.tnakrean.model.student.request.ClassIdUpdateRequestModel;
 import com.kshrd.tnakrean.model.student.response.StudentResponse;
 import com.kshrd.tnakrean.repository.StudentRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.StudentServiceImp;
@@ -24,6 +25,7 @@ public class StudentController {
         this.studentRepository = studentRepository;
         this.studentServiceImp = studentServiceImp;
     }
+    static int user_id;
 
     @GetMapping("/get-all")
     public ApiResponse<List<StudentResponse>> getAllStudentFromDB(Integer id) {
@@ -56,20 +58,11 @@ public class StudentController {
         }
     }
 
-    @PutMapping("/update-class-id")
-    public ApiResponse<StudentResponse> updateClassID(Integer id){
+    @PostMapping("/update-class-id")
+    public ApiResponse<StudentResponse> updateClassID(@RequestBody ClassIdUpdateRequestModel classIdUpdateRequestModel){
+        System.out.println("user_id: "+user_id);
+//        StudentResponse studentResponse= studentServiceImp.updateClassID();
+        return ApiResponse.<StudentResponse>ok(StudentResponse.class.getSimpleName());
 
-        try {
-            StudentResponse studentResponse= studentServiceImp.updateClassID(id);
-            if (studentResponse == null) {
-                return ApiResponse.<StudentResponse>ok(StudentResponse.class.getSimpleName()).setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
-                        .setData(studentResponse);
-            } else {
-                return ApiResponse.<StudentResponse>ok(StudentResponse.class.getSimpleName())
-                        .setData(studentResponse);
-            }
-        } catch (Exception e) {
-            return ApiResponse.setError(e.getMessage());
-        }
     }
 }

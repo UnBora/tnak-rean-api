@@ -34,7 +34,7 @@ public class StudentServiceImp implements StudentService {
     }
 
     @Override
-    public StudentResponse updateClassID(Integer id) {
-        return studentRepository.updateClassID(id);
+    public void updateClassID(Integer new_class_id, Integer user_id) {
+        studentRepository.updateClassID(new_class_id, user_id);
     }
 }

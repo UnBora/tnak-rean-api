@@ -20,6 +20,6 @@ public interface StudentRepository {
     StudentResponse deleteStudent(@Param("id") Integer id);
 
 //    User Update Class ID
-    @Update("UPDATE student SET class_id = #{id} WHERE users_id = 3")
-    StudentResponse updateClassID(@Param("id") Integer id);
+    @Update("UPDATE student SET class_id = #{new_class_id} WHERE users_id = #{user_id}")
+    void updateClassID(@Param("new_class_id") Integer new_class_id, @Param("user_id") Integer user_id);
 }

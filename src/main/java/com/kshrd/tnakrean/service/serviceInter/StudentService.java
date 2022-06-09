@@ -15,7 +15,7 @@ public interface StudentService {
     StudentResponse deleteStudent(Integer id);
 
 //    Update Student Class ID
-    StudentResponse updateClassID(Integer id);
+    void updateClassID(Integer new_class_id, Integer user_id);
 
 
 }
