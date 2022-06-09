@@ -2,24 +2,27 @@ package com.kshrd.tnakrean.controller;
 
 import com.kshrd.tnakrean.configuration.security.JwtTokenUtil;
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
+import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.user.request.UserLoginRequest;
 import com.kshrd.tnakrean.model.user.request.UserRegisterRequest;
 import com.kshrd.tnakrean.model.user.response.AppUserResponse;
+import com.kshrd.tnakrean.model.user.request.UserUpdatePasswordRequestModel;
 import com.kshrd.tnakrean.model.user.response.UserRegisterResponse;
 import com.kshrd.tnakrean.service.serviceImplementation.UserServiceImp;
+import com.kshrd.tnakrean.repository.AppUserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.expression.spel.SpelEvaluationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -31,7 +34,21 @@ public class AuthRestController {
     @Autowired
     UserServiceImp userServiceImp;
 
+    @Autowired
+    AppUserRepository appUserRepository;
+
     ModelMapper modelMapper = new ModelMapper();
+
+
+    PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
+
+    static int user_id;
 
     @PostMapping("/login")
     ResponseEntity<AppUserResponse> login(@RequestBody UserLoginRequest request) {
@@ -50,9 +67,36 @@ public class AuthRestController {
         AppUserResponse response = modelMapper.map(findUserByUsername, AppUserResponse.class);
         response.setToken(token);
         System.out.println(response.getRole());
+        user_id = response.getId();
         return ResponseEntity.ok(response);
 
     }
+
+
+    @PostMapping("/updatepassword")
+    public ApiResponse<Boolean> updatePassword(@RequestBody UserUpdatePasswordRequestModel userUpdatePasswordRequestModel) {
+
+//        System.out.println("user_id"+user_id);
+//        System.out.println("old:"+userUpdatePasswordRequestModel.getOld_password()+"new"+userUpdatePasswordRequestModel.getNew_password());
+        ApiResponse<String> response = new ApiResponse<>();
+        String password = appUserRepository.getPassword(user_id);
+        boolean is_match = passwordEncoder.matches(userUpdatePasswordRequestModel.getOld_password(), password);
+        try {
+            if (is_match) {
+                String new_pass = passwordEncoder.encode(userUpdatePasswordRequestModel.getNew_password());
+                userServiceImp.resetPassword(new_pass, user_id);
+                return ApiResponse.<Boolean>updateSuccess("User")
+                        .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage());
+            } else {
+                return response.setError("Your old password did not matched!");
+            }
+
+        } catch (Exception e) {
+            return response.setError(e.getMessage());
+        }
+
+    }
+
 
     @PostMapping("/register")
     ApiResponse<UserRegisterResponse> register(@RequestBody UserRegisterRequest userRegisterRequest) {

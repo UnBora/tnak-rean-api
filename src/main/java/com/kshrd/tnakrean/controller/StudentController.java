@@ -3,11 +3,9 @@ package com.kshrd.tnakrean.controller;
 
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
-import com.kshrd.tnakrean.model.student.request.ClassIdUpdateRequestModel;
 import com.kshrd.tnakrean.model.student.response.StudentResponse;
 import com.kshrd.tnakrean.repository.StudentRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.StudentServiceImp;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +23,7 @@ public class StudentController {
         this.studentRepository = studentRepository;
         this.studentServiceImp = studentServiceImp;
     }
-    static int user_id;
+
 
     @GetMapping("/get-all")
     public ApiResponse<List<StudentResponse>> getAllStudentFromDB(Integer id) {
@@ -42,13 +40,14 @@ public class StudentController {
             return ApiResponse.setError(e.getMessage());
         }
     }
+
     @GetMapping("/get-by-id")
     public ApiResponse<StudentResponse> getAllStudentFromDBById(Integer id) {
         try {
             StudentResponse studentResponses = studentServiceImp.getSudentById(id);
-            if (studentResponses.equals(0)) {
+            if (studentResponses == null) {
                 return ApiResponse.<StudentResponse>ok(StudentResponse.class.getSimpleName()).setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
-                        .setData(studentResponses);
+                        .setData(null);
             } else {
                 return ApiResponse.<StudentResponse>ok(StudentResponse.class.getSimpleName())
                         .setData(studentResponses);
@@ -59,10 +58,22 @@ public class StudentController {
     }
 
     @PostMapping("/update-class-id")
-    public ApiResponse<StudentResponse> updateClassID(@RequestBody ClassIdUpdateRequestModel classIdUpdateRequestModel){
-        System.out.println("user_id: "+user_id);
-//        StudentResponse studentResponse= studentServiceImp.updateClassID();
-        return ApiResponse.<StudentResponse>ok(StudentResponse.class.getSimpleName());
+    public ApiResponse<StudentResponse> updateClassID(@RequestBody Integer new_class_id) {
 
+        System.out.println("user_id: " + AuthRestController.user_id);
+        try {
+            Integer user_id = AuthRestController.user_id;
+            studentServiceImp.updateClassID(new_class_id, user_id);
+//            if (new_class_id >4) {
+//                return ApiResponse.<StudentResponse>setError("Class ID")
+//                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
+//            } else {
+                return ApiResponse.<StudentResponse>updateSuccess("Class ID")
+                        .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage());
+//            }
+
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
     }
 }
