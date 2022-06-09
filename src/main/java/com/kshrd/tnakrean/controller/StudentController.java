@@ -60,16 +60,15 @@ public class StudentController {
     @PostMapping("/update-class-id")
     public ApiResponse<StudentResponse> updateClassID(@RequestBody Integer new_class_id) {
 
-        System.out.println("user_id: " + AuthRestController.user_id);
         try {
             Integer user_id = AuthRestController.user_id;
             studentServiceImp.updateClassID(new_class_id, user_id);
-//            if (new_class_id >4) {
+//            if (new_class_id == null) {
 //                return ApiResponse.<StudentResponse>setError("Class ID")
 //                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
 //            } else {
-                return ApiResponse.<StudentResponse>updateSuccess("Class ID")
-                        .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage());
+            return ApiResponse.<StudentResponse>updateSuccess("Class ID")
+                    .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage());
 //            }
 
         } catch (Exception e) {
