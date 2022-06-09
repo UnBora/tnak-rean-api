@@ -38,7 +38,21 @@ public class StudentController {
                         .setData(studentResponses);
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
+    @GetMapping("/get-by-id")
+    public ApiResponse<StudentResponse> getAllStudentFromDBById(Integer id) {
+        try {
+            StudentResponse studentResponses = studentServiceImp.getSudentById(id);
+            if (studentResponses == null) {
+                return ApiResponse.<StudentResponse>ok(StudentResponse.class.getSimpleName()).setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setData(null);
+            } else {
+                return ApiResponse.<StudentResponse>ok(StudentResponse.class.getSimpleName())
+                        .setData(studentResponses);
+            }
+        } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
     }

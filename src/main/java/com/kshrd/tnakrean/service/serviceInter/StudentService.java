@@ -5,5 +5,13 @@ import com.kshrd.tnakrean.model.student.response.StudentResponse;
 import java.util.List;
 
 public interface StudentService {
+//    Get all Student
     List<StudentResponse> getStudent(Integer user_role_id);
+
+//    Get Student by ID
+    StudentResponse getSudentById(Integer id);
+
+//    Delete Student User
+    StudentResponse deleteStudent(Integer id);
+
 }

@@ -22,4 +22,14 @@ public class StudentServiceImp implements StudentService {
     public List<StudentResponse> getStudent(Integer user_role_id) {
         return studentRepository.getStudentFromDB(user_role_id);
     }
+
+    @Override
+    public StudentResponse getSudentById(Integer id) {
+        return studentRepository.getStudentFromDBById(id);
+    }
+
+    @Override
+    public StudentResponse deleteStudent(Integer id) {
+        return studentRepository.deleteStudent(id);
+    }
 }
