@@ -44,9 +44,9 @@ public class StudentController {
     public ApiResponse<StudentResponse> getAllStudentFromDBById(Integer id) {
         try {
             StudentResponse studentResponses = studentServiceImp.getSudentById(id);
-            if (studentResponses == null) {
+            if (studentResponses.equals(0)) {
                 return ApiResponse.<StudentResponse>ok(StudentResponse.class.getSimpleName()).setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
-                        .setData(null);
+                        .setData(studentResponses);
             } else {
                 return ApiResponse.<StudentResponse>ok(StudentResponse.class.getSimpleName())
                         .setData(studentResponses);
@@ -57,8 +57,19 @@ public class StudentController {
     }
 
     @PutMapping("/update-class-id")
-    public ApiResponse<StudentResponse> updateClassID(@RequestBody Integer id){
-        StudentResponse studentResponse= studentServiceImp.updateClassID(id);
-        return  ApiResponse.<StudentResponse>ok(StudentResponse.class.getSimpleName()).setData(studentResponse);
+    public ApiResponse<StudentResponse> updateClassID(Integer id){
+
+        try {
+            StudentResponse studentResponse= studentServiceImp.updateClassID(id);
+            if (studentResponse == null) {
+                return ApiResponse.<StudentResponse>ok(StudentResponse.class.getSimpleName()).setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setData(studentResponse);
+            } else {
+                return ApiResponse.<StudentResponse>ok(StudentResponse.class.getSimpleName())
+                        .setData(studentResponse);
+            }
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
     }
 }
