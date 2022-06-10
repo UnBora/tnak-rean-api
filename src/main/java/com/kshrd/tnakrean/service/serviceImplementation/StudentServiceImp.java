@@ -1,5 +1,6 @@
 package com.kshrd.tnakrean.service.serviceImplementation;
 
+import com.kshrd.tnakrean.model.student.request.StudentRequest;
 import com.kshrd.tnakrean.model.student.response.StudentResponse;
 import com.kshrd.tnakrean.repository.StudentRepository;
 import com.kshrd.tnakrean.service.serviceInter.StudentService;
@@ -29,7 +30,7 @@ public class StudentServiceImp implements StudentService {
     }
 
     @Override
-    public StudentResponse deleteStudent(Integer id) {
+    public StudentRequest deleteStudent(Integer id) {
         return studentRepository.deleteStudent(id);
     }
 
