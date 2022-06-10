@@ -23,7 +23,7 @@ import javax.annotation.Resource;
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER
 )
-public class TnakReanApplication implements CommandLineRunner {
+public class TnakReanApplication   {
     @Resource
     FilesStorageService storageService;
 
@@ -31,11 +31,11 @@ public class TnakReanApplication implements CommandLineRunner {
         SpringApplication.run(TnakReanApplication.class, args);
     }
 
-    @Override
-    public void run(String... arg) throws Exception {
-        storageService.deleteAll();
-        storageService.init();
-    }
+//    @Override
+//    public void run(String... arg) throws Exception {
+//        storageService.deleteAll();
+//        storageService.init();
+//    }
 
 //    @Bean
 //    public FilterRegistrationBean corsFilter() {
