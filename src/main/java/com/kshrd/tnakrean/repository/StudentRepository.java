@@ -33,8 +33,8 @@ public interface StudentRepository {
     void studentLeaveClass(@Param("user_id") Integer user_id);
 
     //    Select User by class ID
-    @Select("SELECT  u.id, u.name,u.username,u.email,u.gender,s.class_id from  student s inner join users u on u.id = s.users_id where s.class_id = #{class_id}")
-    @Result(property = ("user_id"), column = ("u.id"))
+    @Select("SELECT  u.name,u.username,u.email,u.gender,s.class_id from  student s inner join users u on u.id = s.users_id where s.class_id = #{class_id}")
+    @Result(property = ("user_id"), column = ("s.id"))
     List<GetStudentByClassIDResponse> selectStudentByClassID(@Param("class_id") Integer class_id);
 
 }
