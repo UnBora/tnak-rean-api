@@ -1,19 +1,17 @@
 package com.kshrd.tnakrean.service.serviceInter;
 
-//import com.kshrd.tnakrean.model.student.request.StudentRequest;
-import com.kshrd.tnakrean.model.student.response.StudentResponse;
+import com.kshrd.tnakrean.model.student.response.GetStudentByClassIDResponse;
+import com.kshrd.tnakrean.model.student.response.GetStudentByIDResponse;
+import com.kshrd.tnakrean.model.student.response.GetAllStudentResponse;
 
 import java.util.List;
 
 public interface StudentService {
     //    Get all Student
-    List<StudentResponse> getStudent(Integer user_role_id);
+    List<GetAllStudentResponse> getAllStudent();
 
     //    Get Student by ID
-    StudentResponse getSudentById(Integer id);
-
-    //    Update Student Class ID
-    void updateClassID(Integer new_class_id, Integer user_id);
+    GetStudentByIDResponse getStudentById(Integer id);
 
     //    Delete Student User
     void studentDeleteAccount(Integer id);
@@ -24,6 +22,6 @@ public interface StudentService {
     //    Student leave class
     void studentLeaveClass(Integer id);
 
-//    Select User By Class ID
-    void selectStudentByClassID(Integer user_id, Integer class_id);
+    //    Select User By Class ID
+    List<GetStudentByClassIDResponse>  selectStudentByClassID(Integer class_id);
 }

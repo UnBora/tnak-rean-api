@@ -1,7 +1,9 @@
 package com.kshrd.tnakrean.repository;
 
 
-import com.kshrd.tnakrean.model.student.response.StudentResponse;
+import com.kshrd.tnakrean.model.student.response.GetStudentByClassIDResponse;
+import com.kshrd.tnakrean.model.student.response.GetStudentByIDResponse;
+import com.kshrd.tnakrean.model.student.response.GetAllStudentResponse;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -9,16 +11,14 @@ import java.util.List;
 @Mapper
 public interface StudentRepository {
     //Get All Student
-    @Select("Select * from users where user_role_id= #{user_role_id}")
-    List<StudentResponse> getStudentFromDB(@Param("user_role_id") Integer id);
+    @Select("Select * from users where user_role_id= 1")
+    @Result(property = ("student_id"), column = ("id"))
+    List<GetAllStudentResponse> getStudentFromDB();
 
     //   Get Student By ID
     @Select("Select * from users where user_role_id=1 and id= #{id}")
-    StudentResponse getStudentFromDBById(@Param("id") Integer id);
+    GetStudentByIDResponse getStudentFromDBById(@Param("id") Integer id);
 
-    //    User Update Class ID
-    @Update("UPDATE student SET class_id = #{new_class_id} WHERE users_id = #{user_id}")
-    void updateClassID(@Param("new_class_id") Integer new_class_id, @Param("user_id") Integer user_id);
 
     //    Delete Student By ID
     @Update("UPDATE users SET status = 0 WHERE id = #{user_id}")
@@ -32,8 +32,9 @@ public interface StudentRepository {
     @Delete("DELETE FROM student WHERE user_id = #{user_id}")
     void studentLeaveClass(@Param("user_id") Integer user_id);
 
-//    Select User by class ID
-    @Select("Select * from users where user_id=#{user_id} and id= #{class_id}")
-    void selectStudentByClassID(Integer user_id, Integer class_id);
+    //    Select User by class ID
+    @Select("SELECT  u.id, u.name,u.username,u.email,u.gender,s.class_id from  student s inner join users u on u.id = s.users_id where s.class_id = #{class_id}")
+    @Result(property = ("user_id"), column = ("u.id"))
+    List<GetStudentByClassIDResponse> selectStudentByClassID(@Param("class_id") Integer class_id);
 
 }
