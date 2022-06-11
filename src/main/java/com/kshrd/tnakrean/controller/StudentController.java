@@ -5,8 +5,10 @@ import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.student.request.StudentRequest;
 import com.kshrd.tnakrean.model.student.response.StudentResponse;
+import com.kshrd.tnakrean.model.user.response.AppUserResponse;
 import com.kshrd.tnakrean.repository.StudentRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.StudentServiceImp;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,7 +60,7 @@ public class StudentController {
         }
     }
 
-    @PostMapping("/update-class-id")
+    @PutMapping("/update-class-id")
     public ApiResponse<StudentResponse> updateClassID(Integer new_class_id) {
 
         try {
@@ -66,23 +68,41 @@ public class StudentController {
             studentServiceImp.updateClassID(new_class_id, user_id);
             if (new_class_id == null) {
                 return ApiResponse.<StudentResponse>setError("Class ID")
-                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
+                        .setData(new StudentResponse(user_id, "kk", "jjjfnld", "@@@"));
             } else {
                 return ApiResponse.<StudentResponse>updateSuccess("Class ID")
-                        .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage());
+                        .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
+                        .setData(new StudentResponse(user_id, "hello", "jjjfnld", "@@@"))
+                        .setMetadata("Update Class ID");
             }
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public ApiResponse<StudentRequest> deleteUser() {
         Integer user_id = AuthRestController.user_id;
 
-        studentServiceImp.deleteStudent(user_id);
-        return ApiResponse.<StudentRequest>successDelete("delete")
-                .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage());
+        studentServiceImp.studentDeleteAccount(user_id);
+        return ApiResponse.<StudentRequest>successDelete("student class")
+                .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
+                .setData(new StudentRequest(user_id))
+                .setMetadata("This route just change status to 0");
+
+    }
+
+    @PutMapping("/deactivate-account")
+    public ApiResponse<StudentRequest> deactivateAccount() {
+        Integer user_id = AuthRestController.user_id;
+
+        studentServiceImp.studentDeactivateAccount(user_id);
+        return ApiResponse.<StudentRequest>updateSuccess("student class")
+                .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
+                .setData(new StudentRequest(user_id))
+                .setMetadata("This route we user to deactivate account (status: 1)!");
 
     }
 }
