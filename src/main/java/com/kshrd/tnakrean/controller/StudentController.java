@@ -4,6 +4,7 @@ package com.kshrd.tnakrean.controller;
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.student.request.StudentLeaveClassRequest;
+import com.kshrd.tnakrean.model.student.request.StudentRequest;
 import com.kshrd.tnakrean.model.student.response.GetStudentByClassIDResponse;
 import com.kshrd.tnakrean.model.student.response.GetStudentByIDResponse;
 import com.kshrd.tnakrean.model.student.response.GetAllStudentResponse;
@@ -109,11 +110,19 @@ public class StudentController {
     public ApiResponse<StudentLeaveClassRequest> studentLeaveClass(int classroomId, int classId){
         try {
             Integer user_id =AuthRestController.user_id;
-            studentServiceImp.studentLeaveClassService(user_id,classroomId,classId);
-            return ApiResponse.<StudentLeaveClassRequest>ok("student class")
-                    .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                    .setData(new StudentLeaveClassRequest(user_id,classroomId,classId))
-                    .setMetadata("This route just change status to 0");
+             studentServiceImp.studentLeaveClassService(user_id,classroomId,classId);
+            if (user_id==0 || classroomId==0 || classId==0){
+                return ApiResponse.<StudentLeaveClassRequest>setError("student class")
+                        .setResponseMsg(BaseMessage.Error.INSERT_ERROR.getMessage())
+                        .setData(new StudentLeaveClassRequest(user_id,classroomId,classId))
+                        .setMetadata("some data is null");
+            }else {
+                return ApiResponse.<StudentLeaveClassRequest>ok("student class")
+                        .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
+                        .setData(new StudentLeaveClassRequest(user_id,classroomId,classId))
+                        .setMetadata("This route just change status to 0");
+            }
+
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
