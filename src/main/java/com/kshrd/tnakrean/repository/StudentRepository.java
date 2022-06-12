@@ -29,12 +29,13 @@ public interface StudentRepository {
     void studentDeactivateAccount(@Param("id") Integer id);
 
     //  Student Leave Class
-    @Delete("DELETE FROM student WHERE user_id = #{user_id}")
-    void studentLeaveClass(@Param("user_id") Integer user_id);
+    @Delete("DELETE  from student where users_id= #{users_id} AND classroom_id=#{classroom_id} AND class_id= #{class_id} ")
+    void studentLeaveClassDB( @Param("users_id") Integer users_id, @Param("classroom_id") Integer classroom_id,@Param("class_id") Integer class_id);
+
 
     //    Select User by class ID
-    @Select("SELECT  u.name,u.username,u.email,u.gender,s.class_id from  student s inner join users u on u.id = s.users_id where s.class_id = #{class_id}")
-    @Result(property = ("user_id"), column = ("s.id"))
+    @Select("SELECT u.id as user_id,u.name,u.username,u.email,u.gender,s.class_id from  student s " +
+            "inner join users u on u.id = s.users_id where s.class_id = #{class_id}")
     List<GetStudentByClassIDResponse> selectStudentByClassID(@Param("class_id") Integer class_id);
 
 }

@@ -3,7 +3,7 @@ package com.kshrd.tnakrean.controller;
 
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
-import com.kshrd.tnakrean.model.student.request.StudentRequest;
+import com.kshrd.tnakrean.model.student.request.StudentLeaveClassRequest;
 import com.kshrd.tnakrean.model.student.response.GetStudentByClassIDResponse;
 import com.kshrd.tnakrean.model.student.response.GetStudentByIDResponse;
 import com.kshrd.tnakrean.model.student.response.GetAllStudentResponse;
@@ -45,16 +45,18 @@ public class StudentController {
     }
 
     @GetMapping("/get-by-id")
-    public ApiResponse<GetStudentByIDResponse> getAllStudentFromDBById(Integer id) {
+    public ApiResponse<GetStudentByIDResponse> getAllStudentFromDBById(Integer user_id) {
         try {
-            GetStudentByIDResponse getStudentByIDResponses = studentServiceImp.getStudentById(id);
+            GetStudentByIDResponse getStudentByIDResponses = studentServiceImp.getStudentById(user_id);
             if (getStudentByIDResponses == null) {
                 return ApiResponse.<GetStudentByIDResponse>setError(GetAllStudentResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
-                        .setData(getStudentByIDResponses);
+                        .setData(getStudentByIDResponses)
+                        .setMetadata("Not Fount");
             } else {
-                return ApiResponse.<GetStudentByIDResponse>ok("Student ID: " + id)
-                        .setData(getStudentByIDResponses);
+                return ApiResponse.<GetStudentByIDResponse>ok("Student ID: " + user_id)
+                        .setData(getStudentByIDResponses)
+                        .setMetadata("Successful");
             }
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
@@ -102,4 +104,19 @@ public class StudentController {
             return ApiResponse.setError(e.getMessage());
         }
     }
+
+    @PutMapping("leave-class")
+    public ApiResponse<StudentLeaveClassRequest> studentLeaveClass(int classroomId, int classId){
+        try {
+            Integer user_id =AuthRestController.user_id;
+            studentServiceImp.studentLeaveClassService(user_id,classroomId,classId);
+            return ApiResponse.<StudentLeaveClassRequest>ok("student class")
+                    .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
+                    .setData(new StudentLeaveClassRequest(user_id,classroomId,classId))
+                    .setMetadata("This route just change status to 0");
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
+
 }

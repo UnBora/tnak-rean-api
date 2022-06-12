@@ -42,13 +42,13 @@ public class StudentServiceImp implements StudentService {
     }
 
     @Override
-    public void studentLeaveClass(Integer id) {
-        studentRepository.studentLeaveClass(id);
+    public void studentLeaveClassService(Integer users_id, Integer classroom_id, Integer class_id) {
+        studentRepository.studentLeaveClassDB(users_id, classroom_id, class_id);
     }
 
     @Override
     public List<GetStudentByClassIDResponse> selectStudentByClassID(Integer class_id) {
-        return studentRepository.selectStudentByClassID( class_id);
+        return studentRepository.selectStudentByClassID(class_id);
     }
 
 

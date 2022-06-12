@@ -15,6 +15,4 @@ public class GetStudentByClassIDResponse {
     String email;
     String gender;
     Integer class_id;
-    @JsonIgnore
-    String password;
 }

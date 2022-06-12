@@ -1,6 +1,5 @@
 package com.kshrd.tnakrean.model.student.request;
 
-import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class StudentRequest {
+public class StudentLeaveClassRequest {
     Integer user_id;
+    Integer classroom_id;
+    Integer class_id;
 }

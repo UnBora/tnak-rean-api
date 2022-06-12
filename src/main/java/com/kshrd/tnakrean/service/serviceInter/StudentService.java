@@ -20,7 +20,7 @@ public interface StudentService {
     void studentDeactivateAccount(Integer id);
 
     //    Student leave class
-    void studentLeaveClass(Integer id);
+    void studentLeaveClassService(Integer users_id, Integer classroom_id, Integer class_id);
 
     //    Select User By Class ID
     List<GetStudentByClassIDResponse>  selectStudentByClassID(Integer class_id);
