@@ -76,8 +76,6 @@ public class AuthRestController {
     @PostMapping("/updatepassword")
     public ApiResponse<Boolean> updatePassword(@RequestBody UserUpdatePasswordRequestModel userUpdatePasswordRequestModel) {
 
-//        System.out.println("user_id"+user_id);
-//        System.out.println("old:"+userUpdatePasswordRequestModel.getOld_password()+"new"+userUpdatePasswordRequestModel.getNew_password());
         ApiResponse<String> response = new ApiResponse<>();
         String password = appUserRepository.getPassword(user_id);
         boolean is_match = passwordEncoder.matches(userUpdatePasswordRequestModel.getOld_password(), password);
