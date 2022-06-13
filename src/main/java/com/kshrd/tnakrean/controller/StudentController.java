@@ -132,7 +132,7 @@ public class StudentController {
         }
     }
 
-    @PutMapping("insertStudent")
+    @PostMapping("insertStudent")
     public ApiResponse<StudentLeaveClassRequest> insertStudentToTableStudent(Integer user_id, int classroomId, int classId) {
         try {
             studentServiceImp.insertStudent(user_id, classroomId, classId);
