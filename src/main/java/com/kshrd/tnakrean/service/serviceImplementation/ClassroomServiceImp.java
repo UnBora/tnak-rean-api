@@ -5,4 +5,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ClassroomServiceImp implements ClassroomService {
+    @Override
+    public void insertClassroom() {
+
+    }
 }
