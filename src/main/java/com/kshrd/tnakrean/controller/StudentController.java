@@ -51,13 +51,10 @@ public class StudentController {
             GetStudentByIDResponse getStudentByIDResponses = studentServiceImp.getStudentById(user_id);
             if (getStudentByIDResponses == null) {
                 return ApiResponse.<GetStudentByIDResponse>setError(GetAllStudentResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
-                        .setData(getStudentByIDResponses)
-                        .setMetadata("Not Fount");
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
             } else {
                 return ApiResponse.<GetStudentByIDResponse>ok("Student ID: " + user_id)
-                        .setData(getStudentByIDResponses)
-                        .setMetadata("Successful");
+                        .setData(getStudentByIDResponses);
             }
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
@@ -72,8 +69,7 @@ public class StudentController {
         studentServiceImp.studentDeleteAccount(user_id);
         return ApiResponse.<StudentRequest>successDelete("student class")
                 .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
-                .setData(new StudentRequest(user_id))
-                .setMetadata("This route just change status to 0");
+                .setData(new StudentRequest(user_id));
 
     }
 
@@ -84,12 +80,21 @@ public class StudentController {
         studentServiceImp.studentDeactivateAccount(user_id);
         return ApiResponse.<StudentRequest>updateSuccess("student class")
                 .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                .setData(new StudentRequest(user_id))
-                .setMetadata("This route we user to deactivate account (status: 1)!");
+                .setData(new StudentRequest(user_id));
 
     }
 
-    @GetMapping("/get-student-by-class-id")
+    @PutMapping("/activate-account")
+    public ApiResponse<StudentRequest> activateAccount() {
+        Integer user_id = AuthRestController.user_id;
+
+        studentServiceImp.studentActivateAccount(user_id);
+        return ApiResponse.<StudentRequest>updateSuccess("student class")
+                .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
+                .setData(new StudentRequest(user_id));
+    }
+
+    @GetMapping("/get-by-class-id")
     public ApiResponse<List<GetStudentByClassIDResponse>> getStudentByClassID(Integer id) {
         try {
             List<GetStudentByClassIDResponse> getStudentByClassIDResponses = studentServiceImp.selectStudentByClassID(id);
@@ -107,20 +112,38 @@ public class StudentController {
     }
 
     @PutMapping("leave-class")
-    public ApiResponse<StudentLeaveClassRequest> studentLeaveClass(int classroomId, int classId){
+    public ApiResponse<StudentLeaveClassRequest> studentLeaveClass(int classroomId, int classId) {
         try {
-            Integer user_id =AuthRestController.user_id;
-             studentServiceImp.studentLeaveClassService(user_id,classroomId,classId);
-            if (user_id==0 || classroomId==0 || classId==0){
+            Integer user_id = AuthRestController.user_id;
+            studentServiceImp.studentLeaveClassService(user_id, classroomId, classId);
+            if (user_id == 0 || classroomId == 0 || classId == 0) {
                 return ApiResponse.<StudentLeaveClassRequest>setError("student class")
                         .setResponseMsg(BaseMessage.Error.INSERT_ERROR.getMessage())
-                        .setData(new StudentLeaveClassRequest(user_id,classroomId,classId))
+                        .setData(new StudentLeaveClassRequest(user_id, classroomId, classId))
                         .setMetadata("some data is null");
-            }else {
+            } else {
                 return ApiResponse.<StudentLeaveClassRequest>ok("student class")
                         .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                        .setData(new StudentLeaveClassRequest(user_id,classroomId,classId))
-                        .setMetadata("This route just change status to 0");
+                        .setData(new StudentLeaveClassRequest(user_id, classroomId, classId));
+            }
+
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
+
+    @PutMapping("insert-student")
+    public ApiResponse<StudentLeaveClassRequest> insertStudentToTableStudent(Integer user_id, int classroomId, int classId) {
+        try {
+            studentServiceImp.insertStudent(user_id, classroomId, classId);
+            if (user_id == 0 || classroomId == 0 || classId == 0) {
+                return ApiResponse.<StudentLeaveClassRequest>setError("student class")
+                        .setResponseMsg(BaseMessage.Error.INSERT_ERROR.getMessage())
+                        .setData(new StudentLeaveClassRequest(user_id, classroomId, classId));
+            } else {
+                return ApiResponse.<StudentLeaveClassRequest>ok("student class")
+                        .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
+                        .setData(new StudentLeaveClassRequest(user_id, classroomId, classId));
             }
 
         } catch (Exception e) {
