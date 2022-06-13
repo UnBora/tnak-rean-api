@@ -28,7 +28,7 @@ public class StudentController {
         this.studentServiceImp = studentServiceImp;
     }
 
-    @GetMapping("/get-all-student")
+    @GetMapping("/getAllStudent")
     public ApiResponse<List<GetAllStudentResponse>> getAllStudentFromDB() {
         try {
             List<GetAllStudentResponse> getAllStudentResponse = studentServiceImp.getAllStudent();
@@ -44,7 +44,7 @@ public class StudentController {
         }
     }
 
-    @GetMapping("/get-by-id")
+    @GetMapping("/getById")
     public ApiResponse<GetStudentByIDResponse> getAllStudentFromDBById(Integer user_id) {
         try {
             GetStudentByIDResponse getStudentByIDResponses = studentServiceImp.getStudentById(user_id);
@@ -61,7 +61,7 @@ public class StudentController {
     }
 
 
-    @DeleteMapping("/delete-account")
+    @DeleteMapping("/deleteAccount")
     public ApiResponse<StudentRequest> deleteUser() {
         Integer user_id = AuthRestController.user_id;
 
@@ -72,7 +72,7 @@ public class StudentController {
 
     }
 
-    @PutMapping("/deactivate-account")
+    @PutMapping("/deactivateAccount")
     public ApiResponse<StudentRequest> deactivateAccount() {
         Integer user_id = AuthRestController.user_id;
 
@@ -83,7 +83,7 @@ public class StudentController {
 
     }
 
-    @PutMapping("/activate-account")
+    @PutMapping("/activateAccount")
     public ApiResponse<StudentRequest> activateAccount() {
         Integer user_id = AuthRestController.user_id;
 
@@ -93,7 +93,7 @@ public class StudentController {
                 .setData(new StudentRequest(user_id));
     }
 
-    @GetMapping("/get-by-class-id")
+    @GetMapping("/getByClass-id")
     public ApiResponse<List<GetStudentByClassIDResponse>> getStudentByClassID(Integer id) {
         try {
             List<GetStudentByClassIDResponse> getStudentByClassIDResponses = studentServiceImp.selectStudentByClassID(id);
@@ -110,7 +110,7 @@ public class StudentController {
         }
     }
 
-    @PutMapping("leave-class")
+    @PutMapping("leaveClass")
     public ApiResponse<StudentLeaveClassRequest> studentLeaveClass(int classroomId, int classId) {
         try {
             Integer user_id = AuthRestController.user_id;
@@ -131,7 +131,7 @@ public class StudentController {
         }
     }
 
-    @PutMapping("insert-student")
+    @PostMapping("insertStudent")
     public ApiResponse<StudentLeaveClassRequest> insertStudentToTableStudent(Integer user_id, int classroomId, int classId) {
         try {
             studentServiceImp.insertStudent(user_id, classroomId, classId);
