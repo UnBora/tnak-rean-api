@@ -28,7 +28,6 @@ public class StudentController {
         this.studentServiceImp = studentServiceImp;
     }
 
-
     @GetMapping("/get-all-student")
     public ApiResponse<List<GetAllStudentResponse>> getAllStudentFromDB() {
         try {
