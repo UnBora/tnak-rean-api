@@ -112,19 +112,19 @@ public class StudentController {
     }
 
     @PutMapping("leave-class")
-    public ApiResponse<StudentLeaveClassRequest> studentLeaveClass(int classroomId, int classId){
+    public ApiResponse<StudentLeaveClassRequest> studentLeaveClass(int classroomId, int classId) {
         try {
-            Integer user_id =AuthRestController.user_id;
-             studentServiceImp.studentLeaveClassService(user_id,classroomId,classId);
-            if (user_id==0 || classroomId==0 || classId==0){
+            Integer user_id = AuthRestController.user_id;
+            studentServiceImp.studentLeaveClassService(user_id, classroomId, classId);
+            if (user_id == 0 || classroomId == 0 || classId == 0) {
                 return ApiResponse.<StudentLeaveClassRequest>setError("student class")
                         .setResponseMsg(BaseMessage.Error.INSERT_ERROR.getMessage())
-                        .setData(new StudentLeaveClassRequest(user_id,classroomId,classId))
+                        .setData(new StudentLeaveClassRequest(user_id, classroomId, classId))
                         .setMetadata("some data is null");
-            }else {
+            } else {
                 return ApiResponse.<StudentLeaveClassRequest>ok("student class")
                         .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                        .setData(new StudentLeaveClassRequest(user_id,classroomId,classId));
+                        .setData(new StudentLeaveClassRequest(user_id, classroomId, classId));
             }
 
         } catch (Exception e) {
@@ -133,17 +133,17 @@ public class StudentController {
     }
 
     @PutMapping("insert-student")
-    public ApiResponse<StudentLeaveClassRequest> insertStudentToTableStudent(Integer user_id, int classroomId, int classId){
+    public ApiResponse<StudentLeaveClassRequest> insertStudentToTableStudent(Integer user_id, int classroomId, int classId) {
         try {
-            studentServiceImp.insertStudent(user_id,classroomId,classId);
-            if (user_id==0 || classroomId==0 || classId==0){
+            studentServiceImp.insertStudent(user_id, classroomId, classId);
+            if (user_id == 0 || classroomId == 0 || classId == 0) {
                 return ApiResponse.<StudentLeaveClassRequest>setError("student class")
                         .setResponseMsg(BaseMessage.Error.INSERT_ERROR.getMessage())
-                        .setData(new StudentLeaveClassRequest(user_id,classroomId,classId));
-            }else {
+                        .setData(new StudentLeaveClassRequest(user_id, classroomId, classId));
+            } else {
                 return ApiResponse.<StudentLeaveClassRequest>ok("student class")
                         .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
-                        .setData(new StudentLeaveClassRequest(user_id,classroomId,classId));
+                        .setData(new StudentLeaveClassRequest(user_id, classroomId, classId));
             }
 
         } catch (Exception e) {
