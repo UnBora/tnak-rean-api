@@ -42,6 +42,11 @@ public class StudentServiceImp implements StudentService {
     }
 
     @Override
+    public void studentActivateAccount(Integer id) {
+        studentRepository.studentActivateAccount(id);
+    }
+
+    @Override
     public void studentLeaveClassService(Integer users_id, Integer classroom_id, Integer class_id) {
         studentRepository.studentLeaveClassDB(users_id, classroom_id, class_id);
     }
@@ -49,6 +54,11 @@ public class StudentServiceImp implements StudentService {
     @Override
     public List<GetStudentByClassIDResponse> selectStudentByClassID(Integer class_id) {
         return studentRepository.selectStudentByClassID(class_id);
+    }
+
+    @Override
+    public void insertStudent(Integer users_id, Integer classroom_id, Integer class_id) {
+        studentRepository.insertUserToTableStudent(users_id,classroom_id,class_id);
     }
 
 

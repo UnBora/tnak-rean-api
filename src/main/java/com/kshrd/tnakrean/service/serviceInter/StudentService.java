@@ -19,9 +19,15 @@ public interface StudentService {
     //    Student Deactivate account
     void studentDeactivateAccount(Integer id);
 
+ //    Student activate account
+    void studentActivateAccount(Integer id);
+
     //    Student leave class
     void studentLeaveClassService(Integer users_id, Integer classroom_id, Integer class_id);
 
     //    Select User By Class ID
     List<GetStudentByClassIDResponse>  selectStudentByClassID(Integer class_id);
+
+    //Insert Student
+    void insertStudent(Integer users_id, Integer classroom_id, Integer class_id);
 }
