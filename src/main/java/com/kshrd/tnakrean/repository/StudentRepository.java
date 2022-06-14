@@ -44,4 +44,5 @@ public interface StudentRepository {
     //    Activate Account
     @Update("UPDATE users SET status = 2 WHERE id = #{user_id}")
     void studentActivateAccount(@Param("user_id") Integer id);
+
 }
