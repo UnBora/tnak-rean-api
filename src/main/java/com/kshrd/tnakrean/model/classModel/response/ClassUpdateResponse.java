@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ClassInertResponse {
-    String className;
+public class ClassUpdateResponse {
+    Integer id;
+    String classname;
 }

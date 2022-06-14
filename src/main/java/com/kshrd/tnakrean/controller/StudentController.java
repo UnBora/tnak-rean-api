@@ -93,7 +93,7 @@ public class StudentController {
                 .setData(new StudentRequest(user_id));
     }
 
-    @GetMapping("/getByClass-id")
+    @GetMapping("/getByClassId")
     public ApiResponse<List<GetStudentByClassIDResponse>> getStudentByClassID(Integer id) {
         try {
             List<GetStudentByClassIDResponse> getStudentByClassIDResponses = studentServiceImp.selectStudentByClassID(id);

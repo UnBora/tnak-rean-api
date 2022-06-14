@@ -1,9 +1,12 @@
 package com.kshrd.tnakrean.service.serviceImplementation;
 
+import com.kshrd.tnakrean.model.classModel.request.GetClassRequest;
 import com.kshrd.tnakrean.repository.ClassRepository;
 import com.kshrd.tnakrean.service.serviceInter.ClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ClassServiceImp implements ClassService {
@@ -22,5 +25,15 @@ public class ClassServiceImp implements ClassService {
     @Override
     public void deleteClass(Integer classId) {
         classRepository.deleteClass(classId);
+    }
+
+    @Override
+    public void UpdateClass(Integer id, String className) {
+        classRepository.updateClass(id, className);
+    }
+
+    @Override
+    public List<GetClassRequest> getAllClass() {
+        return classRepository.getAllClass();
     }
 }
