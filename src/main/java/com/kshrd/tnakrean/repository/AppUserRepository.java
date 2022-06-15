@@ -13,7 +13,14 @@ public interface AppUserRepository {
     AppUserResponse loginByUserName(String username);
 
     @Select("SELECT * FROM user_role where id = ${id}")
-    RoleResponse selectRoleById(int id);
+    RoleResponse selectRoleById(@Param("id") int user_role_id);
+
+
+    @Update("UPDATE users SET password = #{new_password} WHERE id=#{user_id}")
+    void editPassword(@Param("new_password") String new_password,@Param("user_id") int user_id);
+
+    @Select("select password from users WHERE id=#{user_id}")
+    String getPassword(@Param("user_id") int user_id);
 
     @InsertProvider(type = UserProvider.class, method = "userRegister")
     void userRegister(@Param("userRegister") UserRegisterRequest userRegisterRequest);
