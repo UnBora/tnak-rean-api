@@ -5,6 +5,8 @@ import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classModel.request.GetClassRequest;
 import com.kshrd.tnakrean.model.classroom.request.ClassroomRequest;
 import com.kshrd.tnakrean.model.classroom.response.ClassroomResponse;
+import com.kshrd.tnakrean.model.classroom.response.GetClassByTeacherIdResponse;
+import com.kshrd.tnakrean.model.student.response.GetStudentByClassIDResponse;
 import com.kshrd.tnakrean.repository.ClassroomRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.ClassroomServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,6 @@ public class ClassroomController {
         this.classroomServiceImp = classroomServiceImp;
         this.classroomRepository = classroomRepository;
     }
-
 
     @GetMapping("/getAllClassroom")
     public ApiResponse<List<ClassroomResponse>> getAllClassroom() {
@@ -84,5 +85,24 @@ public class ClassroomController {
         }
     }
 
-
+    @GetMapping("/getClassroomByTeacherID")
+    public  ApiResponse<List<GetClassByTeacherIdResponse>> getClassByTeacherId(){
+        Integer user_id=AuthRestController.user_id;
+        GetClassByTeacherIdResponse obj = new GetClassByTeacherIdResponse();
+        Integer classId= obj.getClass_id(), classroomId=obj.getClassroom_id();
+        String teacher= obj.getTeacher_name(), className=obj.getClass_name();
+        try {
+            List<GetClassByTeacherIdResponse> getClassByTeacherIdResponses = classroomServiceImp.getClassByTeacherId(classId,classroomId,teacher,className,user_id);
+            if (getClassByTeacherIdResponses .isEmpty()) {
+                return ApiResponse.<List<GetClassByTeacherIdResponse>>setError(GetStudentByClassIDResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setData(getClassByTeacherIdResponses );
+            } else {
+                return ApiResponse.<List<GetClassByTeacherIdResponse>>ok(GetClassByTeacherIdResponse.class.getSimpleName())
+                        .setData(getClassByTeacherIdResponses);
+            }
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
 }

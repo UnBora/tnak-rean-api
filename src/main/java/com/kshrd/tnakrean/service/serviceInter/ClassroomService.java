@@ -1,7 +1,7 @@
 package com.kshrd.tnakrean.service.serviceInter;
 
-import com.kshrd.tnakrean.model.classroom.request.ClassroomRequest;
 import com.kshrd.tnakrean.model.classroom.response.ClassroomResponse;
+import com.kshrd.tnakrean.model.classroom.response.GetClassByTeacherIdResponse;
 
 import java.util.List;
 
@@ -15,5 +15,5 @@ public interface ClassroomService {
 
     void updateClassroom(Integer class_id, Integer created_by, String des, String name);
 
-
+    List<GetClassByTeacherIdResponse> getClassByTeacherId(Integer classroom_id, Integer class_id, String teacher_name, String class_name, Integer user_id);
 }
