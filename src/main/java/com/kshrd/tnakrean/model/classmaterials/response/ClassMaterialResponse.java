@@ -1,5 +1,6 @@
 package com.kshrd.tnakrean.model.classmaterials.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.kshrd.tnakrean.model.ClassMaterialType;
 import com.kshrd.tnakrean.model.NotificationTypes;
 import com.kshrd.tnakrean.model.classmaterials.json.ClassMaterialContent;
@@ -24,5 +25,6 @@ public class ClassMaterialResponse {
     private String description;
     private ClassMaterialType classMaterialType;
     private ClassMaterialContent classMaterialContent;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date created_date;
 }

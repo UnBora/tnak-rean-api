@@ -14,4 +14,5 @@ public class TeacherResponse {
     String username;
     String email;
     String gender;
+    String status;
 }

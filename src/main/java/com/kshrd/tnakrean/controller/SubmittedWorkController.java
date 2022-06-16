@@ -103,7 +103,7 @@ public class SubmittedWorkController {
     }
 
     @PutMapping("update-status")
-    ApiResponse<?> updateStatus(
+    ApiResponse<SubmittedWorkUpdateStatusRequest> updateStatus(
             @RequestBody SubmittedWorkUpdateStatusRequest submittedWorkUpdateStatusRequest) {
         submittedWorkImpl.updateStatus(submittedWorkUpdateStatusRequest);
         return ApiResponse.<SubmittedWorkUpdateStatusRequest>ok(SubmittedWorkUpdateStatusRequest.class.getSimpleName())
