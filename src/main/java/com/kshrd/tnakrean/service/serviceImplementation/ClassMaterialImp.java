@@ -31,4 +31,24 @@ public class ClassMaterialImp implements ClassMaterialService {
     public boolean updateClassMaterial(ClassMaterialUpdateRequest classMaterialUpdateRequest) {
         return classMaterialRepository.updateClassMaterial(classMaterialUpdateRequest);
     }
+
+    @Override
+    public List<ClassMaterialResponse> getAllClassMaterial() {
+        return classMaterialRepository.getAllClassMaterial();
+    }
+
+    @Override
+    public List<ClassMaterialResponse> getAllClassMaterialByCreatedBy(Integer created_id) {
+        return classMaterialRepository.getAllClassMaterialByCreatedBy(created_id);
+    }
+
+    @Override
+    public Boolean deleteById(Integer id) {
+        return classMaterialRepository.deleteById(id);
+    }
+
+    @Override
+    public List<ClassMaterialResponse> getClassMaterialByCreatedByAndMaterialType(Integer created_by, Integer class_materials_type_id) {
+        return classMaterialRepository.getClassMaterialByCreatedByAndMaterialType(created_by, class_materials_type_id);
+    }
 }

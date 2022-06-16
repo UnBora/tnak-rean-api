@@ -13,4 +13,12 @@ public interface ClassMaterialService {
     boolean insertClassMaterial(ClassMaterialRequest classMaterialRequest);
 
     boolean updateClassMaterial(ClassMaterialUpdateRequest classMaterialUpdateRequest);
+
+    List<ClassMaterialResponse> getAllClassMaterial();
+
+    List<ClassMaterialResponse> getAllClassMaterialByCreatedBy(Integer created_id);
+
+    Boolean deleteById(Integer id);
+
+    List<ClassMaterialResponse> getClassMaterialByCreatedByAndMaterialType(Integer created_by, Integer class_materials_type_id);
 }

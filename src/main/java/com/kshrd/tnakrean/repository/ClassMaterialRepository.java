@@ -13,14 +13,17 @@ import java.util.List;
 @Mapper
 @Repository
 public interface ClassMaterialRepository {
+    // get all
+    @Select("SELECT * FROM class_materials")
+    @Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class)
+    @Result(property = "classMaterialType", column = "class_materials_type_id", one = @One(select = "getClassMaterialTypeById"))
+    List<ClassMaterialResponse> getAllClassMaterial();
+
     //get by id
     @Select("SELECT * FROM class_materials WHERE created_by = #{id}")
     @Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class)
     @Result(property = "classMaterialType", column = "class_materials_type_id", one = @One(select = "getClassMaterialTypeById"))
     List<ClassMaterialResponse> getClassMaterials(int id);
-
-//    @Select("SELECT * FROM class_materials_type WHERE id = #{id}")
-//    ClassMaterialType getClassMaterialTypeById(int id);
 
     // insert
     @Insert("INSERT INTO class_materials(created_date,created_by,title,description,class_materials_type_id,content) " + "VALUES (#{classMaterial.created_date},#{classMaterial.created_by},#{classMaterial.title},#{classMaterial.description},#{classMaterial.class_materials_type_id},#{classMaterial.classMaterialContent,jdbcType=OTHER, typeHandler = com.kshrd.tnakrean.configuration.JsonTypeHandler})")
@@ -45,4 +48,20 @@ public interface ClassMaterialRepository {
     @Results(@Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class))
     @Result(property = "classMaterialType", column = "class_materials_type_id", one = @One(select = "getClassMaterialType"))
     ClassMaterialResponse selectResponseAfterUpdate(int id);
+
+    // Get All Class Material By CreatedBy
+    @Select("SELECT * FROM class_materials WHERE created_by = #{created_id}")
+    @Results(@Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class))
+    @Result(property = "classMaterialType", column = "class_materials_type_id", one = @One(select = "getClassMaterialTypeById"))
+    List<ClassMaterialResponse> getAllClassMaterialByCreatedBy(@Param("created_id") Integer created_id);
+
+    // delete by id
+    @Delete("DELETE FROM class_materials WHERE id = #{id}")
+    Boolean deleteById(@Param("id") Integer id);
+
+    //
+    @Select("SELECT * FROM class_materials WHERE created_by = #{created_by} AND class_materials_type_id = #{class_materials_type_id}")
+    @Results(@Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class))
+    @Result(property = "classMaterialType", column = "class_materials_type_id", one = @One(select = "getClassMaterialTypeById"))
+    List<ClassMaterialResponse> getClassMaterialByCreatedByAndMaterialType(Integer created_by, Integer class_materials_type_id);
 }
