@@ -36,4 +36,9 @@ public class ClassServiceImp implements ClassService {
     public List<GetClassRequest> getAllClass() {
         return classRepository.getAllClass();
     }
+
+    @Override
+    public void creatClassByUserID(Integer id, String className) {
+        classRepository.creatClassByUserID(id, className);
+    }
 }

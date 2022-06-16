@@ -18,4 +18,8 @@ public interface ClassService {
 
     //Get Class
     List<GetClassRequest> getAllClass();
+
+//    create class by user ID
+    void creatClassByUserID(Integer id, String className);
+
 }

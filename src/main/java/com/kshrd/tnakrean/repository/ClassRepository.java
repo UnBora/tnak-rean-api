@@ -27,4 +27,8 @@ public interface ClassRepository {
     @Select("Select * From class")
     @Result(property = ("class_id"), column = ("id"))
     List<GetClassRequest> getAllClass();
+
+    //    Create User By Teacher's ID
+    @Insert("INSERT INTO class (id, class_name) VALUES (#{id},#{class_name})")
+    void creatClassByUserID(@Param("id") Integer id,@Param("class_name") String class_ame);
 }
