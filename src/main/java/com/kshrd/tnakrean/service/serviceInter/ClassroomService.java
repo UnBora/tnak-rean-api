@@ -12,4 +12,8 @@ public interface ClassroomService {
     void insertClassroom(Integer class_id, Integer created_by, String des, String name);
 
     ClassroomResponse getClassroomByID(Integer id);
+
+    void updateClassroom(Integer class_id, Integer created_by, String des, String name);
+
+
 }

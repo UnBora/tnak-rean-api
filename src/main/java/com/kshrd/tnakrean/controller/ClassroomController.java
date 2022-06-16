@@ -8,6 +8,7 @@ import com.kshrd.tnakrean.model.classroom.response.ClassroomResponse;
 import com.kshrd.tnakrean.repository.ClassroomRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.ClassroomServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,7 +29,7 @@ public class ClassroomController {
     }
 
 
-    @PostMapping("/getAllClassroom")
+    @GetMapping("/getAllClassroom")
     public ApiResponse<List<ClassroomResponse>> getAllClassroom() {
         try {
             List<ClassroomResponse> classroomResponses = classroomServiceImp.getAllClassroom();
@@ -46,7 +47,7 @@ public class ClassroomController {
         }
     }
 
-    @PostMapping("/getClassroomID")
+    @GetMapping("/getClassroomID")
     public ApiResponse<ClassroomResponse> getClassroomById(Integer id) {
         try {
             ClassroomResponse classroomResponses = classroomServiceImp.getClassroomByID(id);
@@ -65,19 +66,14 @@ public class ClassroomController {
 
     @PostMapping("/insertClassroom")
     public ApiResponse<ClassroomRequest> insertClassroom(ClassroomRequest classroomRequest) {
-
         try {
             Integer classId = classroomRequest.getClass_id(), createdby = classroomRequest.getCreated_by();
             String dec = classroomRequest.getDes(), name = classroomRequest.getName();
             classroomServiceImp.insertClassroom(classId, createdby, dec, name);
-            Boolean classroomCheck = classroomRepository.checkIfClassExists(classId, createdby, dec, name);
             if (classroomRequest == null) {
                 return ApiResponse.<ClassroomRequest>setError("student class")
                         .setResponseMsg(BaseMessage.Error.INSERT_ERROR.getMessage())
                         .setData(null);
-            } else if (Boolean.TRUE.equals(classroomCheck)) {
-                return ApiResponse.<ClassroomRequest>setError("class ID : " + classId)
-                        .setResponseMsg(BaseMessage.Error.INSERT_ERROR.getMessage());
             } else {
                 return ApiResponse.<ClassroomRequest>ok("student class")
                         .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
@@ -87,4 +83,6 @@ public class ClassroomController {
             return ApiResponse.setError(e.getMessage());
         }
     }
+
+
 }
