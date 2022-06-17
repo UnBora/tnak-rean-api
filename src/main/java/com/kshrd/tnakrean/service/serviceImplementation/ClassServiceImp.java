@@ -1,6 +1,6 @@
 package com.kshrd.tnakrean.service.serviceImplementation;
 
-import com.kshrd.tnakrean.model.classModel.request.GetClassRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.GetClassRequest;
 import com.kshrd.tnakrean.repository.ClassRepository;
 import com.kshrd.tnakrean.service.serviceInter.ClassService;
 import org.springframework.beans.factory.annotation.Autowired;

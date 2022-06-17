@@ -2,10 +2,10 @@ package com.kshrd.tnakrean.controller;
 
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
-import com.kshrd.tnakrean.model.classModel.request.GetClassRequest;
-import com.kshrd.tnakrean.model.classModel.response.ClassDeleteResponse;
-import com.kshrd.tnakrean.model.classModel.response.ClassInertResponse;
-import com.kshrd.tnakrean.model.classModel.response.ClassUpdateResponse;
+import com.kshrd.tnakrean.model.classmaterials.request.GetClassRequest;
+import com.kshrd.tnakrean.model.classmaterials.response.ClassDeleteResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.ClassInertResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.ClassUpdateResponse;
 import com.kshrd.tnakrean.model.student.response.GetAllStudentResponse;
 import com.kshrd.tnakrean.repository.ClassRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.ClassServiceImp;

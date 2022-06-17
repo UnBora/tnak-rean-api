@@ -1,4 +1,4 @@
-package com.kshrd.tnakrean.model.classroom.response;
+package com.kshrd.tnakrean.model.classmaterials.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

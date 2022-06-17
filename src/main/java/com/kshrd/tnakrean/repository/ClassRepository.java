@@ -1,6 +1,6 @@
 package com.kshrd.tnakrean.repository;
 
-import com.kshrd.tnakrean.model.classModel.request.GetClassRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.GetClassRequest;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

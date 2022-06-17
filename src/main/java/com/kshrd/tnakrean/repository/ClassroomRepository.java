@@ -1,7 +1,7 @@
 package com.kshrd.tnakrean.repository;
 
-import com.kshrd.tnakrean.model.classroom.response.ClassroomResponse;
-import com.kshrd.tnakrean.model.classroom.response.GetClassByTeacherIdResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.ClassroomResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.GetClassByTeacherIdResponse;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -22,8 +22,14 @@ public interface ClassroomRepository {
     void insertClassroom(@Param("class_id") Integer class_id, @Param("created_by") Integer created_by, @Param("des") String des, @Param("name") String name);
 
     //    Update Table
-    @Update("UPDATE classroom SET  WHERE class_id = #{class_id} And created_by =#{created_by}")
-    void updateclassroom(Integer class_id, Integer created_by, String des, String name);
+    @Update("UPDATE classroom SET des=#{des}, name=#{name}  WHERE class_id = #{class_id} And created_by = #{created_by} and  id = #{classroom_id}")
+    @Result(property = "des", column = "des")
+    @Result(property = "classroom_id", column = "id")
+    void updateClassroom(@Param("classroom_id") Integer classroom_id, @Param("class_id") Integer class_id, @Param("created_by") Integer created_by, @Param("des") String des, @Param("name") String name);
+
+
+    @Select("select exists (select * from class where id = #{id});")
+    Boolean checkIfClassExists(Integer id);
 
     @Select("SELECT c.id as classroom_id, c2.id as class_id,u.username as teacher_name, c2.class_name as class_name From classroom c " +
             "inner join class c2 on c.class_id = c2.id inner join users u on c.created_by= u.id " +

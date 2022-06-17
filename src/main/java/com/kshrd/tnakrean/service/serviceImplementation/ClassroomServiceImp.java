@@ -1,7 +1,7 @@
 package com.kshrd.tnakrean.service.serviceImplementation;
 
-import com.kshrd.tnakrean.model.classroom.response.ClassroomResponse;
-import com.kshrd.tnakrean.model.classroom.response.GetClassByTeacherIdResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.ClassroomResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.GetClassByTeacherIdResponse;
 import com.kshrd.tnakrean.repository.ClassroomRepository;
 import com.kshrd.tnakrean.service.serviceInter.ClassroomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +39,9 @@ public class ClassroomServiceImp implements ClassroomService {
     }
 
     @Override
-    public void updateClassroom(Integer class_id, Integer created_by, String des, String name) {
+    public void updateClassroom( Integer classroom_id, Integer class_id, Integer created_by, String des, String name) {
         try {
-            classroomRepository.updateclassroom(class_id, created_by,des,name);
+            classroomRepository.updateClassroom( classroom_id, class_id, created_by,des ,name);
         }catch (Exception e){
 
 

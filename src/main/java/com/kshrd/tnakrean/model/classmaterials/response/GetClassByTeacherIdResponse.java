@@ -1,4 +1,4 @@
-package com.kshrd.tnakrean.model.classroom.response;
+package com.kshrd.tnakrean.model.classmaterials.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
