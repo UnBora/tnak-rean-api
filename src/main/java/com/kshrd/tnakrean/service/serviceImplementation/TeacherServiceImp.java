@@ -14,10 +14,6 @@ public class TeacherServiceImp implements TeacherService {
         this.teacherRepository = teacherRepository;
     }
 
-    @Override
-    public TeacherResponse getTeacherById(Integer id) {
-        return teacherRepository.getTeacherById(id);
-    }
 
 
 }
