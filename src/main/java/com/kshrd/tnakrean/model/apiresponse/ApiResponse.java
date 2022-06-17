@@ -29,7 +29,7 @@ public class ApiResponse<T> {
     private int responseCode;
     private String responseMsg;
     private T data;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
     private Object metadata;
 
