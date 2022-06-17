@@ -2,14 +2,11 @@ package com.kshrd.tnakrean.controller;
 
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
-import com.kshrd.tnakrean.model.classModel.response.ClassUpdateResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialResponse;
-import com.kshrd.tnakrean.model.classroom.response.ClassroomResponse;
-import com.kshrd.tnakrean.model.student.request.StudentRequest;
 import com.kshrd.tnakrean.model.teacher.request.TeacherRequest;
 import com.kshrd.tnakrean.model.teacher.request.TeacherStatusRequest;
 import com.kshrd.tnakrean.model.teacher.response.TeacherResponse;
 import com.kshrd.tnakrean.service.serviceImplementation.TeacherImpl;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,7 +34,7 @@ public class TeacherController {
     }
 
     @GetMapping("/getTeacherByUserId/{id}")
-    ApiResponse<TeacherResponse> getTeacherById(Integer user_id) {
+    ApiResponse<TeacherResponse> getTeacherById(@Param("user_id") Integer user_id) {
         TeacherResponse teacherByIdResponse = teacherImpl.getTeacherById(user_id);
         if (teacherByIdResponse == null) {
             return ApiResponse.<TeacherResponse>ok(TeacherResponse.class.getSimpleName())
