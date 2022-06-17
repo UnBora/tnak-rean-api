@@ -29,16 +29,6 @@ public class TeacherImpl implements TeacherService {
     }
 
     @Override
-    public List<ClassMaterialResponse> getAllMaterialByCreatedById(Integer createdId) {
-        return teacherRepository.getAllMaterialByCreatedById(createdId);
-    }
-
-    @Override
-    public List<ClassroomResponse> getAllClassRoomByTeacherId(Integer createdId) {
-        return teacherRepository.getAllClassRoomByTeacherId(createdId);
-    }
-
-    @Override
     public Boolean teacherStatus(TeacherStatusRequest teacherStatusRequest) {
         return teacherRepository.teacherStatus(teacherStatusRequest);
     }
@@ -57,6 +47,5 @@ public class TeacherImpl implements TeacherService {
     public Boolean activateTeacherAccount(Integer user_id) {
         return teacherRepository.activateTeacherAccount(user_id);
     }
-
 
 }
