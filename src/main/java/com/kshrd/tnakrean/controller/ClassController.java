@@ -105,4 +105,23 @@ public class ClassController {
             return ApiResponse.setError(e.getMessage());
         }
     }
+
+    @PostMapping("/createClassByTeacherId")
+    public ApiResponse<ClassInertResponse> createClassByTeacherId( String className) {
+        try {
+            Integer user_id =AuthRestController.user_id;
+            classServiceImp.creatClassByUserID(user_id,className);
+            if (className.isEmpty()) {
+                return ApiResponse.<ClassInertResponse>setError("student class")
+                        .setResponseMsg(BaseMessage.Error.INSERT_ERROR.getMessage())
+                        .setData(new ClassInertResponse(className));
+            } else {
+                return ApiResponse.<ClassInertResponse>ok("student class")
+                        .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
+                        .setData(new ClassInertResponse(className));
+            }
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
 }
