@@ -2,6 +2,7 @@ package com.kshrd.tnakrean.service.serviceInter;
 
 import com.kshrd.tnakrean.model.submittedWork.request.SubmittedWorkStudentWorkRequest;
 import com.kshrd.tnakrean.model.submittedWork.request.SubmittedWorkUpdateResultRequest;
+import com.kshrd.tnakrean.model.submittedWork.request.SubmittedWorkUpdateStatusRequest;
 import com.kshrd.tnakrean.model.submittedWork.request.SubmittedWorkUpdateStudentWorkRequest;
 import com.kshrd.tnakrean.model.submittedWork.response.SubmittedWorkResponse;
 
@@ -19,4 +20,7 @@ public interface SubmittedWorkService {
    void deleteSubmittedWorkId(int id);
 
    boolean updateResult(SubmittedWorkUpdateResultRequest submittedWorkUpdateResultRequest);
+
+   void deleteByStudentId(Integer id);
+   boolean updateStatus(SubmittedWorkUpdateStatusRequest submittedWorkUpdateStatusRequest);
 }

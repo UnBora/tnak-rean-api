@@ -47,10 +47,12 @@ public class SubmittedWorkImpl implements SubmittedWorkService {
         return submittedWorkRepository.updateResult(submittedWorkUpdateResultRequest);
     }
 
-    public boolean addStudentResult(SubmittedWorkStudentResultRequest submittedWorkStudentResultRequest) {
-        return submittedWorkRepository.addStudentResult(submittedWorkStudentResultRequest);
+    @Override
+    public void deleteByStudentId(Integer id) {
+        submittedWorkRepository.deleteByStudentId(id);
     }
 
+    @Override
     public boolean updateStatus(SubmittedWorkUpdateStatusRequest submittedWorkUpdateStatusRequest) {
         return submittedWorkRepository.updateStatus(submittedWorkUpdateStatusRequest);
     }

@@ -29,12 +29,6 @@ public interface SubmittedWorkRepository {
     @Result(property = "studentWork", column = "student_work", typeHandler = JsonTypeHandler.class)
     boolean addSubmittedWork(@Param("submWork") SubmittedWorkStudentWorkRequest submittedWorkStudentWorkRequest);
 
-    //Insert student result
-    @Insert("INSERT INTO submitted_work(student_id,submittable_work_id,student_result)" +
-            "VALUES(#{result.student_id},#{result.submittable_work_id},#{result.studentResult,jdbcType=OTHER, typeHandler = com.kshrd.tnakrean.configuration.JsonTypeHandler})")
-    @Result(property = "studentResult", column = "student_result", typeHandler = JsonTypeHandler.class)
-    boolean addStudentResult(@Param("result") SubmittedWorkStudentResultRequest submittedWorkStudentResultRequest);
-
     // update result
     @Update("UPDATE submitted_work SET student_result = #{update.studentResult, jdbcType=OTHER, typeHandler = com.kshrd.tnakrean.configuration.JsonTypeHandler} WHERE id = #{update.id}")
     boolean updateResult(@Param("update") SubmittedWorkUpdateResultRequest submittedWorkUpdateResultRequest);
@@ -47,11 +41,15 @@ public interface SubmittedWorkRepository {
 
     @Result(property = "studentWork", column = "student_work", typeHandler = JsonTypeHandler.class)
 
-    //delete
+    //delete by id
     @Delete("DELETE FROM submitted_work WHERE id = #{id}")
     void deleteSubmittedWorkId(int id);
 
     //update status
     @Update("UPDATE submitted_work SET status = #{update.status} WHERE id = #{update.id}")
     boolean updateStatus(@Param("update") SubmittedWorkUpdateStatusRequest submittedWorkUpdateStatusRequest);
+
+    // delete by student id
+    @Delete("DELETE FROM submitted_work WHERE student_id = #{id}")
+    void deleteByStudentId(Integer id);
 }
