@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClassroomUpdateResponse {
-    Integer id;
+    Integer classroom_id;
     Integer class_id;
-    Integer create_by;
+    Integer created_by;
     String des;
     String name;
 }

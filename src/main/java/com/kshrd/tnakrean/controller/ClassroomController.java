@@ -11,6 +11,7 @@ import com.kshrd.tnakrean.model.student.response.GetAllStudentResponse;
 import com.kshrd.tnakrean.model.student.response.GetStudentByClassIDResponse;
 import com.kshrd.tnakrean.repository.ClassroomRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.ClassroomServiceImp;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -106,11 +107,12 @@ public class ClassroomController {
     }
 
     @PutMapping("/updateClassroom")
-    public ApiResponse<ClassroomUpdateResponse> updateClassName(@RequestBody ClassroomUpdateResponse classroomUpdateResponse) {
-        Boolean a = classroomRepository.checkIfClassExists(classroomUpdateResponse.getId());
+    public ApiResponse<ClassroomUpdateResponse> updateClassroom(ClassroomUpdateResponse classroomUpdateResponse) {
+
 
         try {
-            classroomServiceImp.updateClassroom(classroomUpdateResponse.getId(), classroomUpdateResponse.getClass_id(), classroomUpdateResponse.getCreate_by(), classroomUpdateResponse.getDes(), classroomUpdateResponse.getName());
+            classroomServiceImp.updateClassroom(classroomUpdateResponse.getClassroom_id(), classroomUpdateResponse.getClass_id(), classroomUpdateResponse.getCreated_by(), classroomUpdateResponse.getDes(), classroomUpdateResponse.getName());
+            Boolean a = classroomRepository.checkIfClassExists(classroomUpdateResponse.getClassroom_id(), classroomUpdateResponse.getClass_id(), classroomUpdateResponse.getCreated_by());
             if (classroomUpdateResponse.equals(null)) {
                 return ApiResponse.<ClassroomUpdateResponse>setError(GetAllStudentResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Error.UPDATE_ERROR.getMessage());
@@ -121,7 +123,7 @@ public class ClassroomController {
                 return ApiResponse
                         .<ClassroomUpdateResponse>updateSuccess(ClassroomUpdateResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                        .setData(new ClassroomUpdateResponse(classroomUpdateResponse.getId(), classroomUpdateResponse.getClass_id(), classroomUpdateResponse.getCreate_by(), classroomUpdateResponse.getDes(), classroomUpdateResponse.getName()));
+                        .setData(new ClassroomUpdateResponse(classroomUpdateResponse.getClassroom_id(), classroomUpdateResponse.getClass_id(), classroomUpdateResponse.getCreated_by(), classroomUpdateResponse.getDes(), classroomUpdateResponse.getName()));
             }
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
