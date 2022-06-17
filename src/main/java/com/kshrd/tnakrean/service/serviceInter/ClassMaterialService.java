@@ -16,9 +16,11 @@ public interface ClassMaterialService {
 
     List<ClassMaterialResponse> getAllClassMaterial();
 
-    List<ClassMaterialResponse> getAllClassMaterialByCreatedBy(Integer created_id);
-
     Boolean deleteById(Integer id);
 
     List<ClassMaterialResponse> getClassMaterialByCreatedByAndMaterialType(Integer created_by, Integer class_materials_type_id);
+
+    List<ClassMaterialResponse> getAllClassMaterialByTeacherUserId(Integer user_id);
+
+    List<ClassMaterialResponse> getClassMaterialByMaterialTypeId(Integer class_materials_type_id);
 }

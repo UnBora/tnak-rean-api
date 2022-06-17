@@ -38,11 +38,6 @@ public class ClassMaterialImp implements ClassMaterialService {
     }
 
     @Override
-    public List<ClassMaterialResponse> getAllClassMaterialByCreatedBy(Integer created_id) {
-        return classMaterialRepository.getAllClassMaterialByCreatedBy(created_id);
-    }
-
-    @Override
     public Boolean deleteById(Integer id) {
         return classMaterialRepository.deleteById(id);
     }
@@ -50,5 +45,15 @@ public class ClassMaterialImp implements ClassMaterialService {
     @Override
     public List<ClassMaterialResponse> getClassMaterialByCreatedByAndMaterialType(Integer created_by, Integer class_materials_type_id) {
         return classMaterialRepository.getClassMaterialByCreatedByAndMaterialType(created_by, class_materials_type_id);
+    }
+
+    @Override
+    public List<ClassMaterialResponse> getAllClassMaterialByTeacherUserId(Integer user_id) {
+        return classMaterialRepository.getAllClassMaterialByTeacherUserId(user_id);
+    }
+
+    @Override
+    public List<ClassMaterialResponse> getClassMaterialByMaterialTypeId(Integer class_materials_type_id) {
+        return classMaterialRepository.getClassMaterialByMaterialTypeId(class_materials_type_id);
     }
 }

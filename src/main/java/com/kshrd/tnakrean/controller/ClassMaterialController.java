@@ -11,6 +11,7 @@ import com.kshrd.tnakrean.repository.ClassMaterialRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.ClassMaterialImp;
 
 import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.text.StyledEditorKit;
@@ -87,17 +88,18 @@ public class ClassMaterialController {
         }
     }
 
-    @GetMapping("/getAllClassMaterialByCreatedBy/{id}")
-    ApiResponse<List<ClassMaterialResponse>> getAllClassMaterialByCreatedBy(Integer created_id) {
+    @GetMapping("/getAllClassMaterialByTeacherUserId/{id}")
+    ApiResponse<List<ClassMaterialResponse>> getAllClassMaterialByTeacherUserId(
+            @RequestParam Integer user_id) {
         try {
-            List<ClassMaterialResponse> classMaterialResponses = classMaterialServiceImp.getAllClassMaterialByCreatedBy(created_id);
+            List<ClassMaterialResponse> classMaterialResponses = classMaterialServiceImp.getAllClassMaterialByTeacherUserId(user_id);
             if (classMaterialResponses.isEmpty()) {
                 return ApiResponse.<List<ClassMaterialResponse>>ok(ClassMaterialResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
                         .setData(classMaterialResponses);
             }
             return ApiResponse.<List<ClassMaterialResponse>>ok(ClassMaterialResponse.class.getSimpleName())
-                    .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                    .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
                     .setData(classMaterialResponses);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -105,8 +107,8 @@ public class ClassMaterialController {
         }
     }
 
-    @GetMapping("/getClassMaterialByCreatedByAndMaterialType/")
-    ApiResponse<List<ClassMaterialResponse>> getClassMaterialByCreatedByAndMaterialType(
+    @GetMapping("/getClassMaterialByTeacherUserIdAndMaterialType/")
+    ApiResponse<List<ClassMaterialResponse>> getClassMaterialByTeacherUserIdAndMaterialType(
             @RequestParam Integer created_by,
             @RequestParam Integer class_materials_type_id
     ) throws IllegalStateException {
@@ -119,15 +121,38 @@ public class ClassMaterialController {
             List<ClassMaterialResponse> classMaterialResponses = classMaterialServiceImp.getClassMaterialByCreatedByAndMaterialType(created_by, class_materials_type_id);
             if (classMaterialResponses.isEmpty()) {
                 return ApiResponse.<List<ClassMaterialResponse>>ok(ClassMaterialResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
                         .setData(classMaterialResponses);
             }
             return ApiResponse.<List<ClassMaterialResponse>>ok(ClassMaterialResponse.class.getSimpleName())
-                    .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                    .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
                     .setData(classMaterialResponses);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return ApiResponse.setError(e.getMessage());
         }
+    }
+
+    @GetMapping("/getClassMaterialByMaterialTypeId/{id}")
+    ApiResponse<List<ClassMaterialResponse>> getClassMaterialByMaterialTypeId(
+            @RequestParam Integer class_materials_type_id
+    ) throws IllegalStateException {
+        if (class_materials_type_id <= 0)
+            throw new IllegalStateException("class_materials_type_id cannot be less than 1");
+        try {
+            List<ClassMaterialResponse> classMaterialResponses = classMaterialServiceImp.getClassMaterialByMaterialTypeId(class_materials_type_id);
+            if (classMaterialResponses.isEmpty()) {
+                return ApiResponse.<List<ClassMaterialResponse>>ok(ClassMaterialResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setData(classMaterialResponses);
+            }
+            return ApiResponse.<List<ClassMaterialResponse>>ok(ClassMaterialResponse.class.getSimpleName())
+                    .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
+                    .setData(classMaterialResponses);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ApiResponse.setError(e.getMessage());
+        }
+
     }
 }
