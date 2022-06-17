@@ -1,7 +1,4 @@
 package com.kshrd.tnakrean.service.serviceImplementation;
-
-import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialResponse;
-import com.kshrd.tnakrean.model.classroom.response.ClassroomResponse;
 import com.kshrd.tnakrean.model.teacher.request.TeacherStatusRequest;
 import com.kshrd.tnakrean.model.teacher.response.TeacherResponse;
 import com.kshrd.tnakrean.repository.TeacherRepository;
@@ -29,16 +26,6 @@ public class TeacherImpl implements TeacherService {
     }
 
     @Override
-    public List<ClassMaterialResponse> getAllMaterialByCreatedById(Integer createdId) {
-        return teacherRepository.getAllMaterialByCreatedById(createdId);
-    }
-
-    @Override
-    public List<ClassroomResponse> getAllClassRoomByTeacherId(Integer createdId) {
-        return teacherRepository.getAllClassRoomByTeacherId(createdId);
-    }
-
-    @Override
     public Boolean teacherStatus(TeacherStatusRequest teacherStatusRequest) {
         return teacherRepository.teacherStatus(teacherStatusRequest);
     }
@@ -57,6 +44,5 @@ public class TeacherImpl implements TeacherService {
     public Boolean activateTeacherAccount(Integer user_id) {
         return teacherRepository.activateTeacherAccount(user_id);
     }
-
 
 }
