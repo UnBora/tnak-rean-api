@@ -36,7 +36,7 @@ public class ClassMaterialsTypeController {
     }
 
     @GetMapping("/getById/{id}")
-    ApiResponse<ClassMaterialsTypeResponse> getClassMaterialsTypeById(int id) {
+    ApiResponse<ClassMaterialsTypeResponse> getClassMaterialsTypeById(@RequestParam Integer id) {
         ClassMaterialsTypeResponse classMaterialsTypeResponse = classMaterialsTypeImpl.getClassMaterialsTypeById(id);
         if (classMaterialsTypeResponse == null) {
             return ApiResponse.<ClassMaterialsTypeResponse>setError(ClassMaterialsTypeResponse.class.getSimpleName())
