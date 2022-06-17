@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ScheduleResponse {
-    String className;
     String subject;
+    String day;
+    String time;
 }
-
