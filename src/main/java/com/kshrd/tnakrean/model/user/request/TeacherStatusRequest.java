@@ -1,4 +1,4 @@
-package com.kshrd.tnakrean.model.teacher.request;
+package com.kshrd.tnakrean.model.user.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

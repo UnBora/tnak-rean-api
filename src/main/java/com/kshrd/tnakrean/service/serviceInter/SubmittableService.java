@@ -1,8 +1,8 @@
 package com.kshrd.tnakrean.service.serviceInter;
 
-import com.kshrd.tnakrean.model.submittableWork.request.SubmittableWorkRequest;
-import com.kshrd.tnakrean.model.submittableWork.request.SubmittableWorkUpdateRequest;
-import com.kshrd.tnakrean.model.submittableWork.response.SubmittableWorkResponse;
+import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateRequest;
+import com.kshrd.tnakrean.model.classmaterials.response.SubmittableWorkResponse;
 
 import java.util.List;
 

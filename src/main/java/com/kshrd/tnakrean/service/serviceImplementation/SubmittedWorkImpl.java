@@ -1,7 +1,10 @@
 package com.kshrd.tnakrean.service.serviceImplementation;
 
-import com.kshrd.tnakrean.model.submittedWork.request.*;
-import com.kshrd.tnakrean.model.submittedWork.response.SubmittedWorkResponse;
+import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkStudentWorkRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkUpdateResultRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkUpdateStatusRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkUpdateStudentWorkRequest;
+import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkResponse;
 import com.kshrd.tnakrean.repository.SubmittedWorkRepository;
 import com.kshrd.tnakrean.service.serviceInter.SubmittedWorkService;
 import org.springframework.stereotype.Service;

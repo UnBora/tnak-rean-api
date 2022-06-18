@@ -1,4 +1,4 @@
-package com.kshrd.tnakrean.model.classModel.request;
+package com.kshrd.tnakrean.model.classmaterials.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

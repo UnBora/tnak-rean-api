@@ -1,6 +1,6 @@
 package com.kshrd.tnakrean.repository;
-import com.kshrd.tnakrean.model.teacher.request.TeacherStatusRequest;
-import com.kshrd.tnakrean.model.teacher.response.TeacherResponse;
+import com.kshrd.tnakrean.model.user.request.TeacherStatusRequest;
+import com.kshrd.tnakrean.model.user.response.TeacherResponse;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 

@@ -1,18 +1,18 @@
-package com.kshrd.tnakrean.model.submittableWork.request;
+package com.kshrd.tnakrean.model.classmaterials.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SubmittableWorkUpdateRequest {
-    Integer id;
+public class SubmittableWorkRequest {
     Integer class_materials_detail_id;
-//    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    Date assigned_date;
     Date deadline;
 }

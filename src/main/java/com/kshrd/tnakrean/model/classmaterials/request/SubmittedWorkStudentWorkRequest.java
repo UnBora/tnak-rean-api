@@ -1,6 +1,6 @@
-package com.kshrd.tnakrean.model.submittedWork.request;
+package com.kshrd.tnakrean.model.classmaterials.request;
 
-import com.kshrd.tnakrean.model.submittedWork.json.StudentWork;
+import com.kshrd.tnakrean.model.classmaterials.json.StudentWork;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

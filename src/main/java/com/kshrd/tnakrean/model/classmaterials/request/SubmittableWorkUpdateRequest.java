@@ -1,4 +1,4 @@
-package com.kshrd.tnakrean.model.submittableWork.response;
+package com.kshrd.tnakrean.model.classmaterials.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -10,11 +10,9 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SubmittableWorkResponse {
+public class SubmittableWorkUpdateRequest {
     Integer id;
     Integer class_materials_detail_id;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    Date assigned_date;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+//    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     Date deadline;
 }
