@@ -5,7 +5,6 @@ import com.kshrd.tnakrean.model.submittableWork.request.SubmittableWorkUpdateReq
 import com.kshrd.tnakrean.model.submittableWork.response.SubmittableWorkResponse;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.util.List;
 
@@ -16,7 +15,7 @@ public interface SubmittableWorkRepository {
     @Select("SELECT * FROM submittable_work")
     List<SubmittableWorkResponse> getAll();
 
-    // select by id
+    // get by id
     @Select("SELECT * FROM submittable_work WHERE id = #{id}")
     SubmittableWorkResponse getById(int id);
 
@@ -32,4 +31,8 @@ public interface SubmittableWorkRepository {
     //delete
     @Delete("DELETE FROM submittable_work WHERE id = #{id}")
     void delete(int id);
+
+    // get by ClassMaterialDetailType
+    @Select("SELECT * FROM submittable_work WHERE class_materials_detail_id = #{id}")
+    List<SubmittableWorkResponse> getSubmittableWorkByClassMaterialDetailType(Integer id);
 }

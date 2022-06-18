@@ -7,6 +7,7 @@ import com.kshrd.tnakrean.model.submittableWork.request.SubmittableWorkRequest;
 import com.kshrd.tnakrean.model.submittableWork.request.SubmittableWorkUpdateRequest;
 import com.kshrd.tnakrean.model.submittableWork.response.SubmittableWorkResponse;
 import com.kshrd.tnakrean.service.serviceImplementation.SubmittableWorkServiceImpl;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -71,5 +72,18 @@ public class SubmittableWorkController {
         submittableWorkService.delete(id);
         return ApiResponse.ok("Submittable Work")
                 .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage());
+    }
+
+    @GetMapping("/getSubmittableWorkByClassMaterialDetailType/{id}")
+    ApiResponse<List<SubmittableWorkResponse>> getSubmittableWorkByClassMaterialDetailType(@RequestParam Integer classMaterialDetailTypeId) {
+        List<SubmittableWorkResponse> submittableWorkResponses = submittableWorkService.getSubmittableWorkByClassMaterialDetailType(classMaterialDetailTypeId);
+        if (submittableWorkResponses.isEmpty()) {
+            ApiResponse.<List<SubmittableWorkResponse>>ok(SubmittableWorkResponse.class.getSimpleName())
+                    .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                    .setData(submittableWorkResponses);
+        }
+        return ApiResponse.<List<SubmittableWorkResponse>>setError(SubmittableWorkResponse.class.getSimpleName())
+                .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+                .setData(submittableWorkResponses);
     }
 }
