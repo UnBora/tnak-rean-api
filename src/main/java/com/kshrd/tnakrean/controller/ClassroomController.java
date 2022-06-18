@@ -2,11 +2,11 @@ package com.kshrd.tnakrean.controller;
 
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
-import com.kshrd.tnakrean.model.classModel.request.GetClassRequest;
-import com.kshrd.tnakrean.model.classroom.request.ClassroomRequest;
-import com.kshrd.tnakrean.model.classroom.response.ClassroomResponse;
-import com.kshrd.tnakrean.model.classroom.response.GetClassByTeacherIdResponse;
-import com.kshrd.tnakrean.model.student.response.GetStudentByClassIDResponse;
+import com.kshrd.tnakrean.model.classmaterials.request.GetClassRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.ClassroomRequest;
+import com.kshrd.tnakrean.model.classmaterials.response.ClassroomResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.GetClassByTeacherIdResponse;
+import com.kshrd.tnakrean.model.user.response.GetStudentByClassIDResponse;
 import com.kshrd.tnakrean.repository.ClassroomRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.ClassroomServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
