@@ -1,7 +1,7 @@
 package com.kshrd.tnakrean.repository;
 
-import com.kshrd.tnakrean.model.classroom.response.ClassroomResponse;
-import com.kshrd.tnakrean.model.classroom.response.GetClassByTeacherIdResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.ClassroomResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.GetClassByTeacherIdResponse;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

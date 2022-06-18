@@ -1,11 +1,10 @@
 package com.kshrd.tnakrean.controller;
 
-import com.kshrd.tnakrean.model.SubmittableWork;
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
-import com.kshrd.tnakrean.model.submittableWork.request.SubmittableWorkRequest;
-import com.kshrd.tnakrean.model.submittableWork.request.SubmittableWorkUpdateRequest;
-import com.kshrd.tnakrean.model.submittableWork.response.SubmittableWorkResponse;
+import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateRequest;
+import com.kshrd.tnakrean.model.classmaterials.response.SubmittableWorkResponse;
 import com.kshrd.tnakrean.service.serviceImplementation.SubmittableWorkServiceImpl;
 import org.springframework.web.bind.annotation.*;
 

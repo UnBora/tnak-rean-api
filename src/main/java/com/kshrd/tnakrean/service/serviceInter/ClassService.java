@@ -1,7 +1,6 @@
 package com.kshrd.tnakrean.service.serviceInter;
 
-import com.kshrd.tnakrean.model.classModel.request.GetClassRequest;
-import com.kshrd.tnakrean.model.classModel.response.ClassUpdateResponse;
+import com.kshrd.tnakrean.model.classmaterials.request.GetClassRequest;
 
 import java.util.List;
 

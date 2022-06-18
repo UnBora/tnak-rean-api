@@ -1,9 +1,9 @@
 package com.kshrd.tnakrean.service.serviceImplementation;
 
 import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialResponse;
-import com.kshrd.tnakrean.model.classroom.response.ClassroomResponse;
-import com.kshrd.tnakrean.model.teacher.request.TeacherStatusRequest;
-import com.kshrd.tnakrean.model.teacher.response.TeacherResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.ClassroomResponse;
+import com.kshrd.tnakrean.model.user.request.TeacherStatusRequest;
+import com.kshrd.tnakrean.model.user.response.TeacherResponse;
 import com.kshrd.tnakrean.repository.TeacherRepository;
 import com.kshrd.tnakrean.service.serviceInter.TeacherService;
 import org.springframework.stereotype.Service;

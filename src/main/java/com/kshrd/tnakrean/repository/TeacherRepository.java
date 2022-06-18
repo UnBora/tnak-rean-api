@@ -3,9 +3,9 @@ package com.kshrd.tnakrean.repository;
 import com.kshrd.tnakrean.configuration.JsonTypeHandler;
 import com.kshrd.tnakrean.model.ClassMaterialType;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialResponse;
-import com.kshrd.tnakrean.model.classroom.response.ClassroomResponse;
-import com.kshrd.tnakrean.model.teacher.request.TeacherStatusRequest;
-import com.kshrd.tnakrean.model.teacher.response.TeacherResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.ClassroomResponse;
+import com.kshrd.tnakrean.model.user.request.TeacherStatusRequest;
+import com.kshrd.tnakrean.model.user.response.TeacherResponse;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
