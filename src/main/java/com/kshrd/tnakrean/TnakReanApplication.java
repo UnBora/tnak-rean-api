@@ -23,7 +23,7 @@ import javax.annotation.Resource;
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER
 )
-public class TnakReanApplication   {
+public class TnakReanApplication {
     @Resource
     FilesStorageService storageService;
 

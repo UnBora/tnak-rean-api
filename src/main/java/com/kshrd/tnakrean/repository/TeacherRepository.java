@@ -1,6 +1,11 @@
 package com.kshrd.tnakrean.repository;
-import com.kshrd.tnakrean.model.teacher.request.TeacherStatusRequest;
-import com.kshrd.tnakrean.model.teacher.response.TeacherResponse;
+
+import com.kshrd.tnakrean.configuration.JsonTypeHandler;
+import com.kshrd.tnakrean.model.ClassMaterialType;
+import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.ClassroomResponse;
+import com.kshrd.tnakrean.model.user.request.TeacherStatusRequest;
+import com.kshrd.tnakrean.model.user.response.TeacherResponse;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +23,18 @@ public interface TeacherRepository {
     @Select("SELECT * FROM users WHERE user_role_id= 2 AND id = #{user_id}")
     @Result(property = ("user_id"), column = ("id"))
     TeacherResponse getTeacherById(@Param("user_id") Integer id);
+
+    // get class material by created id
+    @Select("SELECT * From class_materials WHERE created_by = #{createdId}")
+    @Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class)
+    @Result(property = "classMaterialType", column = "class_materials_type_id", one = @One(select = "getClassMaterialTypeById"))
+    List<ClassMaterialResponse> getAllMaterialByCreatedById(Integer createdId);
+    @Select("SELECT * FROM class_materials_type WHERE id = #{id}")
+    ClassMaterialType getClassMaterialTypeById(int id);
+
+    // get classroom by created id
+    @Select("SELECT * From classroom WHERE created_by = #{createdId}")
+    List<ClassroomResponse> getAllClassRoomByTeacherId(Integer createdId);
 
     // update status
     @Update("UPDATE users SET status = #{status} WHERE id = #{user_id}")

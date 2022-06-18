@@ -1,17 +1,13 @@
 package com.kshrd.tnakrean.service.serviceImplementation;
 
 
-import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
-import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
-import com.kshrd.tnakrean.model.submittableWork.request.SubmittableWorkRequest;
-import com.kshrd.tnakrean.model.submittableWork.request.SubmittableWorkUpdateRequest;
-import com.kshrd.tnakrean.model.submittableWork.response.SubmittableWorkResponse;
+import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateRequest;
+import com.kshrd.tnakrean.model.classmaterials.response.SubmittableWorkResponse;
 import com.kshrd.tnakrean.repository.SubmittableWorkRepository;
 import com.kshrd.tnakrean.service.serviceInter.SubmittableService;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
 
-import java.util.Base64;
 import java.util.List;
 
 @Service
