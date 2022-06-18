@@ -105,9 +105,8 @@ public class ClassroomController {
         }
     }
 
-    @PutMapping("/updateClassroom")
+    @PutMapping("/update-classroom")
     public ApiResponse<ClassroomUpdateResponse> updateClassroom(ClassroomUpdateResponse classroomUpdateResponse) {
-
 
         try {
             classroomServiceImp.updateClassroom(classroomUpdateResponse.getClassroom_id(), classroomUpdateResponse.getClass_id(), classroomUpdateResponse.getCreated_by(), classroomUpdateResponse.getDes(), classroomUpdateResponse.getName());
@@ -127,7 +126,5 @@ public class ClassroomController {
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
-
-
     }
 }
