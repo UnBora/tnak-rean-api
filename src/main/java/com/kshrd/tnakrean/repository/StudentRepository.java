@@ -1,9 +1,9 @@
 package com.kshrd.tnakrean.repository;
 
 
-import com.kshrd.tnakrean.model.student.response.GetStudentByClassIDResponse;
-import com.kshrd.tnakrean.model.student.response.GetStudentByIDResponse;
-import com.kshrd.tnakrean.model.student.response.GetAllStudentResponse;
+import com.kshrd.tnakrean.model.user.response.GetStudentByClassIDResponse;
+import com.kshrd.tnakrean.model.user.response.GetStudentByIDResponse;
+import com.kshrd.tnakrean.model.user.response.GetAllStudentResponse;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
