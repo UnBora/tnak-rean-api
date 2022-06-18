@@ -28,7 +28,7 @@ public class FolderServiceImp implements FolderService {
 
     @Override
     public boolean createFolderDetail(FolderDetailRequest folderDetailRequest) {
-        System.out.println("in imp service"+folderDetailRequest);
+        System.out.println("in imp service" + folderDetailRequest);
         return folderRepository.createFolderDetail(folderDetailRequest);
     }
 
@@ -39,7 +39,12 @@ public class FolderServiceImp implements FolderService {
 
 
     @Override
-    public List<FolderResponse> getListFolderByClassId(int id,int classRoomId) {
-        return folderRepository.getListFolderByClassId(id,classRoomId);
+    public List<FolderResponse> getListFolderByClassId(int id, int classRoomId) {
+        return folderRepository.getListFolderByClassId(id, classRoomId);
+    }
+
+    @Override
+    public List<FolderResponse> getListFolderByTeacherId(int teacherId) {
+        return folderRepository.getListFolderByTeacherId(teacherId);
     }
 }

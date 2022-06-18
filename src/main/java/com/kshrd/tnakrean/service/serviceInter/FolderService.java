@@ -17,6 +17,8 @@ public interface FolderService {
 
     FolderResponse getFolderById(int id);
 
-    List<FolderResponse> getListFolderByClassId(int id,int classRoomId);
+    List<FolderResponse> getListFolderByClassId(int id, int classRoomId);
+
+    List<FolderResponse> getListFolderByTeacherId(int teacherId);
 
 }

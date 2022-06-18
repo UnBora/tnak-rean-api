@@ -65,7 +65,7 @@ public class FolderController {
     ApiResponse<List<FolderResponse>> getFolderByClassId(@RequestParam int classId, @RequestParam int classRoomId) {
         List<FolderResponse> responseList = folderServiceImp.getListFolderByClassId(classId,classRoomId);
         try {
-            if (responseList != null) {
+            if (!responseList.isEmpty()) {
                 return ApiResponse.<List<FolderResponse>>
                                 ok(FolderResponse.class.getSimpleName()).
                         setData(responseList)
@@ -77,5 +77,21 @@ public class FolderController {
         }
     }
 
+
+    @GetMapping("/get-folders-by-teacher-id/{id}")
+    ApiResponse<List<FolderResponse>> getFolderByClassId(@RequestParam int id) {
+        List<FolderResponse> responseList = folderServiceImp.getListFolderByTeacherId(id);
+        try {
+            if (!responseList.isEmpty()) {
+                return ApiResponse.<List<FolderResponse>>
+                                ok(FolderResponse.class.getSimpleName()).
+                        setData(responseList)
+                        .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage());
+            }
+            return ApiResponse.notFound(FolderResponse.class.getSimpleName());
+        } catch (Exception e) {
+            return ApiResponse.badRequest(FolderResponse.class.getSimpleName());
+        }
+    }
 
 }
