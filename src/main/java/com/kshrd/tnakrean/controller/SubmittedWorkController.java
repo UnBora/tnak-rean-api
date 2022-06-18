@@ -2,7 +2,10 @@ package com.kshrd.tnakrean.controller;
 
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
-import com.kshrd.tnakrean.model.classmaterials.request.*;
+import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkStudentWorkRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkUpdateResultRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkUpdateStatusRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkUpdateStudentWorkRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkResponse;
 import com.kshrd.tnakrean.repository.SubmittedWorkRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.SubmittedWorkImpl;
@@ -23,30 +26,41 @@ public class SubmittedWorkController {
 
     @GetMapping("/get-all")
     ApiResponse<List<SubmittedWorkResponse>> getAllSubmittedWork() {
-        List<SubmittedWorkResponse> submittedWorkResponse = submittedWorkImpl.getAllSubmittedWork();
-        if (submittedWorkResponse.isEmpty()) {
-            return ApiResponse.<List<SubmittedWorkResponse>>setError(SubmittedWorkResponse.class
-                            .getSimpleName())
-                    .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+        try {
+            List<SubmittedWorkResponse> submittedWorkResponse = submittedWorkImpl.getAllSubmittedWork();
+            if (submittedWorkResponse.isEmpty()) {
+                return ApiResponse.<List<SubmittedWorkResponse>>ok(SubmittedWorkResponse.class
+                                .getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setData(submittedWorkResponse);
+            }
+            return ApiResponse.<List<SubmittedWorkResponse>>ok(SubmittedWorkResponse.class.getSimpleName())
+                    .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
                     .setData(submittedWorkResponse);
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            return ApiResponse.setError(e.getMessage());
         }
-        return ApiResponse.<List<SubmittedWorkResponse>>ok(SubmittedWorkResponse.class.getSimpleName())
-                .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
-                .setData(submittedWorkResponse);
     }
 
-    @GetMapping("get-by-studentId")
-    ApiResponse<List<SubmittedWorkResponse>> getSubmittedByStudentId(int studentId) {
-        List<SubmittedWorkResponse> submittedWorkResponses = submittedWorkImpl.getSubmittedByStudentId(studentId);
-        if (submittedWorkResponses.isEmpty()) {
-            return ApiResponse.<List<SubmittedWorkResponse>>setError(SubmittedWorkResponse.class
+    @GetMapping("get-by-studentId/{id}")
+    ApiResponse<List<SubmittedWorkResponse>> getSubmittedByStudentId(@RequestParam Integer studentId)  throws IllegalStateException {
+        if (studentId <= 0) throw new IllegalStateException("studentId cannot be less than 1");
+        try {
+            List<SubmittedWorkResponse> submittedWorkResponses = submittedWorkImpl.getSubmittedByStudentId(studentId);
+            if (submittedWorkResponses.isEmpty()) {
+                return ApiResponse.<List<SubmittedWorkResponse>>ok(SubmittedWorkResponse.class
+                                .getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
+            }
+            return ApiResponse.<List<SubmittedWorkResponse>>ok(SubmittedWorkResponse.class
                             .getSimpleName())
-                    .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
+                    .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
+                    .setData(submittedWorkResponses);
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            return ApiResponse.setError(e.getMessage());
         }
-        return ApiResponse.<List<SubmittedWorkResponse>>ok(SubmittedWorkResponse.class
-                        .getSimpleName())
-                .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
-                .setData(submittedWorkResponses);
     }
 
     @PostMapping("/insert-student-work")
@@ -57,16 +71,6 @@ public class SubmittedWorkController {
         return ApiResponse.<SubmittedWorkStudentWorkRequest>ok(SubmittedWorkStudentWorkRequest.class.getSimpleName())
                 .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
                 .setData(submittedWorkStudentWorkRequest);
-    }
-
-    @PostMapping("/insert-student-result")
-    ApiResponse<SubmittedWorkStudentResultRequest> addStudentResult(
-            @RequestBody SubmittedWorkStudentResultRequest submittedWorkStudentResultRequest
-    ) {
-        submittedWorkImpl.addStudentResult(submittedWorkStudentResultRequest);
-        return ApiResponse.<SubmittedWorkStudentResultRequest>ok(SubmittedWorkStudentResultRequest.class.getSimpleName())
-                .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                .setData(submittedWorkStudentResultRequest);
     }
 
     @PutMapping("/update-student-work")
@@ -89,17 +93,29 @@ public class SubmittedWorkController {
                 .setData(submittedWorkUpdateResultRequest);
     }
 
-    @DeleteMapping("/delete-by-Id")
-    ApiResponse<?> deleteSubmittedWorkId(int id) {
+    @DeleteMapping("/delete-by-Id/{id}")
+    ApiResponse<?> deleteSubmittedWorkId(@RequestParam  Integer id) {
         submittedWorkImpl.deleteSubmittedWorkId(id);
         if (id == 0) {
-            return ApiResponse.setError(SubmittedWorkResponse.class.getSimpleName())
+            return ApiResponse.ok(SubmittedWorkResponse.class.getSimpleName())
                     .setResponseMsg(BaseMessage.Error.DELETE_ERROR.getMessage())
-                    .setData("");
+                    .setData(false);
         }
         return ApiResponse.successDelete(SubmittedWorkResponse.class.getSimpleName())
                 .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
-                .setData("The id: " + id + " was deleted successfully");
+                .setData(true);
+    }
+    @DeleteMapping("/delete-by-studentId/{id}")
+    ApiResponse<?> deleteByStudentId(@RequestParam Integer id){
+        submittedWorkImpl.deleteByStudentId(id);
+        if (id == 0){
+            return ApiResponse.<Boolean>ok("Submitted Work")
+                    .setResponseMsg(BaseMessage.Error.DELETE_ERROR.getMessage())
+                    .setData(false);
+        }
+        return ApiResponse.<Boolean>ok("Submitted Work")
+                .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
+                .setData(true);
     }
 
     @PutMapping("update-status")

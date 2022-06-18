@@ -1,6 +1,5 @@
 package com.kshrd.tnakrean.model.classmaterials.request;
 
-import com.kshrd.tnakrean.model.ClassMaterialType;
 import com.kshrd.tnakrean.model.classmaterials.json.ClassMaterialContent;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,11 +12,10 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClassMaterialRequest {
-    private Integer class_materials_type_id;
-    private ClassMaterialContent classMaterialContent;
-    private Integer id;
     private String title;
     private Integer created_by;
     private String description;
+    private Integer class_materials_type_id;
+    private ClassMaterialContent classMaterialContent;
     private Date created_date;
 }
