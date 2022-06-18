@@ -46,55 +46,6 @@ public class TeacherController {
                 .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
                 .setData(teacherByIdResponse);
     }
-
-    @GetMapping("/getAllClassRoomByTeacherId/{id}")
-    ApiResponse<List<ClassroomResponse>> getAllClassRoomByTeacherId(Integer createdId) {
-        try {
-            List<ClassroomResponse> classroomResponses = teacherImpl.getAllClassRoomByTeacherId(createdId);
-            if (classroomResponses.isEmpty()) {
-                return ApiResponse.<List<ClassroomResponse>>ok(ClassroomResponse.class
-                                .getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
-            }
-            return ApiResponse.<List<ClassroomResponse>>ok(ClassroomResponse.class
-                            .getSimpleName())
-                    .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
-                    .setData(classroomResponses);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ApiResponse.setError(e.getMessage());
-        }
-    }
-
-    @GetMapping("/getAllMaterialByCreatedId/{id}")
-    ApiResponse<List<ClassMaterialResponse>> GetAllMaterialByTeacherId(Integer createdId) {
-        try {
-            List<ClassMaterialResponse> classMaterialResponses = teacherImpl.getAllMaterialByCreatedById(createdId);
-            if (classMaterialResponses.isEmpty()) {
-                return ApiResponse.<List<ClassMaterialResponse>>ok(ClassMaterialResponse.class
-                                .getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
-            }
-            return ApiResponse.<List<ClassMaterialResponse>>ok(ClassMaterialResponse.class
-                            .getSimpleName())
-                    .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
-                    .setData(classMaterialResponses);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ApiResponse.setError(e.getMessage());
-        }
-    }
-
-    @PutMapping("/teacherUpdateStatus")
-    ApiResponse<TeacherStatusRequest> teacherStatus(
-            @RequestBody TeacherStatusRequest teacherStatusRequest
-    ) {
-        teacherImpl.teacherStatus(teacherStatusRequest);
-        return ApiResponse.<TeacherStatusRequest>ok(TeacherStatusRequest.class.getSimpleName())
-                .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                .setData(teacherStatusRequest);
-    }
-
     @DeleteMapping("/deleteAccount")
     public ApiResponse<TeacherRequest> teacherDeleteAccount() {
         Integer user_id = AuthRestController.user_id;
