@@ -70,7 +70,7 @@ public class ClassMaterialsTypeController {
     }
 
     @DeleteMapping("/deleteByid/{id}")
-    ApiResponse<Boolean> deleteById(int id) {
+    ApiResponse<Boolean> deleteById(@RequestParam Integer id) {
         classMaterialsTypeImpl.deleteById(id);
         return ApiResponse.<Boolean>ok("Class Materials Type")
                 .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
