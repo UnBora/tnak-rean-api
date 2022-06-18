@@ -3,11 +3,11 @@ package com.kshrd.tnakrean.controller;
 
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
-import com.kshrd.tnakrean.model.student.request.StudentLeaveClassRequest;
-import com.kshrd.tnakrean.model.student.request.StudentRequest;
-import com.kshrd.tnakrean.model.student.response.GetStudentByClassIDResponse;
-import com.kshrd.tnakrean.model.student.response.GetStudentByIDResponse;
-import com.kshrd.tnakrean.model.student.response.GetAllStudentResponse;
+import com.kshrd.tnakrean.model.user.request.StudentLeaveClassRequest;
+import com.kshrd.tnakrean.model.user.request.StudentRequest;
+import com.kshrd.tnakrean.model.user.response.GetStudentByClassIDResponse;
+import com.kshrd.tnakrean.model.user.response.GetStudentByIDResponse;
+import com.kshrd.tnakrean.model.user.response.GetAllStudentResponse;
 import com.kshrd.tnakrean.repository.StudentRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.StudentServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,11 @@
 package com.kshrd.tnakrean.repository;
-import com.kshrd.tnakrean.model.teacher.request.TeacherStatusRequest;
-import com.kshrd.tnakrean.model.teacher.response.TeacherResponse;
+
+import com.kshrd.tnakrean.configuration.JsonTypeHandler;
+import com.kshrd.tnakrean.model.ClassMaterialType;
+import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.ClassroomResponse;
+import com.kshrd.tnakrean.model.user.request.TeacherStatusRequest;
+import com.kshrd.tnakrean.model.user.response.TeacherResponse;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -18,11 +23,6 @@ public interface TeacherRepository {
     @Select("SELECT * FROM users WHERE user_role_id= 2 AND id = #{user_id}")
     @Result(property = ("user_id"), column = ("id"))
     TeacherResponse getTeacherById(@Param("user_id") Integer id);
-
-    // update status
-    @Update("UPDATE users SET status = #{status} WHERE id = #{user_id}")
-    @Result(property = ("user_id"), column = ("id"))
-    boolean teacherStatus(TeacherStatusRequest teacherStatusRequest);
 
     // delete teacher account
     @Update("UPDATE users SET status = 0 WHERE id = #{user_id}")

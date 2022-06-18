@@ -1,6 +1,9 @@
 package com.kshrd.tnakrean.service.serviceImplementation;
-import com.kshrd.tnakrean.model.teacher.request.TeacherStatusRequest;
-import com.kshrd.tnakrean.model.teacher.response.TeacherResponse;
+
+import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.ClassroomResponse;
+import com.kshrd.tnakrean.model.user.request.TeacherStatusRequest;
+import com.kshrd.tnakrean.model.user.response.TeacherResponse;
 import com.kshrd.tnakrean.repository.TeacherRepository;
 import com.kshrd.tnakrean.service.serviceInter.TeacherService;
 import org.springframework.stereotype.Service;
@@ -26,11 +29,6 @@ public class TeacherImpl implements TeacherService {
     }
 
     @Override
-    public Boolean teacherStatus(TeacherStatusRequest teacherStatusRequest) {
-        return teacherRepository.teacherStatus(teacherStatusRequest);
-    }
-
-    @Override
     public Boolean teacherDeleteAccount(Integer user_id) {
         return teacherRepository.teacherDeleteAccount(user_id);
     }
@@ -44,5 +42,4 @@ public class TeacherImpl implements TeacherService {
     public Boolean activateTeacherAccount(Integer user_id) {
         return teacherRepository.activateTeacherAccount(user_id);
     }
-
 }
