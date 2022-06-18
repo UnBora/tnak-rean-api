@@ -2,7 +2,7 @@ package com.kshrd.tnakrean.repository;
 
 import com.kshrd.tnakrean.model.classmaterials.response.ClassResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.NotificationResponse;
-import com.kshrd.tnakrean.model.student.request.StudentRequest;
+import com.kshrd.tnakrean.model.user.request.StudentRequest;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;

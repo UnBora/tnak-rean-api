@@ -4,7 +4,7 @@ import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.NotificationResponse;
-import com.kshrd.tnakrean.model.student.response.GetStudentByIDResponse;
+import com.kshrd.tnakrean.model.user.response.GetStudentByIDResponse;
 import com.kshrd.tnakrean.repository.OneSignalPushNotificationRepository;
 import com.kshrd.tnakrean.repository.StudentRepository;
 import com.kshrd.tnakrean.service.PushNotificationService;
@@ -56,10 +56,10 @@ public class NotificationController {
             }
             PushNotificationService
                     .sendMessageToUser(response.getName() + " Request to Join " + classResponse.getName(), classResponse.getCreated_by() + "");
+            return ApiResponse.ok("").setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
+            return ApiResponse.setError(e.getMessage());
         }
-
-        return null;
     }
 }

@@ -33,13 +33,13 @@ public class FolderServiceImp implements FolderService {
     }
 
     @Override
-    public FolderResponse getFolderByClassId(int id) {
+    public FolderResponse getFolderById(int id) {
         return folderRepository.getFolderByClassId(id);
     }
 
 
     @Override
-    public List<FolderDetailResponse> getFolderDetail() {
-        return null;
+    public List<FolderResponse> getListFolderByClassId(int id,int classRoomId) {
+        return folderRepository.getListFolderByClassId(id,classRoomId);
     }
 }

@@ -11,5 +11,4 @@ import lombok.NoArgsConstructor;
 public class FolderDetailResponse {
     Integer folder_id;
     FolderContent content;
-    Integer class_materials_detail_id;
 }

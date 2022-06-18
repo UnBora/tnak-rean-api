@@ -15,8 +15,8 @@ public interface FolderService {
 
     boolean createFolderDetail(FolderDetailRequest folderDetailRequest);
 
-    FolderResponse getFolderByClassId(int id);
+    FolderResponse getFolderById(int id);
 
-    List<FolderDetailResponse> getFolderDetail();
+    List<FolderResponse> getListFolderByClassId(int id,int classRoomId);
 
 }
