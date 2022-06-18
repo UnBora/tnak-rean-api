@@ -84,7 +84,7 @@ public class ClassroomController {
         }
     }
 
-    @GetMapping("/getClassroomByTeacherID/")
+    @GetMapping("/getClassroomByTeacherID")
     public  ApiResponse<List<GetClassByTeacherIdResponse>> getClassByTeacherId(){
         Integer user_id=AuthRestController.user_id;
         GetClassByTeacherIdResponse obj = new GetClassByTeacherIdResponse();
