@@ -1,7 +1,7 @@
 package com.kshrd.tnakrean.service.serviceInter;
 
-import com.kshrd.tnakrean.model.classroom.response.ClassroomResponse;
-import com.kshrd.tnakrean.model.classroom.response.GetClassByTeacherIdResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.ClassroomResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.GetClassByTeacherIdResponse;
 
 import java.util.List;
 

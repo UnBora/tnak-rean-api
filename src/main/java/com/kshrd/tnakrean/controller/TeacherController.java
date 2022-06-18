@@ -2,13 +2,11 @@ package com.kshrd.tnakrean.controller;
 
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
-import com.kshrd.tnakrean.model.classModel.response.ClassUpdateResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialResponse;
-import com.kshrd.tnakrean.model.classroom.response.ClassroomResponse;
-import com.kshrd.tnakrean.model.student.request.StudentRequest;
-import com.kshrd.tnakrean.model.teacher.request.TeacherRequest;
-import com.kshrd.tnakrean.model.teacher.request.TeacherStatusRequest;
-import com.kshrd.tnakrean.model.teacher.response.TeacherResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.ClassroomResponse;
+import com.kshrd.tnakrean.model.user.request.TeacherRequest;
+import com.kshrd.tnakrean.model.user.request.TeacherStatusRequest;
+import com.kshrd.tnakrean.model.user.response.TeacherResponse;
 import com.kshrd.tnakrean.service.serviceImplementation.TeacherImpl;
 import org.springframework.web.bind.annotation.*;
 
