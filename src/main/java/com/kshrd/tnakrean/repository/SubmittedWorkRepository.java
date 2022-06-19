@@ -1,8 +1,8 @@
 package com.kshrd.tnakrean.repository;
 
 import com.kshrd.tnakrean.configuration.JsonTypeHandler;
-import com.kshrd.tnakrean.model.submittedWork.request.*;
-import com.kshrd.tnakrean.model.submittedWork.response.SubmittedWorkResponse;
+import com.kshrd.tnakrean.model.classmaterials.request.*;
+import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkResponse;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
