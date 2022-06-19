@@ -86,13 +86,14 @@ public class SubmittableWorkController {
                 .setData(submittableWorkResponses);
     }
 
-    @GetMapping("getUpComingWorkByStudentId")
-    ApiResponse<List<UpComingSubmittableWorkResponse>> getUpComingSubmittableWorkByStudentId(Integer studentId, Integer classRoomId, Integer classId) {
+    @GetMapping("getUpComingWorkByStudentId/{studentId}/{classRoomId}/{classId}")
+    ApiResponse<List<UpComingSubmittableWorkResponse>> getUpComingSubmittableWorkByStudentId
+            (@RequestParam Integer studentId, @RequestParam Integer classRoomId, @RequestParam Integer classId) {
         List<UpComingSubmittableWorkResponse> responseList = submittableWorkService.getUpComingSubmittableWorkByStudentId(studentId, classRoomId, classId);
         if (!responseList.isEmpty()) {
-        return ApiResponse.<List<UpComingSubmittableWorkResponse>>
-                ok(SubmittableWorkResponse.class
-                .getSimpleName()).setData(responseList).setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage());
+            return ApiResponse.<List<UpComingSubmittableWorkResponse>>
+                    ok(SubmittableWorkResponse.class
+                    .getSimpleName()).setData(responseList).setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage());
         } else {
             return ApiResponse.notFound(SubmittableWorkResponse.class.getSimpleName());
         }
