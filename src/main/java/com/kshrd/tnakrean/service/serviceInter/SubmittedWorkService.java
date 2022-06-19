@@ -4,6 +4,7 @@ import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkStudentWorkR
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkUpdateResultRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkUpdateStatusRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkUpdateStudentWorkRequest;
+import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkByStudentIdAndClassIdResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkResponse;
 
 import java.util.List;
@@ -24,4 +25,8 @@ public interface SubmittedWorkService {
    void deleteByStudentId(Integer id);
 
    boolean updateStatus(SubmittedWorkUpdateStatusRequest submittedWorkUpdateStatusRequest);
+
+   List<SubmittedWorkResponse> getById(Integer id);
+
+   List<SubmittedWorkByStudentIdAndClassIdResponse> getByStudentIdAndClassId(Integer student_id, Integer class_id);
 }
