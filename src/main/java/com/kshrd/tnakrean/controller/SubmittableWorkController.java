@@ -5,6 +5,7 @@ import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittableWorkResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.UpComingSubmittableWorkResponse;
 import com.kshrd.tnakrean.service.serviceImplementation.SubmittableWorkServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
@@ -84,4 +85,17 @@ public class SubmittableWorkController {
                 .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
                 .setData(submittableWorkResponses);
     }
+
+    @GetMapping("getUpComingWorkByStudentId")
+    ApiResponse<List<UpComingSubmittableWorkResponse>> getUpComingSubmittableWorkByStudentId(Integer studentId, Integer classRoomId, Integer classId) {
+        List<UpComingSubmittableWorkResponse> responseList = submittableWorkService.getUpComingSubmittableWorkByStudentId(studentId, classRoomId, classId);
+        if (!responseList.isEmpty()) {
+        return ApiResponse.<List<UpComingSubmittableWorkResponse>>
+                ok(SubmittableWorkResponse.class
+                .getSimpleName()).setData(responseList).setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage());
+        } else {
+            return ApiResponse.notFound(SubmittableWorkResponse.class.getSimpleName());
+        }
+    }
+
 }
