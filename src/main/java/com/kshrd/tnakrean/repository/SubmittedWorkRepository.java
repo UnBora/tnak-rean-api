@@ -66,5 +66,8 @@ public interface SubmittedWorkRepository {
             "JOIN submitted_work t ON m.id = t.submittable_work_id " +
             "JOIN class_materials_detail a ON a.id = m.class_materials_detail_id " +
             "WHERE student_id = #{student_id} AND class_id = #{class_id}")
+    @Result(property = "submitted_work_id", column = "id")
+    @Result(property = "studentWork", column = "student_work", typeHandler = JsonTypeHandler.class)
+    @Result(property = "studentResult", column = "student_result", typeHandler = JsonTypeHandler.class)
     List<SubmittedWorkByStudentIdAndClassIdResponse> getByStudentIdAndClassId(Integer student_id, Integer class_id);
 }

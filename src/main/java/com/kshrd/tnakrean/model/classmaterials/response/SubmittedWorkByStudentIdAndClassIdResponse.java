@@ -18,12 +18,11 @@ public class SubmittedWorkByStudentIdAndClassIdResponse {
     private Integer submitted_work_id;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date submitted_date;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date assigned_date;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date submitted_date;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date deadline;
-
 
     private StudentWork studentWork; // Json
     private StudentResult studentResult; // Json
