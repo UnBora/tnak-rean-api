@@ -3,7 +3,9 @@ package com.kshrd.tnakrean.repository;
 import com.kshrd.tnakrean.configuration.JsonTypeHandler;
 import com.kshrd.tnakrean.model.ClassMaterialType;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialUpdateContentRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialUpdateRequest;
+import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialByTeacherIdAndClassIdResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialResponse;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
@@ -70,4 +72,14 @@ public interface ClassMaterialRepository {
     @Result(property = "classMaterialType", column = "class_materials_type_id", one = @One(select = "getClassMaterialTypeById"))
     List<ClassMaterialResponse> getClassMaterialByMaterialTypeId(Integer class_materials_type_id);
 
+    //Get All Class Material By UserId and Class Id
+    @Select("SELECT c.class_id, m.* FROM class_materials m JOIN classroom c ON m.created_by = c.created_by " +
+            "WHERE m.created_by = #{created_by} AND c.class_id = #{class_id}")
+    @Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class)
+    @Result(property = "class_material_id", column = "id")
+    List<ClassMaterialByTeacherIdAndClassIdResponse> getByClassIdAndTeacherId(Integer created_by, Integer class_id);
+    //
+    @Update("UPDATE class_materials SET content = #{classMaterialContent, jdbcType=OTHER, typeHandler = com.kshrd.tnakrean.configuration.JsonTypeHandler} WHERE id = #{id}")
+    @Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class)
+    Boolean updateContent(ClassMaterialUpdateContentRequest classMaterialUpdateContentRequest);
 }

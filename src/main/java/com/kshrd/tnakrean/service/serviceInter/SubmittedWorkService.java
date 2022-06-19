@@ -5,6 +5,7 @@ import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkUpdateResult
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkUpdateStatusRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkUpdateStudentWorkRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkResponse;
+
 import java.util.List;
 
 public interface SubmittedWorkService {
@@ -21,5 +22,6 @@ public interface SubmittedWorkService {
    boolean updateResult(SubmittedWorkUpdateResultRequest submittedWorkUpdateResultRequest);
 
    void deleteByStudentId(Integer id);
+
    boolean updateStatus(SubmittedWorkUpdateStatusRequest submittedWorkUpdateStatusRequest);
 }
