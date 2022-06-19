@@ -200,4 +200,8 @@ public class ClassMaterialController {
             return ApiResponse.setError(e.getMessage());
         }
     }
+    @GetMapping("/get-by-classId")
+    ApiResponse<> getByClassId(@RequestParam Integer class_id){
+
+    }
 }
