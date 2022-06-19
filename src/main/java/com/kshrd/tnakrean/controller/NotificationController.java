@@ -1,12 +1,18 @@
 package com.kshrd.tnakrean.controller;
 
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
+import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
+import com.kshrd.tnakrean.model.classmaterials.response.ClassResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.NotificationResponse;
+import com.kshrd.tnakrean.model.user.response.GetStudentByIDResponse;
+import com.kshrd.tnakrean.repository.OneSignalPushNotificationRepository;
+import com.kshrd.tnakrean.repository.StudentRepository;
+import com.kshrd.tnakrean.service.PushNotificationService;
 import com.kshrd.tnakrean.service.serviceImplementation.NotificationImp;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.lang.annotation.Documented;
 import java.util.List;
 
 @RestController
@@ -14,13 +20,17 @@ import java.util.List;
 public class NotificationController {
     final
     NotificationImp notificationImp;
+    final OneSignalPushNotificationRepository repository;
+    final StudentRepository studentRepository;
 
-    public NotificationController(NotificationImp notificationImp) {
+    public NotificationController(NotificationImp notificationImp, OneSignalPushNotificationRepository repository, StudentRepository studentRepository) {
         this.notificationImp = notificationImp;
+        this.repository = repository;
+        this.studentRepository = studentRepository;
     }
 
-    @GetMapping("/get")
-    ApiResponse<List<NotificationResponse>> getNotification(int userId) {
+    @GetMapping("/get/{userId}")
+    ApiResponse<List<NotificationResponse>> getNotificationByUserId(@RequestParam int userId) {
         List<NotificationResponse> notificationResponseList = notificationImp.notificationList(userId);
         System.out.println(notificationResponseList);
         try {
@@ -32,5 +42,24 @@ public class NotificationController {
             return ApiResponse.setError(e.getMessage());
         }
 
+    }
+
+    @PostMapping("/studentRequestToJoin/{studentId}/{classId}/{classRoomId}")
+    ApiResponse requestJoinClassNotification(@RequestParam int studentId, @RequestParam int classId, @RequestParam int classRoomId) {
+        try {
+            ClassResponse classResponse = repository.getClassById(classRoomId, classId);
+            GetStudentByIDResponse response = studentRepository.getStudentFromDBById(studentId);
+            if (classResponse == null) {
+                return ApiResponse.notFound(ClassResponse.class.getSimpleName()).setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
+            } else if (response == null) {
+                return ApiResponse.notFound(GetStudentByIDResponse.class.getSimpleName()).setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
+            }
+            PushNotificationService
+                    .sendMessageToUser(response.getName() + " Request to Join " + classResponse.getName(), classResponse.getCreated_by() + "");
+            return ApiResponse.ok("").setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ApiResponse.setError(e.getMessage());
+        }
     }
 }

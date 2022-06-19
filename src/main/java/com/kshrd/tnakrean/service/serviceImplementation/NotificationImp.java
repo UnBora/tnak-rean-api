@@ -19,6 +19,6 @@ public class NotificationImp implements NotificationService {
 
     @Override
     public List<NotificationResponse> notificationList(int id) {
-        return notificationRepository.notificationResponseList(id);
+        return notificationRepository.getNotificationByUserId(id);
     }
 }
