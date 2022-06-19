@@ -1,11 +1,10 @@
 package com.kshrd.tnakrean.service.serviceInter;
 
-import com.kshrd.tnakrean.model.submittedWork.request.SubmittedWorkStudentWorkRequest;
-import com.kshrd.tnakrean.model.submittedWork.request.SubmittedWorkUpdateResultRequest;
-import com.kshrd.tnakrean.model.submittedWork.request.SubmittedWorkUpdateStatusRequest;
-import com.kshrd.tnakrean.model.submittedWork.request.SubmittedWorkUpdateStudentWorkRequest;
-import com.kshrd.tnakrean.model.submittedWork.response.SubmittedWorkResponse;
-
+import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkStudentWorkRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkUpdateResultRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkUpdateStatusRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkUpdateStudentWorkRequest;
+import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkResponse;
 import java.util.List;
 
 public interface SubmittedWorkService {
