@@ -18,9 +18,10 @@ public class ClassMaterialByClassIdResponse {
     private Integer class_id;
     private Integer class_material_id;
     private String title;
-    private Integer created_by;
     private String description;
-    private ClassMaterialType classMaterialType;
+    private Integer created_by;
+    private Integer class_materials_type_id;
+    private String class_materials_type;
     private ClassMaterialContent classMaterialContent;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date created_date;

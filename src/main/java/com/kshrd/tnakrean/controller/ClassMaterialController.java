@@ -6,6 +6,7 @@ import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialUpdateContentRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialUpdateRequest;
+import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialByClassIdResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialByTeacherIdAndClassIdResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialResponse;
 import com.kshrd.tnakrean.repository.ClassMaterialRepository;
@@ -201,7 +202,15 @@ public class ClassMaterialController {
         }
     }
     @GetMapping("/get-by-classId")
-    ApiResponse<> getByClassId(@RequestParam Integer class_id){
-
+    ApiResponse<List<ClassMaterialByClassIdResponse>> getByClassId(@RequestParam Integer class_id){
+        List<ClassMaterialByClassIdResponse> classMaterialByClassIdResponses = classMaterialServiceImp.getByClassId(class_id);
+        if (classMaterialByClassIdResponses.isEmpty()) {
+            return ApiResponse.<List<ClassMaterialByClassIdResponse>>ok(ClassMaterialByClassIdResponse.class.getSimpleName())
+                    .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                    .setData(classMaterialByClassIdResponses);
+        }
+        return ApiResponse.<List<ClassMaterialByClassIdResponse>>ok(ClassMaterialByClassIdResponse.class.getSimpleName())
+                .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
+                .setData(classMaterialByClassIdResponses);
     }
 }

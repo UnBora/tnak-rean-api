@@ -5,6 +5,7 @@ import com.kshrd.tnakrean.model.ClassMaterialType;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialUpdateContentRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialUpdateRequest;
+import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialByClassIdResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialByTeacherIdAndClassIdResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialResponse;
 import org.apache.ibatis.annotations.*;
@@ -82,4 +83,15 @@ public interface ClassMaterialRepository {
     @Update("UPDATE class_materials SET content = #{classMaterialContent, jdbcType=OTHER, typeHandler = com.kshrd.tnakrean.configuration.JsonTypeHandler} WHERE id = #{id}")
     @Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class)
     Boolean updateContent(ClassMaterialUpdateContentRequest classMaterialUpdateContentRequest);
+
+    // get By ClassId
+    @Select("SELECT c.class_id, m.*, t.type\n" +
+            "FROM class_materials m \n" +
+            "JOIN classroom c ON m.created_by = c.created_by \n" +
+            "JOIN class_materials_type t ON t.id = m.class_materials_type_id\n" +
+            "WHERE c.class_id = #{class_id}")
+    @Result(property = "class_material_id", column = "id")
+    @Result(property = "class_materials_type", column = "type")
+    @Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class)
+    List<ClassMaterialByClassIdResponse> getByClassId(@Param("class_id") Integer class_id);
 }
