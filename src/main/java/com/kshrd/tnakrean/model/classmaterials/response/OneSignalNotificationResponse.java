@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OneSignalNotificationResponse {
-    private Integer id;
     private String message;
     private Integer classId;
 }

@@ -45,18 +45,20 @@ public class NotificationController {
     }
 
     @PostMapping("/studentRequestToJoin/{studentId}/{classId}/{classRoomId}")
-    ApiResponse requestJoinClassNotification(@RequestParam int studentId, @RequestParam int classId, @RequestParam int classRoomId) {
+    ApiResponse<ClassResponse> requestJoinClassNotification(@RequestParam int studentId, @RequestParam int classId, @RequestParam int classRoomId) {
         try {
             ClassResponse classResponse = repository.getClassById(classRoomId, classId);
             GetStudentByIDResponse response = studentRepository.getStudentFromDBById(studentId);
-            if (classResponse == null) {
-                return ApiResponse.notFound(ClassResponse.class.getSimpleName()).setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
+            if (classResponse != null && response != null) {
+                PushNotificationService
+                        .sendMessageToUser(response.getName() + " Request to Join " + classResponse.getName(), classResponse.getCreated_by() + "");
+                return ApiResponse
+                        .<ClassResponse>ok(ClassResponse.class.getSimpleName()).setData(classResponse);
             } else if (response == null) {
-                return ApiResponse.notFound(GetStudentByIDResponse.class.getSimpleName()).setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
+                return ApiResponse
+                        .<ClassResponse>notFound(GetStudentByIDResponse.class.getSimpleName()).setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
             }
-            PushNotificationService
-                    .sendMessageToUser(response.getName() + " Request to Join " + classResponse.getName(), classResponse.getCreated_by() + "");
-            return ApiResponse.ok("").setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage());
+            return ApiResponse.<ClassResponse>ok("").setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
             return ApiResponse.setError(e.getMessage());
