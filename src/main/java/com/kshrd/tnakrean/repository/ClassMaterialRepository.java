@@ -5,9 +5,7 @@ import com.kshrd.tnakrean.model.ClassMaterialType;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialUpdateContentRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialUpdateRequest;
-import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialByClassIdResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialByTeacherIdAndClassIdResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.*;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -68,30 +66,64 @@ public interface ClassMaterialRepository {
     List<ClassMaterialResponse> getAllClassMaterialByTeacherUserId(@Param("user_id") Integer user_id);
 
     // Get All Class Material class_materials_type_id
-    @Select("SELECT * FROM class_materials WHERE created_by = #{user_id}")
+    @Select("SELECT * FROM class_materials WHERE class_materials_type_id = #{class_materials_type_id}")
     @Results(@Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class))
     @Result(property = "classMaterialType", column = "class_materials_type_id", one = @One(select = "getClassMaterialTypeById"))
     List<ClassMaterialResponse> getClassMaterialByMaterialTypeId(Integer class_materials_type_id);
 
-    //Get All Class Material By UserId and Class Id
-    @Select("SELECT c.class_id, m.* FROM class_materials m JOIN classroom c ON m.created_by = c.created_by " +
-            "WHERE m.created_by = #{created_by} AND c.class_id = #{class_id}")
+    //Get All Class Material By teacher id and Class Id
+    @Select("SELECT d.classroom_id, d.class_id, t.type, m.* FROM class_materials m \n" +
+            "JOIN class_materials_detail d ON m.id = d.class_material_id\n" +
+            "JOIN class_materials_type t ON t.id = m.class_materials_type_id\n" +
+            "WHERE class_id = #{class_id} AND created_by = #{teacher_id}")
     @Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class)
     @Result(property = "class_material_id", column = "id")
-    List<ClassMaterialByTeacherIdAndClassIdResponse> getByClassIdAndTeacherId(Integer created_by, Integer class_id);
-    //
+    @Result(property = "class_materials_type", column = "type")
+    @Result(property = "teacher_id", column = "created_by")
+    List<ClassMaterialByTeacherIdAndClassIdResponse> getByClassIdAndTeacherId(Integer teacher_id, Integer class_id);
+    // update content
     @Update("UPDATE class_materials SET content = #{classMaterialContent, jdbcType=OTHER, typeHandler = com.kshrd.tnakrean.configuration.JsonTypeHandler} WHERE id = #{id}")
     @Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class)
     Boolean updateContent(ClassMaterialUpdateContentRequest classMaterialUpdateContentRequest);
 
     // get By ClassId
-    @Select("SELECT c.class_id, m.*, t.type\n" +
-            "FROM class_materials m \n" +
-            "JOIN classroom c ON m.created_by = c.created_by \n" +
+    @Select("SELECT d.classroom_id, d.class_id, t.type, m.* FROM class_materials m \n" +
+            "JOIN class_materials_detail d ON m.id = d.class_material_id\n" +
             "JOIN class_materials_type t ON t.id = m.class_materials_type_id\n" +
-            "WHERE c.class_id = #{class_id}")
+            "WHERE class_id = #{class_id}")
     @Result(property = "class_material_id", column = "id")
     @Result(property = "class_materials_type", column = "type")
     @Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class)
     List<ClassMaterialByClassIdResponse> getByClassId(@Param("class_id") Integer class_id);
+
+    // get By ClassId And ClassroomId
+    @Select("SELECT m.* , t.type, d.class_id, d.classroom_id FROM class_materials_type t \n" +
+            "JOIN class_materials m ON m.class_materials_type_id = t.id \n" +
+            "JOIN class_materials_detail d ON d.class_material_id = m.id \n" +
+            "WHERE class_id = #{class_id} AND classroom_id = #{classroom_id}")
+    @Result(property = "class_material_id", column = "id")
+    @Result(property = "class_materials_type", column = "type")
+    @Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class)
+    List<ClassMaterialByClassIdAndClassroomIdResponse> getByClassIdAndClassroomId(Integer class_id, Integer classroom_id);
+
+    // get By MaterialType And ClassId
+    @Select("SELECT d.classroom_id, d.class_id, t.type, m.* FROM class_materials m \n" +
+            "JOIN class_materials_detail d ON m.id = d.class_material_id\n" +
+            "JOIN class_materials_type t ON t.id = m.class_materials_type_id\n" +
+            "WHERE class_materials_type_id = #{class_materials_type_id} AND class_id = #{class_id}")
+    @Result(property = "class_material_id", column = "id")
+    @Result(property = "class_materials_type", column = "type")
+    @Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class)
+    List<ClassMaterialByClassIdAndMaterialTypeResponse> getByMaterialTypeAndClassId(Integer class_id, Integer class_materials_type_id);
+
+    // get by student id
+    @Select("SELECT s.user_id,  d.classroom_id, d.class_id, m.* FROM student s \n" +
+            "JOIN class_materials_detail d ON s.classroom_id = d.classroom_id\n" +
+            "JOIN class_materials m ON m.id = d.class_material_id\n" +
+            "WHERE user_id = #{user_id}")
+    @Result(property = "student_id", column = "user_id")
+    @Result(property = "class_material_id", column = "id")
+    @Result(property = "classMaterialType", column = "class_materials_type_id" , one = @One(select = "getClassMaterialTypeById"))
+    @Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class)
+    List<ClassMaterialByStudentIdResponse> getByStudentId(Integer user_id);
 }

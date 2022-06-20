@@ -3,9 +3,7 @@ package com.kshrd.tnakrean.service.serviceImplementation;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialUpdateContentRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialUpdateRequest;
-import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialByClassIdResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialByTeacherIdAndClassIdResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.*;
 import com.kshrd.tnakrean.repository.ClassMaterialRepository;
 import com.kshrd.tnakrean.service.serviceInter.ClassMaterialService;
 import org.springframework.stereotype.Service;
@@ -73,5 +71,20 @@ public class ClassMaterialImp implements ClassMaterialService {
     @Override
     public List<ClassMaterialByClassIdResponse> getByClassId(Integer class_id) {
         return classMaterialRepository.getByClassId(class_id);
+    }
+
+    @Override
+    public List<ClassMaterialByClassIdAndClassroomIdResponse> getByClassIdAndClassroomId(Integer class_id, Integer classroom_id) {
+        return classMaterialRepository.getByClassIdAndClassroomId(class_id,classroom_id);
+    }
+
+    @Override
+    public List<ClassMaterialByClassIdAndMaterialTypeResponse> getByMaterialTypeAndClassId(Integer class_materials_type_id, Integer class_id) {
+        return classMaterialRepository.getByMaterialTypeAndClassId(class_id,class_materials_type_id);
+    }
+
+    @Override
+    public List<ClassMaterialByStudentIdResponse> getByStudentId(Integer user_id) {
+        return classMaterialRepository.getByStudentId(user_id);
     }
 }
