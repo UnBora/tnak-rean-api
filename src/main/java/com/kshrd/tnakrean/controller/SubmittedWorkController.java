@@ -1,11 +1,10 @@
 package com.kshrd.tnakrean.controller;
 
+import com.kshrd.tnakrean.model.SubmittableWork;
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
-import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkStudentWorkRequest;
-import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkUpdateResultRequest;
-import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkUpdateStatusRequest;
-import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkUpdateStudentWorkRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.*;
+import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkByStudentIdAndClassIdResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkResponse;
 import com.kshrd.tnakrean.repository.SubmittedWorkRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.SubmittedWorkImpl;
@@ -42,6 +41,24 @@ public class SubmittedWorkController {
             return ApiResponse.setError(e.getMessage());
         }
     }
+    @GetMapping("/get-by-id/{id}")
+    ApiResponse<List<SubmittedWorkResponse>> getById(@RequestParam Integer id) {
+        try {
+            List<SubmittedWorkResponse> submittedWorkResponse = submittedWorkImpl.getById(id);
+            if (submittedWorkResponse.isEmpty()) {
+                return ApiResponse.<List<SubmittedWorkResponse>>ok(SubmittedWorkResponse.class
+                                .getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setData(submittedWorkResponse);
+            }
+            return ApiResponse.<List<SubmittedWorkResponse>>ok(SubmittedWorkResponse.class.getSimpleName())
+                    .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+                    .setData(submittedWorkResponse);
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
 
     @GetMapping("get-by-studentId/{id}")
     ApiResponse<List<SubmittedWorkResponse>> getSubmittedByStudentId(@RequestParam Integer studentId)  throws IllegalStateException {
@@ -61,6 +78,23 @@ public class SubmittedWorkController {
             System.out.println(e.getMessage());
             return ApiResponse.setError(e.getMessage());
         }
+    }
+    @GetMapping("get-by-studentId-and-classId")
+    ApiResponse<List<SubmittedWorkByStudentIdAndClassIdResponse>> getByStudentIdAndClassId(
+            @RequestParam Integer student_id,
+            @RequestParam Integer class_id
+
+    ){
+        List<SubmittedWorkByStudentIdAndClassIdResponse> submittedWorkResponses = submittedWorkImpl.getByStudentIdAndClassId(student_id,class_id);
+        if (submittedWorkResponses.isEmpty()) {
+            return ApiResponse.<List<SubmittedWorkByStudentIdAndClassIdResponse>>ok(SubmittedWorkResponse.class
+                            .getSimpleName())
+                    .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
+        }
+        return ApiResponse.<List<SubmittedWorkByStudentIdAndClassIdResponse>>ok(SubmittedWorkResponse.class
+                        .getSimpleName())
+                .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
+                .setData(submittedWorkResponses);
     }
 
     @PostMapping("/insert-student-work")
@@ -106,9 +140,9 @@ public class SubmittedWorkController {
                 .setData(true);
     }
     @DeleteMapping("/delete-by-studentId/{id}")
-    ApiResponse<?> deleteByStudentId(@RequestParam Integer id){
-        submittedWorkImpl.deleteByStudentId(id);
-        if (id == 0){
+    ApiResponse<Boolean> deleteByStudentId(@RequestParam Integer student_id){
+        submittedWorkImpl.deleteByStudentId(student_id);
+        if (student_id == 0){
             return ApiResponse.<Boolean>ok("Submitted Work")
                     .setResponseMsg(BaseMessage.Error.DELETE_ERROR.getMessage())
                     .setData(false);
