@@ -22,13 +22,13 @@ public interface ClassroomRepository {
     void insertClassroom(@Param("class_id") Integer class_id, @Param("created_by") Integer created_by, @Param("des") String des, @Param("name") String name);
 
     //    Update Table
-    @Update("UPDATE classroom SET des=#{des}, name=#{name}  WHERE class_id = #{class_id} And created_by = #{created_by} And  id = #{classroom_id}")
+    @Update("UPDATE classroom SET des=#{des}, name=#{name}  WHERE created_by = #{created_by} And  id = #{classroom_id}")
     @Result(property = "classroom_id", column = "id")
-    void updateClassroomDB(@Param("classroom_id") Integer classroom_id, @Param("class_id") Integer class_id, @Param("created_by") Integer created_by, @Param("des") String des, @Param("name") String name);
+    void updateClassroomDB(@Param("classroom_id") Integer classroom_id, @Param("created_by") Integer created_by, @Param("des") String des, @Param("name") String name);
 
 
-    @Select("select exists (select * from classroom where id = #{id} and class_id = #{class_id} And created_by = #{created_by})")
-    Boolean checkIfClassExists( @Param("id") Integer id, @Param("class_id") Integer class_id, @Param("created_by") Integer created_by);
+    @Select("select exists (select * from classroom where id = #{id} And created_by = #{created_by})")
+    Boolean checkIfClassExists( @Param("id") Integer id, @Param("created_by") Integer created_by);
 
     @Select("SELECT c.id as classroom_id, c2.id as class_id,u.username as teacher_name, c2.class_name as class_name From classroom c " +
             "inner join class c2 on c.class_id = c2.id inner join users u on c.created_by= u.id " +

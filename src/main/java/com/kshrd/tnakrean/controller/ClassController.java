@@ -6,7 +6,7 @@ import com.kshrd.tnakrean.model.classmaterials.request.GetClassRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassDeleteResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassInertResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassUpdateResponse;
-import com.kshrd.tnakrean.model.student.response.GetAllStudentResponse;
+import com.kshrd.tnakrean.model.user.response.GetAllStudentResponse;
 import com.kshrd.tnakrean.repository.ClassRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.ClassServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
