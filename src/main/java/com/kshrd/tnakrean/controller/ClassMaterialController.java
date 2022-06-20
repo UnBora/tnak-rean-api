@@ -201,7 +201,7 @@ public class ClassMaterialController {
             return ApiResponse.setError(e.getMessage());
         }
     }
-    @GetMapping("/get-by-classId")
+    @GetMapping("/get-by-classId{id}")
     ApiResponse<List<ClassMaterialByClassIdResponse>> getByClassId(@RequestParam Integer class_id){
         List<ClassMaterialByClassIdResponse> classMaterialByClassIdResponses = classMaterialServiceImp.getByClassId(class_id);
         if (classMaterialByClassIdResponses.isEmpty()) {
