@@ -35,11 +35,11 @@ public class ClassMaterialsTypeController {
                 .setData(classMaterialsTypeResponse);
     }
 
-    @GetMapping("/getById/{id}")
+    @GetMapping("/get-by-id/{id}")
     ApiResponse<ClassMaterialsTypeResponse> getClassMaterialsTypeById(@RequestParam Integer id) {
         ClassMaterialsTypeResponse classMaterialsTypeResponse = classMaterialsTypeImpl.getClassMaterialsTypeById(id);
         if (classMaterialsTypeResponse == null) {
-            return ApiResponse.<ClassMaterialsTypeResponse>setError(ClassMaterialsTypeResponse.class.getSimpleName())
+            return ApiResponse.<ClassMaterialsTypeResponse>ok(ClassMaterialsTypeResponse.class.getSimpleName())
                     .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
                     .setData(null);
         }
