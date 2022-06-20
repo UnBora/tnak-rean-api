@@ -31,7 +31,6 @@ public class ApiResponse<T> {
     private T data;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-    private Object metadata;
 
 
     // for bad request

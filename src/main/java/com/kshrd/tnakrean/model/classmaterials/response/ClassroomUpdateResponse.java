@@ -1,14 +1,16 @@
 package com.kshrd.tnakrean.model.classmaterials.response;
 
-import com.kshrd.tnakrean.model.classmaterials.json.FolderContent;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
-public class FolderDetailResponse {
-    Integer folder_id;
-    FolderContent content;
+public class ClassroomUpdateResponse {
+    Integer classroom_id;
+    Integer class_id;
+    Integer created_by;
+    String des;
+    String name;
 }

@@ -15,7 +15,7 @@ public interface SubmittableWorkRepository {
     @Select("SELECT * FROM submittable_work")
     List<SubmittableWorkResponse> getAll();
 
-    // select by id
+    // get by id
     @Select("SELECT * FROM submittable_work WHERE id = #{id}")
     SubmittableWorkResponse getById(int id);
 
@@ -31,4 +31,8 @@ public interface SubmittableWorkRepository {
     //delete
     @Delete("DELETE FROM submittable_work WHERE id = #{id}")
     void delete(int id);
+
+    // get by ClassMaterialDetailType
+    @Select("SELECT * FROM submittable_work WHERE class_materials_detail_id = #{id}")
+    List<SubmittableWorkResponse> getSubmittableWorkByClassMaterialDetailType(Integer id);
 }

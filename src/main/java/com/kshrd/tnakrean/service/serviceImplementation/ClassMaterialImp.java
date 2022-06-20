@@ -1,7 +1,10 @@
 package com.kshrd.tnakrean.service.serviceImplementation;
 
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialUpdateContentRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialUpdateRequest;
+import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialByClassIdResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialByTeacherIdAndClassIdResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialResponse;
 import com.kshrd.tnakrean.repository.ClassMaterialRepository;
 import com.kshrd.tnakrean.service.serviceInter.ClassMaterialService;
@@ -38,11 +41,6 @@ public class ClassMaterialImp implements ClassMaterialService {
     }
 
     @Override
-    public List<ClassMaterialResponse> getAllClassMaterialByCreatedBy(Integer created_id) {
-        return classMaterialRepository.getAllClassMaterialByCreatedBy(created_id);
-    }
-
-    @Override
     public Boolean deleteById(Integer id) {
         return classMaterialRepository.deleteById(id);
     }
@@ -50,5 +48,30 @@ public class ClassMaterialImp implements ClassMaterialService {
     @Override
     public List<ClassMaterialResponse> getClassMaterialByCreatedByAndMaterialType(Integer created_by, Integer class_materials_type_id) {
         return classMaterialRepository.getClassMaterialByCreatedByAndMaterialType(created_by, class_materials_type_id);
+    }
+
+    @Override
+    public List<ClassMaterialResponse> getAllClassMaterialByTeacherUserId(Integer user_id) {
+        return classMaterialRepository.getAllClassMaterialByTeacherUserId(user_id);
+    }
+
+    @Override
+    public List<ClassMaterialResponse> getClassMaterialByMaterialTypeId(Integer class_materials_type_id) {
+        return classMaterialRepository.getClassMaterialByMaterialTypeId(class_materials_type_id);
+    }
+
+    @Override
+    public List<ClassMaterialByTeacherIdAndClassIdResponse> getByClassIdAndTeacherId(Integer teacher_id, Integer class_id) {
+        return classMaterialRepository.getByClassIdAndTeacherId(teacher_id,class_id);
+    }
+
+    @Override
+    public Boolean updateContent(ClassMaterialUpdateContentRequest classMaterialUpdateContentRequest) {
+        return classMaterialRepository.updateContent(classMaterialUpdateContentRequest);
+    }
+
+    @Override
+    public List<ClassMaterialByClassIdResponse> getByClassId(Integer class_id) {
+        return classMaterialRepository.getByClassId(class_id);
     }
 }

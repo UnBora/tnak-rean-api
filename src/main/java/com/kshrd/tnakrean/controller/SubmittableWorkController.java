@@ -71,4 +71,17 @@ public class SubmittableWorkController {
         return ApiResponse.ok("Submittable Work")
                 .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage());
     }
+
+    @GetMapping("/getSubmittableWorkByClassMaterialDetailType/{id}")
+    ApiResponse<List<SubmittableWorkResponse>> getSubmittableWorkByClassMaterialDetailType(@RequestParam Integer classMaterialDetailTypeId) {
+        List<SubmittableWorkResponse> submittableWorkResponses = submittableWorkService.getSubmittableWorkByClassMaterialDetailType(classMaterialDetailTypeId);
+        if (submittableWorkResponses.isEmpty()) {
+            ApiResponse.<List<SubmittableWorkResponse>>ok(SubmittableWorkResponse.class.getSimpleName())
+                    .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                    .setData(submittableWorkResponses);
+        }
+        return ApiResponse.<List<SubmittableWorkResponse>>setError(SubmittableWorkResponse.class.getSimpleName())
+                .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+                .setData(submittableWorkResponses);
+    }
 }
