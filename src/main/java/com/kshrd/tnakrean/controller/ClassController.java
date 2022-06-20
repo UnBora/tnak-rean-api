@@ -6,7 +6,7 @@ import com.kshrd.tnakrean.model.classmaterials.request.GetClassRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassDeleteResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassInertResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassUpdateResponse;
-import com.kshrd.tnakrean.model.user.response.GetAllStudentResponse;
+import com.kshrd.tnakrean.model.student.response.GetAllStudentResponse;
 import com.kshrd.tnakrean.repository.ClassRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.ClassServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,25 +100,6 @@ public class ClassController {
             } else {
                 return ApiResponse.<List<GetClassRequest>>ok("Get All Class")
                         .setData(getClassRequests);
-            }
-        } catch (Exception e) {
-            return ApiResponse.setError(e.getMessage());
-        }
-    }
-
-    @PostMapping("/createClassByTeacherId")
-    public ApiResponse<ClassInertResponse> createClassByTeacherId( String className) {
-        try {
-            Integer user_id =AuthRestController.user_id;
-            classServiceImp.creatClassByUserID(user_id,className);
-            if (className.isEmpty()) {
-                return ApiResponse.<ClassInertResponse>setError("student class")
-                        .setResponseMsg(BaseMessage.Error.INSERT_ERROR.getMessage())
-                        .setData(new ClassInertResponse(className));
-            } else {
-                return ApiResponse.<ClassInertResponse>ok("student class")
-                        .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
-                        .setData(new ClassInertResponse(className));
             }
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());

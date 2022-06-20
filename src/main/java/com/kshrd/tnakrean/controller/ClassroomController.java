@@ -4,16 +4,16 @@ import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.request.GetClassRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassroomRequest;
+import com.kshrd.tnakrean.model.classmaterials.response.ClassroomUpdateResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassroomResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.GetClassByTeacherIdResponse;
-import com.kshrd.tnakrean.model.user.response.GetStudentByClassIDResponse;
+import com.kshrd.tnakrean.model.student.response.GetAllStudentResponse;
+import com.kshrd.tnakrean.model.student.response.GetStudentByClassIDResponse;
 import com.kshrd.tnakrean.repository.ClassroomRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.ClassroomServiceImp;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -57,7 +57,7 @@ public class ClassroomController {
                         .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
                         .setData(null);
             } else {
-                return ApiResponse.<ClassroomResponse>ok(ClassroomResponse.class.getSimpleName())
+                return ApiResponse.<ClassroomResponse>ok("Get All Classroom By ID")
                         .setData(classroomResponses);
             }
         } catch (Exception e) {
@@ -85,9 +85,9 @@ public class ClassroomController {
         }
     }
 
-    @GetMapping("/getClassroomByTeacherID")
-    public  ApiResponse<List<GetClassByTeacherIdResponse>> getClassByTeacherId(){
-        Integer user_id=AuthRestController.user_id;
+    @GetMapping("/getClassroomByTeacherID/{user_id}")
+    public  ApiResponse<List<GetClassByTeacherIdResponse>> getClassByTeacherId(Integer user_id){
+        user_id=AuthRestController.user_id;
         GetClassByTeacherIdResponse obj = new GetClassByTeacherIdResponse();
         Integer classId= obj.getClass_id(), classroomId=obj.getClassroom_id();
         String teacher= obj.getTeacher_name(), className=obj.getClass_name();
@@ -95,14 +95,40 @@ public class ClassroomController {
             List<GetClassByTeacherIdResponse> getClassByTeacherIdResponses = classroomServiceImp.getClassByTeacherId(classId,classroomId,teacher,className,user_id);
             if (getClassByTeacherIdResponses .isEmpty()) {
                 return ApiResponse.<List<GetClassByTeacherIdResponse>>setError(GetStudentByClassIDResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setData(getClassByTeacherIdResponses );
             } else {
                 return ApiResponse.<List<GetClassByTeacherIdResponse>>ok(GetClassByTeacherIdResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
                         .setData(getClassByTeacherIdResponses);
             }
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
+    }
+
+    @PutMapping("/updateClassroom")
+    public ApiResponse<ClassroomUpdateResponse> updateClassroom(ClassroomUpdateResponse classroomUpdateResponse) {
+
+
+        try {
+            classroomServiceImp.updateClassroom(classroomUpdateResponse.getClassroom_id(), classroomUpdateResponse.getClass_id(), classroomUpdateResponse.getCreated_by(), classroomUpdateResponse.getDes(), classroomUpdateResponse.getName());
+            Boolean a = classroomRepository.checkIfClassExists(classroomUpdateResponse.getClassroom_id(), classroomUpdateResponse.getClass_id(), classroomUpdateResponse.getCreated_by());
+            if (classroomUpdateResponse.equals(null)) {
+                return ApiResponse.<ClassroomUpdateResponse>setError(GetAllStudentResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.UPDATE_ERROR.getMessage());
+            } else if (a.equals(false)) {
+                return ApiResponse.<ClassroomUpdateResponse>setError(GetAllStudentResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.UPDATE_ERROR.getMessage());
+            } else {
+                return ApiResponse
+                        .<ClassroomUpdateResponse>updateSuccess(ClassroomUpdateResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
+                        .setData(new ClassroomUpdateResponse(classroomUpdateResponse.getClassroom_id(), classroomUpdateResponse.getClass_id(), classroomUpdateResponse.getCreated_by(), classroomUpdateResponse.getDes(), classroomUpdateResponse.getName()));
+            }
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+
+
     }
 }
