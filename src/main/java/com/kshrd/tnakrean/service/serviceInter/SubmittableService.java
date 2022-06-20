@@ -5,8 +5,8 @@ import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateRequ
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittableWorkResponse;
 
 import java.util.List;
-
 public interface SubmittableService {
+
     void delete(int id);
 
     List<SubmittableWorkResponse> getAll();

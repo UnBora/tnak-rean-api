@@ -1,9 +1,7 @@
 package com.kshrd.tnakrean.service.serviceImplementation;
 
-import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkStudentWorkRequest;
-import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkUpdateResultRequest;
-import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkUpdateStatusRequest;
-import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkUpdateStudentWorkRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.*;
+import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkByStudentIdAndClassIdResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkResponse;
 import com.kshrd.tnakrean.repository.SubmittedWorkRepository;
 import com.kshrd.tnakrean.service.serviceInter.SubmittedWorkService;
@@ -58,5 +56,15 @@ public class SubmittedWorkImpl implements SubmittedWorkService {
     @Override
     public boolean updateStatus(SubmittedWorkUpdateStatusRequest submittedWorkUpdateStatusRequest) {
         return submittedWorkRepository.updateStatus(submittedWorkUpdateStatusRequest);
+    }
+
+    @Override
+    public List<SubmittedWorkResponse> getById(Integer id) {
+        return submittedWorkRepository.getById(id);
+    }
+
+    @Override
+    public List<SubmittedWorkByStudentIdAndClassIdResponse> getByStudentIdAndClassId(Integer student_id, Integer class_id) {
+        return submittedWorkRepository.getByStudentIdAndClassId(student_id,class_id);
     }
 }
