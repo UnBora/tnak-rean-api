@@ -8,6 +8,7 @@ import com.kshrd.tnakrean.model.classmaterials.response.FolderResponse;
 import com.kshrd.tnakrean.service.serviceImplementation.FolderServiceImp;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -20,7 +21,7 @@ public class FolderController {
     }
 
     @PostMapping("/create")
-    ApiResponse<FolderRequest> createFolder(@RequestBody FolderRequest folderRequest) {
+    ApiResponse<FolderRequest> createFolder(@RequestBody @Valid FolderRequest folderRequest) {
         try {
             boolean t = folderServiceImp.createFolder(folderRequest);
             System.out.println(t);
