@@ -98,7 +98,7 @@ public class ClassroomController {
                         .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
             } else {
                 return ApiResponse.<List<GetClassByTeacherIdResponse>>ok(GetClassByTeacherIdResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
                         .setData(getClassByTeacherIdResponses);
             }
         } catch (Exception e) {
