@@ -30,7 +30,7 @@ public class ClassroomController {
         this.classroomRepository = classroomRepository;
     }
 
-    @GetMapping("/getAllClassroom")
+    @GetMapping("/get-all-classroom")
     public ApiResponse<List<ClassroomResponse>> getAllClassroom() {
         try {
             List<ClassroomResponse> classroomResponses = classroomServiceImp.getAllClassroom();
@@ -65,18 +65,17 @@ public class ClassroomController {
         }
     }
 
-    @PostMapping("/insertClassroom")
+    @PostMapping("/insert-classroom")
     public ApiResponse<ClassroomRequest> insertClassroom(ClassroomRequest classroomRequest) {
         try {
             Integer classId = classroomRequest.getClass_id(), createdby = classroomRequest.getCreated_by();
             String dec = classroomRequest.getDes(), name = classroomRequest.getName();
             classroomServiceImp.insertClassroom(classId, createdby, dec, name);
             if (classroomRequest == null) {
-                return ApiResponse.<ClassroomRequest>setError("student class")
-                        .setResponseMsg(BaseMessage.Error.INSERT_ERROR.getMessage())
-                        .setData(null);
+                return ApiResponse.<ClassroomRequest>setError(ClassroomRequest.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.INSERT_ERROR.getMessage());
             } else {
-                return ApiResponse.<ClassroomRequest>ok("student class")
+                return ApiResponse.<ClassroomRequest>ok(ClassroomRequest.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
                         .setData(new ClassroomRequest(classId, createdby, dec, name));
             }
@@ -85,9 +84,9 @@ public class ClassroomController {
         }
     }
 
-    @GetMapping("/getClassroomByTeacherID/{user_id}")
-    public  ApiResponse<List<GetClassByTeacherIdResponse>> getClassByTeacherId(Integer user_id){
-        user_id=AuthRestController.user_id;
+    @GetMapping("/get-classroom-by-teache-id")
+    public  ApiResponse<List<GetClassByTeacherIdResponse>> getClassByTeacherId(){
+        Integer user_id=AuthRestController.user_id;
         GetClassByTeacherIdResponse obj = new GetClassByTeacherIdResponse();
         Integer classId= obj.getClass_id(), classroomId=obj.getClassroom_id();
         String teacher= obj.getTeacher_name(), className=obj.getClass_name();

@@ -3,6 +3,7 @@ package com.kshrd.tnakrean.controller;
 
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
+import com.kshrd.tnakrean.model.classmaterials.request.StudentUpdateRequest;
 import com.kshrd.tnakrean.model.user.request.StudentLeaveClassRequest;
 import com.kshrd.tnakrean.model.user.request.StudentRequest;
 import com.kshrd.tnakrean.model.user.response.GetStudentByClassIDResponse;
@@ -149,4 +150,17 @@ public class StudentController {
         }
     }
 
+    @PutMapping("update-profile")
+    public ApiResponse<StudentUpdateRequest> studentUpdateProfile(@RequestBody StudentUpdateRequest studentUpdateRequest) {
+        try {
+            Integer user_id = AuthRestController.user_id;
+            studentServiceImp.updateprofileByID(user_id, studentUpdateRequest.getName(), studentUpdateRequest.getUsername(), studentUpdateRequest.getGender());
+                return ApiResponse.<StudentUpdateRequest>ok(StudentUpdateRequest.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
+                        .setData(new StudentUpdateRequest(user_id, studentUpdateRequest.getName(), studentUpdateRequest.getUsername(), studentUpdateRequest.getGender()));
+
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
 }
