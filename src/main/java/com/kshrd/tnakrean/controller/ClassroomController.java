@@ -7,11 +7,11 @@ import com.kshrd.tnakrean.model.classmaterials.request.ClassroomRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassroomUpdateResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassroomResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.GetClassByTeacherIdResponse;
-import com.kshrd.tnakrean.model.student.response.GetAllStudentResponse;
-import com.kshrd.tnakrean.model.student.response.GetStudentByClassIDResponse;
+
+import com.kshrd.tnakrean.model.user.response.GetAllStudentResponse;
+import com.kshrd.tnakrean.model.user.response.GetStudentByClassIDResponse;
 import com.kshrd.tnakrean.repository.ClassroomRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.ClassroomServiceImp;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
