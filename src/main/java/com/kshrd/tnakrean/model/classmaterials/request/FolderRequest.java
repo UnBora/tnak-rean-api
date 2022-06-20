@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FolderRequest {
-    @NotBlank
+    @NotBlank(message = "{validation.folder.notEmpty}")
     String folder_name;
     Integer parent_id;
 }
