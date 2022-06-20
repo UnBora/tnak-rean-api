@@ -57,7 +57,7 @@ public class ClassroomController {
                         .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
                         .setData(null);
             } else {
-                return ApiResponse.<ClassroomResponse>ok("Get All Classroom By ID")
+                return ApiResponse.<ClassroomResponse>ok(ClassroomResponse.class.getSimpleName())
                         .setData(classroomResponses);
             }
         } catch (Exception e) {
@@ -95,10 +95,10 @@ public class ClassroomController {
             List<GetClassByTeacherIdResponse> getClassByTeacherIdResponses = classroomServiceImp.getClassByTeacherId(classId,classroomId,teacher,className,user_id);
             if (getClassByTeacherIdResponses .isEmpty()) {
                 return ApiResponse.<List<GetClassByTeacherIdResponse>>setError(GetStudentByClassIDResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
-                        .setData(getClassByTeacherIdResponses );
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
             } else {
                 return ApiResponse.<List<GetClassByTeacherIdResponse>>ok(GetClassByTeacherIdResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
                         .setData(getClassByTeacherIdResponses);
             }
         } catch (Exception e) {

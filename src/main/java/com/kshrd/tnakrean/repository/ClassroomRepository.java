@@ -30,9 +30,9 @@ public interface ClassroomRepository {
     @Select("select exists (select * from classroom where id = #{id} and class_id = #{class_id} And created_by = #{created_by})")
     Boolean checkIfClassExists( @Param("id") Integer id, @Param("class_id") Integer class_id, @Param("created_by") Integer created_by);
 
-    @Select("SELECT c.id as classroom_id, c2.id as class_id,u.username as teacher_name, c2.class_name as class_name From classroom c " +
-            "inner join class c2 on c.class_id = c2.id inner join users u on c.created_by= u.id " +
-            "where  c.created_by=#{user_id}")
+    @Select("Select c.id as classroom_id,c2.id as class_id,u.username as teacher_name,c2.class_name as class_name " +
+            "From users u inner join classroom c on u.id = c.created_by inner join class_materials_detail cmd on c.id = cmd.classroom_id" +
+            " inner join class c2 on c2.id = cmd.class_id  where c.created_by=#{user_id}")
     @Result(property = "classroom_id",column = "classroom_id")
     @Result(property = "class_id",column = "class_id")
     @Result(property = "teacher_name",column = "teacher_name")
