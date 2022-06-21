@@ -119,8 +119,7 @@ public class StudentController {
             if (user_id == 0 || classroomId == 0 || classId == 0) {
                 return ApiResponse.<StudentLeaveClassRequest>setError("student class")
                         .setResponseMsg(BaseMessage.Error.INSERT_ERROR.getMessage())
-                        .setData(new StudentLeaveClassRequest(user_id, classroomId, classId))
-                        .setMetadata("some data is null");
+                        .setData(new StudentLeaveClassRequest(user_id, classroomId, classId));
             } else {
                 return ApiResponse.<StudentLeaveClassRequest>ok("student class")
                         .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())

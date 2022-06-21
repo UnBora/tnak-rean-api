@@ -6,9 +6,7 @@ import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialUpdateContentRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialUpdateRequest;
-import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialByClassIdResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialByTeacherIdAndClassIdResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.*;
 import com.kshrd.tnakrean.repository.ClassMaterialRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.ClassMaterialImp;
 
@@ -31,7 +29,7 @@ public class ClassMaterialController {
     }
 
     @GetMapping("/get-by-id/{id}")
-    ApiResponse<List<ClassMaterialResponse>> getClassMaterial(int id) {
+    ApiResponse<List<ClassMaterialResponse>> getClassMaterial(@RequestParam int id) {
         try {
             List<ClassMaterialResponse> classMaterialResponses = classMaterialServiceImp.getClassMaterial(id);
             return ApiResponse.<List<ClassMaterialResponse>>ok(ClassMaterialResponse.class.getSimpleName())
@@ -108,9 +106,9 @@ public class ClassMaterialController {
 
     @GetMapping("/get-by-teacheId/{id}")
     ApiResponse<List<ClassMaterialResponse>> getAllClassMaterialByTeacherUserId(
-            @RequestParam Integer user_id) {
+            @RequestParam Integer teacher_id) {
         try {
-            List<ClassMaterialResponse> classMaterialResponses = classMaterialServiceImp.getAllClassMaterialByTeacherUserId(user_id);
+            List<ClassMaterialResponse> classMaterialResponses = classMaterialServiceImp.getAllClassMaterialByTeacherUserId(teacher_id);
             if (classMaterialResponses.isEmpty()) {
                 return ApiResponse.<List<ClassMaterialResponse>>ok(ClassMaterialResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
@@ -125,18 +123,18 @@ public class ClassMaterialController {
         }
     }
 
-    @GetMapping("/get-by-teacherId-and-materialTypeId/")
+    @GetMapping("/get-by-teacherId-and-materialTypeId/{teacher_id}/{class_materials_type_id}")
     ApiResponse<List<ClassMaterialResponse>> getClassMaterialByTeacherUserIdAndMaterialType(
-            @RequestParam Integer created_by,
+            @RequestParam Integer teacher_id,
             @RequestParam Integer class_materials_type_id
     ) throws IllegalStateException {
-        if (created_by <= 0 && class_materials_type_id <= 0)
-            throw new IllegalStateException("created_by and class_materials_type_id cannot be less than 1");
-        if (created_by <= 0) throw new IllegalStateException("created_by cannot be less than 1");
+        if (teacher_id <= 0 && class_materials_type_id <= 0)
+            throw new IllegalStateException("teacher_id and class_materials_type_id cannot be less than 1");
+        if (teacher_id <= 0) throw new IllegalStateException("teacher_id cannot be less than 1");
         if (class_materials_type_id <= 0)
             throw new IllegalStateException("class_materials_type_id cannot be less than 1");
         try {
-            List<ClassMaterialResponse> classMaterialResponses = classMaterialServiceImp.getClassMaterialByCreatedByAndMaterialType(created_by, class_materials_type_id);
+            List<ClassMaterialResponse> classMaterialResponses = classMaterialServiceImp.getClassMaterialByCreatedByAndMaterialType(teacher_id, class_materials_type_id);
             if (classMaterialResponses.isEmpty()) {
                 return ApiResponse.<List<ClassMaterialResponse>>ok(ClassMaterialResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
@@ -173,7 +171,7 @@ public class ClassMaterialController {
         }
 
     }
-    @GetMapping("/get-by-classId-and-teacherId")
+    @GetMapping("/get-by-classId-and-teacherId/{class_id}/{teacher_id}")
     ApiResponse<List<ClassMaterialByTeacherIdAndClassIdResponse>> getByClassIdAndTeacherId(
             @RequestParam Integer teacher_id,
             @RequestParam Integer class_id
@@ -209,5 +207,47 @@ public class ClassMaterialController {
         return ApiResponse.<List<ClassMaterialByClassIdResponse>>ok(ClassMaterialByClassIdResponse.class.getSimpleName())
                 .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
                 .setData(classMaterialByClassIdResponses);
+    }
+    @GetMapping("/get-by-classId-and-classroomId/{class_id}/{classroom_id}")
+    ApiResponse<List<ClassMaterialByClassIdAndClassroomIdResponse>> getByClassIdAndClassroomId(
+            @RequestParam Integer class_id,
+            @RequestParam Integer classroom_id
+    ) {
+        List<ClassMaterialByClassIdAndClassroomIdResponse> classMaterialByClassIdAndClassroomIdResponses = classMaterialServiceImp.getByClassIdAndClassroomId(class_id,classroom_id);
+        if (classMaterialByClassIdAndClassroomIdResponses.isEmpty()) {
+            return ApiResponse.<List<ClassMaterialByClassIdAndClassroomIdResponse>>ok(ClassMaterialByClassIdAndClassroomIdResponse.class.getSimpleName())
+                    .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                    .setData(classMaterialByClassIdAndClassroomIdResponses);
+        }
+        return ApiResponse.<List<ClassMaterialByClassIdAndClassroomIdResponse>>ok(ClassMaterialByClassIdAndClassroomIdResponse.class.getSimpleName())
+                .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
+                .setData(classMaterialByClassIdAndClassroomIdResponses);
+    }
+    @GetMapping("/get-by-materialType-and-classId/{class_id}/{class_materials_type_id}")
+    ApiResponse<List<ClassMaterialByClassIdAndMaterialTypeResponse>> getByMaterialTypeAndClassId(
+            @RequestParam Integer class_materials_type_id,
+            @RequestParam Integer class_id
+    ){
+        List<ClassMaterialByClassIdAndMaterialTypeResponse> classMaterialResponses = classMaterialServiceImp.getByMaterialTypeAndClassId(class_materials_type_id,class_id);
+        if (classMaterialResponses.isEmpty()) {
+            return ApiResponse.<List<ClassMaterialByClassIdAndMaterialTypeResponse>>ok(ClassMaterialByClassIdAndMaterialTypeResponse.class.getSimpleName())
+                    .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                    .setData(classMaterialResponses);
+        }
+        return ApiResponse.<List<ClassMaterialByClassIdAndMaterialTypeResponse>>ok(ClassMaterialByClassIdAndMaterialTypeResponse.class.getSimpleName())
+                .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
+                .setData(classMaterialResponses);
+    }
+    @GetMapping("get-by-studentId/{user_id}")
+    ApiResponse<List<ClassMaterialByStudentIdResponse>> getByStudentId(@RequestParam Integer user_id){
+        List<ClassMaterialByStudentIdResponse> classMaterialResponses = classMaterialServiceImp.getByStudentId(user_id);
+        if (classMaterialResponses.isEmpty()) {
+            return ApiResponse.<List<ClassMaterialByStudentIdResponse>>ok(ClassMaterialByStudentIdResponse.class.getSimpleName())
+                    .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                    .setData(classMaterialResponses);
+        }
+        return ApiResponse.<List<ClassMaterialByStudentIdResponse>>ok(ClassMaterialByStudentIdResponse.class.getSimpleName())
+                .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
+                .setData(classMaterialResponses);
     }
 }
