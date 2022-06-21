@@ -50,6 +50,11 @@ public class UserServiceImp implements UserService {
         usersRepository.activateAccount(id);
     }
 
+    @Override
+    public void updateprofileByID(Integer user_id, String name, String username, String gender) {
+        usersRepository.updateProfile(user_id, name, username,gender);
+    }
+
 
     @Override
     public void userRegister(UserRegisterRequest userRegisterRequest) {

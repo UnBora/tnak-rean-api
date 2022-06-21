@@ -13,13 +13,15 @@ public interface UsersRepository {
     @Update("UPDATE users SET status = 0 WHERE id = #{id}")
     void deleteAccount(@Param("id") Integer id);
 
-//    Deactivate Account
+    //    Deactivate Account
     @Update("UPDATE users SET status = 1 WHERE id = #{id}")
     void deactivateAccount(@Param("id") Integer id);
 
-//    Activate Account
+    //    Activate Account
     @Update("UPDATE users SET status = 2 WHERE id = #{id}")
     void activateAccount(Integer id);
 
-//    @Select("")
+    //    Update profile
+    @Update("UPDATE users SET name=#{name}, username=#{username}, gender=#{gender} WHERE id = #{user_id}")
+    void updateProfile(Integer user_id, String name, String username, String gender);
 }

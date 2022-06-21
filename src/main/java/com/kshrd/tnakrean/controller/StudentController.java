@@ -3,9 +3,9 @@ package com.kshrd.tnakrean.controller;
 
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
-import com.kshrd.tnakrean.model.classmaterials.request.StudentUpdateRequest;
+import com.kshrd.tnakrean.model.user.request.UserUpdateRequest;
 import com.kshrd.tnakrean.model.user.request.StudentLeaveClassRequest;
-import com.kshrd.tnakrean.model.user.request.StudentRequest;
+import com.kshrd.tnakrean.model.user.request.UserActivateAccountRequest;
 import com.kshrd.tnakrean.model.user.response.GetStudentByClassIDResponse;
 import com.kshrd.tnakrean.model.user.response.GetStudentByIDResponse;
 import com.kshrd.tnakrean.model.user.response.GetAllStudentResponse;
@@ -63,35 +63,35 @@ public class StudentController {
 
 
     @DeleteMapping("/delete-account")
-    public ApiResponse<StudentRequest> deleteUser() {
+    public ApiResponse<UserActivateAccountRequest> deleteUser() {
         Integer user_id = AuthRestController.user_id;
 
         studentServiceImp.studentDeleteAccount(user_id);
-        return ApiResponse.<StudentRequest>successDelete("student class")
+        return ApiResponse.<UserActivateAccountRequest>successDelete("student class")
                 .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
-                .setData(new StudentRequest(user_id));
+                .setData(new UserActivateAccountRequest(user_id));
 
     }
 
     @PutMapping("/deactivate-account")
-    public ApiResponse<StudentRequest> deactivateAccount() {
+    public ApiResponse<UserActivateAccountRequest> deactivateAccount() {
         Integer user_id = AuthRestController.user_id;
 
         studentServiceImp.studentDeactivateAccount(user_id);
-        return ApiResponse.<StudentRequest>updateSuccess(StudentRequest.class.getSimpleName())
+        return ApiResponse.<UserActivateAccountRequest>updateSuccess(UserActivateAccountRequest.class.getSimpleName())
                 .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                .setData(new StudentRequest(user_id));
+                .setData(new UserActivateAccountRequest(user_id));
 
     }
 
     @PutMapping("/activate-account")
-    public ApiResponse<StudentRequest> activateAccount() {
+    public ApiResponse<UserActivateAccountRequest> activateAccount() {
         Integer user_id = AuthRestController.user_id;
 
         studentServiceImp.studentActivateAccount(user_id);
-        return ApiResponse.<StudentRequest>updateSuccess(StudentRequest.class.getSimpleName())
+        return ApiResponse.<UserActivateAccountRequest>updateSuccess(UserActivateAccountRequest.class.getSimpleName())
                 .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                .setData(new StudentRequest(user_id));
+                .setData(new UserActivateAccountRequest(user_id));
     }
 
     @GetMapping("/get-by-class-id")
@@ -150,13 +150,13 @@ public class StudentController {
     }
 
     @PutMapping("update-profile")
-    public ApiResponse<StudentUpdateRequest> studentUpdateProfile(@RequestBody StudentUpdateRequest studentUpdateRequest) {
+    public ApiResponse<UserUpdateRequest> studentUpdateProfile(@RequestBody UserUpdateRequest userUpdateRequest) {
         try {
             Integer user_id = AuthRestController.user_id;
-            studentServiceImp.updateprofileByID(user_id, studentUpdateRequest.getName(), studentUpdateRequest.getUsername(), studentUpdateRequest.getGender());
-                return ApiResponse.<StudentUpdateRequest>ok(StudentUpdateRequest.class.getSimpleName())
+            studentServiceImp.updateprofileByID(user_id, userUpdateRequest.getName(), userUpdateRequest.getUsername(), userUpdateRequest.getGender());
+                return ApiResponse.<UserUpdateRequest>ok(UserUpdateRequest.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                        .setData(new StudentUpdateRequest(user_id, studentUpdateRequest.getName(), studentUpdateRequest.getUsername(), studentUpdateRequest.getGender()));
+                        .setData(new UserUpdateRequest(user_id, userUpdateRequest.getName(), userUpdateRequest.getUsername(), userUpdateRequest.getGender()));
 
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
