@@ -39,7 +39,7 @@ public class ClassroomController {
                         .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
                         .setData(classroomResponses);
             } else {
-                return ApiResponse.<List<ClassroomResponse>>ok("Get All Classroom")
+                return ApiResponse.<List<ClassroomResponse>>ok(ClassroomResponse.class.getSimpleName())
                         .setData(classroomResponses);
             }
 
@@ -48,7 +48,7 @@ public class ClassroomController {
         }
     }
 
-    @GetMapping("/getClassroomID")
+    @GetMapping("/get-classroom-by-id")
     public ApiResponse<ClassroomResponse> getClassroomById(Integer id) {
         try {
             ClassroomResponse classroomResponses = classroomServiceImp.getClassroomByID(id);
@@ -57,7 +57,7 @@ public class ClassroomController {
                         .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
                         .setData(null);
             } else {
-                return ApiResponse.<ClassroomResponse>ok("Get All Classroom By ID")
+                return ApiResponse.<ClassroomResponse>ok(ClassroomResponse.class.getSimpleName())
                         .setData(classroomResponses);
             }
         } catch (Exception e) {
@@ -84,7 +84,7 @@ public class ClassroomController {
         }
     }
 
-    @GetMapping("/get-classroom-by-teache-id")
+    @GetMapping("/get-classroom-by-teacher-id")
     public  ApiResponse<List<GetClassByTeacherIdResponse>> getClassByTeacherId(){
         Integer user_id=AuthRestController.user_id;
         GetClassByTeacherIdResponse obj = new GetClassByTeacherIdResponse();
@@ -105,7 +105,7 @@ public class ClassroomController {
         }
     }
 
-    @PutMapping("/updateClassroom")
+    @PutMapping("/update-classroom")
     public ApiResponse<ClassroomUpdateResponse> updateClassroom(ClassroomUpdateResponse classroomUpdateResponse) {
 
 

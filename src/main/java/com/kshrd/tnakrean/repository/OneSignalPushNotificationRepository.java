@@ -2,7 +2,7 @@ package com.kshrd.tnakrean.repository;
 
 import com.kshrd.tnakrean.model.classmaterials.response.ClassResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.NotificationResponse;
-import com.kshrd.tnakrean.model.user.request.StudentRequest;
+import com.kshrd.tnakrean.model.user.request.UserActivateAccountRequest;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Select;
 public interface OneSignalPushNotificationRepository {
 
     @Insert("INSERT INTO reqee ")
-    Boolean studentRequestToJoinClass(StudentRequest studentRequest);
+    Boolean studentRequestToJoinClass(UserActivateAccountRequest userActivateAccountRequest);
 
     @Select("SELECT")
     Boolean checkingStudentAlreadyRequest(Integer userId);

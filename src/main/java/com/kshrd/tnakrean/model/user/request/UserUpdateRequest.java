@@ -1,4 +1,4 @@
-package com.kshrd.tnakrean.model.classmaterials.request;
+package com.kshrd.tnakrean.model.user.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class StudentUpdateRequest {
+public class UserUpdateRequest {
     @JsonIgnore
     Integer user_id;
     String name;

@@ -15,6 +15,7 @@ public interface ClassroomRepository {
 
     //    Get By ID
     @Select("Select * From classroom where id=#{id}")
+    @Result(property = "classroom_id", column = "id")
     ClassroomResponse getClassroomByID(Integer id);
 
     //    Insert Classroom
@@ -26,13 +27,14 @@ public interface ClassroomRepository {
     @Result(property = "classroom_id", column = "id")
     void updateClassroomDB(@Param("classroom_id") Integer classroom_id, @Param("created_by") Integer created_by, @Param("des") String des, @Param("name") String name);
 
-
     @Select("select exists (select * from classroom where id = #{id} And created_by = #{created_by})")
     Boolean checkIfClassExists( @Param("id") Integer id, @Param("created_by") Integer created_by);
 
-    @Select("SELECT c.id as classroom_id, c2.id as class_id,u.username as teacher_name, c2.class_name as class_name From classroom c " +
-            "inner join class c2 on c.class_id = c2.id inner join users u on c.created_by= u.id " +
-            "where  c.created_by=#{user_id}")
+//    Get Class by Teacher ID
+    @Select("SELECT c.id as classroom_id, c2.id as class_id,u.username as teacher_name, c2.class_name as class_name From classroom c" +
+            " inner join classroom_detail cd on c.id = cd.classroom_id" +
+            " inner join class c2 on cd.class_id = c2.id inner join users u on c.created_by= u.id" +
+            " where  c.created_by=#{user_id}")
     @Result(property = "classroom_id",column = "classroom_id")
     @Result(property = "class_id",column = "class_id")
     @Result(property = "teacher_name",column = "teacher_name")

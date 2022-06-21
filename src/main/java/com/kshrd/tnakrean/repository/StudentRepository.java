@@ -35,8 +35,8 @@ public interface StudentRepository {
 
     //    Select User by class ID
     @Select("SELECT u.id as user_id,u.name,u.username,u.email,u.gender,s.class_id from  student s " +
-            "inner join users u on u.id = s.user_id where s.class_id = #{class_id}")
-    List<GetStudentByClassIDResponse> selectStudentByClassID(@Param("class_id") Integer class_id);
+            "inner join users u on u.id = s.user_id where s.class_id = #{class_id} and s.classroom_id=#{classroom_id}")
+    List<GetStudentByClassIDResponse> selectStudentByClassID(@Param("class_id") Integer class_id, @Param("classroom_id") Integer classroom_id);
 
     @Insert("INSERT INTO student (user_id, classroom_id, class_id) VALUES (#{user_id},#{classroom_id},#{class_id})")
     void insertUserToTableStudent(@Param("user_id") Integer user_id, @Param("classroom_id") Integer classroom_id, @Param("class_id") Integer class_id);
