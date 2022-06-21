@@ -105,7 +105,7 @@ public class ClassMaterialController {
         }
     }
 
-    @GetMapping("/get-by-teacheId/{id}")
+    @GetMapping("/get-by-teacheId/{teacher_id}")
     ApiResponse<List<ClassMaterialResponse>> getAllClassMaterialByTeacherUserId(
             @RequestParam Integer teacher_id) {
         try {
@@ -199,7 +199,7 @@ public class ClassMaterialController {
         }
     }
 
-    @GetMapping("/get-by-classId{id}")
+    @GetMapping("/get-by-classId{class_id}")
     ApiResponse<List<ClassMaterialByClassIdResponse>> getByClassId(@RequestParam Integer class_id) {
         List<ClassMaterialByClassIdResponse> classMaterialByClassIdResponses = classMaterialServiceImp.getByClassId(class_id);
         if (classMaterialByClassIdResponses.isEmpty()) {
@@ -244,9 +244,9 @@ public class ClassMaterialController {
                 .setData(classMaterialResponses);
     }
 
-    @GetMapping("get-by-studentId/{user_id}")
-    ApiResponse<List<ClassMaterialByStudentIdResponse>> getByStudentId(@RequestParam Integer user_id) {
-        List<ClassMaterialByStudentIdResponse> classMaterialResponses = classMaterialServiceImp.getByStudentId(user_id);
+    @GetMapping("get-by-studentId/{student_id}")
+    ApiResponse<List<ClassMaterialByStudentIdResponse>> getByStudentId(@RequestParam Integer student_id) {
+        List<ClassMaterialByStudentIdResponse> classMaterialResponses = classMaterialServiceImp.getByStudentId(student_id);
         if (classMaterialResponses.isEmpty()) {
             return ApiResponse.<List<ClassMaterialByStudentIdResponse>>ok(ClassMaterialByStudentIdResponse.class.getSimpleName())
                     .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
