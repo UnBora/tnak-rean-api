@@ -43,10 +43,11 @@ public class ClassMaterialController {
 
     @PostMapping("insert")
     ApiResponse<ClassMaterialRequest> insertClassMaterial(
-            @RequestBody ClassMaterialRequest classMaterialRequest
+            @RequestBody @Valid ClassMaterialRequest classMaterialRequest
     ) {
         classMaterialServiceImp.insertClassMaterial(classMaterialRequest);
         return ApiResponse.<ClassMaterialRequest>ok(ClassMaterialRequest.class.getSimpleName())
+                .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
                 .setData(classMaterialRequest);
     }
 

@@ -18,5 +18,6 @@ public class ClassMaterialUpdateRequest {
     private int id;
     @NotBlank(message = "{validation.title.notEmpty}")
     private String title;
+    @NotBlank(message = "{validation.description.notEmpty}")
     private String description;
 }
