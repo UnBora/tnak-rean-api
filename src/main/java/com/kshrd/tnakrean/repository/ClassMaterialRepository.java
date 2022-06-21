@@ -23,7 +23,7 @@ public interface ClassMaterialRepository {
     List<ClassMaterialResponse> getAllClassMaterial();
 
     //get by id
-    @Select("SELECT * FROM class_materials WHERE created_by = #{id}")
+    @Select("SELECT * FROM class_materials WHERE id = #{id}")
     @Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class)
     @Result(property = "classMaterialType", column = "class_materials_type_id", one = @One(select = "getClassMaterialTypeById"))
     List<ClassMaterialResponse> getClassMaterials(int id);
@@ -117,9 +117,11 @@ public interface ClassMaterialRepository {
     List<ClassMaterialByClassIdAndMaterialTypeResponse> getByMaterialTypeAndClassId(Integer class_id, Integer class_materials_type_id);
 
     // get by student id
-    @Select("SELECT s.user_id,  d.classroom_id, d.class_id, m.* FROM student s \n" +
-            "JOIN class_materials_detail d ON s.classroom_id = d.classroom_id\n" +
-            "JOIN class_materials m ON m.id = d.class_material_id\n" +
+    @Select("SELECT m.*, s.user_id, s.class_id, s.classroom_id\n" +
+            "FROM class_materials m \n" +
+            "JOIN class_materials_detail d ON m.id = d.class_material_id\n" +
+            "JOIN classroom_detail cd ON d.classroom_id = cd.classroom_id\n" +
+            "JOIN student s ON cd.class_id = s.class_id \n" +
             "WHERE user_id = #{user_id}")
     @Result(property = "student_id", column = "user_id")
     @Result(property = "class_material_id", column = "id")
