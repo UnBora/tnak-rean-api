@@ -80,7 +80,7 @@ public class SubmittedWorkController {
             return ApiResponse.setError(e.getMessage());
         }
     }
-    @GetMapping("get-by-studentId-and-classId")
+    @GetMapping("get-by-studentId-and-classId/{student_id}/{class_id}")
     ApiResponse<List<SubmittedWorkByStudentIdAndClassIdResponse>> getByStudentIdAndClassId(
             @RequestParam Integer student_id,
             @RequestParam Integer class_id
