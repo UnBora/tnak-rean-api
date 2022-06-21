@@ -12,6 +12,7 @@ import com.kshrd.tnakrean.service.serviceImplementation.ClassMaterialImp;
 
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 //@Builder
@@ -51,7 +52,7 @@ public class ClassMaterialController {
 
     @PutMapping("update-title-and-describtion")
     ApiResponse<ClassMaterialResponse> updateClassMaterial(
-            @RequestBody ClassMaterialUpdateRequest classMaterialUpdateRequest
+            @RequestBody @Valid ClassMaterialUpdateRequest classMaterialUpdateRequest
     ) {
         ClassMaterialResponse response = classMaterialRepository.selectResponseAfterUpdate(classMaterialUpdateRequest.getId());
         classMaterialServiceImp.updateClassMaterial(classMaterialUpdateRequest);
@@ -62,7 +63,7 @@ public class ClassMaterialController {
 
     @PutMapping("update-content")
     ApiResponse<ClassMaterialResponse> updateContent(
-            @RequestBody ClassMaterialUpdateContentRequest classMaterialUpdateContentRequest
+            @RequestBody @Valid ClassMaterialUpdateContentRequest classMaterialUpdateContentRequest
     ) {
         ClassMaterialResponse response = classMaterialRepository.selectResponseAfterUpdate(classMaterialUpdateContentRequest.getId());
         classMaterialServiceImp.updateContent(classMaterialUpdateContentRequest);
