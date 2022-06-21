@@ -10,4 +10,16 @@ public interface UserService extends UserDetailsService {
     void resetPassword(String new_password,int user_id);
 
 
+    //    Delete Student User
+    void userDeleteAccount(Integer id);
+
+    //    Student Deactivate account
+    void usertDeactivateAccount(Integer id);
+
+    //    Student activate x
+    void userActivateAccount(Integer id);
+
+
+
+
 }

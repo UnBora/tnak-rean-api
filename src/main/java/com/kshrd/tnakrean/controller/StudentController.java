@@ -78,7 +78,7 @@ public class StudentController {
         Integer user_id = AuthRestController.user_id;
 
         studentServiceImp.studentDeactivateAccount(user_id);
-        return ApiResponse.<StudentRequest>updateSuccess("student class")
+        return ApiResponse.<StudentRequest>updateSuccess(StudentRequest.class.getSimpleName())
                 .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
                 .setData(new StudentRequest(user_id));
 
@@ -89,7 +89,7 @@ public class StudentController {
         Integer user_id = AuthRestController.user_id;
 
         studentServiceImp.studentActivateAccount(user_id);
-        return ApiResponse.<StudentRequest>updateSuccess("student class")
+        return ApiResponse.<StudentRequest>updateSuccess(StudentRequest.class.getSimpleName())
                 .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
                 .setData(new StudentRequest(user_id));
     }
@@ -103,7 +103,7 @@ public class StudentController {
                         .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
                         .setData(getStudentByClassIDResponses);
             } else {
-                return ApiResponse.<List<GetStudentByClassIDResponse>>ok("Get All Student")
+                return ApiResponse.<List<GetStudentByClassIDResponse>>ok(GetStudentByClassIDResponse.class.getSimpleName())
                         .setData(getStudentByClassIDResponses);
             }
         } catch (Exception e) {
