@@ -6,6 +6,7 @@ import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassroomResponse;
 import com.kshrd.tnakrean.model.user.request.TeacherRequest;
 import com.kshrd.tnakrean.model.user.request.TeacherStatusRequest;
+import com.kshrd.tnakrean.model.user.response.TeacherByClassAndClassroomResponse;
 import com.kshrd.tnakrean.model.user.response.TeacherResponse;
 import com.kshrd.tnakrean.service.serviceImplementation.TeacherImpl;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class TeacherController {
         this.teacherImpl = teacherImpl;
     }
 
-    @GetMapping("/getAllTeacher")
+    @GetMapping("/get-all")
     ApiResponse<List<TeacherResponse>> getAllTeacher() {
         List<TeacherResponse> teacherResponses = teacherImpl.getAllTeacher();
         if (teacherResponses.isEmpty()) {
@@ -33,8 +34,25 @@ public class TeacherController {
                 .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
                 .setData(teacherResponses);
     }
+    @GetMapping("/get-by-classId-and-classroomId/{class_id}/{classroom_id}")
+    ApiResponse<List<TeacherByClassAndClassroomResponse>> getByClassAndClassrooms(
+            @RequestParam Integer class_id,
+            @RequestParam Integer classroom_id
+    ) {
+        Integer user_id = AuthRestController.user_id;
+        List<TeacherByClassAndClassroomResponse> teacherResponses = teacherImpl.getByClassAndClassrooms(user_id,class_id, classroom_id);
+        if (teacherResponses.isEmpty()) {
+            return ApiResponse.<List<TeacherByClassAndClassroomResponse>>ok(TeacherByClassAndClassroomResponse.class.getSimpleName())
+                    .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                    .setData(teacherResponses);
+        }
+        return ApiResponse.<List<TeacherByClassAndClassroomResponse>>ok(TeacherByClassAndClassroomResponse.class.getSimpleName())
+                .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+                .setData(teacherResponses);
+    }
 
-    @GetMapping("/getTeacherByUserId/{id}")
+
+    @GetMapping("/get-by-UserId/{id}")
     ApiResponse<TeacherResponse> getTeacherById(Integer user_id) {
         TeacherResponse teacherByIdResponse = teacherImpl.getTeacherById(user_id);
         if (teacherByIdResponse == null) {

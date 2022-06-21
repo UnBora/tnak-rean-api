@@ -36,4 +36,6 @@ public interface ClassMaterialService {
     List<ClassMaterialByClassIdAndMaterialTypeResponse> getByMaterialTypeAndClassId(Integer class_materials_type_id, Integer class_id);
 
     List<ClassMaterialByStudentIdResponse> getByStudentId(Integer user_id);
+
+    List<ClassMaterialByStudentIdClassIdAndClassroomIdResponse> getByUserClassClassroom(Integer user_id, Integer class_id, Integer classroom_id);
 }
