@@ -128,4 +128,16 @@ public interface ClassMaterialRepository {
     @Result(property = "classMaterialType", column = "class_materials_type_id" , one = @One(select = "getClassMaterialTypeById"))
     @Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class)
     List<ClassMaterialByStudentIdResponse> getByStudentId(Integer user_id);
+
+    // get by user_id class_id classroom_id
+    @Select("SELECT m.*, s.user_id, s.class_id, s.classroom_id\n" +
+            "FROM class_materials m \n" +
+            "JOIN class_materials_detail d ON m.id = d.class_material_id\n" +
+            "JOIN classroom_detail cd ON d.classroom_id = cd.classroom_id\n" +
+            "JOIN student s ON cd.class_id = s.class_id \n" +
+            "WHERE d.class_id = #{class_id} AND d.classroom_id = #{classroom_id} AND user_id = #{user_id}")
+    @Result(property = "class_material_id", column = "id")
+    @Result(property = "student_id", column = "user_id")
+    @Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class)
+    List<ClassMaterialByStudentIdClassIdAndClassroomIdResponse> getByUserClassClassroom(Integer user_id, Integer class_id, Integer classroom_id);
 }

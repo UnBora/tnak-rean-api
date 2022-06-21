@@ -87,4 +87,9 @@ public class ClassMaterialImp implements ClassMaterialService {
     public List<ClassMaterialByStudentIdResponse> getByStudentId(Integer user_id) {
         return classMaterialRepository.getByStudentId(user_id);
     }
+
+    @Override
+    public List<ClassMaterialByStudentIdClassIdAndClassroomIdResponse> getByUserClassClassroom(Integer user_id, Integer class_id, Integer classroom_id) {
+        return classMaterialRepository.getByUserClassClassroom(user_id,class_id,classroom_id);
+    }
 }
