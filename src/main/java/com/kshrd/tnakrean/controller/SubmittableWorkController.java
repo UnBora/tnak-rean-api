@@ -9,6 +9,7 @@ import com.kshrd.tnakrean.model.classmaterials.response.UpComingSubmittableWorkR
 import com.kshrd.tnakrean.service.serviceImplementation.SubmittableWorkServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -48,7 +49,7 @@ public class SubmittableWorkController {
 
     @PostMapping("/insert")
     ApiResponse<SubmittableWorkRequest> insertSubmittableWork(
-            @RequestBody SubmittableWorkRequest submittableWorkRequest
+            @RequestBody @Valid SubmittableWorkRequest submittableWorkRequest
     ) {
         submittableWorkService.insertSubmittableWork(submittableWorkRequest);
         return ApiResponse.<SubmittableWorkRequest>ok(SubmittableWorkRequest.class.getSimpleName())
@@ -58,7 +59,7 @@ public class SubmittableWorkController {
 
     @PutMapping("/update-deadline")
     ApiResponse<SubmittableWorkUpdateRequest> updateSubmittableWork(
-            @RequestBody SubmittableWorkUpdateRequest submittableWorkUpdateRequest
+            @RequestBody @Valid SubmittableWorkUpdateRequest submittableWorkUpdateRequest
     ) {
         submittableWorkService.updateSubmittableWork(submittableWorkUpdateRequest);
         return ApiResponse.<SubmittableWorkUpdateRequest>ok(SubmittableWorkUpdateRequest.class.getSimpleName())
