@@ -95,10 +95,10 @@ public class StudentController {
                 .setData(new UserActivateAccountRequest(user_id));
     }
 
-    @GetMapping("/get-by-class-id")
-    public ApiResponse<List<GetStudentByClassIDResponse>> getStudentByClassID(Integer id) {
+    @GetMapping("/get-student-by-class-and-classroom-id")
+    public ApiResponse<List<GetStudentByClassIDResponse>> getStudentByClassID(Integer id, Integer classroom_id) {
         try {
-            List<GetStudentByClassIDResponse> getStudentByClassIDResponses = studentServiceImp.selectStudentByClassID(id);
+            List<GetStudentByClassIDResponse> getStudentByClassIDResponses = studentServiceImp.selectStudentByClassID(id,classroom_id);
             if (getStudentByClassIDResponses.isEmpty()) {
                 return ApiResponse.<List<GetStudentByClassIDResponse>>setError(GetStudentByClassIDResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
