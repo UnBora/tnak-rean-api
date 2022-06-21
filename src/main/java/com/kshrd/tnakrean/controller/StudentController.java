@@ -37,7 +37,7 @@ public class StudentController {
                 return ApiResponse.<List<GetAllStudentResponse>>ok(GetAllStudentResponse.class.getSimpleName()).setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
                         .setData(getAllStudentResponse);
             } else {
-                return ApiResponse.<List<GetAllStudentResponse>>ok("Get All Student")
+                return ApiResponse.<List<GetAllStudentResponse>>ok(GetAllStudentResponse.class.getSimpleName())
                         .setData(getAllStudentResponse);
             }
         } catch (Exception e) {
@@ -46,8 +46,9 @@ public class StudentController {
     }
 
     @GetMapping("/get-by-id")
-    public ApiResponse<GetStudentByIDResponse> getAllStudentFromDBById(Integer user_id) {
+    public ApiResponse<GetStudentByIDResponse> getAllStudentFromDBById() {
         try {
+            Integer user_id =AuthRestController.user_id;
             GetStudentByIDResponse getStudentByIDResponses = studentServiceImp.getStudentById(user_id);
             if (getStudentByIDResponses == null) {
                 return ApiResponse.<GetStudentByIDResponse>setError(GetAllStudentResponse.class.getSimpleName())
