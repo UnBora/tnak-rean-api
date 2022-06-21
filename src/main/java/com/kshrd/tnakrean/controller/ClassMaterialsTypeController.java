@@ -9,6 +9,7 @@ import com.kshrd.tnakrean.repository.ClassMaterialsTypeRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.ClassMaterialsTypeImpl;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -50,7 +51,7 @@ public class ClassMaterialsTypeController {
 
     @PostMapping("/insert")
     ApiResponse<ClassMaterialsTypeRequest> insertClassMaterialsType(
-            @RequestBody ClassMaterialsTypeRequest classMaterialsTypeRequest
+            @RequestBody @Valid ClassMaterialsTypeRequest classMaterialsTypeRequest
     ) {
         classMaterialsTypeImpl.insertClassMaterialsType(classMaterialsTypeRequest);
         return ApiResponse.<ClassMaterialsTypeRequest>ok(ClassMaterialsTypeRequest.class.getSimpleName())
@@ -60,7 +61,7 @@ public class ClassMaterialsTypeController {
 
     @PutMapping("/update")
     ApiResponse<ClassMaterialsTypeUpdateRequest> updateClassMaterialsType(
-            @RequestBody ClassMaterialsTypeUpdateRequest classMaterialsTypeUpdateRequest
+            @RequestBody @Valid ClassMaterialsTypeUpdateRequest classMaterialsTypeUpdateRequest
     ) {
         classMaterialsTypeImpl.updateClassMaterialsType(classMaterialsTypeUpdateRequest);
 
