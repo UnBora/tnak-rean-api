@@ -23,7 +23,7 @@ public class CommentController {
         this.commentServiceImp = commentServiceImp;
         this.commentRepository = commentRepository;
     }
-    @GetMapping("/get-all")
+    @GetMapping("get-all")
     ApiResponse<List<CommentResponse>> getAll(){
         try {
             List<CommentResponse> commentResponses = commentServiceImp.getAll();
@@ -40,7 +40,7 @@ public class CommentController {
             return ApiResponse.setError(e.getMessage());
         }
     }
-    @GetMapping("/get-by_id/{id}")
+    @GetMapping("get-by_id/{id}")
     ApiResponse<CommentResponse> getById(@RequestParam Integer id){
         try {
             CommentResponse commentResponses = commentServiceImp.getById(id);
@@ -57,7 +57,7 @@ public class CommentController {
             return ApiResponse.setError(e.getMessage());
         }
     }
-    @DeleteMapping("/delete-by-id/{id}")
+    @DeleteMapping("delete-by-id/{id}")
     ApiResponse<Boolean> deleteById(@RequestParam Integer id){
         commentServiceImp.deleteById(id);
         return ApiResponse.<Boolean>ok("Comment with id:" +id)

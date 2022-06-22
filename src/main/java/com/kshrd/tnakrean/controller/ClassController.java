@@ -12,6 +12,7 @@ import com.kshrd.tnakrean.service.serviceImplementation.ClassServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -65,7 +66,7 @@ public class ClassController {
     }
 
     @PutMapping("/updateClass")
-    public ApiResponse<ClassUpdateResponse> updateClassName(ClassUpdateResponse classUpdateResponse) {
+    public ApiResponse<ClassUpdateResponse> updateClassName(@RequestBody @Valid ClassUpdateResponse classUpdateResponse) {
         Boolean a = classRepository.checkIfClassExists(classUpdateResponse.getId());
         try {
             classServiceImp.UpdateClass(classUpdateResponse.getId(), classUpdateResponse.getClassname());
