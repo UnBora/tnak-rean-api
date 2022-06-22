@@ -8,7 +8,7 @@ public class BaseMessage {
     public enum Success{
         INSERT_SUCCESS("A Record of " +obj+" has been inserted successfully"),
         UPDATE_SUCCESS("A Record of " +obj+" has  been updated successfully"),
-        SELECT_ALL_RECORD_SUCCESS("All Records of " +obj+" has have been found"),
+        SELECT_ALL_RECORD_SUCCESS("All Records of " +obj+" have been found"),
         SELECT_ONE_RECORD_SUCCESS("A Record of " +obj+" has been found"),
         DELETE_SUCCESS("A Record of " +obj+" has has been deleted successfully");
 

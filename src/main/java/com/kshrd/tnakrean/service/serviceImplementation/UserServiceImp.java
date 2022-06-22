@@ -2,7 +2,9 @@ package com.kshrd.tnakrean.service.serviceImplementation;
 
 import com.kshrd.tnakrean.model.user.request.UserRegisterRequest;
 import com.kshrd.tnakrean.repository.AppUserRepository;
+import com.kshrd.tnakrean.repository.UsersRepository;
 import com.kshrd.tnakrean.service.serviceInter.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,10 +16,13 @@ public class UserServiceImp implements UserService {
     final
     AppUserRepository appUserRepository;
     private final PasswordEncoder passwordEncoder;
+    final UsersRepository usersRepository;
 
-    public UserServiceImp(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder) {
+    @Autowired
+    public UserServiceImp(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder, UsersRepository usersRepository) {
         this.appUserRepository = appUserRepository;
         this.passwordEncoder = passwordEncoder;
+        this.usersRepository = usersRepository;
     }
 
     @Override
@@ -30,6 +35,26 @@ public class UserServiceImp implements UserService {
         appUserRepository.editPassword(new_password, user_id);
     }
 
+    @Override
+    public void userDeleteAccount(Integer id) {
+        usersRepository.deleteAccount(id);
+    }
+
+    @Override
+    public void usertDeactivateAccount(Integer id) {
+        usersRepository.deactivateAccount(id);
+    }
+
+    @Override
+    public void userActivateAccount(Integer id) {
+        usersRepository.activateAccount(id);
+    }
+
+    @Override
+    public void updateprofileByID(Integer user_id, String name, String username, String gender) {
+        usersRepository.updateProfile(user_id, name, username,gender);
+    }
+
 
     @Override
     public void userRegister(UserRegisterRequest userRegisterRequest) {
@@ -37,4 +62,6 @@ public class UserServiceImp implements UserService {
         userRegisterRequest.setPassword(encryptedPassword);
         appUserRepository.userRegister(userRegisterRequest);
     }
+
+
 }

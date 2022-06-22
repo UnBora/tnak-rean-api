@@ -4,6 +4,7 @@ package com.kshrd.tnakrean.service.serviceImplementation;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittableWorkResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.UpComingSubmittableWorkResponse;
 import com.kshrd.tnakrean.repository.SubmittableWorkRepository;
 import com.kshrd.tnakrean.service.serviceInter.SubmittableService;
 import org.springframework.stereotype.Service;
@@ -46,5 +47,10 @@ public class SubmittableWorkServiceImpl implements SubmittableService {
     @Override
     public List<SubmittableWorkResponse> getSubmittableWorkByClassMaterialDetailType(Integer id) {
         return submittableWorkRepository.getSubmittableWorkByClassMaterialDetailType(id);
+    }
+
+    @Override
+    public List<UpComingSubmittableWorkResponse> getUpComingSubmittableWorkByStudentId(Integer studentId, Integer classRoomId, Integer classId) {
+        return submittableWorkRepository.getUpComingSubmittableWorkByStudentId(studentId, classRoomId, classId);
     }
 }

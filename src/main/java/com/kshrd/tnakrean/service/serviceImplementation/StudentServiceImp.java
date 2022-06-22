@@ -52,13 +52,18 @@ public class StudentServiceImp implements StudentService {
     }
 
     @Override
-    public List<GetStudentByClassIDResponse> selectStudentByClassID(Integer class_id) {
-        return studentRepository.selectStudentByClassID(class_id);
+    public List<GetStudentByClassIDResponse> selectStudentByClassID(Integer class_id, Integer classroom_id) {
+        return studentRepository.selectStudentByClassID(class_id, classroom_id);
     }
 
     @Override
     public void insertStudent(Integer users_id, Integer classroom_id, Integer class_id) {
         studentRepository.insertUserToTableStudent(users_id, classroom_id, class_id);
+    }
+
+    @Override
+    public void updateprofileByID(Integer user_id, String name, String username, String gender) {
+        studentRepository.updateProfile(user_id,name, username, gender);
     }
 
 

@@ -8,8 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClassroomResponse {
-    Integer id;
-    Integer class_id;
+    Integer classroom_id;
     Integer created_by;
     String des;
     String name;

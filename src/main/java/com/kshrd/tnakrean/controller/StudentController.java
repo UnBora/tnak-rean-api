@@ -3,8 +3,9 @@ package com.kshrd.tnakrean.controller;
 
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
+import com.kshrd.tnakrean.model.user.request.UserUpdateRequest;
 import com.kshrd.tnakrean.model.user.request.StudentLeaveClassRequest;
-import com.kshrd.tnakrean.model.user.request.StudentRequest;
+import com.kshrd.tnakrean.model.user.request.UserActivateAccountRequest;
 import com.kshrd.tnakrean.model.user.response.GetStudentByClassIDResponse;
 import com.kshrd.tnakrean.model.user.response.GetStudentByIDResponse;
 import com.kshrd.tnakrean.model.user.response.GetAllStudentResponse;
@@ -36,7 +37,7 @@ public class StudentController {
                 return ApiResponse.<List<GetAllStudentResponse>>ok(GetAllStudentResponse.class.getSimpleName()).setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
                         .setData(getAllStudentResponse);
             } else {
-                return ApiResponse.<List<GetAllStudentResponse>>ok("Get All Student")
+                return ApiResponse.<List<GetAllStudentResponse>>ok(GetAllStudentResponse.class.getSimpleName())
                         .setData(getAllStudentResponse);
             }
         } catch (Exception e) {
@@ -45,8 +46,9 @@ public class StudentController {
     }
 
     @GetMapping("/get-by-id")
-    public ApiResponse<GetStudentByIDResponse> getAllStudentFromDBById(Integer user_id) {
+    public ApiResponse<GetStudentByIDResponse> getAllStudentFromDBById() {
         try {
+            Integer user_id =AuthRestController.user_id;
             GetStudentByIDResponse getStudentByIDResponses = studentServiceImp.getStudentById(user_id);
             if (getStudentByIDResponses == null) {
                 return ApiResponse.<GetStudentByIDResponse>setError(GetAllStudentResponse.class.getSimpleName())
@@ -62,47 +64,47 @@ public class StudentController {
 
 
     @DeleteMapping("/delete-account")
-    public ApiResponse<StudentRequest> deleteUser() {
+    public ApiResponse<UserActivateAccountRequest> deleteUser() {
         Integer user_id = AuthRestController.user_id;
 
         studentServiceImp.studentDeleteAccount(user_id);
-        return ApiResponse.<StudentRequest>successDelete("student class")
+        return ApiResponse.<UserActivateAccountRequest>successDelete("student class")
                 .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
-                .setData(new StudentRequest(user_id));
+                .setData(new UserActivateAccountRequest(user_id));
 
     }
 
     @PutMapping("/deactivate-account")
-    public ApiResponse<StudentRequest> deactivateAccount() {
+    public ApiResponse<UserActivateAccountRequest> deactivateAccount() {
         Integer user_id = AuthRestController.user_id;
 
         studentServiceImp.studentDeactivateAccount(user_id);
-        return ApiResponse.<StudentRequest>updateSuccess("student class")
+        return ApiResponse.<UserActivateAccountRequest>updateSuccess(UserActivateAccountRequest.class.getSimpleName())
                 .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                .setData(new StudentRequest(user_id));
+                .setData(new UserActivateAccountRequest(user_id));
 
     }
 
     @PutMapping("/activate-account")
-    public ApiResponse<StudentRequest> activateAccount() {
+    public ApiResponse<UserActivateAccountRequest> activateAccount() {
         Integer user_id = AuthRestController.user_id;
 
         studentServiceImp.studentActivateAccount(user_id);
-        return ApiResponse.<StudentRequest>updateSuccess("student class")
+        return ApiResponse.<UserActivateAccountRequest>updateSuccess(UserActivateAccountRequest.class.getSimpleName())
                 .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                .setData(new StudentRequest(user_id));
+                .setData(new UserActivateAccountRequest(user_id));
     }
 
-    @GetMapping("/get-by-class-id")
-    public ApiResponse<List<GetStudentByClassIDResponse>> getStudentByClassID(Integer id) {
+    @GetMapping("/get-student-by-class-and-classroom-id")
+    public ApiResponse<List<GetStudentByClassIDResponse>> getStudentByClassID(Integer id, Integer classroom_id) {
         try {
-            List<GetStudentByClassIDResponse> getStudentByClassIDResponses = studentServiceImp.selectStudentByClassID(id);
+            List<GetStudentByClassIDResponse> getStudentByClassIDResponses = studentServiceImp.selectStudentByClassID(id,classroom_id);
             if (getStudentByClassIDResponses.isEmpty()) {
                 return ApiResponse.<List<GetStudentByClassIDResponse>>setError(GetStudentByClassIDResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
                         .setData(getStudentByClassIDResponses);
             } else {
-                return ApiResponse.<List<GetStudentByClassIDResponse>>ok("Get All Student")
+                return ApiResponse.<List<GetStudentByClassIDResponse>>ok(GetStudentByClassIDResponse.class.getSimpleName())
                         .setData(getStudentByClassIDResponses);
             }
         } catch (Exception e) {
@@ -148,4 +150,17 @@ public class StudentController {
         }
     }
 
+    @PutMapping("update-profile")
+    public ApiResponse<UserUpdateRequest> studentUpdateProfile(@RequestBody UserUpdateRequest userUpdateRequest) {
+        try {
+            Integer user_id = AuthRestController.user_id;
+            studentServiceImp.updateprofileByID(user_id, userUpdateRequest.getName(), userUpdateRequest.getUsername(), userUpdateRequest.getGender());
+                return ApiResponse.<UserUpdateRequest>ok(UserUpdateRequest.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
+                        .setData(new UserUpdateRequest(user_id, userUpdateRequest.getName(), userUpdateRequest.getUsername(), userUpdateRequest.getGender()));
+
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
 }
