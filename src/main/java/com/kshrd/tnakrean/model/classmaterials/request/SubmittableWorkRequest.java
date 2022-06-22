@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Min;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -12,6 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SubmittableWorkRequest {
+    @Min(value = 1 , message="{validation.MaterialTypeId.notNegative}")
     Integer class_materials_detail_id;
     Date assigned_date;
     Date deadline;

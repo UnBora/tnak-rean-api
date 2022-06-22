@@ -10,6 +10,7 @@ import com.kshrd.tnakrean.repository.SubmittedWorkRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.SubmittedWorkImpl;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -79,7 +80,7 @@ public class SubmittedWorkController {
             return ApiResponse.setError(e.getMessage());
         }
     }
-    @GetMapping("get-by-studentId-and-classId")
+    @GetMapping("get-by-studentId-and-classId/{student_id}/{class_id}")
     ApiResponse<List<SubmittedWorkByStudentIdAndClassIdResponse>> getByStudentIdAndClassId(
             @RequestParam Integer student_id,
             @RequestParam Integer class_id
@@ -99,7 +100,7 @@ public class SubmittedWorkController {
 
     @PostMapping("/insert-student-work")
     ApiResponse<SubmittedWorkStudentWorkRequest> addSubmittedWork(
-            @RequestBody SubmittedWorkStudentWorkRequest submittedWorkStudentWorkRequest
+            @RequestBody @Valid SubmittedWorkStudentWorkRequest submittedWorkStudentWorkRequest
     ) {
         submittedWorkImpl.addSubmittedWork(submittedWorkStudentWorkRequest);
         return ApiResponse.<SubmittedWorkStudentWorkRequest>ok(SubmittedWorkStudentWorkRequest.class.getSimpleName())
@@ -109,7 +110,7 @@ public class SubmittedWorkController {
 
     @PutMapping("/update-student-work")
     ApiResponse<SubmittedWorkUpdateStudentWorkRequest> updateStudentWork(
-            @RequestBody SubmittedWorkUpdateStudentWorkRequest submittedWorkUpdateStudentWorkRequest
+            @RequestBody @Valid SubmittedWorkUpdateStudentWorkRequest submittedWorkUpdateStudentWorkRequest
     ) {
         submittedWorkImpl.updateSubmittedWork(submittedWorkUpdateStudentWorkRequest);
         return ApiResponse.<SubmittedWorkUpdateStudentWorkRequest>ok(SubmittedWorkUpdateStudentWorkRequest.class.getSimpleName())
@@ -119,7 +120,7 @@ public class SubmittedWorkController {
 
     @PutMapping("/update-student-result")
     ApiResponse<SubmittedWorkUpdateResultRequest> updateResult(
-            @RequestBody SubmittedWorkUpdateResultRequest submittedWorkUpdateResultRequest
+            @RequestBody @Valid SubmittedWorkUpdateResultRequest submittedWorkUpdateResultRequest
     ) {
         submittedWorkImpl.updateResult(submittedWorkUpdateResultRequest);
         return ApiResponse.<SubmittedWorkUpdateResultRequest>ok(SubmittedWorkUpdateResultRequest.class.getSimpleName())
@@ -154,7 +155,7 @@ public class SubmittedWorkController {
 
     @PutMapping("update-status")
     ApiResponse<SubmittedWorkUpdateStatusRequest> updateStatus(
-            @RequestBody SubmittedWorkUpdateStatusRequest submittedWorkUpdateStatusRequest) {
+            @RequestBody @Valid SubmittedWorkUpdateStatusRequest submittedWorkUpdateStatusRequest) {
         submittedWorkImpl.updateStatus(submittedWorkUpdateStatusRequest);
         return ApiResponse.<SubmittedWorkUpdateStatusRequest>ok(SubmittedWorkUpdateStatusRequest.class.getSimpleName())
                 .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
