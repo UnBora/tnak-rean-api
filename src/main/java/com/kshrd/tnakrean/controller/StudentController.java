@@ -14,6 +14,7 @@ import com.kshrd.tnakrean.service.serviceImplementation.StudentServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -151,7 +152,7 @@ public class StudentController {
     }
 
     @PutMapping("update-profile")
-    public ApiResponse<UserUpdateRequest> studentUpdateProfile(@RequestBody UserUpdateRequest userUpdateRequest) {
+    public ApiResponse<UserUpdateRequest> studentUpdateProfile(@RequestBody @Valid UserUpdateRequest userUpdateRequest) {
         try {
             Integer user_id = AuthRestController.user_id;
             studentServiceImp.updateprofileByID(user_id, userUpdateRequest.getName(), userUpdateRequest.getUsername(), userUpdateRequest.getGender());

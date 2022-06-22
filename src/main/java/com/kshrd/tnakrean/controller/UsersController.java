@@ -10,6 +10,8 @@ import com.kshrd.tnakrean.service.serviceImplementation.UserServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/v1/user")
 public class UsersController {
@@ -53,7 +55,7 @@ public class UsersController {
     }
 
     @PutMapping("update-profile")
-    public ApiResponse<UserUpdateRequest> studentUpdateProfile(@RequestBody UserUpdateRequest userUpdateRequest) {
+    public ApiResponse<UserUpdateRequest> studentUpdateProfile(@RequestBody @Valid UserUpdateRequest userUpdateRequest) {
         try {
             Integer user_id = AuthRestController.user_id;
             userServiceImp.updateprofileByID(user_id, userUpdateRequest.getName(), userUpdateRequest.getUsername(), userUpdateRequest.getGender());
