@@ -44,20 +44,9 @@ public class SubmittedWorkImpl implements SubmittedWorkService {
     }
 
     @Override
-    public boolean updateResult(SubmittedWorkUpdateResultRequest submittedWorkUpdateResultRequest) {
-        return submittedWorkRepository.updateResult(submittedWorkUpdateResultRequest);
-    }
-
-    @Override
     public void deleteByStudentId(Integer id) {
         submittedWorkRepository.deleteByStudentId(id);
     }
-
-    @Override
-    public boolean updateStatus(SubmittedWorkUpdateStatusRequest submittedWorkUpdateStatusRequest) {
-        return submittedWorkRepository.updateStatus(submittedWorkUpdateStatusRequest);
-    }
-
     @Override
     public List<SubmittedWorkResponse> getById(Integer id) {
         return submittedWorkRepository.getById(id);
@@ -66,5 +55,10 @@ public class SubmittedWorkImpl implements SubmittedWorkService {
     @Override
     public List<SubmittedWorkByStudentIdAndClassIdResponse> getByStudentIdAndClassId(Integer student_id, Integer class_id) {
         return submittedWorkRepository.getByStudentIdAndClassId(student_id,class_id);
+    }
+
+    @Override
+    public Boolean insertScore(SubmittedWorkStudentScoreRequest submittedWorkStudentScoreRequest) {
+        return submittedWorkRepository.insertScore(submittedWorkStudentScoreRequest);
     }
 }

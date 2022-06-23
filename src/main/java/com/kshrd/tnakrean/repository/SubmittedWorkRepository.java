@@ -24,15 +24,11 @@ public interface SubmittedWorkRepository {
     @Result(property = "studentResult", column = "student_result", typeHandler = JsonTypeHandler.class)
     List<SubmittedWorkResponse> getSubmittedByStudentId(int studentId);
 
-    // insert student work
-    @Insert("INSERT INTO submitted_work(student_id,submittable_work_id,submitted_date,student_work)" +
-            "VALUES(#{submWork.student_id},#{submWork.submittable_work_id},#{submWork.submitted_date},#{submWork.studentWork,jdbcType=OTHER, typeHandler = com.kshrd.tnakrean.configuration.JsonTypeHandler})")
+    // update student work
+    @Insert("INSERT INTO submitted_work(student_id,status,submittable_work_id,submitted_date,student_work)" +
+            "VALUES(#{submWork.student_id},0,#{submWork.submittable_work_id},#{submWork.submitted_date},#{submWork.studentWork,jdbcType=OTHER, typeHandler = com.kshrd.tnakrean.configuration.JsonTypeHandler})")
     @Result(property = "studentWork", column = "student_work", typeHandler = JsonTypeHandler.class)
     boolean addSubmittedWork(@Param("submWork") SubmittedWorkStudentWorkRequest submittedWorkStudentWorkRequest);
-
-    // update result
-    @Update("UPDATE submitted_work SET student_result = #{update.studentResult, jdbcType=OTHER, typeHandler = com.kshrd.tnakrean.configuration.JsonTypeHandler} WHERE id = #{update.id}")
-    boolean updateResult(@Param("update") SubmittedWorkUpdateResultRequest submittedWorkUpdateResultRequest);
 
     @Result(property = "studentResult", column = "student_result", typeHandler = JsonTypeHandler.class)
 
@@ -45,10 +41,6 @@ public interface SubmittedWorkRepository {
     //delete by id
     @Delete("DELETE FROM submitted_work WHERE id = #{id}")
     void deleteSubmittedWorkId(int id);
-
-    //update status
-    @Update("UPDATE submitted_work SET status = #{update.status} WHERE id = #{update.id}")
-    boolean updateStatus(@Param("update") SubmittedWorkUpdateStatusRequest submittedWorkUpdateStatusRequest);
 
     // delete by student id
     @Delete("DELETE FROM submitted_work WHERE student_id = #{id}")
@@ -70,4 +62,9 @@ public interface SubmittedWorkRepository {
     @Result(property = "studentWork", column = "student_work", typeHandler = JsonTypeHandler.class)
     @Result(property = "studentResult", column = "student_result", typeHandler = JsonTypeHandler.class)
     List<SubmittedWorkByStudentIdAndClassIdResponse> getByStudentIdAndClassId(Integer student_id, Integer class_id);
+
+    // update score
+    @Update("UPDATE submitted_work SET status = 2, student_score = #{student_score} " +
+            "WHERE id = #{id} AND student_id = #{student_id}")
+    Boolean insertScore(SubmittedWorkStudentScoreRequest submittedWorkStudentScoreRequest);
 }
