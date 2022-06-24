@@ -67,7 +67,7 @@ public class UsersController {
             if(isMatch){
                 userServiceImp.userDeactivateAccount(user_id);
                 return ApiResponse.<UserDeactivateAccountRequest>successDelete(UserDeleteAccountRequest.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
+                        .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
                         .setData(new UserDeactivateAccountRequest(user_id));
             }else if (isMatch==false){
                 return ApiResponse.<UserDeactivateAccountRequest>successDelete(UserDeleteAccountRequest.class.getSimpleName())
@@ -75,7 +75,7 @@ public class UsersController {
                         .setData(new UserDeactivateAccountRequest(user_id));
             }else {
                 return ApiResponse.<UserDeactivateAccountRequest>setError(UserDeleteAccountRequest.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.DELETE_ERROR.getMessage())
+                        .setResponseMsg(BaseMessage.Error.UPDATE_ERROR.getMessage())
                         .setData(new UserDeactivateAccountRequest(user_id));
             }
         }catch (Exception e){
@@ -101,7 +101,7 @@ public class UsersController {
                         .setData(new UserActivateAccountRequest(user_id));
             }else {
                 return ApiResponse.<UserActivateAccountRequest>setError(UserDeleteAccountRequest.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.DELETE_ERROR.getMessage())
+                        .setResponseMsg(BaseMessage.Error.UPDATE_ERROR.getMessage())
                         .setData(new UserActivateAccountRequest(user_id));
             }
         }catch (Exception e){
