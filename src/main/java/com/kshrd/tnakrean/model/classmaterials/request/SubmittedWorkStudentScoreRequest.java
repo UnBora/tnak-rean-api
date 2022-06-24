@@ -20,6 +20,6 @@ public class SubmittedWorkStudentScoreRequest {
     @Min(value = 1 , message="{validation.studentId.notNegative}")
     private Integer student_id;
     @Min (message = "{validation.score.notEmpty}", value = 0)
-    private Integer student_score;
+    private Float student_score;
 
 }

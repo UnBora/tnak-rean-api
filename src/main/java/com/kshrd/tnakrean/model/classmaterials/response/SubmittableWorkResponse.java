@@ -17,4 +17,5 @@ public class SubmittableWorkResponse {
     Date assigned_date;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     Date deadline;
+    Float score;
 }

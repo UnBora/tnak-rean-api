@@ -25,7 +25,7 @@ public class SubmittedWorkByStudentIdAndClassIdResponse {
     private Date deadline;
 
     private StudentWork studentWork; // Json
-    private StudentResult studentResult; // Json
+    private Float student_score;
 
     private Integer submittable_work_id;
     private Integer class_materials_detail_id;
