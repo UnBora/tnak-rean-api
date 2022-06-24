@@ -5,12 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Min;
 import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class SubmittableWorkResponse {
+    @Min(value = 1 , message="{validation.studentId.notNegative}")
     Integer id;
     Integer class_materials_detail_id;
     Integer classroom_id;
