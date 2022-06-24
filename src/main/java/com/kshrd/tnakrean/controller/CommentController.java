@@ -5,6 +5,7 @@ import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.request.CommentInsertRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.CommentUpdateRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.CommentByClassClassroomStudentResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.CommentResponse;
 import com.kshrd.tnakrean.repository.CommentRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.CommentServiceImp;
@@ -40,7 +41,7 @@ public class CommentController {
             return ApiResponse.setError(e.getMessage());
         }
     }
-    @GetMapping("get-by_id/{id}")
+    @GetMapping("get-by-id/{id}")
     ApiResponse<CommentResponse> getById(@RequestParam Integer id){
         try {
             CommentResponse commentResponses = commentServiceImp.getById(id);
@@ -51,6 +52,27 @@ public class CommentController {
             }
             return ApiResponse.<CommentResponse>ok(CommentResponse.class.getSimpleName())
                     .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
+                    .setData(commentResponses);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
+    @GetMapping("get-by-claaId-classroomId-studentId/{claaId}/{classroomId}/{studentId}")
+    ApiResponse<List<CommentByClassClassroomStudentResponse>> getByClassClassroomStudent(
+            @RequestParam Integer classroom_id,
+            @RequestParam Integer class_id,
+            @RequestParam Integer student_id
+            ){
+        try {
+            List <CommentByClassClassroomStudentResponse> commentResponses = commentServiceImp.getByClassClassroomStudent(classroom_id,class_id,student_id);
+            if (commentResponses.isEmpty()){
+                return ApiResponse.<List<CommentByClassClassroomStudentResponse>>ok(CommentByClassClassroomStudentResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setData(null);
+            }
+            return ApiResponse.<List<CommentByClassClassroomStudentResponse>>ok(CommentByClassClassroomStudentResponse.class.getSimpleName())
+                    .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
                     .setData(commentResponses);
         } catch (Exception e) {
             System.out.println(e.getMessage());

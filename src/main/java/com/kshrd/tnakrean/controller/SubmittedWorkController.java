@@ -107,6 +107,15 @@ public class SubmittedWorkController {
                 .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
                 .setData(submittedWorkStudentWorkRequest);
     }
+    @PutMapping("/update-student-score")
+    ApiResponse<SubmittedWorkStudentScoreRequest> insertScore(
+            @RequestBody @Valid SubmittedWorkStudentScoreRequest submittedWorkStudentScoreRequest
+    ) {
+        submittedWorkImpl.insertScore(submittedWorkStudentScoreRequest);
+        return ApiResponse.<SubmittedWorkStudentScoreRequest>ok(SubmittedWorkStudentScoreRequest.class.getSimpleName())
+                .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
+                .setData(submittedWorkStudentScoreRequest);
+    }
 
     @PutMapping("/update-student-work")
     ApiResponse<SubmittedWorkUpdateStudentWorkRequest> updateStudentWork(
@@ -116,16 +125,6 @@ public class SubmittedWorkController {
         return ApiResponse.<SubmittedWorkUpdateStudentWorkRequest>ok(SubmittedWorkUpdateStudentWorkRequest.class.getSimpleName())
                 .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
                 .setData(submittedWorkUpdateStudentWorkRequest);
-    }
-
-    @PutMapping("/update-student-result")
-    ApiResponse<SubmittedWorkUpdateResultRequest> updateResult(
-            @RequestBody @Valid SubmittedWorkUpdateResultRequest submittedWorkUpdateResultRequest
-    ) {
-        submittedWorkImpl.updateResult(submittedWorkUpdateResultRequest);
-        return ApiResponse.<SubmittedWorkUpdateResultRequest>ok(SubmittedWorkUpdateResultRequest.class.getSimpleName())
-                .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                .setData(submittedWorkUpdateResultRequest);
     }
 
     @DeleteMapping("/delete-by-Id/{id}")
@@ -153,12 +152,4 @@ public class SubmittedWorkController {
                 .setData(true);
     }
 
-    @PutMapping("update-status")
-    ApiResponse<SubmittedWorkUpdateStatusRequest> updateStatus(
-            @RequestBody @Valid SubmittedWorkUpdateStatusRequest submittedWorkUpdateStatusRequest) {
-        submittedWorkImpl.updateStatus(submittedWorkUpdateStatusRequest);
-        return ApiResponse.<SubmittedWorkUpdateStatusRequest>ok(SubmittedWorkUpdateStatusRequest.class.getSimpleName())
-                .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                .setData(submittedWorkUpdateStatusRequest);
-    }
 }
