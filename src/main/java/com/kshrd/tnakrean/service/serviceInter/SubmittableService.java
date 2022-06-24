@@ -22,4 +22,5 @@ public interface SubmittableService {
 
     List<UpComingSubmittableWorkResponse> getUpComingSubmittableWorkByStudentId(Integer studentId, Integer classRoomId, Integer classId);
 
+    List<SubmittableWorkResponse> getByClassIdAndClassId(Integer classroom_id, Integer class_id);
 }

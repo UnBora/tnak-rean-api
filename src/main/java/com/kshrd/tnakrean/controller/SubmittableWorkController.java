@@ -100,4 +100,27 @@ public class SubmittableWorkController {
         }
     }
 
+    @GetMapping("get-by-classroomId-and-classId/{classroom_id}/{class_id}")
+    ApiResponse<List<SubmittableWorkResponse>> getByClassIdAndClassId(
+            @RequestParam Integer classroom_id,
+            @RequestParam Integer class_id
+
+    ) {
+        try {
+            List<SubmittableWorkResponse> submittableWorkResponses = submittableWorkService.getByClassIdAndClassId(classroom_id, class_id);
+            if (submittableWorkResponses.isEmpty()) {
+                return ApiResponse.<List<SubmittableWorkResponse>>ok(SubmittableWorkResponse.class
+                                .getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
+            }
+            return ApiResponse.<List<SubmittableWorkResponse>>ok(SubmittableWorkResponse.class
+                            .getSimpleName())
+                    .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+                    .setData(submittableWorkResponses);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
+
 }

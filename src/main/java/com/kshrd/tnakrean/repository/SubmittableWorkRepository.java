@@ -53,4 +53,7 @@ public interface SubmittableWorkRepository {
     @Result(property = "content", column = "content", typeHandler = JsonTypeHandler.class)
     List<UpComingSubmittableWorkResponse> getUpComingSubmittableWorkByStudentId(Integer studentId, Integer classRoomId, Integer classId);
 
+    // get By ClassId And ClassId
+    @Select("SELECT * FROM submittable_work WHERE class_id = #{class_id} AND classroom_id = #{classroom_id}")
+    List<SubmittableWorkResponse> getByClassIdAndClassId(Integer classroom_id, Integer class_id);
 }

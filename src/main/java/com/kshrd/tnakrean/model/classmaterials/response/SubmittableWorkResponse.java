@@ -13,6 +13,8 @@ import java.util.Date;
 public class SubmittableWorkResponse {
     Integer id;
     Integer class_materials_detail_id;
+    Integer classroom_id;
+    Integer class_id;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     Date assigned_date;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
