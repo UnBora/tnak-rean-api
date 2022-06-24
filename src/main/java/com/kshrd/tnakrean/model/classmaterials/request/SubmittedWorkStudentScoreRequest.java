@@ -8,18 +8,18 @@ import lombok.NoArgsConstructor;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SubmittedWorkStudentWorkRequest {
+public class SubmittedWorkStudentScoreRequest {
+    @Min(value = 1 , message="{validation.id.notNegative}")
+    private Integer id;
     @Min(value = 1 , message="{validation.studentId.notNegative}")
     private Integer student_id;
-    @Min(value = 1 , message="{validation.submittableWorkId.notNegative}")
-    private Integer submittable_work_id;
-//    @JsonFormat(pattern="yyyy-MM-dd")
-    private LocalDateTime submitted_date;
-    @Valid
-    private StudentWork studentWork; // Json
+    @Min (message = "{validation.score.notEmpty}", value = 0)
+    private Integer student_score;
+
 }

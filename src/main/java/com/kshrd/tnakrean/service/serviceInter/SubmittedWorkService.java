@@ -1,7 +1,7 @@
 package com.kshrd.tnakrean.service.serviceInter;
 
+import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkStudentScoreRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkStudentWorkRequest;
-import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkUpdateResultRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkUpdateStatusRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkUpdateStudentWorkRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkByStudentIdAndClassIdResponse;
@@ -20,13 +20,11 @@ public interface SubmittedWorkService {
 
    void deleteSubmittedWorkId(int id);
 
-   boolean updateResult(SubmittedWorkUpdateResultRequest submittedWorkUpdateResultRequest);
-
    void deleteByStudentId(Integer id);
-
-   boolean updateStatus(SubmittedWorkUpdateStatusRequest submittedWorkUpdateStatusRequest);
 
    List<SubmittedWorkResponse> getById(Integer id);
 
    List<SubmittedWorkByStudentIdAndClassIdResponse> getByStudentIdAndClassId(Integer student_id, Integer class_id);
+
+   Boolean insertScore(SubmittedWorkStudentScoreRequest submittedWorkStudentScoreRequest);
 }
