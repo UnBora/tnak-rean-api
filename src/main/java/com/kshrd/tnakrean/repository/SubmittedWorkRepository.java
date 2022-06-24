@@ -2,6 +2,7 @@ package com.kshrd.tnakrean.repository;
 
 import com.kshrd.tnakrean.configuration.JsonTypeHandler;
 import com.kshrd.tnakrean.model.classmaterials.request.*;
+import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkByMaterialIdResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkByStudentIdAndClassIdResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkResponse;
 import org.apache.ibatis.annotations.*;
@@ -60,11 +61,19 @@ public interface SubmittedWorkRepository {
            // "WHERE student_id = #{student_id} AND class_id = #{class_id}")
     @Result(property = "submitted_work_id", column = "id")
     @Result(property = "studentWork", column = "student_work", typeHandler = JsonTypeHandler.class)
-    @Result(property = "studentResult", column = "student_result", typeHandler = JsonTypeHandler.class)
     List<SubmittedWorkByStudentIdAndClassIdResponse> getByStudentIdAndClassId(Integer student_id, Integer class_id);
 
     // update score
     @Update("UPDATE submitted_work SET status = 2, student_score = #{student_score} " +
             "WHERE id = #{id} AND student_id = #{student_id}")
     Boolean insertScore(SubmittedWorkStudentScoreRequest submittedWorkStudentScoreRequest);
+
+    // get By ClassMaterialId
+    @Select("SELECT w.*, d.class_material_id  FROM submitted_work w " +
+            "JOIN submittable_work a ON w.submittable_work_id = a.id " +
+            "JOIN class_materials_detail d ON d.id = a.class_materials_detail_id " +
+            "JOIN class_materials c ON c.id = d.class_material_id " +
+            "WHERE class_material_id = #{class_material_id}")
+    @Result(property = "studentWork", column = "student_work", typeHandler = JsonTypeHandler.class)
+    List<SubmittedWorkByMaterialIdResponse> getByClassMaterialId(Integer class_material_id);
 }

@@ -4,6 +4,7 @@ import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkStudentScore
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkStudentWorkRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkUpdateStatusRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkUpdateStudentWorkRequest;
+import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkByMaterialIdResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkByStudentIdAndClassIdResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkResponse;
 
@@ -25,4 +26,6 @@ public interface SubmittedWorkService {
    List<SubmittedWorkByStudentIdAndClassIdResponse> getByStudentIdAndClassId(Integer student_id, Integer class_id);
 
    Boolean insertScore(SubmittedWorkStudentScoreRequest submittedWorkStudentScoreRequest);
+
+   List<SubmittedWorkByMaterialIdResponse> getByClassMaterialId(Integer class_material_id);
 }

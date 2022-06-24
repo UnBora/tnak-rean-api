@@ -4,6 +4,7 @@ import com.kshrd.tnakrean.model.SubmittableWork;
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.request.*;
+import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkByMaterialIdResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkByStudentIdAndClassIdResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkResponse;
 import com.kshrd.tnakrean.repository.SubmittedWorkRepository;
@@ -37,11 +38,12 @@ public class SubmittedWorkController {
             return ApiResponse.<List<SubmittedWorkResponse>>ok(SubmittedWorkResponse.class.getSimpleName())
                     .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
                     .setData(submittedWorkResponse);
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return ApiResponse.setError(e.getMessage());
         }
     }
+
     @GetMapping("/get-by-id/{id}")
     ApiResponse<List<SubmittedWorkResponse>> getById(@RequestParam Integer id) {
         try {
@@ -55,14 +57,14 @@ public class SubmittedWorkController {
             return ApiResponse.<List<SubmittedWorkResponse>>ok(SubmittedWorkResponse.class.getSimpleName())
                     .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
                     .setData(submittedWorkResponse);
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return ApiResponse.setError(e.getMessage());
         }
     }
 
     @GetMapping("get-by-studentId/{id}")
-    ApiResponse<List<SubmittedWorkResponse>> getSubmittedByStudentId(@RequestParam Integer studentId)  throws IllegalStateException {
+    ApiResponse<List<SubmittedWorkResponse>> getSubmittedByStudentId(@RequestParam Integer studentId) throws IllegalStateException {
         if (studentId <= 0) throw new IllegalStateException("studentId cannot be less than 1");
         try {
             List<SubmittedWorkResponse> submittedWorkResponses = submittedWorkImpl.getSubmittedByStudentId(studentId);
@@ -75,18 +77,19 @@ public class SubmittedWorkController {
                             .getSimpleName())
                     .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
                     .setData(submittedWorkResponses);
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return ApiResponse.setError(e.getMessage());
         }
     }
+
     @GetMapping("get-by-studentId-and-classId/{student_id}/{class_id}")
     ApiResponse<List<SubmittedWorkByStudentIdAndClassIdResponse>> getByStudentIdAndClassId(
             @RequestParam Integer student_id,
             @RequestParam Integer class_id
 
-    ){
-        List<SubmittedWorkByStudentIdAndClassIdResponse> submittedWorkResponses = submittedWorkImpl.getByStudentIdAndClassId(student_id,class_id);
+    ) {
+        List<SubmittedWorkByStudentIdAndClassIdResponse> submittedWorkResponses = submittedWorkImpl.getByStudentIdAndClassId(student_id, class_id);
         if (submittedWorkResponses.isEmpty()) {
             return ApiResponse.<List<SubmittedWorkByStudentIdAndClassIdResponse>>ok(SubmittedWorkResponse.class
                             .getSimpleName())
@@ -107,6 +110,7 @@ public class SubmittedWorkController {
                 .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
                 .setData(submittedWorkStudentWorkRequest);
     }
+
     @PutMapping("/update-student-score")
     ApiResponse<SubmittedWorkStudentScoreRequest> insertScore(
             @RequestBody @Valid SubmittedWorkStudentScoreRequest submittedWorkStudentScoreRequest
@@ -128,7 +132,7 @@ public class SubmittedWorkController {
     }
 
     @DeleteMapping("/delete-by-Id/{id}")
-    ApiResponse<Boolean> deleteSubmittedWorkId(@RequestParam  Integer id) {
+    ApiResponse<Boolean> deleteSubmittedWorkId(@RequestParam Integer id) {
         submittedWorkImpl.deleteSubmittedWorkId(id);
         if (id == 0) {
             return ApiResponse.<Boolean>ok(SubmittedWorkResponse.class.getSimpleName())
@@ -140,4 +144,21 @@ public class SubmittedWorkController {
                 .setData(true);
     }
 
+    @GetMapping("get-by-classMaterialId/{classMaterialId}")
+    ApiResponse<List<SubmittedWorkByMaterialIdResponse>> getByClassMaterialId(@RequestParam Integer class_material_id) {
+        try {
+            List<SubmittedWorkByMaterialIdResponse> submittedWorkResponses = submittedWorkImpl.getByClassMaterialId(class_material_id);
+            if (submittedWorkResponses.isEmpty()) {
+                return ApiResponse.<List<SubmittedWorkByMaterialIdResponse>>ok(SubmittedWorkResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setData(submittedWorkResponses);
+            }
+            return ApiResponse.<List<SubmittedWorkByMaterialIdResponse>>ok(SubmittedWorkByMaterialIdResponse.class.getSimpleName())
+                    .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+                    .setData(submittedWorkResponses);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
 }

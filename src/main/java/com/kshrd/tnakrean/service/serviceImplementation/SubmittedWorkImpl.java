@@ -1,6 +1,7 @@
 package com.kshrd.tnakrean.service.serviceImplementation;
 
 import com.kshrd.tnakrean.model.classmaterials.request.*;
+import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkByMaterialIdResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkByStudentIdAndClassIdResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkResponse;
 import com.kshrd.tnakrean.repository.SubmittedWorkRepository;
@@ -56,5 +57,10 @@ public class SubmittedWorkImpl implements SubmittedWorkService {
     @Override
     public Boolean insertScore(SubmittedWorkStudentScoreRequest submittedWorkStudentScoreRequest) {
         return submittedWorkRepository.insertScore(submittedWorkStudentScoreRequest);
+    }
+
+    @Override
+    public List<SubmittedWorkByMaterialIdResponse> getByClassMaterialId(Integer class_material_id) {
+        return submittedWorkRepository.getByClassMaterialId(class_material_id);
     }
 }
