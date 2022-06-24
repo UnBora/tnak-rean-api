@@ -128,26 +128,14 @@ public class SubmittedWorkController {
     }
 
     @DeleteMapping("/delete-by-Id/{id}")
-    ApiResponse<?> deleteSubmittedWorkId(@RequestParam  Integer id) {
+    ApiResponse<Boolean> deleteSubmittedWorkId(@RequestParam  Integer id) {
         submittedWorkImpl.deleteSubmittedWorkId(id);
         if (id == 0) {
-            return ApiResponse.ok(SubmittedWorkResponse.class.getSimpleName())
+            return ApiResponse.<Boolean>ok(SubmittedWorkResponse.class.getSimpleName())
                     .setResponseMsg(BaseMessage.Error.DELETE_ERROR.getMessage())
                     .setData(false);
         }
-        return ApiResponse.successDelete(SubmittedWorkResponse.class.getSimpleName())
-                .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
-                .setData(true);
-    }
-    @DeleteMapping("/delete-by-studentId/{id}")
-    ApiResponse<Boolean> deleteByStudentId(@RequestParam Integer student_id){
-        submittedWorkImpl.deleteByStudentId(student_id);
-        if (student_id == 0){
-            return ApiResponse.<Boolean>ok("Submitted Work")
-                    .setResponseMsg(BaseMessage.Error.DELETE_ERROR.getMessage())
-                    .setData(false);
-        }
-        return ApiResponse.<Boolean>ok("Submitted Work")
+        return ApiResponse.<Boolean>ok(SubmittedWorkResponse.class.getSimpleName())
                 .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
                 .setData(true);
     }

@@ -39,14 +39,10 @@ public class SubmittedWorkImpl implements SubmittedWorkService {
     }
 
     @Override
-    public void deleteSubmittedWorkId(int id) {
-        submittedWorkRepository.deleteSubmittedWorkId(id);
+    public Boolean deleteSubmittedWorkId(int id) {
+      return submittedWorkRepository.deleteSubmittedWorkId(id);
     }
 
-    @Override
-    public void deleteByStudentId(Integer id) {
-        submittedWorkRepository.deleteByStudentId(id);
-    }
     @Override
     public List<SubmittedWorkResponse> getById(Integer id) {
         return submittedWorkRepository.getById(id);

@@ -18,9 +18,7 @@ public interface SubmittedWorkService {
 
    boolean updateSubmittedWork(SubmittedWorkUpdateStudentWorkRequest submittedWorkUpdateStudentWorkRequest);
 
-   void deleteSubmittedWorkId(int id);
-
-   void deleteByStudentId(Integer id);
+   Boolean deleteSubmittedWorkId(int id);
 
    List<SubmittedWorkResponse> getById(Integer id);
 

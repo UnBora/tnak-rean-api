@@ -22,7 +22,8 @@ public interface SubmittableWorkRepository {
     SubmittableWorkResponse getById(int id);
 
     // insert
-    @Insert("INSERT INTO submittable_work (class_materials_detail_id,assigned_date,deadline) " + "VALUES (#{submittableWork.class_materials_detail_id}, #{submittableWork.assigned_date}, #{submittableWork.deadline})")
+    @Insert("INSERT INTO submittable_work (class_materials_detail_id,assigned_date,deadline,classroom_id,class_id,score) " +
+            "VALUES (#{submittableWork.class_materials_detail_id}, #{submittableWork.assigned_date}, #{submittableWork.deadline},#{submittableWork.classroom_id},#{submittableWork.class_id},#{submittableWork.score})")
     boolean insertSubmittableWork(@Param("submittableWork") SubmittableWorkRequest submittableWorkRequest);
 
     // update deadline
@@ -31,7 +32,7 @@ public interface SubmittableWorkRepository {
 
     //delete
     @Delete("DELETE FROM submittable_work WHERE id = #{id}")
-    void delete(int id);
+    Boolean delete(int id);
 
     // get by ClassMaterialDetailType
     @Select("SELECT * FROM submittable_work WHERE class_materials_detail_id = #{id}")

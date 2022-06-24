@@ -68,10 +68,11 @@ public class SubmittableWorkController {
     }
 
     @DeleteMapping("/delete-by-id/{id}")
-    ApiResponse<?> delete(int id) {
+    ApiResponse<Boolean> delete(@RequestParam int id) {
         submittableWorkService.delete(id);
-        return ApiResponse.ok("Submittable Work")
-                .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage());
+        return ApiResponse.<Boolean>ok("Submittable Work")
+                .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
+                .setData(true);
     }
 
     @GetMapping("/getSubmittableWorkByClassMaterialDetailType/{id}")

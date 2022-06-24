@@ -8,7 +8,7 @@ import com.kshrd.tnakrean.model.classmaterials.response.UpComingSubmittableWorkR
 import java.util.List;
 public interface SubmittableService {
 
-    void delete(int id);
+    Boolean delete(int id);
 
     List<SubmittableWorkResponse> getAll();
 

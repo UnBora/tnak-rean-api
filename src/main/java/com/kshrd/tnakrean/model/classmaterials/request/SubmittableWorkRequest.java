@@ -15,6 +15,12 @@ import java.util.Date;
 public class SubmittableWorkRequest {
     @Min(value = 1 , message="{validation.MaterialTypeId.notNegative}")
     Integer class_materials_detail_id;
+    @Min(value = 1 , message="{validation.classroomId.notNegative}")
+    Integer classroom_id;
+    @Min(value = 1 , message="{validation.classId.notNegative}")
+    Integer class_id;
     Date assigned_date;
     Date deadline;
+    @Min(value = 0 , message="{validation.score.notNegative}")
+    Float score;
 }

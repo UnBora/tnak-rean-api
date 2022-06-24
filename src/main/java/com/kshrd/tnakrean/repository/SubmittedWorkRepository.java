@@ -40,7 +40,7 @@ public interface SubmittedWorkRepository {
 
     //delete by id
     @Delete("DELETE FROM submitted_work WHERE id = #{id}")
-    void deleteSubmittedWorkId(int id);
+    Boolean deleteSubmittedWorkId(int id);
 
     // delete by student id
     @Delete("DELETE FROM submitted_work WHERE student_id = #{id}")

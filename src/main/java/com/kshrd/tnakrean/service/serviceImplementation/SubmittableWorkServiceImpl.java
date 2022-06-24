@@ -40,8 +40,8 @@ public class SubmittableWorkServiceImpl implements SubmittableService {
     }
 
     @Override
-    public void delete(int id) {
-        submittableWorkRepository.delete(id);
+    public Boolean delete(int id) {
+        return submittableWorkRepository.delete(id);
     }
 
     @Override
