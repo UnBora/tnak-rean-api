@@ -23,15 +23,14 @@ public interface NotificationRepository {
 //    List<NotificationResponse> notificationResponseList(int id);
 
 
-    @Select("SELECT * FROM notification_type WHERE id = #{id}")
-    NotificationTypes getNotificationTypeById(int id);
-
-    @Select("SELECT * FROM notification n INNER JOIN notification_type nt on n.notification_type_id = " +
-            " nt.id INNER JOIN users u on u.id = n.received_id WHERE u.id = #{id}")
+    @Select("SELECT nt.id,n.content, n.received_date, nt.title, nt.action_on,nt.type, n.received_id" +
+            " from notification n" +
+            " JOIN notification_type nt on n.notification_type_id = nt.id" +
+            " JOIN notification_detail nd on n.id = nd.noti_id" +
+            " JOIN class_materials_detail cmd on nd.action_id = cmd.id" +
+            " WHERE n.received_id = #{id}")
     @Result(property = "timestamp", column = "received_date")
     @Result(property = "content", column = "content", typeHandler = JsonTypeHandler.class)
-    @Result(property = "notificationTypes", column = "notification_type_id",
-            one = @One(select = "getNotificationTypeById"))
     List<NotificationResponse> getNotificationByUserId(Integer id);
 
 }
