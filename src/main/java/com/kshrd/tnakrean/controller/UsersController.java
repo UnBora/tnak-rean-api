@@ -67,9 +67,9 @@ public class UsersController {
                     }
                 }else {
                     return ApiResponse.<UserDeleteAccountRequest>setError(UserDeleteAccountRequest.class.getSimpleName())
-                            .setResponseMsg("You Cannot delete the account that deleted!");
+                            .setResponseMsg("You Cannot delete the account that deleted!")
+                            .setData(new UserDeleteAccountRequest(userId));
                 }
-
             }else {
                 return ApiResponse.<UserDeleteAccountRequest>setError(UserDeleteAccountRequest.class.getSimpleName())
                         .setResponseMsg("Unauthorized!");
@@ -110,7 +110,8 @@ public class UsersController {
                     }
                 }else if (status.equals(1)){
                     return ApiResponse.<UserDeactivateAccountRequest>successDelete(UserDeleteAccountRequest.class.getSimpleName())
-                            .setResponseMsg("You cannot deactivate the deactivate account!");
+                            .setResponseMsg("You cannot deactivate the deactivate account!")
+                            .setData(new UserDeactivateAccountRequest(userId));
                 }else {
                     return ApiResponse.<UserDeactivateAccountRequest>successDelete(UserDeleteAccountRequest.class.getSimpleName())
                             .setResponseMsg("This account was Deleted!");
@@ -156,11 +157,13 @@ public class UsersController {
                     }
                 }else if(status.equals(2)){
                     return ApiResponse.<UserActivateAccountRequest>setError(UserDeleteAccountRequest.class.getSimpleName())
-                            .setResponseMsg("You cannot activate the activate account!");
+                            .setResponseMsg("You cannot activate the activate account!")
+                            .setData(new UserActivateAccountRequest(userId));
                 }
                 else {
                     return ApiResponse.<UserActivateAccountRequest>setError(UserDeleteAccountRequest.class.getSimpleName())
-                            .setResponseMsg("This account was Deleted!");
+                            .setResponseMsg("This account was Deleted!")
+                            .setData(new UserActivateAccountRequest(userId));
                 }
             }else {
                 return ApiResponse.<UserActivateAccountRequest>setError(UserDeleteAccountRequest.class.getSimpleName())
