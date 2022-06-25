@@ -15,8 +15,7 @@ public class UpComingSubmittableWorkResponse {
     String title;
     String description;
     StudentWork content;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    Date assigned_date;
+    Integer score;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     Date deadline;
 

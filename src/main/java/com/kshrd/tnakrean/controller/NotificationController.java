@@ -54,11 +54,10 @@ public class NotificationController {
                         .sendMessageToUser(response.getName() + " Request to Join " + classResponse.getName(), classResponse.getCreated_by() + "");
                 return ApiResponse
                         .<ClassResponse>ok(ClassResponse.class.getSimpleName()).setData(classResponse);
-            } else if (response == null) {
+            } else {
                 return ApiResponse
                         .<ClassResponse>notFound(GetStudentByIDResponse.class.getSimpleName()).setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
             }
-            return ApiResponse.<ClassResponse>ok("").setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
             return ApiResponse.setError(e.getMessage());

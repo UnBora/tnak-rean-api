@@ -9,6 +9,8 @@ import com.kshrd.tnakrean.model.classmaterials.response.UpComingSubmittableWorkR
 import com.kshrd.tnakrean.service.serviceImplementation.SubmittableWorkServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 @RestController
@@ -87,12 +89,13 @@ public class SubmittableWorkController {
     }
 
     @GetMapping("getUpComingWorkByStudentId")
-    ApiResponse<List<UpComingSubmittableWorkResponse>> getUpComingSubmittableWorkByStudentId(Integer studentId, Integer classRoomId, Integer classId) {
-        List<UpComingSubmittableWorkResponse> responseList = submittableWorkService.getUpComingSubmittableWorkByStudentId(studentId, classRoomId, classId);
+    ApiResponse<List<UpComingSubmittableWorkResponse>> getUpComingSubmittableWorkByStudentId(Integer studentId, Integer classId, Integer classRoomId) {
+        List<UpComingSubmittableWorkResponse> responseList = submittableWorkService.getUpComingSubmittableWorkByStudentId(studentId, classId, classRoomId);
+        System.out.println(responseList);
         if (!responseList.isEmpty()) {
-        return ApiResponse.<List<UpComingSubmittableWorkResponse>>
-                ok(SubmittableWorkResponse.class
-                .getSimpleName()).setData(responseList).setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage());
+            return ApiResponse.<List<UpComingSubmittableWorkResponse>>
+                    ok(SubmittableWorkResponse.class
+                    .getSimpleName()).setData(responseList).setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage());
         } else {
             return ApiResponse.notFound(SubmittableWorkResponse.class.getSimpleName());
         }
