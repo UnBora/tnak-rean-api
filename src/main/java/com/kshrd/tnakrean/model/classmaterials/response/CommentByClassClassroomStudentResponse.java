@@ -11,7 +11,7 @@ import java.sql.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentByClassClassroomStudentResponse {
-    private Integer id;
+    private Integer comment_id;
     private Integer student_id;
     private Integer class_id;
     private Integer classroom_id;

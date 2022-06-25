@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentResponse {
-    private Integer id;
+    private Integer comment_id;
     private Integer student_id;
     private Integer class_materials_detail_id;
     private String comment;
