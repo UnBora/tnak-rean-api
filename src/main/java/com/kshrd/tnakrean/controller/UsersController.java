@@ -42,10 +42,10 @@ public class UsersController {
         boolean isMatch = passwordEncoder.matches(password, oldPassword);
 
         try {
-            if (!userId.equals(0)){
-                Integer status= usersRepository.getStatus(userId);
-                if (!status.equals(0)){
-                    if (password.equals(confirmPassword)) {
+            if (!userId.equals(0)) {
+                Integer status = usersRepository.getStatus(userId);
+                if (password.equals(confirmPassword)) {
+                    if (!status.equals(0)) {
                         if (isMatch) {
                             userServiceImp.userDeleteAccount(userId);
                             return ApiResponse.<UserDeleteAccountRequest>successDelete(UserDeleteAccountRequest.class.getSimpleName())
@@ -62,15 +62,16 @@ public class UsersController {
                         }
                     } else {
                         return ApiResponse.<UserDeleteAccountRequest>setError(UserDeleteAccountRequest.class.getSimpleName())
-                                .setResponseMsg("You password and confirm password not matched!")
+                                .setResponseMsg("You Cannot delete the account that deleted!")
                                 .setData(new UserDeleteAccountRequest(userId));
                     }
-                }else {
+                } else {
                     return ApiResponse.<UserDeleteAccountRequest>setError(UserDeleteAccountRequest.class.getSimpleName())
-                            .setResponseMsg("You Cannot delete the account that deleted!")
+                            .setResponseMsg("You password and confirm password not matched!")
                             .setData(new UserDeleteAccountRequest(userId));
                 }
-            }else {
+
+            } else {
                 return ApiResponse.<UserDeleteAccountRequest>setError(UserDeleteAccountRequest.class.getSimpleName())
                         .setResponseMsg("Unauthorized!");
             }
@@ -84,11 +85,11 @@ public class UsersController {
         Integer userId = AuthRestController.user_id;
         String oldPassword = usersRepository.getPassword(userId);
         boolean isMatch = passwordEncoder.matches(password, oldPassword);
-        Integer status= usersRepository.getStatus(userId);
+        Integer status = usersRepository.getStatus(userId);
         try {
-            if(!userId.equals(0)){
-                if (status.equals(2)){
-                    if (password.equals(confirmPassword)) {
+            if (!userId.equals(0)) {
+                if (password.equals(confirmPassword)) {
+                    if (status.equals(2)) {
                         if (isMatch) {
                             userServiceImp.userDeactivateAccount(userId);
                             return ApiResponse.<UserDeactivateAccountRequest>successDelete(UserDeleteAccountRequest.class.getSimpleName())
@@ -103,20 +104,20 @@ public class UsersController {
                                     .setResponseMsg(BaseMessage.Error.UPDATE_ERROR.getMessage())
                                     .setData(new UserDeactivateAccountRequest(userId));
                         }
+                    } else if (status.equals(1)) {
+                        return ApiResponse.<UserDeactivateAccountRequest>successDelete(UserDeleteAccountRequest.class.getSimpleName())
+                                .setResponseMsg("You cannot deactivate the deactivate account!")
+                                .setData(new UserDeactivateAccountRequest(userId));
                     } else {
                         return ApiResponse.<UserDeactivateAccountRequest>successDelete(UserDeleteAccountRequest.class.getSimpleName())
-                                .setResponseMsg("You password and confirm password not matched!")
-                                .setData(new UserDeactivateAccountRequest(userId));
+                                .setResponseMsg("This account was Deleted!");
                     }
-                }else if (status.equals(1)){
+                } else {
                     return ApiResponse.<UserDeactivateAccountRequest>successDelete(UserDeleteAccountRequest.class.getSimpleName())
-                            .setResponseMsg("You cannot deactivate the deactivate account!")
+                            .setResponseMsg("You password and confirm password not matched!")
                             .setData(new UserDeactivateAccountRequest(userId));
-                }else {
-                    return ApiResponse.<UserDeactivateAccountRequest>successDelete(UserDeleteAccountRequest.class.getSimpleName())
-                            .setResponseMsg("This account was Deleted!");
                 }
-            }else {
+            } else {
                 return ApiResponse.<UserDeactivateAccountRequest>successDelete(UserDeleteAccountRequest.class.getSimpleName())
                         .setResponseMsg("Unauthorized!");
             }
@@ -131,11 +132,11 @@ public class UsersController {
         Integer userId = AuthRestController.user_id;
         String oldPassword = usersRepository.getPassword(userId);
         boolean isMatch = passwordEncoder.matches(password, oldPassword);
-        Integer status= usersRepository.getStatus(userId);
+        Integer status = usersRepository.getStatus(userId);
         try {
-            if(!userId.equals(0)){
-                if (status.equals(1)){
-                    if (password.equals(passwordConfirm)) {
+            if (!userId.equals(0)) {
+                if (password.equals(passwordConfirm)) {
+                    if (status.equals(1)) {
                         if (isMatch) {
                             userServiceImp.userActivateAccount(userId);
                             return ApiResponse.<UserActivateAccountRequest>successDelete(UserDeleteAccountRequest.class.getSimpleName())
@@ -150,22 +151,23 @@ public class UsersController {
                                     .setResponseMsg(BaseMessage.Error.UPDATE_ERROR.getMessage())
                                     .setData(new UserActivateAccountRequest(userId));
                         }
+                    } else if (status.equals(2)) {
+                        return ApiResponse.<UserActivateAccountRequest>setError(UserDeleteAccountRequest.class.getSimpleName())
+                                .setResponseMsg("You cannot activate the activate account!")
+                                .setData(new UserActivateAccountRequest(userId));
                     } else {
                         return ApiResponse.<UserActivateAccountRequest>setError(UserDeleteAccountRequest.class.getSimpleName())
-                                .setResponseMsg("You password and confirm password not matched!")
+                                .setResponseMsg("This account was Deleted!")
                                 .setData(new UserActivateAccountRequest(userId));
                     }
-                }else if(status.equals(2)){
+
+                } else {
                     return ApiResponse.<UserActivateAccountRequest>setError(UserDeleteAccountRequest.class.getSimpleName())
-                            .setResponseMsg("You cannot activate the activate account!")
+                            .setResponseMsg("You password and confirm password not matched!")
                             .setData(new UserActivateAccountRequest(userId));
                 }
-                else {
-                    return ApiResponse.<UserActivateAccountRequest>setError(UserDeleteAccountRequest.class.getSimpleName())
-                            .setResponseMsg("This account was Deleted!")
-                            .setData(new UserActivateAccountRequest(userId));
-                }
-            }else {
+
+            } else {
                 return ApiResponse.<UserActivateAccountRequest>setError(UserDeleteAccountRequest.class.getSimpleName())
                         .setResponseMsg("Unauthorized!");
             }
@@ -178,12 +180,12 @@ public class UsersController {
     public ApiResponse<UserUpdateRequest> studentUpdateProfile(@RequestBody @Valid UserUpdateRequest userUpdateRequest) {
         try {
             Integer userId = AuthRestController.user_id;
-            if (!userId.equals(0)){
+            if (!userId.equals(0)) {
                 userServiceImp.updateProfileByID(userId, userUpdateRequest.getName(), userUpdateRequest.getUsername(), userUpdateRequest.getEmail(), userUpdateRequest.getGender());
                 return ApiResponse.<UserUpdateRequest>ok(UserUpdateRequest.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                        .setData(new UserUpdateRequest(userId, userUpdateRequest.getName(), userUpdateRequest.getUsername(),userUpdateRequest.getEmail(), userUpdateRequest.getGender()));
-            }else {
+                        .setData(new UserUpdateRequest(userId, userUpdateRequest.getName(), userUpdateRequest.getUsername(), userUpdateRequest.getEmail(), userUpdateRequest.getGender()));
+            } else {
                 return ApiResponse.<UserUpdateRequest>ok(UserUpdateRequest.class.getSimpleName())
                         .setResponseMsg("Unauthorized!");
             }
