@@ -9,6 +9,8 @@ import com.kshrd.tnakrean.model.classmaterials.response.UpComingSubmittableWorkR
 import com.kshrd.tnakrean.service.serviceImplementation.SubmittableWorkServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 @RestController
@@ -86,10 +88,10 @@ public class SubmittableWorkController {
                 .setData(submittableWorkResponses);
     }
 
-    @GetMapping("getUpComingWorkByStudentId/{studentId}/{classRoomId}/{classId}")
-    ApiResponse<List<UpComingSubmittableWorkResponse>> getUpComingSubmittableWorkByStudentId
-            (@RequestParam Integer studentId, @RequestParam Integer classRoomId, @RequestParam Integer classId) {
-        List<UpComingSubmittableWorkResponse> responseList = submittableWorkService.getUpComingSubmittableWorkByStudentId(studentId, classRoomId, classId);
+    @GetMapping("getUpComingWorkByStudentId")
+    ApiResponse<List<UpComingSubmittableWorkResponse>> getUpComingSubmittableWorkByStudentId(Integer studentId, Integer classId, Integer classRoomId) {
+        List<UpComingSubmittableWorkResponse> responseList = submittableWorkService.getUpComingSubmittableWorkByStudentId(studentId, classId, classRoomId);
+        System.out.println(responseList);
         if (!responseList.isEmpty()) {
             return ApiResponse.<List<UpComingSubmittableWorkResponse>>
                     ok(SubmittableWorkResponse.class

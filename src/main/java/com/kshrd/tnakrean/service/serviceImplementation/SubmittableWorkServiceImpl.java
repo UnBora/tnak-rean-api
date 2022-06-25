@@ -9,6 +9,9 @@ import com.kshrd.tnakrean.repository.SubmittableWorkRepository;
 import com.kshrd.tnakrean.service.serviceInter.SubmittableService;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 @Service
@@ -50,7 +53,9 @@ public class SubmittableWorkServiceImpl implements SubmittableService {
     }
 
     @Override
-    public List<UpComingSubmittableWorkResponse> getUpComingSubmittableWorkByStudentId(Integer studentId, Integer classRoomId, Integer classId) {
-        return submittableWorkRepository.getUpComingSubmittableWorkByStudentId(studentId, classRoomId, classId);
+    public List<UpComingSubmittableWorkResponse> getUpComingSubmittableWorkByStudentId(Integer studentId, Integer classId, Integer classRoomId) {
+        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.of("+07:00")));
+        System.out.println(timestamp);
+        return submittableWorkRepository.getUpComingSubmittableWorkByStudentId(studentId, classId, classRoomId, timestamp);
     }
 }
