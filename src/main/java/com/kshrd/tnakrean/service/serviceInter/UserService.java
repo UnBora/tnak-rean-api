@@ -20,6 +20,6 @@ public interface UserService extends UserDetailsService {
     void userActivateAccount(int user_id);
 
 
-    void updateProfileByID(Integer user_id, String name, String username, String gender);
+    void updateProfileByID(Integer user_id, String name, String username, String email, String gender);
 
 }
