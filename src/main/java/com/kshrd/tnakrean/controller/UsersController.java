@@ -160,7 +160,6 @@ public class UsersController {
                                 .setResponseMsg("This account was Deleted!")
                                 .setData(new UserActivateAccountRequest(userId));
                     }
-
                 } else {
                     return ApiResponse.<UserActivateAccountRequest>setError(UserDeleteAccountRequest.class.getSimpleName())
                             .setResponseMsg("You password and confirm password not matched!")
