@@ -11,15 +11,15 @@ public interface UserService extends UserDetailsService {
 
 
     //    Delete Student User
-    void userDeleteAccount(Integer id);
+    void userDeleteAccount(int user_id);
 
     //    Student Deactivate account
-    void usertDeactivateAccount(Integer id);
+    void userDeactivateAccount( int user_id);
 
     //    Student activate x
-    void userActivateAccount(Integer id);
+    void userActivateAccount(int user_id);
 
 
-    void updateprofileByID(Integer user_id, String name, String username, String gender);
+    void updateProfileByID(Integer user_id, String name, String username, String email, String gender);
 
 }

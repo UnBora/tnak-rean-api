@@ -19,4 +19,7 @@ public class UserUpdateRequest {
     String username;
     @NotBlank(message = "{validation.gender.notEmpty}")
     String gender;
+    @NotBlank(message = "{validation.gender.notEmpty}")
+    String email;
+
 }

@@ -61,7 +61,7 @@ public class AuthRestController {
         Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         JwtTokenUtil jwtUtils = new JwtTokenUtil();
         String token = jwtUtils.generateJwtToken(authentication);
-        System.out.println("Here is the value of the token : " + token);
+//        System.out.println("Here is the value of the token : " + token);
 
         UserDetails findUserByUsername = userServiceImp.loadUserByUsername(request.getUsername());
         AppUserResponse response = modelMapper.map(findUserByUsername, AppUserResponse.class);
@@ -73,7 +73,7 @@ public class AuthRestController {
     }
 
 
-    @PostMapping("/updatepassword")
+    @PostMapping("/update-password")
     public ApiResponse<Boolean> updatePassword(@RequestBody UserUpdatePasswordRequestModel userUpdatePasswordRequestModel) {
 
         ApiResponse<String> response = new ApiResponse<>();
@@ -88,23 +88,19 @@ public class AuthRestController {
             } else {
                 return response.setError("Your old password did not matched!");
             }
-
         } catch (Exception e) {
             return response.setError(e.getMessage());
         }
 
     }
 
-
     @PostMapping("/register")
     ApiResponse<UserRegisterResponse> register(@RequestBody UserRegisterRequest userRegisterRequest) {
         try {
             System.out.println(userRegisterRequest);
             userServiceImp.userRegister(userRegisterRequest);
-
             return ApiResponse.<UserRegisterResponse>successCreate(UserRegisterResponse.class.getName())
                     .setData(modelMapper.map(userRegisterRequest, UserRegisterResponse.class));
-
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }

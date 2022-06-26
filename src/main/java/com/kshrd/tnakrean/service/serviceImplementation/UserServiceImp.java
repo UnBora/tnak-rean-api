@@ -36,23 +36,23 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public void userDeleteAccount(Integer id) {
-        usersRepository.deleteAccount(id);
+    public void userDeleteAccount(int user_id) {
+        usersRepository.deleteAccount(user_id);
     }
 
     @Override
-    public void usertDeactivateAccount(Integer id) {
-        usersRepository.deactivateAccount(id);
+    public void userDeactivateAccount(int user_id) {
+        usersRepository.deactivateAccount(user_id);
     }
 
     @Override
-    public void userActivateAccount(Integer id) {
-        usersRepository.activateAccount(id);
+    public void userActivateAccount( int user_id) {
+        usersRepository.activateAccount(user_id);
     }
 
     @Override
-    public void updateprofileByID(Integer user_id, String name, String username, String gender) {
-        usersRepository.updateProfile(user_id, name, username,gender);
+    public void updateProfileByID(Integer user_id, String name, String username, String email, String gender) {
+        usersRepository.updateProfile(user_id, name, username,email,gender);
     }
 
 

@@ -12,7 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SubmittedWorkByMaterialIdResponse {
-    private Integer id;
+    private Integer submitted_work_id;
     private Integer class_material_id;
     private Integer student_id;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
