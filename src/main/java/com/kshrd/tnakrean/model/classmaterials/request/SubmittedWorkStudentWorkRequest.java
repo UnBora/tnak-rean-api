@@ -14,12 +14,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SubmittedWorkStudentWorkRequest {
-    @Min(value = 1 , message="{validation.studentId.notNegative}")
-    private Integer student_id;
     @Min(value = 1 , message="{validation.submittableWorkId.notNegative}")
     private Integer submittable_work_id;
 //    @JsonFormat(pattern="yyyy-MM-dd")
-    private LocalDateTime submitted_date;
     @Valid
     private StudentWork studentWork; // Json
 }
