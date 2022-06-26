@@ -13,16 +13,6 @@ import java.util.List;
 
 @Mapper
 public interface NotificationRepository {
-
-//    @Select("SELECT *" +
-//            "FROM notification where received_id = #{id}")
-//    @Result(property = "timestamp", column = "received_date")
-//    @Result(property = "content", column = "content", typeHandler = JsonTypeHandler.class)
-//    @Result(property = "notificationTypes", column = "notification_type_id",
-//            one = @One(select = "getNotificationTypeById"))
-//    List<NotificationResponse> notificationResponseList(int id);
-
-
     @Select("SELECT nt.id,n.content, n.received_date, nt.title, nt.action_on,nt.type, n.received_id" +
             " from notification n" +
             " JOIN notification_type nt on n.notification_type_id = nt.id" +
