@@ -29,7 +29,7 @@ public class ClassController {
     }
 
     @PostMapping("/addClass")
-    public ApiResponse<ClassInertResponse> insertClass(String className) {
+    public ApiResponse<ClassInertResponse> insertClass(@Valid String className) {
         try {
             classServiceImp.insertClass(className);
             if (className.isEmpty()) {
@@ -91,7 +91,7 @@ public class ClassController {
     }
 
     @GetMapping("/GetAllClass")
-    public ApiResponse<List<GetClassRequest>> getAllStudet() {
+    public ApiResponse<List<GetClassRequest>> getAllStudent() {
         try {
             List<GetClassRequest> getClassRequests = classServiceImp.getAllClass();
             if (getClassRequests.isEmpty()) {
