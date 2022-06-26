@@ -6,6 +6,7 @@ import com.kshrd.tnakrean.model.classmaterials.request.CommentInsertRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.CommentUpdateRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.CommentByClassClassroomStudentResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.CommentByMaterialIdResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.CommentResponse;
 import com.kshrd.tnakrean.repository.CommentRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.CommentServiceImp;
@@ -105,5 +106,23 @@ public class CommentController {
         return ApiResponse.<CommentUpdateRequest>ok(CommentUpdateRequest.class.getSimpleName())
                 .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
                 .setData(commentUpdateRequest);
+    }
+
+    @GetMapping("get-by-materialId/{materialId}")
+    ApiResponse<List<CommentByMaterialIdResponse>> getByMaterialId(@RequestParam Integer class_material_id){
+        try {
+            List<CommentByMaterialIdResponse> commentResponses = commentServiceImp.getByMaterialId(class_material_id);
+            if (commentResponses.isEmpty()){
+                return ApiResponse.<List<CommentByMaterialIdResponse>>ok(CommentByMaterialIdResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setData(commentResponses);
+            }
+            return ApiResponse.<List<CommentByMaterialIdResponse>>ok(CommentByMaterialIdResponse.class.getSimpleName())
+                    .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+                    .setData(commentResponses);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ApiResponse.setError(e.getMessage());
+        }
     }
 }
