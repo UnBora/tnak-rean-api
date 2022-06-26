@@ -34,8 +34,7 @@ public class FolderController {
     }
 
     @PostMapping("/createDetail")
-    ApiResponse<FolderDetailRequest> createFolderDetail(@RequestBody FolderDetailRequest folderDetailRequest) {
-
+    ApiResponse<FolderDetailRequest> createFolderDetail(@RequestBody @Valid FolderDetailRequest folderDetailRequest) {
         try {
             boolean folderDetailResponse = folderServiceImp.createFolderDetail(folderDetailRequest);
             System.out.println("in controller" + folderDetailResponse);
@@ -64,7 +63,7 @@ public class FolderController {
 
     @GetMapping("/get-folders-by-class-id/{classId}/{classRoomId}")
     ApiResponse<List<FolderResponse>> getFolderByClassId(@RequestParam int classId, @RequestParam int classRoomId) {
-        List<FolderResponse> responseList = folderServiceImp.getListFolderByClassId(classId,classRoomId);
+        List<FolderResponse> responseList = folderServiceImp.getListFolderByClassId(classId, classRoomId);
         try {
             if (!responseList.isEmpty()) {
                 return ApiResponse.<List<FolderResponse>>
