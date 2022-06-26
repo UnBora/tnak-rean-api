@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -21,6 +22,6 @@ public class SubmittableWorkRequest {
     Integer class_id;
     Date assigned_date;
     Date deadline;
-    @Min(value = 0 , message="{validation.score.notNegative}")
+    @Min(value = 0 , message="{validation.score.notNegative}") @Max(value = 1000 , message="{validation.score.notNegative}")
     Float score;
 }

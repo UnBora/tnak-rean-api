@@ -13,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class SubmittableWorkResponse {
     @Min(value = 1 , message="{validation.studentId.notNegative}")
-    Integer id;
+    Integer submittable_work_id;
     Integer class_materials_detail_id;
     Integer classroom_id;
     Integer class_id;

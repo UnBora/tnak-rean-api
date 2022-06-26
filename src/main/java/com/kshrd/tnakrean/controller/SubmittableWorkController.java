@@ -6,6 +6,7 @@ import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateClassClassroomRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateDeadlineRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittableWorkResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.UpComingSubmittableWorkResponse;
 import com.kshrd.tnakrean.service.serviceImplementation.SubmittableWorkServiceImpl;
 import org.springframework.web.bind.annotation.*;
@@ -63,7 +64,11 @@ public class SubmittableWorkController {
     ApiResponse<SubmittableWorkUpdateDeadlineRequest> updateSubmittableWork(
             @RequestBody @Valid SubmittableWorkUpdateDeadlineRequest submittableWorkUpdateDeadlineRequest
     ) {
-        submittableWorkService.updateSubmittableWork(submittableWorkUpdateDeadlineRequest);
+       SubmittedWorkResponse submittedWorkResponse = submittableWorkService.updateSubmittableWork(submittableWorkUpdateDeadlineRequest);
+       if (submittedWorkResponse == null){
+           return  ApiResponse.<SubmittableWorkUpdateDeadlineRequest>ok(SubmittableWorkUpdateDeadlineRequest.class.getSimpleName())
+                   .setResponseMsg(BaseMessage.Error.UPDATE_ERROR.getMessage());
+       }
         return ApiResponse.<SubmittableWorkUpdateDeadlineRequest>ok(SubmittableWorkUpdateDeadlineRequest.class.getSimpleName())
                 .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
                 .setData(submittableWorkUpdateDeadlineRequest);
@@ -77,7 +82,7 @@ public class SubmittableWorkController {
                 .setData(true);
     }
 
-    @GetMapping("/getSubmittableWorkByClassMaterialDetailType/{id}")
+    @GetMapping("/get-by-classMaterialDetailType/{id}")
     ApiResponse<List<SubmittableWorkResponse>> getSubmittableWorkByClassMaterialDetailType(@RequestParam Integer classMaterialDetailTypeId) {
         List<SubmittableWorkResponse> submittableWorkResponses = submittableWorkService.getSubmittableWorkByClassMaterialDetailType(classMaterialDetailTypeId);
         if (submittableWorkResponses.isEmpty()) {
@@ -127,7 +132,11 @@ public class SubmittableWorkController {
     ApiResponse<SubmittableWorkUpdateClassClassroomRequest> updateClassClassroom(
             @RequestBody @Valid SubmittableWorkUpdateClassClassroomRequest submittableWorkUpdateClassClassroomRequest
     ) {
-        submittableWorkService.updateClassClassroom(submittableWorkUpdateClassClassroomRequest);
+       SubmittedWorkResponse submittedWorkResponse = submittableWorkService.updateClassClassroom(submittableWorkUpdateClassClassroomRequest);
+       if (submittedWorkResponse == null){
+           return ApiResponse.<SubmittableWorkUpdateClassClassroomRequest>ok(SubmittableWorkUpdateDeadlineRequest.class.getSimpleName())
+                   .setResponseMsg(BaseMessage.Error.UPDATE_ERROR.getMessage());
+       }
         return ApiResponse.<SubmittableWorkUpdateClassClassroomRequest>ok(SubmittableWorkUpdateDeadlineRequest.class.getSimpleName())
                 .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
                 .setData(submittableWorkUpdateClassClassroomRequest);
