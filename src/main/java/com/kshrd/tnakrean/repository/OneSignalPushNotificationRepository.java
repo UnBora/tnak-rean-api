@@ -20,9 +20,10 @@ public interface OneSignalPushNotificationRepository {
     NotificationResponse getNotificationByUserId(Integer id);
 
 
-    @Select("SELECT cr.created_by , cr.name FROM classroom cr " +
-            "INNER JOIN class c on c.id = cr.class_id WHERE cr.id = #{classRoomId} AND c.id = #{classId}")
-    ClassResponse getClassById(int classRoomId,int classId);
+    @Select("SELECT c.class_name , cr.name,cr.created_by FROM class c" +
+            " INNER JOIN classroom_detail cd on c.id = cd.class_id" +
+            " INNER JOIN classroom cr on cd.classroom_id = cr.id WHERE c.id = #{classId} AND cd.classroom_id = #{classRoomId}")
+    ClassResponse getClassById(int classRoomId, int classId);
 
 
 }

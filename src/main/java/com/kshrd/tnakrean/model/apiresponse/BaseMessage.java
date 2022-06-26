@@ -10,7 +10,7 @@ public class BaseMessage {
         UPDATE_SUCCESS("A Record of " +obj+" has  been updated successfully"),
         SELECT_ALL_RECORD_SUCCESS("All Records of " +obj+" have been found"),
         SELECT_ONE_RECORD_SUCCESS("A Record of " +obj+" has been found"),
-        DELETE_SUCCESS("A Record of " +obj+" has has been deleted successfully");
+        DELETE_SUCCESS("A Record of " +obj+" has been deleted successfully");
 
         private String message;
 
@@ -26,9 +26,9 @@ public class BaseMessage {
 
     public enum Error{
         //ERROR("Path variable is wrong in this request. Please change it to your request."),
-        SELECT_ERROR("The Record of " +obj+" has cannot be found"),
+        SELECT_ERROR("The Record of " +obj+" cannot be found"),
         INSERT_ERROR("Inserting of " +obj+" has  been failed"),
-        UPDATE_ERROR("Updating of " +obj+" has has been failed"),
+        UPDATE_ERROR("Updating of " +obj+"  has been failed"),
         DELETE_ERROR("Deleting of " +obj+" has  been failed");
 
         private  String message;
