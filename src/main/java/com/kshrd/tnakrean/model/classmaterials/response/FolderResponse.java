@@ -12,6 +12,5 @@ import java.util.List;
 public class FolderResponse {
     Integer id;
     String folder_name;
-    List<FolderDetailResponse> folderDetailResponseList;
     Integer parent_id;
 }

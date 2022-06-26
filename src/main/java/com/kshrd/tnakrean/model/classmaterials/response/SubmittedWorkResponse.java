@@ -19,6 +19,5 @@ public class SubmittedWorkResponse {
     private Date submitted_date;
     private Integer status;
     private StudentWork studentWork; // Json
-    private Float student_score;
     private Integer submittable_work_id;
 }

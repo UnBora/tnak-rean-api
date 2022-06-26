@@ -21,7 +21,7 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 @RestController
 //@CrossOrigin("http://localhost:8080")
-@RequestMapping("/api/v1/image")
+@RequestMapping("/api/v1/file")
 public class FilesController {
     @Autowired
     FilesStorageService storageService;
@@ -36,7 +36,7 @@ public class FilesController {
         }
     }
 
-    @GetMapping("/files")
+    @GetMapping("/get/all")
     public ApiResponse<List<FileInfo>> getListFiles() {
         List<FileInfo> fileInfos = storageService.loadAll().map(path -> {
             String filename = path.getFileName().toString();
@@ -47,7 +47,7 @@ public class FilesController {
     }
 
 
-    @GetMapping("/files/{filename:.+}")
+    @GetMapping("/{filename:.+}")
     public ResponseEntity<Resource> getFile(@PathVariable String filename) {
         Resource file = storageService.load(filename);
         return ResponseEntity.ok()

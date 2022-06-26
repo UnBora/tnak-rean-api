@@ -1,5 +1,6 @@
 package com.kshrd.tnakrean.model.classmaterials.request;
 
+import com.kshrd.tnakrean.model.classmaterials.json.StudentWork;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FolderDetailRequest {
-    Integer folder_id;
-    Integer class_materials_detail_id;
+public class SubmittedWorkUpdateResultRequest {
+    private Integer id;
+    private StudentWork studentWork; // Json
 }
