@@ -16,10 +16,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class SubmittedWorkStudentScoreRequest {
     @Min(value = 1 , message="{validation.id.notNegative}")
-    private Integer id;
-    @Min(value = 1 , message="{validation.studentId.notNegative}")
-    private Integer student_id;
+    private Integer submitted_work_id;
     @Min (message = "{validation.score.notEmpty}", value = 0)
-    private Integer student_score;
+    private Float student_score;
 
 }

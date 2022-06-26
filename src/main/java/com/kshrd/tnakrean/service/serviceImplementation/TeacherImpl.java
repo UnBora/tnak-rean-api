@@ -30,21 +30,6 @@ public class TeacherImpl implements TeacherService {
     }
 
     @Override
-    public Boolean teacherDeleteAccount(Integer user_id) {
-        return teacherRepository.teacherDeleteAccount(user_id);
-    }
-
-    @Override
-    public Boolean deactivateTeacherAccount(Integer user_id) {
-        return teacherRepository.deactivateTeacherAccount(user_id);
-    }
-
-    @Override
-    public Boolean activateTeacherAccount(Integer user_id) {
-        return teacherRepository.activateTeacherAccount(user_id);
-    }
-
-    @Override
     public List<TeacherByClassAndClassroomResponse> getByClassAndClassrooms(Integer user_id,Integer class_id, Integer classroom_id) {
         return teacherRepository.getByClassAndClassrooms(user_id,class_id,classroom_id);
     }

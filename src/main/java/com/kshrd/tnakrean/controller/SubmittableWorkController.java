@@ -3,13 +3,16 @@ package com.kshrd.tnakrean.controller;
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkRequest;
-import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateClassClassroomRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateDeadlineRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittableWorkResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.UpComingSubmittableWorkResponse;
 import com.kshrd.tnakrean.service.serviceImplementation.SubmittableWorkServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController
@@ -58,23 +61,28 @@ public class SubmittableWorkController {
     }
 
     @PutMapping("/update-deadline")
-    ApiResponse<SubmittableWorkUpdateRequest> updateSubmittableWork(
-            @RequestBody @Valid SubmittableWorkUpdateRequest submittableWorkUpdateRequest
+    ApiResponse<SubmittableWorkUpdateDeadlineRequest> updateSubmittableWork(
+            @RequestBody @Valid SubmittableWorkUpdateDeadlineRequest submittableWorkUpdateDeadlineRequest
     ) {
-        submittableWorkService.updateSubmittableWork(submittableWorkUpdateRequest);
-        return ApiResponse.<SubmittableWorkUpdateRequest>ok(SubmittableWorkUpdateRequest.class.getSimpleName())
+       SubmittedWorkResponse submittedWorkResponse = submittableWorkService.updateSubmittableWork(submittableWorkUpdateDeadlineRequest);
+       if (submittedWorkResponse == null){
+           return  ApiResponse.<SubmittableWorkUpdateDeadlineRequest>ok(SubmittableWorkUpdateDeadlineRequest.class.getSimpleName())
+                   .setResponseMsg(BaseMessage.Error.UPDATE_ERROR.getMessage());
+       }
+        return ApiResponse.<SubmittableWorkUpdateDeadlineRequest>ok(SubmittableWorkUpdateDeadlineRequest.class.getSimpleName())
                 .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                .setData(submittableWorkUpdateRequest);
+                .setData(submittableWorkUpdateDeadlineRequest);
     }
 
     @DeleteMapping("/delete-by-id/{id}")
-    ApiResponse<?> delete(int id) {
+    ApiResponse<Boolean> delete(@RequestParam int id) {
         submittableWorkService.delete(id);
-        return ApiResponse.ok("Submittable Work")
-                .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage());
+        return ApiResponse.<Boolean>ok("Submittable Work")
+                .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
+                .setData(true);
     }
 
-    @GetMapping("/getSubmittableWorkByClassMaterialDetailType/{id}")
+    @GetMapping("/get-by-classMaterialDetailType/{id}")
     ApiResponse<List<SubmittableWorkResponse>> getSubmittableWorkByClassMaterialDetailType(@RequestParam Integer classMaterialDetailTypeId) {
         List<SubmittableWorkResponse> submittableWorkResponses = submittableWorkService.getSubmittableWorkByClassMaterialDetailType(classMaterialDetailTypeId);
         if (submittableWorkResponses.isEmpty()) {
@@ -99,4 +107,38 @@ public class SubmittableWorkController {
         }
     }
 
+    @GetMapping("get-by-classroomId-and-classId/{classroom_id}/{class_id}")
+    ApiResponse<List<SubmittableWorkResponse>> getByClassIdAndClassId(
+            @RequestParam Integer classroom_id,
+            @RequestParam Integer class_id
+    ) {
+        try {
+            List<SubmittableWorkResponse> submittableWorkResponses = submittableWorkService.getByClassIdAndClassId(classroom_id, class_id);
+            if (submittableWorkResponses.isEmpty()) {
+                return ApiResponse.<List<SubmittableWorkResponse>>ok(SubmittableWorkResponse.class
+                                .getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
+            }
+            return ApiResponse.<List<SubmittableWorkResponse>>ok(SubmittableWorkResponse.class
+                            .getSimpleName())
+                    .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+                    .setData(submittableWorkResponses);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
+    @PutMapping("update-classroomId-classId")
+    ApiResponse<SubmittableWorkUpdateClassClassroomRequest> updateClassClassroom(
+            @RequestBody @Valid SubmittableWorkUpdateClassClassroomRequest submittableWorkUpdateClassClassroomRequest
+    ) {
+       SubmittedWorkResponse submittedWorkResponse = submittableWorkService.updateClassClassroom(submittableWorkUpdateClassClassroomRequest);
+       if (submittedWorkResponse == null){
+           return ApiResponse.<SubmittableWorkUpdateClassClassroomRequest>ok(SubmittableWorkUpdateDeadlineRequest.class.getSimpleName())
+                   .setResponseMsg(BaseMessage.Error.UPDATE_ERROR.getMessage());
+       }
+        return ApiResponse.<SubmittableWorkUpdateClassClassroomRequest>ok(SubmittableWorkUpdateDeadlineRequest.class.getSimpleName())
+                .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
+                .setData(submittableWorkUpdateClassClassroomRequest);
+    }
 }

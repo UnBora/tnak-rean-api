@@ -64,32 +64,4 @@ public class TeacherController {
                 .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
                 .setData(teacherByIdResponse);
     }
-    @DeleteMapping("/deleteAccount")
-    public ApiResponse<TeacherRequest> teacherDeleteAccount() {
-        Integer user_id = AuthRestController.user_id;
-
-        teacherImpl.teacherDeleteAccount(user_id);
-        return ApiResponse.<TeacherRequest>successDelete("Teacher")
-                .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
-                .setData(new TeacherRequest(user_id));
-    }
-
-    @PutMapping("/deactivateAccount")
-    public ApiResponse<TeacherRequest> deactivateTeacherAccount() {
-        Integer user_id = AuthRestController.user_id;
-
-        teacherImpl.deactivateTeacherAccount(user_id);
-        return ApiResponse.<TeacherRequest>updateSuccess("Teacher")
-                .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                .setData(new TeacherRequest(user_id));
-    }
-    @PutMapping("/activateAccount")
-    public ApiResponse<TeacherRequest> activateTeacherAccount() {
-        Integer user_id = AuthRestController.user_id;
-
-        teacherImpl.activateTeacherAccount(user_id);
-        return ApiResponse.<TeacherRequest>updateSuccess("Teacher")
-                .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                .setData(new TeacherRequest(user_id));
-    }
 }

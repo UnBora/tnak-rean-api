@@ -14,10 +14,12 @@ import java.util.List;
 public interface CommentRepository {
     // get all
     @Select("SELECT * FROM comment")
+    @Result(property = "comment_id",column = "id")
     List<CommentResponse> getAll();
 
     // get by id
     @Select("SELECT * FROM comment WHERE id = #{id}")
+    @Result(property = "comment_id",column = "id")
     CommentResponse getById(Integer id);
 
     // delete by id
@@ -42,5 +44,6 @@ public interface CommentRepository {
             "JOIN classroom_detail cl ON d.class_id = cl.class_id " +
             "JOIN class_materials_detail l ON cl.classroom_id = l.classroom_id " +
             "WHERE d.class_id = #{class_id} AND d.classroom_id = #{classroom_id} AND student_id = #{classroom_id}")
+    @Result(property = "comment_id",column = "id")
     List<CommentByClassClassroomStudentResponse> getByClassClassroomStudent(Integer classroom_id, Integer class_id, Integer student_id);
 }

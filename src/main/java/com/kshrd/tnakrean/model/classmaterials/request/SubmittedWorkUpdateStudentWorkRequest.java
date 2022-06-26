@@ -13,7 +13,7 @@ import javax.validation.constraints.Min;
 @NoArgsConstructor
 public class SubmittedWorkUpdateStudentWorkRequest {
     @Min(value = 1 , message="{validation.id.notNegative}")
-    private Integer id;
+    private Integer submitted_work_id;
     @Valid
     private StudentWork studentWork; // Json
 }

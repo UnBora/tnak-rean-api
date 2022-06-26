@@ -2,8 +2,10 @@ package com.kshrd.tnakrean.service.serviceImplementation;
 
 
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkRequest;
-import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateClassClassroomRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateDeadlineRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittableWorkResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.UpComingSubmittableWorkResponse;
 import com.kshrd.tnakrean.repository.SubmittableWorkRepository;
 import com.kshrd.tnakrean.service.serviceInter.SubmittableService;
@@ -35,13 +37,13 @@ public class SubmittableWorkServiceImpl implements SubmittableService {
     }
 
     @Override
-    public boolean updateSubmittableWork(SubmittableWorkUpdateRequest submittableWorkUpdateRequest) {
-        return submittableWorkRepository.updateSubmittableWork(submittableWorkUpdateRequest);
+    public SubmittedWorkResponse updateSubmittableWork(SubmittableWorkUpdateDeadlineRequest submittableWorkUpdateDeadlineRequest) {
+        return submittableWorkRepository.updateSubmittableWork(submittableWorkUpdateDeadlineRequest);
     }
 
     @Override
-    public void delete(int id) {
-        submittableWorkRepository.delete(id);
+    public Boolean delete(int id) {
+        return submittableWorkRepository.delete(id);
     }
 
     @Override
@@ -52,5 +54,15 @@ public class SubmittableWorkServiceImpl implements SubmittableService {
     @Override
     public List<UpComingSubmittableWorkResponse> getUpComingSubmittableWorkByStudentId(Integer studentId, Integer classRoomId, Integer classId) {
         return submittableWorkRepository.getUpComingSubmittableWorkByStudentId(studentId, classRoomId, classId);
+    }
+
+    @Override
+    public List<SubmittableWorkResponse> getByClassIdAndClassId(Integer classroom_id, Integer class_id) {
+        return submittableWorkRepository.getByClassIdAndClassId(classroom_id,class_id);
+    }
+
+    @Override
+    public SubmittedWorkResponse updateClassClassroom(SubmittableWorkUpdateClassClassroomRequest submittableWorkUpdateClassClassroomRequest) {
+        return submittableWorkRepository.updateClassClassroom(submittableWorkUpdateClassClassroomRequest);
     }
 }

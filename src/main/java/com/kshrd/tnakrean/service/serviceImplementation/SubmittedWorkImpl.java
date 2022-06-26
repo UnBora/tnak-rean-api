@@ -1,13 +1,14 @@
 package com.kshrd.tnakrean.service.serviceImplementation;
 
 import com.kshrd.tnakrean.model.classmaterials.request.*;
+import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkByClassroomClassSubmittableResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkByMaterialIdResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkByStudentIdAndClassIdResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkResponse;
 import com.kshrd.tnakrean.repository.SubmittedWorkRepository;
 import com.kshrd.tnakrean.service.serviceInter.SubmittedWorkService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -30,23 +31,18 @@ public class SubmittedWorkImpl implements SubmittedWorkService {
 
     @Override
     public boolean addSubmittedWork(SubmittedWorkStudentWorkRequest submittedWorkStudentWorkRequest) {
-        submittedWorkStudentWorkRequest.setSubmitted_date(LocalDateTime.now());
         return submittedWorkRepository.addSubmittedWork(submittedWorkStudentWorkRequest);
     }
 
-    public boolean updateSubmittedWork(SubmittedWorkUpdateStudentWorkRequest submittedWorkUpdateStudentWorkRequest) {
+    public SubmittedWorkUpdateStudentWorkRequest updateSubmittedWork(SubmittedWorkUpdateStudentWorkRequest submittedWorkUpdateStudentWorkRequest) {
         return submittedWorkRepository.updateSubmittedWork(submittedWorkUpdateStudentWorkRequest);
     }
 
     @Override
-    public void deleteSubmittedWorkId(int id) {
-        submittedWorkRepository.deleteSubmittedWorkId(id);
+    public SubmittedWorkResponse deleteSubmittedWorkId(int id) {
+      return submittedWorkRepository.deleteSubmittedWorkId(id);
     }
 
-    @Override
-    public void deleteByStudentId(Integer id) {
-        submittedWorkRepository.deleteByStudentId(id);
-    }
     @Override
     public List<SubmittedWorkResponse> getById(Integer id) {
         return submittedWorkRepository.getById(id);
@@ -58,7 +54,17 @@ public class SubmittedWorkImpl implements SubmittedWorkService {
     }
 
     @Override
-    public Boolean insertScore(SubmittedWorkStudentScoreRequest submittedWorkStudentScoreRequest) {
+    public SubmittedWorkStudentScoreRequest insertScore(SubmittedWorkStudentScoreRequest submittedWorkStudentScoreRequest) {
         return submittedWorkRepository.insertScore(submittedWorkStudentScoreRequest);
+    }
+
+    @Override
+    public List<SubmittedWorkByMaterialIdResponse> getByClassMaterialId(Integer class_material_id) {
+        return submittedWorkRepository.getByClassMaterialId(class_material_id);
+    }
+
+    @Override
+    public List<SubmittedWorkByClassroomClassSubmittableResponse> getByClassroomClassSubmittable(Integer classroom_id, Integer class_id, Integer submittable_work_id) {
+        return submittedWorkRepository.getByClassroomClassSubmittable(classroom_id,class_id,submittable_work_id);
     }
 }
