@@ -1,4 +1,4 @@
-package com.kshrd.tnakrean.model.classmaterials.response;
+package com.kshrd.tnakrean.model;
 
 
 import lombok.AllArgsConstructor;
@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OneSignalNotificationResponse {
+public class EmailMessage {
+    private String subject;
     private String message;
-    private Integer classId;
+    private String email;
 }
