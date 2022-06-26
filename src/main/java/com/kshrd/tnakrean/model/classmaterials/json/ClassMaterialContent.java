@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClassMaterialContent {
-    int id;
-    String body;
+    String file;
+    String[] link;
 }

@@ -1,6 +1,6 @@
 package com.kshrd.tnakrean.model.classmaterials.request;
 
-import com.kshrd.tnakrean.model.classmaterials.json.StudentResult;
+import com.kshrd.tnakrean.model.classmaterials.json.StudentWork;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SubmittedWorkUpdateResultRequest {
     private Integer id;
-    private StudentResult studentResult; // Json
+    private StudentWork studentWork; // Json
 }

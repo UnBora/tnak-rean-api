@@ -21,5 +21,5 @@ public class NotificationResponse {
     private Content content;
     private String action_on;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime timestamp;
+    private LocalDateTime received_date;
 }

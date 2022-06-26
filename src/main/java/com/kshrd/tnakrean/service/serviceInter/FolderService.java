@@ -13,7 +13,7 @@ public interface FolderService {
 
     boolean createFolder(FolderRequest folderRequest);
 
-    boolean createFolderDetail(FolderDetailRequest folderDetailRequest);
+    boolean createFolderDetail(Integer class_material_detail_id);
 
     FolderResponse getFolderById(int id);
 

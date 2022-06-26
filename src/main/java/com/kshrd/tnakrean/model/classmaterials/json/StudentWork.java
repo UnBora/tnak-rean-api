@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StudentWork {
-    int id;
-    String body;
+    String[] file;
+    String form;
 }
