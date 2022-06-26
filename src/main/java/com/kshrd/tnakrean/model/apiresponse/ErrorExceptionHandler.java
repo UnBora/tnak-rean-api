@@ -17,11 +17,6 @@ public class ErrorExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
 
-//        List<ErrorMessageResponse> validationErrorDetails = ex.getBindingResult()
-//                .getAllErrors()
-//                .stream()
-//                .map(error -> mapToErrorMessageDto(error))
-//                .collect(Collectors.toList());
 
         Map<String, String> errorMap = new HashMap<>();
         ex.getBindingResult().getFieldErrors().forEach(error -> {

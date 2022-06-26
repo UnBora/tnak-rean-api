@@ -9,6 +9,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @NoArgsConstructor
 @Data
@@ -30,7 +32,7 @@ public class ApiResponse<T> {
     private String responseMsg;
     private T data;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+    LocalDateTime time = LocalDateTime.now(ZoneOffset.of("+07:00"));
 
 
     // for bad request

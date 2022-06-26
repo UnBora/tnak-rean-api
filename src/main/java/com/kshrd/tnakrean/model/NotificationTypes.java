@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class NotificationTypes {
     String type;
     String title;
+    String action_on;
 }

@@ -10,6 +10,8 @@ import com.kshrd.tnakrean.model.classmaterials.response.UpComingSubmittableWorkR
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper
@@ -45,19 +47,17 @@ public interface SubmittableWorkRepository {
     List<SubmittableWorkResponse> getSubmittableWorkByClassMaterialDetailType(Integer id);
 
 
-    @Select("SELECT cm.title, cm.description, cm.content, sw.assigned_date, sw.deadline " +
-            "FROM class_materials cm" +
+    @Select("SELECT cm.title as title, cm.description, cm.content, sw.deadline, sw.score " +
+            " FROM class_materials cm" +
             " INNER JOIN class_materials_detail cmd on cm.id = cmd.class_material_id" +
             " INNER JOIN submittable_work sw on cmd.id = sw.class_materials_detail_id" +
-            " INNER JOIN class c on cmd.class_id = c.id" +
-            " INNER JOIN student s on c.id = s.class_id" +
-            " INNER JOIN submitted_work w on s.id = w.student_id" +
-            " WHERE s.id = #{studentId}" + " AND s.class_id = #{classId}" +
-            " AND s.classroom_id = #{classRoomId}" + " AND w.status = 0" +
-            " AND sw.deadline - NOW() >= INTERVAL '0 Days' " +
-            " AND sw.deadline - NOW() <= INTERVAL '2 Days'")
+            " WHERE sw.class_id = #{classId}" +
+            " AND sw.classroom_id = #{classRoomId}" +
+            " AND sw.id not in (select submittable_work_id from submitted_work where student_id = #{studentId})" +
+            " AND sw.deadline - #{currentTime} >= INTERVAL '0'" +
+            " AND sw.deadline - #{currentTime} <= INTERVAL '2 Days'")
     @Result(property = "content", column = "content", typeHandler = JsonTypeHandler.class)
-    List<UpComingSubmittableWorkResponse> getUpComingSubmittableWorkByStudentId(Integer studentId, Integer classRoomId, Integer classId);
+    List<UpComingSubmittableWorkResponse> getUpComingSubmittableWorkByStudentId(@Param("studentId") Integer studentId, @Param("classId") Integer classId, @Param("classRoomId") Integer classRoomId, @Param("currentTime") Timestamp currentTime);
 
     // get By ClassId And ClassId
     @Select("SELECT * FROM submittable_work WHERE class_id = #{class_id} AND classroom_id = #{classroom_id}")

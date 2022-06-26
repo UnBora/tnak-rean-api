@@ -16,9 +16,10 @@ import java.util.Date;
 @NoArgsConstructor
 public class NotificationResponse {
     private Integer id;
-    private NotificationTypes notificationTypes;
+    private String type;
     private Integer received_id;
     private Content content;
+    private String action_on;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime timestamp;
 }
