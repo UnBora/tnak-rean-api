@@ -4,6 +4,7 @@ import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateClassClassroomRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateDeadlineRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittableWorkResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.UpComingSubmittableWorkResponse;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface SubmittableService {
 
     boolean insertSubmittableWork(SubmittableWorkRequest submittableWorkRequest);
 
-    boolean updateSubmittableWork(SubmittableWorkUpdateDeadlineRequest submittableWorkUpdateDeadlineRequest);
+    SubmittedWorkResponse updateSubmittableWork(SubmittableWorkUpdateDeadlineRequest submittableWorkUpdateDeadlineRequest);
 
     List<SubmittableWorkResponse> getSubmittableWorkByClassMaterialDetailType(Integer id);
 
@@ -25,5 +26,5 @@ public interface SubmittableService {
 
     List<SubmittableWorkResponse> getByClassIdAndClassId(Integer classroom_id, Integer class_id);
 
-    Boolean updateClassClassroom(SubmittableWorkUpdateClassClassroomRequest submittableWorkUpdateClassClassroomRequest);
+    SubmittedWorkResponse updateClassClassroom(SubmittableWorkUpdateClassClassroomRequest submittableWorkUpdateClassClassroomRequest);
 }

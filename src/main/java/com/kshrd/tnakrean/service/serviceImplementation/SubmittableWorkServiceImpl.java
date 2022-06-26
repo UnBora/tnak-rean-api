@@ -5,6 +5,7 @@ import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateClassClassroomRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateDeadlineRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittableWorkResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.UpComingSubmittableWorkResponse;
 import com.kshrd.tnakrean.repository.SubmittableWorkRepository;
 import com.kshrd.tnakrean.service.serviceInter.SubmittableService;
@@ -36,7 +37,7 @@ public class SubmittableWorkServiceImpl implements SubmittableService {
     }
 
     @Override
-    public boolean updateSubmittableWork(SubmittableWorkUpdateDeadlineRequest submittableWorkUpdateDeadlineRequest) {
+    public SubmittedWorkResponse updateSubmittableWork(SubmittableWorkUpdateDeadlineRequest submittableWorkUpdateDeadlineRequest) {
         return submittableWorkRepository.updateSubmittableWork(submittableWorkUpdateDeadlineRequest);
     }
 
@@ -61,7 +62,7 @@ public class SubmittableWorkServiceImpl implements SubmittableService {
     }
 
     @Override
-    public Boolean updateClassClassroom(SubmittableWorkUpdateClassClassroomRequest submittableWorkUpdateClassClassroomRequest) {
+    public SubmittedWorkResponse updateClassClassroom(SubmittableWorkUpdateClassClassroomRequest submittableWorkUpdateClassClassroomRequest) {
         return submittableWorkRepository.updateClassClassroom(submittableWorkUpdateClassClassroomRequest);
     }
 }
