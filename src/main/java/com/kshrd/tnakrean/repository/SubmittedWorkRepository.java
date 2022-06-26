@@ -15,14 +15,15 @@ import java.util.List;
 public interface SubmittedWorkRepository {
     //get all
     @Select("SELECT * FROM submitted_work")
-    @Result(property = "studentWork", column = "student_work", typeHandler = JsonTypeHandler.class)
-    @Result(property = "studentResult", column = "student_result", typeHandler = JsonTypeHandler.class)
+    @Results(id = "submitted", value = {
+            @Result(property = "studentWork", column = "student_work" , typeHandler = JsonTypeHandler.class),
+            @Result(property = "submitted_work_id", column = "id")
+    })
     List<SubmittedWorkResponse> getAllSubmittedWork();
 
     // get by student id
     @Select("SELECT * FROM submitted_work WHERE student_id = #{studentId}")
-    @Result(property = "studentWork", column = "student_work", typeHandler = JsonTypeHandler.class)
-    @Result(property = "studentResult", column = "student_result", typeHandler = JsonTypeHandler.class)
+    @ResultMap("submitted")
     List<SubmittedWorkResponse> getSubmittedByStudentId(int studentId);
 
     // update student work
@@ -49,8 +50,7 @@ public interface SubmittedWorkRepository {
 
     // get by id
     @Select("SELECT * FROM submitted_work WHERE id = #{id}")
-    @Result(property = "studentWork", column = "student_work", typeHandler = JsonTypeHandler.class)
-    @Result(property = "studentResult", column = "student_result", typeHandler = JsonTypeHandler.class)
+    @ResultMap("submitted")
     List<SubmittedWorkResponse> getById(Integer id);
 
     // get by student_id and class_id
@@ -59,8 +59,7 @@ public interface SubmittedWorkRepository {
             "JOIN submittable_work b ON s.submittable_work_id = b.id " +
             "WHERE class_id = #{class_id} AND student_id = #{student_id}")
            // "WHERE student_id = #{student_id} AND class_id = #{class_id}")
-    @Result(property = "submitted_work_id", column = "id")
-    @Result(property = "studentWork", column = "student_work", typeHandler = JsonTypeHandler.class)
+    @ResultMap("submitted")
     List<SubmittedWorkByStudentIdAndClassIdResponse> getByStudentIdAndClassId(Integer student_id, Integer class_id);
 
     // update score
@@ -74,6 +73,6 @@ public interface SubmittedWorkRepository {
             "JOIN class_materials_detail d ON d.id = a.class_materials_detail_id " +
             "JOIN class_materials c ON c.id = d.class_material_id " +
             "WHERE class_material_id = #{class_material_id}")
-    @Result(property = "studentWork", column = "student_work", typeHandler = JsonTypeHandler.class)
+    @ResultMap("submitted")
     List<SubmittedWorkByMaterialIdResponse> getByClassMaterialId(Integer class_material_id);
 }
