@@ -19,7 +19,7 @@ public class ClassMaterialImp implements ClassMaterialService {
     }
 
     @Override
-    public List<ClassMaterialResponse> getClassMaterial(int createdId) {
+    public ClassMaterialResponse getClassMaterial(int createdId) {
         return classMaterialRepository.getClassMaterials(createdId);
     }
 
@@ -29,7 +29,7 @@ public class ClassMaterialImp implements ClassMaterialService {
     }
 
     @Override
-    public boolean updateClassMaterial(ClassMaterialUpdateRequest classMaterialUpdateRequest) {
+    public ClassMaterialResponse updateClassMaterial(ClassMaterialUpdateRequest classMaterialUpdateRequest) {
         return classMaterialRepository.updateClassMaterial(classMaterialUpdateRequest);
     }
 
@@ -39,7 +39,7 @@ public class ClassMaterialImp implements ClassMaterialService {
     }
 
     @Override
-    public Boolean deleteById(Integer id) {
+    public ClassMaterialResponse deleteById(Integer id) {
         return classMaterialRepository.deleteById(id);
     }
 

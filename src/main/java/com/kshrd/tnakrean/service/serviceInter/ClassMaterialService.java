@@ -9,15 +9,15 @@ import java.util.List;
 
 public interface ClassMaterialService {
 
-    List<ClassMaterialResponse> getClassMaterial(int createdId);
+    ClassMaterialResponse getClassMaterial(int createdId);
 
     boolean insertClassMaterial(ClassMaterialRequest classMaterialRequest);
 
-    boolean updateClassMaterial(ClassMaterialUpdateRequest classMaterialUpdateRequest);
+    ClassMaterialResponse updateClassMaterial(ClassMaterialUpdateRequest classMaterialUpdateRequest);
 
     List<ClassMaterialResponse> getAllClassMaterial();
 
-    Boolean deleteById(Integer id);
+    ClassMaterialResponse deleteById(Integer id);
 
     List<ClassMaterialResponse> getClassMaterialByCreatedByAndMaterialType(Integer created_by, Integer class_materials_type_id);
 

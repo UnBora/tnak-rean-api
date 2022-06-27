@@ -26,7 +26,7 @@ public interface ClassMaterialRepository {
     @Select("SELECT * FROM class_materials WHERE id = #{id}")
     @Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class)
     @Result(property = "classMaterialType", column = "class_materials_type_id", one = @One(select = "getClassMaterialTypeById"))
-    List<ClassMaterialResponse> getClassMaterials(int id);
+    ClassMaterialResponse getClassMaterials(int id);
 
     // insert
     @Insert("INSERT INTO class_materials(created_date,created_by,title,description,class_materials_type_id,content) " +
@@ -39,10 +39,10 @@ public interface ClassMaterialRepository {
 //    @Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class)
 //    ClassMaterialResponse selectClass(Integer id);
 
-    // update
-    @Update("UPDATE class_materials SET title = #{classMaterialUpdateRequest.title} ," + " description = #{classMaterialUpdateRequest.description} " +
-            "WHERE id = #{classMaterialUpdateRequest.id} ")
-    boolean updateClassMaterial(@Param("classMaterialUpdateRequest") ClassMaterialUpdateRequest classMaterialUpdateRequest);
+    // update title and description
+    @Select("UPDATE class_materials SET title = #{classMaterialUpdateRequest.title} ," + " description = #{classMaterialUpdateRequest.description} " +
+            "WHERE id = #{classMaterialUpdateRequest.id} returning *")
+    ClassMaterialResponse updateClassMaterial(@Param("classMaterialUpdateRequest") ClassMaterialUpdateRequest classMaterialUpdateRequest);
 
     @Select("SELECT * FROM class_materials WHERE id=#{id}")
     @Results(@Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class))
@@ -50,8 +50,8 @@ public interface ClassMaterialRepository {
     ClassMaterialResponse selectResponseAfterUpdate(int id);
 
     // delete by id
-    @Delete("DELETE FROM class_materials WHERE id = #{id}")
-    Boolean deleteById(@Param("id") Integer id);
+    @Select("DELETE FROM class_materials WHERE id = #{id} returning *")
+    ClassMaterialResponse deleteById(@Param("id") Integer id);
 
     // Get All Class Material By UserId and ClassMaterialTypeId
     @Select("SELECT * FROM class_materials WHERE created_by = #{created_by} AND class_materials_type_id = #{class_materials_type_id}")
