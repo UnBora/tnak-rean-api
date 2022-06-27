@@ -45,7 +45,7 @@ public class ClassController {
                         .setData(new ClassInertResponse(className));
             }else {
                 classServiceImp.insertClass(className.toUpperCase());
-                return ApiResponse.<ClassInertResponse>ok("student class")
+                return ApiResponse.<ClassInertResponse>ok(ClassUpdateResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
                         .setData(new ClassInertResponse(className));
             }
@@ -77,24 +77,28 @@ public class ClassController {
             return ApiResponse.setError(e.getMessage());
         }
     }
-
     @PutMapping("/update-class")
     public ApiResponse<ClassUpdateResponse> updateClassName(@RequestBody @Valid ClassUpdateResponse classUpdateResponse) {
         Boolean a = classRepository.checkIfClassExists(classUpdateResponse.getId());
+        Boolean nameCheck=classRepository.checkIfClassExistsDuplecateClassName(classUpdateResponse.getClassname().toUpperCase());
         try {
-            classServiceImp.UpdateClass(classUpdateResponse.getId(), classUpdateResponse.getClassname());
+
             if (classUpdateResponse.equals(null)) {
                 return ApiResponse.<ClassUpdateResponse>setError(GetAllStudentResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Error.UPDATE_ERROR.getMessage());
             } else if (a.equals(false)) {
                 return ApiResponse.<ClassUpdateResponse>notFound(GetAllStudentResponse.class.getSimpleName())
                         .setResponseMsg("This Class does not have!");
+            } else if(nameCheck.equals(true)){
+                return ApiResponse.<ClassUpdateResponse>duplicateEntry(GetAllStudentResponse.class.getSimpleName())
+                        .setResponseMsg("The class name already exists!");
             } else {
+                classServiceImp.UpdateClass(classUpdateResponse.getId(), classUpdateResponse.getClassname().toUpperCase());
                 String className = "Student ID: " + classUpdateResponse.getId() + " Class new name: " + classUpdateResponse.getClassname();
                 return ApiResponse
                         .<ClassUpdateResponse>ok(className)
                         .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                        .setData(new ClassUpdateResponse(classUpdateResponse.getId(), classUpdateResponse.getClassname()));
+                        .setData(new ClassUpdateResponse(classUpdateResponse.getId(), classUpdateResponse.getClassname().toUpperCase()));
             }
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
