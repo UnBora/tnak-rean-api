@@ -10,8 +10,6 @@ import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkByStudentId
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkResponse;
 import com.kshrd.tnakrean.repository.SubmittedWorkRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.SubmittedWorkImpl;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -108,7 +106,9 @@ public class SubmittedWorkController {
     ApiResponse<SubmittedWorkStudentWorkRequest> addSubmittedWork(
             @RequestBody @Valid SubmittedWorkStudentWorkRequest submittedWorkStudentWorkRequest
     ) {
-        submittedWorkImpl.addSubmittedWork(submittedWorkStudentWorkRequest);
+        Integer userId = AuthRestController.user_id;
+        System.out.println(userId);
+        submittedWorkImpl.addSubmittedWork(submittedWorkStudentWorkRequest, userId);
         return ApiResponse.<SubmittedWorkStudentWorkRequest>ok(SubmittedWorkStudentWorkRequest.class.getSimpleName())
                 .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
                 .setData(submittedWorkStudentWorkRequest);

@@ -15,7 +15,7 @@ public interface SubmittedWorkService {
 
    List<SubmittedWorkResponse> getSubmittedByStudentId(int studentId);
 
-   boolean addSubmittedWork(SubmittedWorkStudentWorkRequest submittedWorkStudentWorkRequest);
+   boolean addSubmittedWork(SubmittedWorkStudentWorkRequest submittedWorkStudentWorkRequest, Integer userId);
 
    SubmittedWorkUpdateStudentWorkRequest updateSubmittedWork(SubmittedWorkUpdateStudentWorkRequest submittedWorkUpdateStudentWorkRequest);
 

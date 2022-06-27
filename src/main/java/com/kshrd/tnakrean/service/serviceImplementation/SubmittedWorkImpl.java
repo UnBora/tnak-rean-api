@@ -30,8 +30,8 @@ public class SubmittedWorkImpl implements SubmittedWorkService {
     }
 
     @Override
-    public boolean addSubmittedWork(SubmittedWorkStudentWorkRequest submittedWorkStudentWorkRequest) {
-        return submittedWorkRepository.addSubmittedWork(submittedWorkStudentWorkRequest);
+    public boolean addSubmittedWork(SubmittedWorkStudentWorkRequest submittedWorkStudentWorkRequest, Integer userId) {
+        return submittedWorkRepository.addSubmittedWork(submittedWorkStudentWorkRequest,userId);
     }
 
     public SubmittedWorkUpdateStudentWorkRequest updateSubmittedWork(SubmittedWorkUpdateStudentWorkRequest submittedWorkUpdateStudentWorkRequest) {
