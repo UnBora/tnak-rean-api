@@ -4,6 +4,7 @@ import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.request.GetClassRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassroomRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.GetClassroomByIdRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassroomUpdateResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassroomResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.GetClassByTeacherIdResponse;
@@ -15,6 +16,8 @@ import com.kshrd.tnakrean.service.serviceImplementation.ClassroomServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController
@@ -50,24 +53,19 @@ public class ClassroomController {
     }
 
     @GetMapping("/get-classroom-by-id")
-    public ApiResponse<ClassroomResponse> getClassroomById(Integer id) {
+    public ApiResponse<ClassroomResponse> getClassroomById(@Min(value = 1, message = "{validation.id.notNegative}") Integer id) {
         try {
-            ClassroomResponse classroomResponses = classroomServiceImp.getClassroomByID(id);
-            if (classroomResponses == null) {
-                return ApiResponse.<ClassroomResponse>notFound(ClassroomResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
-            } else {
+            ClassroomResponse classroomResponse=classroomServiceImp.getClassroomByID(id);
                 return ApiResponse.<ClassroomResponse>ok(ClassroomResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
-                        .setData(classroomResponses);
-            }
+                        .setData(classroomResponse);
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
     }
 
     @PostMapping("/insert-classroom")
-    public ApiResponse<ClassroomRequest> insertClassroom(ClassroomRequest classroomRequest) {
+    public ApiResponse<ClassroomRequest> insertClassroom(@RequestBody @Valid ClassroomRequest classroomRequest) {
         try {
             Integer classId = classroomRequest.getClass_id(), createdby = classroomRequest.getCreated_by();
             String dec = classroomRequest.getDes(), name = classroomRequest.getName();
