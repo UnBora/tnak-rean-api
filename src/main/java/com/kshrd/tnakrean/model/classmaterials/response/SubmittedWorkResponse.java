@@ -1,7 +1,7 @@
 package com.kshrd.tnakrean.model.classmaterials.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.kshrd.tnakrean.model.classmaterials.json.StudentResult;
+
 import com.kshrd.tnakrean.model.classmaterials.json.StudentWork;
 import lombok.AllArgsConstructor;
 import lombok.Data;

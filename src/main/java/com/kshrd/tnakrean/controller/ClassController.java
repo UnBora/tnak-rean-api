@@ -28,7 +28,7 @@ public class ClassController {
         this.classRepository = classRepository;
     }
 
-    @PostMapping("/addClass")
+    @PostMapping("/add-class")
     public ApiResponse<ClassInertResponse> insertClass(@Valid String className) {
         try {
             classServiceImp.insertClass(className);
@@ -46,7 +46,7 @@ public class ClassController {
         }
     }
 
-    @DeleteMapping("/deleteClass")
+    @DeleteMapping("/delete-class")
     public ApiResponse<ClassDeleteResponse> deleteClass(Integer classId) {
         try {
             classServiceImp.deleteClass(classId);

@@ -86,20 +86,26 @@ public class ClassroomController {
 
     @GetMapping("/get-classroom-by-teacher-id")
     public  ApiResponse<List<GetClassByTeacherIdResponse>> getClassByTeacherId(){
-        Integer user_id=AuthRestController.user_id;
+        Integer userId=AuthRestController.user_id;
         GetClassByTeacherIdResponse obj = new GetClassByTeacherIdResponse();
         Integer classId= obj.getClass_id(), classroomId=obj.getClassroom_id();
         String teacher= obj.getTeacher_name(), className=obj.getClass_name();
         try {
-            List<GetClassByTeacherIdResponse> getClassByTeacherIdResponses = classroomServiceImp.getClassByTeacherId(classId,classroomId,teacher,className,user_id);
-            if (getClassByTeacherIdResponses .isEmpty()) {
-                return ApiResponse.<List<GetClassByTeacherIdResponse>>setError(GetStudentByClassIDResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
-                        .setData(getClassByTeacherIdResponses );
-            } else {
-                return ApiResponse.<List<GetClassByTeacherIdResponse>>ok(GetClassByTeacherIdResponse.class.getSimpleName())
-                        .setData(getClassByTeacherIdResponses);
+            if (!userId.equals(0)){
+                List<GetClassByTeacherIdResponse> getClassByTeacherIdResponses = classroomServiceImp.getClassByTeacherId(classId,classroomId,teacher,className,userId);
+                if (getClassByTeacherIdResponses .isEmpty()) {
+                    return ApiResponse.<List<GetClassByTeacherIdResponse>>setError(GetStudentByClassIDResponse.class.getSimpleName())
+                            .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                            .setData(getClassByTeacherIdResponses );
+                } else {
+                    return ApiResponse.<List<GetClassByTeacherIdResponse>>ok(GetClassByTeacherIdResponse.class.getSimpleName())
+                            .setData(getClassByTeacherIdResponses);
+                }
+            }else {
+                return ApiResponse.<List<GetClassByTeacherIdResponse>>unAuthorized(GetClassByTeacherIdResponse.class.getSimpleName())
+                        .setResponseMsg("Unauthorized!");
             }
+
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
@@ -107,8 +113,6 @@ public class ClassroomController {
 
     @PutMapping("/update-classroom")
     public ApiResponse<ClassroomUpdateResponse> updateClassroom(ClassroomUpdateResponse classroomUpdateResponse) {
-
-
         try {
             classroomServiceImp.updateClassroom(classroomUpdateResponse.getClassroom_id(), classroomUpdateResponse.getCreated_by(), classroomUpdateResponse.getDes(), classroomUpdateResponse.getName());
             Boolean a = classroomRepository.checkIfClassExists(classroomUpdateResponse.getClassroom_id(), classroomUpdateResponse.getCreated_by());
@@ -117,7 +121,7 @@ public class ClassroomController {
                         .setResponseMsg(BaseMessage.Error.UPDATE_ERROR.getMessage());
             } else if (a.equals(false)) {
                 return ApiResponse.<ClassroomUpdateResponse>setError(GetAllStudentResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.UPDATE_ERROR.getMessage());
+                        .setResponseMsg("Your classroom ID and classID Not Matched!");
             } else {
                 return ApiResponse
                         .<ClassroomUpdateResponse>updateSuccess(ClassroomUpdateResponse.class.getSimpleName())

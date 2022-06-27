@@ -40,7 +40,6 @@ public class UsersController {
         Integer userId = AuthRestController.user_id;
         String oldPassword = usersRepository.getPassword(userId);
         boolean isMatch = passwordEncoder.matches(password, oldPassword);
-
         try {
             if (!userId.equals(0)) {
                 Integer status = usersRepository.getStatus(userId);
@@ -72,7 +71,7 @@ public class UsersController {
                 }
 
             } else {
-                return ApiResponse.<UserDeleteAccountRequest>setError(UserDeleteAccountRequest.class.getSimpleName())
+                return ApiResponse.<UserDeleteAccountRequest>unAuthorized(UserDeleteAccountRequest.class.getSimpleName())
                         .setResponseMsg("Unauthorized!");
             }
         } catch (Exception e) {
@@ -118,7 +117,7 @@ public class UsersController {
                             .setData(new UserDeactivateAccountRequest(userId));
                 }
             } else {
-                return ApiResponse.<UserDeactivateAccountRequest>successDelete(UserDeleteAccountRequest.class.getSimpleName())
+                return ApiResponse.<UserDeactivateAccountRequest>unAuthorized(UserDeleteAccountRequest.class.getSimpleName())
                         .setResponseMsg("Unauthorized!");
             }
         } catch (Exception e) {
@@ -167,7 +166,7 @@ public class UsersController {
                 }
 
             } else {
-                return ApiResponse.<UserActivateAccountRequest>setError(UserDeleteAccountRequest.class.getSimpleName())
+                return ApiResponse.<UserActivateAccountRequest>unAuthorized(UserDeleteAccountRequest.class.getSimpleName())
                         .setResponseMsg("Unauthorized!");
             }
         } catch (Exception e) {
@@ -185,7 +184,7 @@ public class UsersController {
                         .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
                         .setData(new UserUpdateRequest(userId, userUpdateRequest.getName(), userUpdateRequest.getUsername(), userUpdateRequest.getEmail(), userUpdateRequest.getGender()));
             } else {
-                return ApiResponse.<UserUpdateRequest>ok(UserUpdateRequest.class.getSimpleName())
+                return ApiResponse.<UserUpdateRequest>unAuthorized(UserUpdateRequest.class.getSimpleName())
                         .setResponseMsg("Unauthorized!");
             }
         } catch (Exception e) {

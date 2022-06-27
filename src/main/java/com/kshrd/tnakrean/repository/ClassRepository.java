@@ -20,7 +20,7 @@ public interface ClassRepository {
     @Update("UPDATE class SET class_name = #{class_name} WHERE id=#{id}")
     void updateClass(@Param("id") Integer id, @Param("class_name") String class_name);
 
-    @Select("select exists (select * from class where id = #{id});")
+    @Select("select exists (select * from class where id = #{id})")
     Boolean checkIfClassExists(Integer id);
 
     //    Get All Class

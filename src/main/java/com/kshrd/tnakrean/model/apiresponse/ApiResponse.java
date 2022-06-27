@@ -115,6 +115,13 @@ public class ApiResponse<T> {
         return response;
     }
 
+    public static <T> ApiResponse<T> unAuthorized(String errorMsg) {
+        ApiResponse<T> response = new ApiResponse<>();
+        response.setResponseCode(401);
+        response.setResponseMsg(HttpStatus.UNAUTHORIZED.toString());
+        return response;
+    }
+
     // we need this class for the pagination purpose
 
     @Getter
