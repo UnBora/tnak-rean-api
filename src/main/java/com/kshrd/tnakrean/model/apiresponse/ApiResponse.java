@@ -58,7 +58,6 @@ public class ApiResponse<T> {
         response.setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage());
         response.setResponseCode(200);
         return response;
-
     }
     // SUCCESS
 
