@@ -40,6 +40,7 @@ public class ClassroomController {
                         .setData(classroomResponses);
             } else {
                 return ApiResponse.<List<ClassroomResponse>>ok(ClassroomResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
                         .setData(classroomResponses);
             }
 
@@ -53,11 +54,11 @@ public class ClassroomController {
         try {
             ClassroomResponse classroomResponses = classroomServiceImp.getClassroomByID(id);
             if (classroomResponses == null) {
-                return ApiResponse.<ClassroomResponse>ok(ClassroomResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
-                        .setData(null);
+                return ApiResponse.<ClassroomResponse>notFound(ClassroomResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
             } else {
                 return ApiResponse.<ClassroomResponse>ok(ClassroomResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
                         .setData(classroomResponses);
             }
         } catch (Exception e) {
@@ -91,7 +92,6 @@ public class ClassroomController {
         GetClassByTeacherIdResponse obj = new GetClassByTeacherIdResponse();
         Integer classId = obj.getClass_id(), classroomId = obj.getClassroom_id();
         String teacher = obj.getTeacher_name(), className = obj.getClass_name();
-
         try {
             if (!userId.equals(0)) {
                 List<GetClassByTeacherIdResponse> getClassByTeacherIdResponses = classroomServiceImp.getClassByTeacherId(classId, classroomId, teacher, className, userId);
@@ -115,7 +115,7 @@ public class ClassroomController {
     @PutMapping("/update-classroom")
     public ApiResponse<ClassroomUpdateResponse> updateClassroom(ClassroomUpdateResponse classroomUpdateResponse) {
         try {
-            classroomServiceImp.updateClassroom(classroomUpdateResponse.getClassroom_id(), classroomUpdateResponse.getCreated_by(), classroomUpdateResponse.getDes(), classroomUpdateResponse.getName());
+
             Boolean a = classroomRepository.checkIfClassExists(classroomUpdateResponse.getClassroom_id(), classroomUpdateResponse.getCreated_by());
             if (classroomUpdateResponse.equals(null)) {
                 return ApiResponse.<ClassroomUpdateResponse>setError(GetAllStudentResponse.class.getSimpleName())
@@ -124,10 +124,11 @@ public class ClassroomController {
                 return ApiResponse.<ClassroomUpdateResponse>setError(GetAllStudentResponse.class.getSimpleName())
                         .setResponseMsg("Your classroom ID and classID Not Matched!");
             } else {
+                classroomServiceImp.updateClassroom(classroomUpdateResponse.getClassroom_id(), classroomUpdateResponse.getCreated_by(), classroomUpdateResponse.getName(),classroomUpdateResponse.getDes());
                 return ApiResponse
                         .<ClassroomUpdateResponse>updateSuccess(ClassroomUpdateResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                        .setData(new ClassroomUpdateResponse(classroomUpdateResponse.getClassroom_id(), classroomUpdateResponse.getCreated_by(), classroomUpdateResponse.getDes(), classroomUpdateResponse.getName()));
+                        .setData(new ClassroomUpdateResponse(classroomUpdateResponse.getClassroom_id(), classroomUpdateResponse.getCreated_by(), classroomUpdateResponse.getName(), classroomUpdateResponse.getDes()));
             }
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());

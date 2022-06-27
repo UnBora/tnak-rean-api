@@ -14,7 +14,7 @@ public interface ClassRepository {
 
     //    Delete Class
     @Delete("DELETE  from class where id= #{class_id}")
-    void deleteClass(@Param("class_id") Integer class_id);
+    boolean deleteClass(@Param("class_id") Integer class_id);
 
     //    Update Class name
     @Update("UPDATE class SET class_name = #{class_name} WHERE id=#{id}")

@@ -107,7 +107,6 @@ public class ApiResponse<T> {
         return response;
     }
 
-
     public static <T> ApiResponse<T> setError(String errorMsg) {
         ApiResponse<T> response = new ApiResponse<>();
         response.setResponseMsg(errorMsg);

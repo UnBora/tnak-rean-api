@@ -39,8 +39,8 @@ public class ClassroomServiceImp implements ClassroomService {
     }
 
     @Override
-    public void updateClassroom( Integer classroom_id, Integer created_by, String des, String name) {
-            classroomRepository.updateClassroomDB( classroom_id, created_by,des ,name);
+    public void updateClassroom( Integer classroom_id, Integer created_by , String name, String des) {
+            classroomRepository.updateClassroomDB( classroom_id, created_by ,name,des);
 
     }
 

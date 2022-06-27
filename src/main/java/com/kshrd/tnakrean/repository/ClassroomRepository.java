@@ -23,9 +23,9 @@ public interface ClassroomRepository {
     void insertClassroom(@Param("class_id") Integer class_id, @Param("created_by") Integer created_by, @Param("des") String des, @Param("name") String name);
 
     //    Update Table
-    @Update("UPDATE classroom SET des=#{des}, name=#{name}  WHERE created_by = #{created_by} And  id = #{classroom_id}")
+    @Update("UPDATE classroom SET  name=#{name},des=#{des}  WHERE created_by = #{created_by} And  id = #{classroom_id}")
     @Result(property = "classroom_id", column = "id")
-    void updateClassroomDB(@Param("classroom_id") Integer classroom_id, @Param("created_by") Integer created_by, @Param("des") String des, @Param("name") String name);
+    void updateClassroomDB(@Param("classroom_id") Integer classroom_id, @Param("created_by") Integer created_by, @Param("name") String name, @Param("des") String des);
 
     @Select("select exists (select * from classroom where id = #{id} And created_by = #{created_by})")
     Boolean checkIfClassExists( @Param("id") Integer id, @Param("created_by") Integer created_by);
