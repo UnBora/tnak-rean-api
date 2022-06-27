@@ -109,9 +109,8 @@ public class ClassMaterialController {
                     .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
                     .setData(true);
         } catch (Exception e) {
-            return ApiResponse.<Boolean>badRequest("Class Materials")
-                    .setResponseMsg(BaseMessage.Error.DELETE_ERROR.getMessage())
-                    .setData(null);
+            return ApiResponse.<Boolean>badRequest("")
+                    .setResponseMsg("Can't delete! Because of violates foreign key constraint");
         }
     }
 

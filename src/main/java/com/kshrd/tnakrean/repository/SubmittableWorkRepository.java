@@ -11,7 +11,6 @@ import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper
@@ -38,8 +37,9 @@ public interface SubmittableWorkRepository {
     SubmittedWorkResponse updateSubmittableWork(@Param("update") SubmittableWorkUpdateDeadlineRequest submittableWorkUpdateDeadlineRequest);
 
     //delete
-    @Delete("DELETE FROM submittable_work WHERE id = #{id}")
-    Boolean delete(int id);
+    @Select("DELETE FROM submittable_work WHERE id = #{submittable_work_id} Returning *")
+    @Result(property = "submittable_work_id" , column = "id")
+    SubmittableWorkResponse delete(Integer submittable_work_id);
 
     // get by Class Material Detail Type
     @Select("SELECT * FROM submittable_work WHERE class_materials_detail_id = #{id}")
@@ -65,7 +65,7 @@ public interface SubmittableWorkRepository {
     List<SubmittableWorkResponse> getByClassIdAndClassId(Integer classroom_id, Integer class_id);
 
     // update Class Classroom
-    @Select("UPDATE submittable_work SET class_id = #{class_id} WHERE id = #{submittable_work_id} returning *")
+    @Select("UPDATE submittable_work SET class_id = #{class_id}, classroom_id = #{classroom_id} WHERE id = #{submittable_work_id} returning *")
     @Result(property = "submittable_work_id" , column = "id")
     SubmittedWorkResponse updateClassClassroom(SubmittableWorkUpdateClassClassroomRequest submittableWorkUpdateClassClassroomRequest);
 

@@ -176,8 +176,8 @@ public class SubmittedWorkController {
                     .setData(true);
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ApiResponse.setError(e.getMessage());
+            return ApiResponse.<Boolean>badRequest("")
+                    .setResponseMsg("Can't delete! Because of violates foreign key constraint");
         }
 
     }
