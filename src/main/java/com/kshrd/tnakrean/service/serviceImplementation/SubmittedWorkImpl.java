@@ -44,7 +44,7 @@ public class SubmittedWorkImpl implements SubmittedWorkService {
     }
 
     @Override
-    public List<SubmittedWorkResponse> getById(Integer id) {
+    public SubmittedWorkResponse getById(Integer id) {
         return submittedWorkRepository.getById(id);
     }
 

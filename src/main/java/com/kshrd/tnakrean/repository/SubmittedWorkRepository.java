@@ -47,7 +47,7 @@ public interface SubmittedWorkRepository {
     // get by id
     @Select("SELECT * FROM submitted_work WHERE id = #{id}")
     @ResultMap("submitted")
-    List<SubmittedWorkResponse> getById(Integer id);
+    SubmittedWorkResponse getById(Integer id);
 
     // get by student_id and class_id
     @Select("SELECT * " +
