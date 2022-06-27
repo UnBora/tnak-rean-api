@@ -44,7 +44,7 @@ public class ClassController {
                         .setResponseMsg("The class name already exists!")
                         .setData(new ClassInertResponse(className));
             }else {
-                classServiceImp.insertClass(className);
+                classServiceImp.insertClass(className.toUpperCase());
                 return ApiResponse.<ClassInertResponse>ok("student class")
                         .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
                         .setData(new ClassInertResponse(className));
@@ -59,7 +59,7 @@ public class ClassController {
         try {
             Boolean checkClassId=classRepository.checkIfClassExists(classId);
             if (classId == null) {
-                return ApiResponse.<ClassDeleteResponse>setError("student class")
+                return ApiResponse.<ClassDeleteResponse>setError("class")
                         .setResponseMsg(BaseMessage.Error.DELETE_ERROR.getMessage())
                         .setData(new ClassDeleteResponse(classId));
             } else if(checkClassId.equals(false)){
@@ -69,10 +69,9 @@ public class ClassController {
             }
             else{
                 classServiceImp.deleteClass(classId);
-                return ApiResponse.<ClassDeleteResponse>ok("student class")
+                return ApiResponse.<ClassDeleteResponse>ok("class")
                         .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
-                        .setData(new ClassDeleteResponse(classId))
-                        .setResponseMsg(classId + " had deleted");
+                        .setData(new ClassDeleteResponse(classId));
             }
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
