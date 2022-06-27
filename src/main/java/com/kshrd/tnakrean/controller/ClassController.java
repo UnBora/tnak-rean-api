@@ -82,7 +82,6 @@ public class ClassController {
         Boolean a = classRepository.checkIfClassExists(classUpdateResponse.getId());
         Boolean nameCheck=classRepository.checkIfClassExistsDuplecateClassName(classUpdateResponse.getClassname().toUpperCase());
         try {
-
             if (classUpdateResponse.equals(null)) {
                 return ApiResponse.<ClassUpdateResponse>setError(GetAllStudentResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Error.UPDATE_ERROR.getMessage());
