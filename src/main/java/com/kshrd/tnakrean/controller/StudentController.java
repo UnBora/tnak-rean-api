@@ -155,10 +155,10 @@ public class StudentController {
     public ApiResponse<UserUpdateRequest> studentUpdateProfile(@RequestBody @Valid UserUpdateRequest userUpdateRequest) {
         try {
             Integer user_id = AuthRestController.user_id;
-            studentServiceImp.updateprofileByID(user_id, userUpdateRequest.getName(), userUpdateRequest.getUsername(), userUpdateRequest.getGender());
+            studentServiceImp.updateprofileByID(user_id, userUpdateRequest.getName(), userUpdateRequest.getUsername(),userUpdateRequest.getImg(), userUpdateRequest.getGender());
                 return ApiResponse.<UserUpdateRequest>ok(UserUpdateRequest.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                        .setData(new UserUpdateRequest(user_id, userUpdateRequest.getName(), userUpdateRequest.getUsername(),userUpdateRequest.getEmail(), userUpdateRequest.getGender()));
+                        .setData(new UserUpdateRequest(user_id, userUpdateRequest.getName(), userUpdateRequest.getUsername(),userUpdateRequest.getEmail(),userUpdateRequest.getImg(), userUpdateRequest.getGender()));
 
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());

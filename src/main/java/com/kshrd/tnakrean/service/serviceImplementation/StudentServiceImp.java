@@ -62,8 +62,8 @@ public class StudentServiceImp implements StudentService {
     }
 
     @Override
-    public void updateprofileByID(Integer user_id, String name, String username, String gender) {
-        studentRepository.updateProfile(user_id,name, username, gender);
+    public void updateprofileByID(Integer user_id, String name, String username,String img, String gender) {
+        studentRepository.updateProfile(user_id,name, username, img, gender);
     }
 
 

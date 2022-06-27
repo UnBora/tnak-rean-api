@@ -32,5 +32,5 @@ public interface StudentService {
     void insertStudent(Integer user_id, Integer classroom_id, Integer class_id);
 
     //update profile
-    void updateprofileByID(Integer user_id, String name, String username, String gender);
+    void updateprofileByID(Integer user_id, String name, String username,String img, String gender);
 }
