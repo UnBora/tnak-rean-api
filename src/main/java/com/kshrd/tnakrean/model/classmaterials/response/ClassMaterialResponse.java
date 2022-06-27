@@ -19,7 +19,7 @@ import java.util.spi.LocaleServiceProvider;
 @NoArgsConstructor
 @Builder
 public class ClassMaterialResponse {
-    private Integer id;
+    private Integer class_material_id;
     private String title;
     private Integer created_by;
     private String description;

@@ -19,8 +19,8 @@ public class ClassMaterialImp implements ClassMaterialService {
     }
 
     @Override
-    public ClassMaterialResponse getClassMaterial(int createdId) {
-        return classMaterialRepository.getClassMaterials(createdId);
+    public ClassMaterialResponse getClassMaterial(int id) {
+        return classMaterialRepository.getClassMaterials(id);
     }
 
     @Override
