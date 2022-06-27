@@ -4,7 +4,6 @@ import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.request.GetClassRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassroomRequest;
-import com.kshrd.tnakrean.model.classmaterials.request.GetClassroomByIdRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassroomUpdateResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassroomResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.GetClassByTeacherIdResponse;
@@ -55,10 +54,19 @@ public class ClassroomController {
     @GetMapping("/get-classroom-by-id")
     public ApiResponse<ClassroomResponse> getClassroomById(@Min(value = 1, message = "{validation.id.notNegative}") Integer id) {
         try {
-            ClassroomResponse classroomResponse=classroomServiceImp.getClassroomByID(id);
+            Boolean classroomID = classroomRepository.checkClassroomByID(id);
+            if (classroomID == null) {
+                return ApiResponse.<ClassroomResponse>badRequest(ClassroomResponse.class.getSimpleName())
+                        .setResponseMsg("The Classroom ID cannot not null");
+            } else if (classroomID.equals(false)) {
+                return ApiResponse.<ClassroomResponse>badRequest(ClassroomResponse.class.getSimpleName())
+                        .setResponseMsg("The Classroom ID:" + id + " does not have!");
+            } else {
+                ClassroomResponse classroomResponse = classroomServiceImp.getClassroomByID(id);
                 return ApiResponse.<ClassroomResponse>ok(ClassroomResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
                         .setData(classroomResponse);
+            }
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
@@ -67,17 +75,24 @@ public class ClassroomController {
     @PostMapping("/insert-classroom")
     public ApiResponse<ClassroomRequest> insertClassroom(@RequestBody @Valid ClassroomRequest classroomRequest) {
         try {
-            Integer classId = classroomRequest.getClass_id(), createdby = classroomRequest.getCreated_by();
+            Integer classId = classroomRequest.getClass_id(), createdby = AuthRestController.user_id;
             String dec = classroomRequest.getDes(), name = classroomRequest.getName();
-
-            if (classroomRequest == null) {
-                return ApiResponse.<ClassroomRequest>setError(ClassroomRequest.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.INSERT_ERROR.getMessage());
-            } else {
-                classroomServiceImp.insertClassroom(classId, createdby, dec, name);
-                return ApiResponse.<ClassroomRequest>ok(ClassroomRequest.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
-                        .setData(new ClassroomRequest(classId, createdby, dec, name));
+            if (!createdby.equals(0)) {
+                if (classroomRequest == null) {
+                    return ApiResponse.<ClassroomRequest>setError(ClassroomRequest.class.getSimpleName())
+                            .setResponseMsg(BaseMessage.Error.INSERT_ERROR.getMessage());
+                } else if (createdby.equals(0)) {
+                    return ApiResponse.<ClassroomRequest>unAuthorized(ClassroomRequest.class.getSimpleName())
+                            .setResponseMsg("Unauthorized!");
+                } else {
+                    classroomServiceImp.insertClassroom(classId, createdby, dec, name);
+                    return ApiResponse.<ClassroomRequest>ok(ClassroomRequest.class.getSimpleName())
+                            .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
+                            .setData(new ClassroomRequest(classId, createdby, dec, name));
+                }
+            }else {
+                return ApiResponse.<ClassroomRequest>unAuthorized(ClassroomRequest.class.getSimpleName())
+                        .setResponseMsg("Unauthorized!");
             }
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
@@ -113,7 +128,6 @@ public class ClassroomController {
     @PutMapping("/update-classroom")
     public ApiResponse<ClassroomUpdateResponse> updateClassroom(ClassroomUpdateResponse classroomUpdateResponse) {
         try {
-
             Boolean a = classroomRepository.checkIfClassExists(classroomUpdateResponse.getClassroom_id(), classroomUpdateResponse.getCreated_by());
             if (classroomUpdateResponse.equals(null)) {
                 return ApiResponse.<ClassroomUpdateResponse>setError(GetAllStudentResponse.class.getSimpleName())
@@ -122,7 +136,7 @@ public class ClassroomController {
                 return ApiResponse.<ClassroomUpdateResponse>setError(GetAllStudentResponse.class.getSimpleName())
                         .setResponseMsg("Your classroom ID and classID Not Matched!");
             } else {
-                classroomServiceImp.updateClassroom(classroomUpdateResponse.getClassroom_id(), classroomUpdateResponse.getCreated_by(), classroomUpdateResponse.getName(),classroomUpdateResponse.getDes());
+                classroomServiceImp.updateClassroom(classroomUpdateResponse.getClassroom_id(), classroomUpdateResponse.getCreated_by(), classroomUpdateResponse.getName(), classroomUpdateResponse.getDes());
                 return ApiResponse
                         .<ClassroomUpdateResponse>updateSuccess(ClassroomUpdateResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
