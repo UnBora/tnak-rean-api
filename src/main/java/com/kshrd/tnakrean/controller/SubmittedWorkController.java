@@ -132,7 +132,7 @@ public class SubmittedWorkController {
         try {
             if (submittedWorkStudentScoreRequest1 == null) {
                 return ApiResponse.<SubmittedWorkStudentScoreRequest>notFound(SubmittedWorkStudentScoreRequest.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.UPDATE_ERROR.getMessage());
+                        .setResponseMsg("Can't update! Because ID: " +submittedWorkStudentScoreRequest.getSubmitted_work_id()+ " doesn't exist");
             }
             return ApiResponse.<SubmittedWorkStudentScoreRequest>ok(SubmittedWorkStudentScoreRequest.class.getSimpleName())
                     .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
@@ -151,7 +151,7 @@ public class SubmittedWorkController {
         try {
             if (submittedWorkUpdateStudentWorkRequest1 == null) {
                 return ApiResponse.<SubmittedWorkUpdateStudentWorkRequest>notFound(SubmittedWorkUpdateStudentWorkRequest.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.UPDATE_ERROR.getMessage());
+                        .setResponseMsg("Can't update! Because ID: " +submittedWorkUpdateStudentWorkRequest.getSubmitted_work_id()+ " doesn't exist");
             }
             return ApiResponse.<SubmittedWorkUpdateStudentWorkRequest>ok(SubmittedWorkUpdateStudentWorkRequest.class.getSimpleName())
                     .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
@@ -168,7 +168,7 @@ public class SubmittedWorkController {
         try {
             if (submittedWorkResponse == null) {
                 return ApiResponse.<Boolean>notFound(SubmittedWorkResponse.class.getSimpleName())
-                        .setResponseMsg("Don't have that ID: " + id)
+                        .setResponseMsg("Can't delete ! ID: " +id+ " doesn't exist")
                         .setData(false);
             }
             return ApiResponse.<Boolean>ok(SubmittedWorkResponse.class.getSimpleName())
