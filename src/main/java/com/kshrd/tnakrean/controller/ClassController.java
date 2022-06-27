@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @RequestMapping("/api/v1/class")
@@ -29,14 +30,21 @@ public class ClassController {
     }
 
     @PostMapping("/add-class")
-    public ApiResponse<ClassInertResponse> insertClass(@Valid String className) {
+    public ApiResponse<ClassInertResponse> insertClass(String className) {
+
+        Boolean classNameCheck=classRepository.checkIfClassExistsDuplecateClassName(className.toUpperCase());
+        System.out.println(className.toUpperCase());
         try {
-            classServiceImp.insertClass(className);
             if (className.isEmpty()) {
                 return ApiResponse.<ClassInertResponse>setError("student class")
                         .setResponseMsg(BaseMessage.Error.INSERT_ERROR.getMessage())
                         .setData(new ClassInertResponse(className));
-            } else {
+            } else if(classNameCheck.equals(true)){
+                return ApiResponse.<ClassInertResponse>duplicateEntry(ClassUpdateResponse.class.getSimpleName())
+                        .setResponseMsg("The class name already exists!")
+                        .setData(new ClassInertResponse(className));
+            }else {
+                classServiceImp.insertClass(className);
                 return ApiResponse.<ClassInertResponse>ok("student class")
                         .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
                         .setData(new ClassInertResponse(className));
@@ -49,12 +57,18 @@ public class ClassController {
     @DeleteMapping("/delete-class")
     public ApiResponse<ClassDeleteResponse> deleteClass(Integer classId) {
         try {
-            classServiceImp.deleteClass(classId);
+            Boolean checkClassId=classRepository.checkIfClassExists(classId);
             if (classId == null) {
                 return ApiResponse.<ClassDeleteResponse>setError("student class")
                         .setResponseMsg(BaseMessage.Error.DELETE_ERROR.getMessage())
                         .setData(new ClassDeleteResponse(classId));
-            } else {
+            } else if(checkClassId.equals(false)){
+                return ApiResponse.<ClassDeleteResponse>notFound(ClassDeleteResponse.class.getSimpleName())
+                        .setResponseMsg("This Class does not have!")
+                        .setData(new ClassDeleteResponse(classId));
+            }
+            else{
+                classServiceImp.deleteClass(classId);
                 return ApiResponse.<ClassDeleteResponse>ok("student class")
                         .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
                         .setData(new ClassDeleteResponse(classId))
@@ -65,7 +79,7 @@ public class ClassController {
         }
     }
 
-    @PutMapping("/updateClass")
+    @PutMapping("/update-class")
     public ApiResponse<ClassUpdateResponse> updateClassName(@RequestBody @Valid ClassUpdateResponse classUpdateResponse) {
         Boolean a = classRepository.checkIfClassExists(classUpdateResponse.getId());
         try {
@@ -74,8 +88,8 @@ public class ClassController {
                 return ApiResponse.<ClassUpdateResponse>setError(GetAllStudentResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Error.UPDATE_ERROR.getMessage());
             } else if (a.equals(false)) {
-                return ApiResponse.<ClassUpdateResponse>setError(GetAllStudentResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.UPDATE_ERROR.getMessage());
+                return ApiResponse.<ClassUpdateResponse>notFound(GetAllStudentResponse.class.getSimpleName())
+                        .setResponseMsg("This Class does not have!");
             } else {
                 String className = "Student ID: " + classUpdateResponse.getId() + " Class new name: " + classUpdateResponse.getClassname();
                 return ApiResponse
@@ -86,11 +100,9 @@ public class ClassController {
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
-
-
     }
 
-    @GetMapping("/GetAllClass")
+    @GetMapping("/get-all-class")
     public ApiResponse<List<GetClassRequest>> getAllStudent() {
         try {
             List<GetClassRequest> getClassRequests = classServiceImp.getAllClass();

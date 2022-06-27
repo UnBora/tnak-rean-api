@@ -23,6 +23,10 @@ public interface ClassRepository {
     @Select("select exists (select * from class where id = #{id})")
     Boolean checkIfClassExists(Integer id);
 
+    //check name ex
+    @Select("select exists (select * from class where class_name =#{className})")
+    Boolean checkIfClassExistsDuplecateClassName(String className);
+
     //    Get All Class
     @Select("Select * From class")
     @Result(property = ("class_id"), column = ("id"))

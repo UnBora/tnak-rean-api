@@ -30,6 +30,8 @@ public interface ClassroomRepository {
     @Select("select exists (select * from classroom where id = #{id} And created_by = #{created_by})")
     Boolean checkIfClassExists( @Param("id") Integer id, @Param("created_by") Integer created_by);
 
+
+
 //    Get Class by Teacher ID
     @Select("SELECT c.id as classroom_id, c2.id as class_id,u.username as teacher_name, c2.class_name as class_name From classroom c" +
             " inner join classroom_detail cd on c.id = cd.classroom_id" +

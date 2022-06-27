@@ -70,11 +70,12 @@ public class ClassroomController {
         try {
             Integer classId = classroomRequest.getClass_id(), createdby = classroomRequest.getCreated_by();
             String dec = classroomRequest.getDes(), name = classroomRequest.getName();
-            classroomServiceImp.insertClassroom(classId, createdby, dec, name);
+
             if (classroomRequest == null) {
                 return ApiResponse.<ClassroomRequest>setError(ClassroomRequest.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Error.INSERT_ERROR.getMessage());
             } else {
+                classroomServiceImp.insertClassroom(classId, createdby, dec, name);
                 return ApiResponse.<ClassroomRequest>ok(ClassroomRequest.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
                         .setData(new ClassroomRequest(classId, createdby, dec, name));
@@ -85,27 +86,27 @@ public class ClassroomController {
     }
 
     @GetMapping("/get-classroom-by-teacher-id")
-    public  ApiResponse<List<GetClassByTeacherIdResponse>> getClassByTeacherId(){
-        Integer userId=AuthRestController.user_id;
+    public ApiResponse<List<GetClassByTeacherIdResponse>> getClassByTeacherId() {
+        Integer userId = AuthRestController.user_id;
         GetClassByTeacherIdResponse obj = new GetClassByTeacherIdResponse();
-        Integer classId= obj.getClass_id(), classroomId=obj.getClassroom_id();
-        String teacher= obj.getTeacher_name(), className=obj.getClass_name();
+        Integer classId = obj.getClass_id(), classroomId = obj.getClassroom_id();
+        String teacher = obj.getTeacher_name(), className = obj.getClass_name();
+
         try {
-            if (!userId.equals(0)){
-                List<GetClassByTeacherIdResponse> getClassByTeacherIdResponses = classroomServiceImp.getClassByTeacherId(classId,classroomId,teacher,className,userId);
-                if (getClassByTeacherIdResponses .isEmpty()) {
+            if (!userId.equals(0)) {
+                List<GetClassByTeacherIdResponse> getClassByTeacherIdResponses = classroomServiceImp.getClassByTeacherId(classId, classroomId, teacher, className, userId);
+                if (getClassByTeacherIdResponses.isEmpty()) {
                     return ApiResponse.<List<GetClassByTeacherIdResponse>>setError(GetStudentByClassIDResponse.class.getSimpleName())
                             .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
-                            .setData(getClassByTeacherIdResponses );
+                            .setData(getClassByTeacherIdResponses);
                 } else {
                     return ApiResponse.<List<GetClassByTeacherIdResponse>>ok(GetClassByTeacherIdResponse.class.getSimpleName())
                             .setData(getClassByTeacherIdResponses);
                 }
-            }else {
+            } else {
                 return ApiResponse.<List<GetClassByTeacherIdResponse>>unAuthorized(GetClassByTeacherIdResponse.class.getSimpleName())
                         .setResponseMsg("Unauthorized!");
             }
-
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
