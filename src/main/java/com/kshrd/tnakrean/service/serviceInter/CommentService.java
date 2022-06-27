@@ -13,11 +13,11 @@ public interface CommentService {
 
     CommentResponse getById(Integer id);
 
-    Boolean deleteById(Integer id);
+    CommentResponse deleteById(Integer id);
 
     Boolean insert(CommentInsertRequest commentInsertRequest);
 
-    Boolean update(CommentUpdateRequest commentUpdateRequest);
+    CommentUpdateRequest update(CommentUpdateRequest commentUpdateRequest);
 
     List<CommentByClassClassroomStudentResponse> getByClassClassroomStudent(Integer classroom_id, Integer class_id, Integer student_id);
 

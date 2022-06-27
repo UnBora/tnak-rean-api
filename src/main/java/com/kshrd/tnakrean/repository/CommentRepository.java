@@ -24,8 +24,8 @@ public interface CommentRepository {
     CommentResponse getById(Integer id);
 
     // delete by id
-    @Delete("DELETE FROM comment WHERE id = #{id}")
-    Boolean deleteById(Integer id);
+    @Select("DELETE FROM comment WHERE id = #{id} Returning *")
+    CommentResponse deleteById(Integer id);
 
     // insert
     @Insert("INSERT INTO comment (student_id, comment_date, class_materials_detail_id, comment) " +
@@ -33,10 +33,11 @@ public interface CommentRepository {
     Boolean insert(CommentInsertRequest commentInsertRequest);
 
     // update
-    @Update("UPDATE comment " +
+    @Select("UPDATE comment " +
             "SET student_id = #{student_id}, comment_date = #{comment_date}, class_materials_detail_id = #{class_materials_detail_id}, comment = #{comment} " +
-            "WHERE id = #{id}")
-    Boolean update(CommentUpdateRequest commentUpdateRequest);
+            "WHERE id = #{comment_id} Returning *")
+    @Result(property = "comment_id",column = "id")
+    CommentUpdateRequest update(CommentUpdateRequest commentUpdateRequest);
 
     // get by Class Classroom Student
     @Select("SELECT c.*, d.class_id, d.classroom_id, d.class_material_id " +

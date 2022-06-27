@@ -30,7 +30,7 @@ public class CommentServiceImp implements CommentService {
     }
 
     @Override
-    public Boolean deleteById(Integer id) {
+    public CommentResponse deleteById(Integer id) {
         return commentRepository.deleteById(id);
     }
 
@@ -40,7 +40,7 @@ public class CommentServiceImp implements CommentService {
     }
 
     @Override
-    public Boolean update(CommentUpdateRequest commentUpdateRequest) {
+    public CommentUpdateRequest update(CommentUpdateRequest commentUpdateRequest) {
         return commentRepository.update(commentUpdateRequest);
     }
 
