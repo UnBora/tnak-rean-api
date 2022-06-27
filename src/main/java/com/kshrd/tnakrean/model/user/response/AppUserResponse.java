@@ -1,5 +1,6 @@
 package com.kshrd.tnakrean.model.user.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,6 +16,7 @@ import java.util.Collection;
 public class AppUserResponse implements UserDetails {
     private Integer id;
     private String name;
+    @JsonIgnore
     private String password;
     private String username;
     private String token;

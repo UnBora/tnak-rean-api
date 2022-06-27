@@ -1,14 +1,16 @@
 package com.kshrd.tnakrean.model.apiresponse;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.Accessors;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 
-import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Date;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @NoArgsConstructor
 @Data
@@ -29,46 +31,49 @@ public class ApiResponse<T> {
     private int responseCode;
     private String responseMsg;
     private T data;
-    private Object metadata;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    LocalDateTime time = LocalDateTime.now(ZoneOffset.of("+07:00"));
 
 
     // for bad request
-    // for bad request
-    public static <T> ApiResponse<T> badRequest() {
+    public static <T> ApiResponse<T> badRequest(String className) {
         ApiResponse<T> response = new ApiResponse<>();
         response.setResponseMsg(Status.BAD_REQUEST.toString());
+        BaseMessage.obj = className;
         response.setResponseCode(400);
         return response;
     }
 
-    public static <T> ApiResponse<T> ok() {
+    public static <T> ApiResponse<T> ok(String className) {
         ApiResponse<T> response = new ApiResponse<>();
-        response.setResponseMsg(Status.OK.toString());
+        BaseMessage.obj = className;
+        response.setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage());
         response.setResponseCode(200);
         return response;
     }
 
-    public static <T> ApiResponse<T> successDelete() {
-
+    public static <T> ApiResponse<T> successDelete(String className) {
         ApiResponse<T> response = new ApiResponse<>();
-        response.setResponseMsg(Status.DELETED.toString());
+        BaseMessage.obj = className;
+        response.setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage());
         response.setResponseCode(200);
         return response;
 
     }
     // SUCCESS
 
-    public static <T> ApiResponse<T> successCreate() {
-
+    public static <T> ApiResponse<T> successCreate(String className) {
         ApiResponse<T> response = new ApiResponse<>();
-        response.setResponseMsg(Status.CREATED.toString());
+        BaseMessage.obj = className;
+        response.setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage());
         response.setResponseCode(201);
         return response;
     }
 
     //DuplicateEntry
-    public static <T> ApiResponse<T> duplicateEntry() {
+    public static <T> ApiResponse<T> duplicateEntry(String className) {
         ApiResponse<T> response = new ApiResponse<>();
+        BaseMessage.obj = className;
         response.setResponseMsg(Status.DUPLICATE_ENTRY.toString());
         response.setResponseCode(403);
         return response;
@@ -76,19 +81,20 @@ public class ApiResponse<T> {
     }
 
     //UpdateSuccess
-    public static <T> ApiResponse<T> updateSuccess() {
-
+    public static <T> ApiResponse<T> updateSuccess(String className) {
         ApiResponse<T> response = new ApiResponse<>();
-        response.setResponseMsg(Status.UPDATED.toString());
+        BaseMessage.obj = className;
+        response.setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage());
         response.setResponseCode(200);
         return response;
     }
 
 
     //notFound
-    public static <T> ApiResponse<T> notFound() {
+    public static <T> ApiResponse<T> notFound(String className) {
         ApiResponse<T> response = new ApiResponse<>();
-        response.setResponseMsg(Status.NOT_FOUND.toString());
+        BaseMessage.obj = className;
+        response.setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
         response.setResponseCode(404);
         return response;
 

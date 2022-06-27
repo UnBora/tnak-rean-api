@@ -1,32 +1,40 @@
 package com.kshrd.tnakrean.model.apiresponse;
 
-import org.apache.ibatis.javassist.NotFoundException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import java.util.HashMap;
+import java.util.Map;
 
 @ControllerAdvice
-public class ErrorExceptionHandler {
+public class ErrorExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
 
 
-    @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity<?> handleIllegalState(IllegalStateException e) {
-        ResponseError error = ResponseError
-                .builder().message(e.getMessage()).details("error").build();
+        Map<String, String> errorMap = new HashMap<>();
+        ex.getBindingResult().getFieldErrors().forEach(error -> {
+            errorMap.put(error.getField(), error.getDefaultMessage());
+        });
 
-        return ResponseEntity.badRequest()
-                .body(error);
+        ErrorResponse response = new ErrorResponse(status.name(), status.value(), errorMap);
+        return new ResponseEntity<>(response, status);
+
     }
 
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<?> handleIllegalState(NotFoundException e) {
-        ResponseError error = ResponseError
-                .builder()
-                .details("error")
-                .message(e.getMessage())
-                .build();
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
-    }
+//    @ExceptionHandler(TestAntiDuplicate.class)
+//    public ApiResponse<Object> handleConstraintViolationException(TestAntiDuplicate ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+//        Map<String, String> errorMap = new HashMap<>();
+//
+//        System.err.println("test");
+//        ErrorResponse response = new ErrorResponse(status.name(), status.value(), errorMap);
+//        return new ApiResponse<>().setData(status);
+//    }
 
 }

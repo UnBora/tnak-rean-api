@@ -13,10 +13,12 @@ public interface FolderService {
 
     boolean createFolder(FolderRequest folderRequest);
 
-    boolean createFolderDetail(FolderDetailRequest folderDetailRequest);
+    boolean createFolderDetail(Integer class_material_detail_id);
 
-    FolderResponse getFolderByClassId(int id);
+    FolderResponse getFolderById(int id);
 
-    List<FolderDetailResponse> getFolderDetail();
+    List<FolderResponse> getListFolderByClassId(int id, int classRoomId);
+
+    List<FolderResponse> getListFolderByTeacherId(int teacherId);
 
 }
