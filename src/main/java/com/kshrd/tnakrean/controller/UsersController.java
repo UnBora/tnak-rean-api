@@ -164,7 +164,6 @@ public class UsersController {
                             .setResponseMsg("You password and confirm password not matched!")
                             .setData(new UserActivateAccountRequest(userId));
                 }
-
             } else {
                 return ApiResponse.<UserActivateAccountRequest>unAuthorized(UserDeleteAccountRequest.class.getSimpleName())
                         .setResponseMsg("Unauthorized!");

@@ -3,6 +3,7 @@ package com.kshrd.tnakrean.controller;
 
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
+import com.kshrd.tnakrean.model.user.request.StudentInsertRequest;
 import com.kshrd.tnakrean.model.user.request.UserUpdateRequest;
 import com.kshrd.tnakrean.model.user.request.StudentLeaveClassRequest;
 import com.kshrd.tnakrean.model.user.request.UserActivateAccountRequest;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController
@@ -49,57 +51,29 @@ public class StudentController {
     @GetMapping("/get-by-id")
     public ApiResponse<GetStudentByIDResponse> getAllStudentFromDBById() {
         try {
-            Integer user_id =AuthRestController.user_id;
+            Integer user_id = AuthRestController.user_id;
             GetStudentByIDResponse getStudentByIDResponses = studentServiceImp.getStudentById(user_id);
-            if (getStudentByIDResponses == null) {
-                return ApiResponse.<GetStudentByIDResponse>setError(GetAllStudentResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
+            if (!user_id.equals(0)) {
+                if (getStudentByIDResponses == null) {
+                    return ApiResponse.<GetStudentByIDResponse>setError(GetAllStudentResponse.class.getSimpleName())
+                            .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
+                } else {
+                    return ApiResponse.<GetStudentByIDResponse>ok(GetAllStudentResponse.class.getSimpleName())
+                            .setData(getStudentByIDResponses);
+                }
             } else {
-                return ApiResponse.<GetStudentByIDResponse>ok("Student ID: " + user_id)
-                        .setData(getStudentByIDResponses);
+                return ApiResponse.<GetStudentByIDResponse>unAuthorized(GetAllStudentResponse.class.getSimpleName())
+                        .setResponseMsg("Unauthorized!");
             }
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
     }
 
-
-    @DeleteMapping("/delete-account")
-    public ApiResponse<UserActivateAccountRequest> deleteUser() {
-        Integer user_id = AuthRestController.user_id;
-
-        studentServiceImp.studentDeleteAccount(user_id);
-        return ApiResponse.<UserActivateAccountRequest>successDelete("student class")
-                .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
-                .setData(new UserActivateAccountRequest(user_id));
-
-    }
-
-    @PutMapping("/deactivate-account")
-    public ApiResponse<UserActivateAccountRequest> deactivateAccount() {
-        Integer user_id = AuthRestController.user_id;
-
-        studentServiceImp.studentDeactivateAccount(user_id);
-        return ApiResponse.<UserActivateAccountRequest>updateSuccess(UserActivateAccountRequest.class.getSimpleName())
-                .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                .setData(new UserActivateAccountRequest(user_id));
-
-    }
-
-    @PutMapping("/activate-account")
-    public ApiResponse<UserActivateAccountRequest> activateAccount() {
-        Integer user_id = AuthRestController.user_id;
-
-        studentServiceImp.studentActivateAccount(user_id);
-        return ApiResponse.<UserActivateAccountRequest>updateSuccess(UserActivateAccountRequest.class.getSimpleName())
-                .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                .setData(new UserActivateAccountRequest(user_id));
-    }
-
     @GetMapping("/get-student-by-class-and-classroom-id")
     public ApiResponse<List<GetStudentByClassIDResponse>> getStudentByClassID(Integer id, Integer classroom_id) {
         try {
-            List<GetStudentByClassIDResponse> getStudentByClassIDResponses = studentServiceImp.selectStudentByClassID(id,classroom_id);
+            List<GetStudentByClassIDResponse> getStudentByClassIDResponses = studentServiceImp.selectStudentByClassID(id, classroom_id);
             if (getStudentByClassIDResponses.isEmpty()) {
                 return ApiResponse.<List<GetStudentByClassIDResponse>>setError(GetStudentByClassIDResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
@@ -114,54 +88,52 @@ public class StudentController {
     }
 
     @PutMapping("leave-class")
-    public ApiResponse<StudentLeaveClassRequest> studentLeaveClass(int classroomId, int classId) {
+    public ApiResponse<StudentLeaveClassRequest> studentLeaveClass(
+            @Min(value = 1, message = "{validation.classroomId.notNegative}") Integer classroomId,
+            @Min(value = 1, message = "{validation.classId.notNegative}") Integer classId) {
         try {
             Integer user_id = AuthRestController.user_id;
-            studentServiceImp.studentLeaveClassService(user_id, classroomId, classId);
-            if (user_id == 0 || classroomId == 0 || classId == 0) {
-                return ApiResponse.<StudentLeaveClassRequest>setError("student class")
-                        .setResponseMsg(BaseMessage.Error.INSERT_ERROR.getMessage())
-                        .setData(new StudentLeaveClassRequest(user_id, classroomId, classId));
-            } else {
-                return ApiResponse.<StudentLeaveClassRequest>ok("student class")
-                        .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                        .setData(new StudentLeaveClassRequest(user_id, classroomId, classId));
-            }
 
+            if (!user_id.equals(0)) {
+                if (user_id == 0 || classroomId == 0 || classId == 0) {
+                    return ApiResponse.<StudentLeaveClassRequest>setError("student class")
+                            .setResponseMsg(BaseMessage.Error.INSERT_ERROR.getMessage())
+                            .setData(new StudentLeaveClassRequest(user_id, classroomId, classId));
+                } else {
+                    studentServiceImp.studentLeaveClassService(user_id, classroomId, classId);
+                    return ApiResponse.<StudentLeaveClassRequest>ok("student class")
+                            .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
+                            .setData(new StudentLeaveClassRequest(user_id, classroomId, classId));
+                }
+            } else {
+                return ApiResponse.<StudentLeaveClassRequest>unAuthorized(StudentLeaveClassRequest.class.getSimpleName())
+                        .setResponseMsg("Unauthorized!");
+            }
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
     }
 
     @PostMapping("insert-student")
-    public ApiResponse<StudentLeaveClassRequest> insertStudentToTableStudent(Integer user_id, int classroomId, int classId) {
+    public ApiResponse<StudentInsertRequest> insertStudentToTableStudent(
+            @Min(value = 1, message = "{validation.id.notNegative}") Integer user_id,
+            @Min(value = 1, message = "{validation.classroomId.notNegative}") Integer classroomId,
+            @Min(value = 1, message = "{validation.classId.notNegative}") Integer classId) {
         try {
-            studentServiceImp.insertStudent(user_id, classroomId, classId);
             if (user_id == 0 || classroomId == 0 || classId == 0) {
-                return ApiResponse.<StudentLeaveClassRequest>setError("student class")
+                return ApiResponse.<StudentInsertRequest>setError("student class")
                         .setResponseMsg(BaseMessage.Error.INSERT_ERROR.getMessage())
-                        .setData(new StudentLeaveClassRequest(user_id, classroomId, classId));
+                        .setData(new StudentInsertRequest(user_id, classroomId, classId));
             } else {
-                return ApiResponse.<StudentLeaveClassRequest>ok("student class")
+                studentServiceImp.insertStudent(user_id, classroomId, classId);
+                return ApiResponse.<StudentInsertRequest>ok("student class")
                         .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
-                        .setData(new StudentLeaveClassRequest(user_id, classroomId, classId));
+                        .setData(new StudentInsertRequest(user_id, classroomId, classId));
             }
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
     }
 
-    @PutMapping("update-profile")
-    public ApiResponse<UserUpdateRequest> studentUpdateProfile(@RequestBody @Valid UserUpdateRequest userUpdateRequest) {
-        try {
-            Integer user_id = AuthRestController.user_id;
-            studentServiceImp.updateprofileByID(user_id, userUpdateRequest.getName(), userUpdateRequest.getUsername(),userUpdateRequest.getImg(), userUpdateRequest.getGender());
-                return ApiResponse.<UserUpdateRequest>ok(UserUpdateRequest.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                        .setData(new UserUpdateRequest(user_id, userUpdateRequest.getName(), userUpdateRequest.getUsername(),userUpdateRequest.getEmail(),userUpdateRequest.getImg(), userUpdateRequest.getGender()));
 
-        } catch (Exception e) {
-            return ApiResponse.setError(e.getMessage());
-        }
-    }
 }

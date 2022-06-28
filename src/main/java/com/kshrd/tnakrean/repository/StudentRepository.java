@@ -19,15 +19,6 @@ public interface StudentRepository {
     @Select("Select * from users where user_role_id=1 and id= #{id}")
     GetStudentByIDResponse getStudentFromDBById(@Param("id") Integer id);
 
-
-    //    Delete Student By ID
-    @Update("UPDATE users SET status = 0 WHERE id = #{user_id}")
-    void studentDeleteAccount(@Param("user_id") Integer user_id);
-
-    //    Student Deactivate Account
-    @Update("UPDATE users SET status = 1 WHERE id = #{id}")
-    void studentDeactivateAccount(@Param("id") Integer id);
-
     //  Student Leave Class
     @Delete("DELETE  from student where user_id= #{user_id} AND classroom_id=#{classroom_id} AND class_id= #{class_id} ")
     void studentLeaveClassDB(@Param("user_id") Integer user_id, @Param("classroom_id") Integer classroom_id, @Param("class_id") Integer class_id);
@@ -41,11 +32,11 @@ public interface StudentRepository {
     @Insert("INSERT INTO student (user_id, classroom_id, class_id) VALUES (#{user_id},#{classroom_id},#{class_id})")
     void insertUserToTableStudent(@Param("user_id") Integer user_id, @Param("classroom_id") Integer classroom_id, @Param("class_id") Integer class_id);
 
-    //    Activate Account
-    @Update("UPDATE users SET status = 2 WHERE id = #{user_id}")
-    void studentActivateAccount(@Param("user_id") Integer id);
+//    check id class_id
+   @Select("select exists (select * from class where id = #{id})")
+    Boolean checkIfClassExistsClass(Integer id);
 
-    //    Update profile
-    @Update("UPDATE users SET name=#{name}, username=#{username}, img=#{img} gender=#{gender} WHERE id = #{user_id}")
-    void updateProfile(Integer user_id, String name, String username, String img, String gender);
+   //    check id class_id
+   @Select("select exists (select * from class where id = #{id})")
+    Boolean checkIfClassExistsClassroom(Integer id);
 }

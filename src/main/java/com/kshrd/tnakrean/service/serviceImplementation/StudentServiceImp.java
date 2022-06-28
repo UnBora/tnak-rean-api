@@ -31,20 +31,6 @@ public class StudentServiceImp implements StudentService {
         return studentRepository.getStudentFromDBById(id);
     }
 
-    @Override
-    public void studentDeleteAccount(Integer id) {
-        studentRepository.studentDeleteAccount(id);
-    }
-
-    @Override
-    public void studentDeactivateAccount(Integer id) {
-        studentRepository.studentDeactivateAccount(id);
-    }
-
-    @Override
-    public void studentActivateAccount(Integer id) {
-        studentRepository.studentActivateAccount(id);
-    }
 
     @Override
     public void studentLeaveClassService(Integer users_id, Integer classroom_id, Integer class_id) {
@@ -61,10 +47,6 @@ public class StudentServiceImp implements StudentService {
         studentRepository.insertUserToTableStudent(users_id, classroom_id, class_id);
     }
 
-    @Override
-    public void updateprofileByID(Integer user_id, String name, String username,String img, String gender) {
-        studentRepository.updateProfile(user_id,name, username, img, gender);
-    }
 
 
 }

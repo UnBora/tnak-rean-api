@@ -75,20 +75,22 @@ public class ClassroomController {
     @PostMapping("/insert-classroom")
     public ApiResponse<ClassroomRequest> insertClassroom(@RequestBody @Valid ClassroomRequest classroomRequest) {
         try {
-            Integer classId = classroomRequest.getClass_id(), createdby = AuthRestController.user_id;
+            Integer createdby = AuthRestController.user_id;
             String dec = classroomRequest.getDes(), name = classroomRequest.getName();
+            Boolean classroomName= classroomRepository.checkIfClassExistsDuplecateClassName(name.toUpperCase());
+
             if (!createdby.equals(0)) {
                 if (classroomRequest == null) {
                     return ApiResponse.<ClassroomRequest>setError(ClassroomRequest.class.getSimpleName())
                             .setResponseMsg(BaseMessage.Error.INSERT_ERROR.getMessage());
-                } else if (createdby.equals(0)) {
-                    return ApiResponse.<ClassroomRequest>unAuthorized(ClassroomRequest.class.getSimpleName())
-                            .setResponseMsg("Unauthorized!");
+                } else if (classroomName.equals(true)) {
+                    return ApiResponse.<ClassroomRequest>badRequest(ClassroomRequest.class.getSimpleName())
+                            .setResponseMsg("The classroom name already exists!");
                 } else {
-                    classroomServiceImp.insertClassroom(classId, createdby, dec, name);
+                    classroomServiceImp.insertClassroom( createdby, name.toUpperCase(), dec);
                     return ApiResponse.<ClassroomRequest>ok(ClassroomRequest.class.getSimpleName())
                             .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
-                            .setData(new ClassroomRequest(classId, createdby, dec, name));
+                            .setData(new ClassroomRequest( name.toUpperCase(), dec));
                 }
             }else {
                 return ApiResponse.<ClassroomRequest>unAuthorized(ClassroomRequest.class.getSimpleName())
