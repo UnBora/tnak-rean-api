@@ -9,12 +9,14 @@ import com.kshrd.tnakrean.model.user.request.TeacherStatusRequest;
 import com.kshrd.tnakrean.model.user.response.TeacherByClassAndClassroomResponse;
 import com.kshrd.tnakrean.model.user.response.TeacherResponse;
 import com.kshrd.tnakrean.service.serviceImplementation.TeacherImpl;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/teacher")
+@RequestMapping("/api/v1/teacher")
+@SecurityRequirement(name = "bearerAuth")
 public class TeacherController {
     final TeacherImpl teacherImpl;
 

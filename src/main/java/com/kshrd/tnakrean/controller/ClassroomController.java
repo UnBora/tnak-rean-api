@@ -12,6 +12,7 @@ import com.kshrd.tnakrean.model.user.response.GetAllStudentResponse;
 import com.kshrd.tnakrean.model.user.response.GetStudentByClassIDResponse;
 import com.kshrd.tnakrean.repository.ClassroomRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.ClassroomServiceImp;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/classroom")
+@SecurityRequirement(name = "bearerAuth")
 public class ClassroomController {
 
     final ClassroomServiceImp classroomServiceImp;
