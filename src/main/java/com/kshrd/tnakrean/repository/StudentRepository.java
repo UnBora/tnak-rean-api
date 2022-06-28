@@ -33,8 +33,8 @@ public interface StudentRepository {
     void insertUserToTableStudent(@Param("user_id") Integer user_id, @Param("classroom_id") Integer classroom_id, @Param("class_id") Integer class_id);
 
 //    check id class_id
-   @Select("select exists (select * from class where id = #{id})")
-    Boolean checkIfClassExistsClass(Integer id);
+   @Select("select exists (select * from student where user_id= #{user_id} AND classroom_id=#{classroom_id} AND class_id= #{class_id})")
+    Boolean checkIfClassExists(@Param("user_id") Integer user_id, @Param("classroom_id") Integer classroom_id, @Param("class_id") Integer class_id);
 
    //    check id class_id
    @Select("select exists (select * from class where id = #{id})")

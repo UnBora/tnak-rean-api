@@ -93,11 +93,11 @@ public class StudentController {
             @Min(value = 1, message = "{validation.classId.notNegative}") Integer classId) {
         try {
             Integer user_id = AuthRestController.user_id;
-
+            Boolean checkId=studentRepository.checkIfClassExists(user_id,classroomId,classId);
             if (!user_id.equals(0)) {
-                if (user_id == 0 || classroomId == 0 || classId == 0) {
-                    return ApiResponse.<StudentLeaveClassRequest>setError("student class")
-                            .setResponseMsg(BaseMessage.Error.INSERT_ERROR.getMessage())
+                if (checkId.equals(false)) {
+                    return ApiResponse.<StudentLeaveClassRequest>notFound(StudentLeaveClassRequest.class.getSimpleName())
+                            .setResponseMsg("ClassID and ClassroomID not Matched")
                             .setData(new StudentLeaveClassRequest(user_id, classroomId, classId));
                 } else {
                     studentServiceImp.studentLeaveClassService(user_id, classroomId, classId);
