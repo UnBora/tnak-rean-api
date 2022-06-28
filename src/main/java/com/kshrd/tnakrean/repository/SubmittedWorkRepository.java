@@ -28,10 +28,11 @@ public interface SubmittedWorkRepository {
     List<SubmittedWorkResponse> getSubmittedByStudentId(int studentId);
 
     // insert student work
-    @Insert("INSERT INTO submitted_work(status,submittable_work_id,student_work)" +
-            "VALUES(0,#{submWork.submittable_work_id},#{submWork.studentWork,jdbcType=OTHER, typeHandler = com.kshrd.tnakrean.configuration.JsonTypeHandler})")
+    @Insert("INSERT INTO submitted_work(student_id,status,submittable_work_id,student_work)" +
+            "VALUES((SELECT s.id FROM student s JOIN users u on  u.id = s.user_id WHERE u.id = #{userId}),0,#{submWork.submittable_work_id},#{submWork.studentWork,jdbcType=OTHER, typeHandler = com.kshrd.tnakrean.configuration.JsonTypeHandler})")
     @Result(property = "studentWork", column = "student_work", typeHandler = JsonTypeHandler.class)
-    boolean addSubmittedWork(@Param("submWork") SubmittedWorkStudentWorkRequest submittedWorkStudentWorkRequest);
+    @Result(property = "student_id", column = "userId")
+    boolean addSubmittedWork(@Param("submWork") SubmittedWorkStudentWorkRequest submittedWorkStudentWorkRequest,Integer userId);
 
     // update student work
     @Select("UPDATE submitted_work SET student_work = #{update.studentWork, jdbcType=OTHER, typeHandler = com.kshrd.tnakrean.configuration.JsonTypeHandler} WHERE id = #{update.submitted_work_id} RETURNING *")
@@ -46,7 +47,7 @@ public interface SubmittedWorkRepository {
     // get by id
     @Select("SELECT * FROM submitted_work WHERE id = #{id}")
     @ResultMap("submitted")
-    List<SubmittedWorkResponse> getById(Integer id);
+    SubmittedWorkResponse getById(Integer id);
 
     // get by student_id and class_id
     @Select("SELECT * " +

@@ -12,7 +12,6 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SubmittableWorkResponse {
-    @Min(value = 1 , message="{validation.studentId.notNegative}")
     Integer submittable_work_id;
     Integer class_materials_detail_id;
     Integer classroom_id;

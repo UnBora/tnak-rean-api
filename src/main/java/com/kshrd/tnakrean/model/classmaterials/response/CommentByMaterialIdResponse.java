@@ -1,22 +1,21 @@
 package com.kshrd.tnakrean.model.classmaterials.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.kshrd.tnakrean.model.classmaterials.json.StudentWork;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.sql.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SubmittedWorkResponse {
-    private Integer submitted_work_id;
+public class CommentByMaterialIdResponse {
+    private Integer comment_id;
+    private Integer class_material_id;
     private Integer student_id;
+    private Integer class_materials_detail_id;
+    private String comment;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date submitted_date;
-    private Integer status;
-    private StudentWork studentWork; // Json
-    private Integer submittable_work_id;
+    private Date comment_date;
 }

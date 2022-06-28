@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import java.security.PrivateKey;
 import java.time.LocalDateTime;
 
 @Data
@@ -18,6 +19,7 @@ public class SubmittedWorkStudentScoreRequest {
     @Min(value = 1 , message="{validation.id.notNegative}")
     private Integer submitted_work_id;
     @Min (message = "{validation.score.notEmpty}", value = 0)
+    @Max(value = 1000, message = "{validation.score.notEmpty}")
     private Float student_score;
 
 }

@@ -13,7 +13,7 @@ public interface ClassMaterialsTypeService {
 
     boolean insertClassMaterialsType(ClassMaterialsTypeRequest classMaterialsTypeRequest);
 
-    boolean updateClassMaterialsType(ClassMaterialsTypeUpdateRequest classMaterialsTypeUpdateRequest);
+    ClassMaterialsTypeResponse updateClassMaterialsType(ClassMaterialsTypeUpdateRequest classMaterialsTypeUpdateRequest);
 
-    boolean deleteById(int id);
+    ClassMaterialsTypeResponse deleteById(int id);
 }

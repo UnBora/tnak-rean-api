@@ -13,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class CommentUpdateRequest {
     @Min(value = 1, message = "{validation.id.notNegative}")
-    private Integer id;
+    private Integer comment_id;
     @Min(value = 1, message = "{validation.studentId.notNegative}")
     private Integer student_id;
     @Min(value = 1, message = "{validation.MaterialDetailId.notNegative}")
