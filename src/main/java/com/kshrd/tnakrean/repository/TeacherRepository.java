@@ -11,12 +11,16 @@ import java.util.List;
 @Repository
 public interface TeacherRepository {
     // get all
-    @Select("SELEct * FROM users WHERE user_role_id= 2")
+    @Select("SELEct u.*, r.role FROM users u " +
+            "JOIN user_role r ON u.user_role_id = r.id " +
+            "WHERE user_role_id= 2")
     @Result(property = ("user_id"), column = ("id"))
     List<TeacherResponse> getAllTeacher();
 
     // get by id
-    @Select("SELECT * FROM users WHERE user_role_id= 2 AND id = #{user_id}")
+    @Select("SELEct u.*, r.role FROM users u " +
+            "JOIN user_role r ON u.user_role_id = r.id " +
+            "WHERE user_role_id= 2 AND u.id = #{user_id}")
     @Result(property = ("user_id"), column = ("id"))
     TeacherResponse getTeacherById(@Param("user_id") Integer id);
 
