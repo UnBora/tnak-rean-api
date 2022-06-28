@@ -9,6 +9,7 @@ import com.kshrd.tnakrean.model.classmaterials.response.CommentResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittableWorkResponse;
 import com.kshrd.tnakrean.repository.ClassMaterialsTypeRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.ClassMaterialsTypeImpl;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/classMaterialsType")
+@SecurityRequirement(name = "bearerAuth")
 public class ClassMaterialsTypeController {
     final ClassMaterialsTypeImpl classMaterialsTypeImpl;
     final ClassMaterialsTypeRepository classMaterialsTypeRepository;

@@ -9,6 +9,7 @@ import com.kshrd.tnakrean.model.classmaterials.response.SubmittableWorkResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.UpComingSubmittableWorkResponse;
 import com.kshrd.tnakrean.service.serviceImplementation.SubmittableWorkServiceImpl;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -20,6 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/submittableWork")
+@SecurityRequirement(name = "bearerAuth")
 public class SubmittableWorkController {
     final SubmittableWorkServiceImpl submittableWorkService;
 
