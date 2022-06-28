@@ -4,7 +4,7 @@ import com.kshrd.tnakrean.configuration.JsonTypeHandler;
 import com.kshrd.tnakrean.model.ClassMaterialType;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialUpdateContentRequest;
-import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialUpdateRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialUpdateTitleDesRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.*;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
@@ -43,9 +43,9 @@ public interface ClassMaterialRepository {
 
     // update title and description
     @Select("UPDATE class_materials SET title = #{classMaterialUpdateRequest.title} ," + " description = #{classMaterialUpdateRequest.description} " +
-            "WHERE id = #{classMaterialUpdateRequest.id} returning *")
+            "WHERE id = #{classMaterialUpdateRequest.class_material_id} returning *")
     @Result(property = "class_material_id",column = "id")
-    ClassMaterialResponse updateClassMaterial(@Param("classMaterialUpdateRequest") ClassMaterialUpdateRequest classMaterialUpdateRequest);
+    ClassMaterialUpdateTitleDesRequest updateClassMaterial(@Param("classMaterialUpdateRequest") ClassMaterialUpdateTitleDesRequest classMaterialUpdateTitleDesRequest);
 
     @Select("SELECT * FROM class_materials WHERE id=#{id}")
 
@@ -90,9 +90,10 @@ public interface ClassMaterialRepository {
     @Result(property = "teacher_id", column = "created_by")
     List<ClassMaterialByTeacherIdAndClassIdResponse> getByClassIdAndTeacherId(Integer teacher_id, Integer class_id);
     // update content
-    @Update("UPDATE class_materials SET content = #{classMaterialContent, jdbcType=OTHER, typeHandler = com.kshrd.tnakrean.configuration.JsonTypeHandler} WHERE id = #{id}")
+    @Select("UPDATE class_materials SET content = #{classMaterialContent, jdbcType=OTHER, typeHandler = com.kshrd.tnakrean.configuration.JsonTypeHandler} WHERE id = #{class_material_id} returning *")
     @Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class)
-    Boolean updateContent(ClassMaterialUpdateContentRequest classMaterialUpdateContentRequest);
+    @Result(property = "class_material_id", column = "id")
+    ClassMaterialUpdateContentRequest updateContent(ClassMaterialUpdateContentRequest classMaterialUpdateContentRequest);
 
     // get By ClassId
     @Select("SELECT d.classroom_id, d.class_id, t.type, m.* FROM class_materials m \n" +

@@ -2,7 +2,7 @@ package com.kshrd.tnakrean.service.serviceInter;
 
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialUpdateContentRequest;
-import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialUpdateRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialUpdateTitleDesRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.*;
 
 import java.util.List;
@@ -13,7 +13,7 @@ public interface ClassMaterialService {
 
     boolean insertClassMaterial(ClassMaterialRequest classMaterialRequest);
 
-    ClassMaterialResponse updateClassMaterial(ClassMaterialUpdateRequest classMaterialUpdateRequest);
+    ClassMaterialUpdateTitleDesRequest updateClassMaterial(ClassMaterialUpdateTitleDesRequest classMaterialUpdateTitleDesRequest);
 
     List<ClassMaterialResponse> getAllClassMaterial();
 
@@ -27,7 +27,7 @@ public interface ClassMaterialService {
 
     List<ClassMaterialByTeacherIdAndClassIdResponse> getByClassIdAndTeacherId(Integer teacher_id, Integer class_id);
 
-    Boolean updateContent(ClassMaterialUpdateContentRequest classMaterialUpdateContentRequest);
+    ClassMaterialUpdateContentRequest updateContent(ClassMaterialUpdateContentRequest classMaterialUpdateContentRequest);
 
     List<ClassMaterialByClassIdResponse> getByClassId(Integer class_id);
 

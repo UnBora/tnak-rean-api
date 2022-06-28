@@ -15,7 +15,7 @@ import javax.validation.constraints.Min;
 @Builder
 public class ClassMaterialUpdateContentRequest {
     @Min(value = 1 , message="{validation.id.notNegative}")
-    private Integer id;
+    private Integer class_material_id;
     @Valid
     private ClassMaterialContent classMaterialContent;
 }

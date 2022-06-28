@@ -2,7 +2,7 @@ package com.kshrd.tnakrean.service.serviceImplementation;
 
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialUpdateContentRequest;
-import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialUpdateRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialUpdateTitleDesRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.*;
 import com.kshrd.tnakrean.repository.ClassMaterialRepository;
 import com.kshrd.tnakrean.service.serviceInter.ClassMaterialService;
@@ -29,8 +29,8 @@ public class ClassMaterialImp implements ClassMaterialService {
     }
 
     @Override
-    public ClassMaterialResponse updateClassMaterial(ClassMaterialUpdateRequest classMaterialUpdateRequest) {
-        return classMaterialRepository.updateClassMaterial(classMaterialUpdateRequest);
+    public ClassMaterialUpdateTitleDesRequest updateClassMaterial(ClassMaterialUpdateTitleDesRequest classMaterialUpdateTitleDesRequest) {
+        return classMaterialRepository.updateClassMaterial(classMaterialUpdateTitleDesRequest);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class ClassMaterialImp implements ClassMaterialService {
     }
 
     @Override
-    public Boolean updateContent(ClassMaterialUpdateContentRequest classMaterialUpdateContentRequest) {
+    public ClassMaterialUpdateContentRequest updateContent(ClassMaterialUpdateContentRequest classMaterialUpdateContentRequest) {
         return classMaterialRepository.updateContent(classMaterialUpdateContentRequest);
     }
 

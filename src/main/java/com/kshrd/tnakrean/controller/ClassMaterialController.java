@@ -5,7 +5,7 @@ import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialUpdateContentRequest;
-import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialUpdateRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialUpdateTitleDesRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.*;
 import com.kshrd.tnakrean.repository.ClassMaterialRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.ClassMaterialImp;
@@ -56,39 +56,40 @@ public class ClassMaterialController {
                     .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
                     .setData(classMaterialRequest);
         } catch (Exception e) {
-            return ApiResponse.setError(e.getMessage());
+            return ApiResponse.<ClassMaterialRequest>badRequest("")
+                    .setResponseMsg("Can't insert! Because of violates foreign key constraint");
         }
     }
     @PutMapping("update-title-and-description")
-    ApiResponse<ClassMaterialResponse> updateClassMaterial(
-            @RequestBody @Valid ClassMaterialUpdateRequest classMaterialUpdateRequest
+    ApiResponse<ClassMaterialUpdateTitleDesRequest> updateClassMaterial(
+            @RequestBody @Valid ClassMaterialUpdateTitleDesRequest classMaterialUpdateTitleDesRequest
     ) {
         try {
-        ClassMaterialResponse response = classMaterialRepository.selectResponseAfterUpdate(classMaterialUpdateRequest.getId());
-        classMaterialServiceImp.updateClassMaterial(classMaterialUpdateRequest);
-        if (response == null) {
-            return ApiResponse.<ClassMaterialResponse>notFound(ClassMaterialResponse.class.getSimpleName())
-                    .setResponseMsg("Can't update! ID: "+classMaterialUpdateRequest.getId()+" doesn't exist");
+        // ClassMaterialResponse response = classMaterialRepository.selectResponseAfterUpdate(classMaterialUpdateRequest.getId());
+            ClassMaterialUpdateTitleDesRequest classMaterialUpdateTitleDesRequest1 = classMaterialServiceImp.updateClassMaterial(classMaterialUpdateTitleDesRequest);
+        if (classMaterialUpdateTitleDesRequest1 == null) {
+            return ApiResponse.<ClassMaterialUpdateTitleDesRequest>notFound(ClassMaterialUpdateTitleDesRequest.class.getSimpleName())
+                    .setResponseMsg("Can't update! ID: "+ classMaterialUpdateTitleDesRequest.getClass_material_id()+" doesn't exist");
         }
-        return ApiResponse.<ClassMaterialResponse>ok(ClassMaterialResponse.class.getSimpleName())
+        return ApiResponse.<ClassMaterialUpdateTitleDesRequest>ok(ClassMaterialUpdateTitleDesRequest.class.getSimpleName())
                 .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                .setData(response);
+                .setData(classMaterialUpdateTitleDesRequest1);
     } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
     }
     @PutMapping("update-content")
-    ApiResponse<ClassMaterialResponse> updateContent(
+    ApiResponse<ClassMaterialUpdateContentRequest> updateContent(
             @RequestBody @Valid ClassMaterialUpdateContentRequest classMaterialUpdateContentRequest
     ) {
         try {
-            ClassMaterialResponse response = classMaterialRepository.selectResponseAfterUpdate(classMaterialUpdateContentRequest.getId());
-            classMaterialServiceImp.updateContent(classMaterialUpdateContentRequest);
+            // ClassMaterialResponse response = classMaterialRepository.selectResponseAfterUpdate(classMaterialUpdateContentRequest.getId());
+            ClassMaterialUpdateContentRequest response = classMaterialServiceImp.updateContent(classMaterialUpdateContentRequest);
             if (response == null) {
-                return ApiResponse.<ClassMaterialResponse>notFound(ClassMaterialResponse.class.getSimpleName())
-                        .setResponseMsg("Can't update! ID: " + classMaterialUpdateContentRequest.getId() + " doesn't exist");
+                return ApiResponse.<ClassMaterialUpdateContentRequest>notFound(ClassMaterialUpdateContentRequest.class.getSimpleName())
+                        .setResponseMsg("Can't update! ID: " + classMaterialUpdateContentRequest.getClass_material_id() + " doesn't exist");
             }
-            return ApiResponse.<ClassMaterialResponse>ok(ClassMaterialResponse.class.getSimpleName())
+            return ApiResponse.<ClassMaterialUpdateContentRequest>ok(ClassMaterialUpdateContentRequest.class.getSimpleName())
                     .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
                     .setData(response);
         } catch (Exception e) {
@@ -97,11 +98,11 @@ public class ClassMaterialController {
     }
 
     @DeleteMapping("/delete-by-id/{id}")
-    ApiResponse<Boolean> deleteById(@RequestParam Integer id) {
+    ApiResponse<Boolean> deleteById(@RequestParam @Min(value = 1) Integer id) {
         try {
             ClassMaterialResponse response = classMaterialServiceImp.deleteById(id);
             if (response == null) {
-                return ApiResponse.<Boolean>notFound("Class Materials")
+                return ApiResponse.<Boolean>notFound("")
                         .setResponseMsg("Can't delete! ID: " + id + " doesn't exist")
                         .setData(null);
             }
