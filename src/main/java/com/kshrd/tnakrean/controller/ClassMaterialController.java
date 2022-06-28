@@ -266,7 +266,7 @@ public class ClassMaterialController {
         }
     }
 
-    @GetMapping("get-by-studentId/{student_id}")
+    @GetMapping("get-by-studentId/{student_user_id}")
     ApiResponse<List<ClassMaterialByStudentIdResponse>> getByStudentId(@RequestParam @Min(value = 1) Integer student_user_id) throws IllegalStateException {
         try {
         List<ClassMaterialByStudentIdResponse> classMaterialResponses = classMaterialServiceImp.getByStudentId(student_user_id);
