@@ -10,6 +10,7 @@ import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkByStudentId
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkResponse;
 import com.kshrd.tnakrean.repository.SubmittedWorkRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.SubmittedWorkImpl;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/submittedWork")
+@SecurityRequirement(name = "bearerAuth")
 public class SubmittedWorkController {
     final SubmittedWorkImpl submittedWorkImpl;
     final SubmittedWorkRepository submittedWorkRepository;

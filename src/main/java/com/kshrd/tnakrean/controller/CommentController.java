@@ -10,6 +10,7 @@ import com.kshrd.tnakrean.model.classmaterials.response.CommentByMaterialIdRespo
 import com.kshrd.tnakrean.model.classmaterials.response.CommentResponse;
 import com.kshrd.tnakrean.repository.CommentRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.CommentServiceImp;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/comment")
+@SecurityRequirement(name = "bearerAuth")
 public class CommentController {
     final CommentServiceImp commentServiceImp;
     final CommentRepository commentRepository;

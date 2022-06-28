@@ -13,7 +13,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -52,7 +51,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer customizeJson() {
         return builder -> {
-
             builder.indentOutput(true);
             builder.propertyNamingStrategy(PropertyNamingStrategies.UPPER_CAMEL_CASE);
         };
@@ -61,7 +59,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.csrf().disable().authorizeRequests().antMatchers("/api/v1/auth/**").permitAll();
+        http.csrf().disable().authorizeRequests().antMatchers("/api/v1/auth/**").permitAll()
+                .antMatchers("/api/v1/teacher/**","/api/v1/submittedWork/**",
+                        "/api/v1/class/**", "/api/v1/classroom/**", "/api/v1/classMaterialsType/**", "/api/v1/classMaterial/**",
+                        "/api/v1/v/**")
+                .hasAnyAuthority("Teacher")
+
+
+                .antMatchers("/api/v1/student/**", "api/v1/comment/**","api/v1/submittableWork/**","/api/v1/submittedWork/get-by-studentId",
+                        "/api/v1/submittedWork/get-by-studentId-and-classId",
+                        "/api/v1/classMaterial/get-by-studentId", "get-by-studentId-classId-classroomId")
+                .hasAnyAuthority("Student");
 
 
 //        This is for the jwt

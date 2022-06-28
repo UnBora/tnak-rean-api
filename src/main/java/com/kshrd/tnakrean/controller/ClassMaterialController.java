@@ -10,6 +10,7 @@ import com.kshrd.tnakrean.model.classmaterials.response.*;
 import com.kshrd.tnakrean.repository.ClassMaterialRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.ClassMaterialImp;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,6 +20,7 @@ import java.util.List;
 //@Builder
 @RestController
 @RequestMapping("/api/v1/classMaterial")
+@SecurityRequirement(name = "bearerAuth")
 public class ClassMaterialController {
 
     final
