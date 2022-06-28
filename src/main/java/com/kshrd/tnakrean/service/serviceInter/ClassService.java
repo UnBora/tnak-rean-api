@@ -1,6 +1,7 @@
 package com.kshrd.tnakrean.service.serviceInter;
 
 import com.kshrd.tnakrean.model.classmaterials.request.GetClassRequest;
+import com.kshrd.tnakrean.model.classmaterials.response.ClassDeleteResponse;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public interface ClassService {
     void insertClass(String class_name);
 
     //    Delete Class fromm Class Table
-    void deleteClass(Integer classId);
+    Boolean deleteClass(Integer classId);
 
     //    Update Class
     void UpdateClass(Integer id, String className);

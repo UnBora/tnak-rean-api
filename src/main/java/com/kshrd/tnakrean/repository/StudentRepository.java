@@ -46,6 +46,6 @@ public interface StudentRepository {
     void studentActivateAccount(@Param("user_id") Integer id);
 
     //    Update profile
-    @Update("UPDATE users SET name=#{name}, username=#{username}, gender=#{gender} WHERE id = #{user_id}")
-    void updateProfile(Integer user_id, String name, String username, String gender);
+    @Update("UPDATE users SET name=#{name}, username=#{username}, img=#{img} gender=#{gender} WHERE id = #{user_id}")
+    void updateProfile(Integer user_id, String name, String username, String img, String gender);
 }

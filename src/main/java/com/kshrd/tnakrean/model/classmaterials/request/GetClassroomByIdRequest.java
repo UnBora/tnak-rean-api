@@ -1,18 +1,16 @@
 package com.kshrd.tnakrean.model.classmaterials.request;
 
+import com.kshrd.tnakrean.model.classmaterials.response.ClassroomResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetClassRequest {
+public class GetClassroomByIdRequest {
     @Min(value = 1, message = "{validation.id.notNegative}")
-    Integer class_id;
-    @NotBlank(message = "{validation.className.notEmpty}")
-    String class_name;
+    Integer classroomId;
 }
