@@ -6,7 +6,6 @@ import com.kshrd.tnakrean.model.classmaterials.request.GetClassRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassDeleteResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassInertResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassUpdateResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.ClassroomResponse;
 import com.kshrd.tnakrean.model.user.response.GetAllStudentResponse;
 import com.kshrd.tnakrean.repository.ClassRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.ClassServiceImp;
@@ -14,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController
@@ -53,9 +53,10 @@ public class ClassController {
             return ApiResponse.setError(e.getMessage());
         }
     }
-
     @DeleteMapping("/delete-class")
-    public ApiResponse<ClassDeleteResponse> deleteClass(Integer classId) {
+    public ApiResponse<ClassDeleteResponse> deleteClass(
+            @Min(value = 1, message = "{validation.classId.notNegative}") Integer classId)
+    {
         try {
             Boolean checkClassId=classRepository.checkIfClassExists(classId);
             if (classId == null) {
@@ -80,7 +81,6 @@ public class ClassController {
                             .setResponseMsg(BaseMessage.Error.DELETE_ERROR.getMessage())
                             .setData(new ClassDeleteResponse(classId));
                 }
-
             }
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
