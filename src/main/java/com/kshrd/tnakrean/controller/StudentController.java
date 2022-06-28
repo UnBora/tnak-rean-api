@@ -73,7 +73,9 @@ public class StudentController {
     }
 
     @GetMapping("/get-student-by-class-and-classroom-id")
-    public ApiResponse<List<GetStudentByClassIDResponse>> getStudentByClassID(Integer id, Integer classroom_id) {
+    public ApiResponse<List<GetStudentByClassIDResponse>> getStudentByClassID(
+            @Min(value = 1, message = "{validation.classId.notNegative}") Integer id,
+            @Min(value = 1, message = "{validation.classroomId.notNegative}") Integer classroom_id) {
         try {
             List<GetStudentByClassIDResponse> getStudentByClassIDResponses = studentServiceImp.selectStudentByClassID(id, classroom_id);
             if (getStudentByClassIDResponses.isEmpty()) {
@@ -95,8 +97,9 @@ public class StudentController {
             @Min(value = 1, message = "{validation.classId.notNegative}") Integer classId) {
         try {
             Integer user_id = AuthRestController.user_id;
-            Boolean checkId=studentRepository.checkIfClassExists(user_id,classroomId,classId);
+
             if (!user_id.equals(0)) {
+                Boolean checkId=studentRepository.checkIfClassExists(user_id,classroomId,classId);
                 if (checkId.equals(false)) {
                     return ApiResponse.<StudentLeaveClassRequest>notFound(StudentLeaveClassRequest.class.getSimpleName())
                             .setResponseMsg("ClassID and ClassroomID not Matched")
