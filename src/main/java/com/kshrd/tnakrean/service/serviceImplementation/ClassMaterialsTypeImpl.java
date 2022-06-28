@@ -33,12 +33,12 @@ public class ClassMaterialsTypeImpl implements ClassMaterialsTypeService {
     }
 
     @Override
-    public boolean updateClassMaterialsType(ClassMaterialsTypeUpdateRequest classMaterialsTypeUpdateRequest) {
+    public ClassMaterialsTypeResponse updateClassMaterialsType(ClassMaterialsTypeUpdateRequest classMaterialsTypeUpdateRequest) {
         return classMaterialsTypeRepository.updateClassMaterialsType(classMaterialsTypeUpdateRequest);
     }
 
     @Override
-    public boolean deleteById(int id) {
+    public ClassMaterialsTypeResponse deleteById(int id) {
         return classMaterialsTypeRepository.deleteById(id);
     }
 
