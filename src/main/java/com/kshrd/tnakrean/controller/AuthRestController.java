@@ -101,7 +101,7 @@ public class AuthRestController {
             if (checkEmail.equals(true)) {
                 return ApiResponse.<UserRegisterResponse>badRequest(UserRegisterResponse.class.getSimpleName())
                         .setResponseMsg("This Email has been exist!");
-            }else if(!(checkUserName.equals(1)&&checkUserRole.equals(2))){
+            }else if(!(checkUserName.equals(1)||checkUserRole.equals(2))){
                 return ApiResponse.<UserRegisterResponse>badRequest(UserRegisterResponse.class.getSimpleName())
                         .setResponseMsg("User role can use only number 1 or 2!");
             }else if(checkUserName.equals(true)){
