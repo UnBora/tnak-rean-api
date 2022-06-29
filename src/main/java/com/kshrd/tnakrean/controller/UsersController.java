@@ -181,10 +181,20 @@ public class UsersController {
         try {
             Integer userId = AuthRestController.user_id;
             if (!userId.equals(0)) {
-                userServiceImp.updateProfileByID(userId, userUpdateRequest.getName(), userUpdateRequest.getUsername(), userUpdateRequest.getEmail(), userUpdateRequest.getGender());
-                return ApiResponse.<UserUpdateRequest>ok(UserUpdateRequest.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                        .setData(new UserUpdateRequest(userId, userUpdateRequest.getName(), userUpdateRequest.getUsername(), userUpdateRequest.getEmail(), userUpdateRequest.getImg(), userUpdateRequest.getGender()));
+                Boolean checkUsername= usersRepository.checkUserName(userUpdateRequest.getUsername());
+                Boolean checkEmail= usersRepository.checkEmailExist(userUpdateRequest.getEmail());
+                if (checkUsername.equals(true)){
+                    return ApiResponse.<UserUpdateRequest>ok(UserUpdateRequest.class.getSimpleName())
+                            .setResponseMsg("This Username is exist!");
+                }else if (checkEmail.equals(true)){
+                    return ApiResponse.<UserUpdateRequest>ok(UserUpdateRequest.class.getSimpleName())
+                            .setResponseMsg("This Email is Exist!");
+                }else {
+                    userServiceImp.updateProfileByID(userId, userUpdateRequest.getName(), userUpdateRequest.getUsername(), userUpdateRequest.getEmail(), userUpdateRequest.getGender());
+                    return ApiResponse.<UserUpdateRequest>ok(UserUpdateRequest.class.getSimpleName())
+                            .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
+                            .setData(new UserUpdateRequest(userId, userUpdateRequest.getName(), userUpdateRequest.getUsername(), userUpdateRequest.getEmail(), userUpdateRequest.getImg(), userUpdateRequest.getGender()));
+                }
             } else {
                 return ApiResponse.<UserUpdateRequest>unAuthorized(UserUpdateRequest.class.getSimpleName())
                         .setResponseMsg("Unauthorized!");

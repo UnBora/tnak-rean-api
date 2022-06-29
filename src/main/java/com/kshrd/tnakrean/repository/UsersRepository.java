@@ -33,5 +33,11 @@ public interface UsersRepository {
     @Update("UPDATE users SET name=#{name}, username=#{username},email=#{email}, gender=#{gender} WHERE id = #{user_id}")
     void updateProfile(Integer user_id, String name, String username, String email, String gender);
 
+    @Select("select exists (select * from users where email =#{email})")
+    Boolean checkEmailExist(String email);
+
+    @Select("select exists (select * from users where username =#{username})")
+    Boolean checkUserName(String username);
+
 
 }
