@@ -103,7 +103,6 @@ public class SubmittedWorkController {
                     .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
                     .setData(submittedWorkResponses);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             return ApiResponse.setError(e.getMessage());
         }
     }
@@ -113,17 +112,16 @@ public class SubmittedWorkController {
             @RequestBody @Valid SubmittedWorkStudentWorkRequest submittedWorkStudentWorkRequest
     ) {
         Integer userId = AuthRestController.user_id;
-        System.out.println(userId);
-        submittedWorkImpl.addSubmittedWork(submittedWorkStudentWorkRequest, userId);
         try {
+            System.out.println(userId);
+        submittedWorkImpl.addSubmittedWork(submittedWorkStudentWorkRequest, userId);
             return ApiResponse.<SubmittedWorkStudentWorkRequest>ok(SubmittedWorkStudentWorkRequest.class.getSimpleName())
                     .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
                     .setData(submittedWorkStudentWorkRequest);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ApiResponse.setError(e.getMessage());
+            return ApiResponse.<SubmittedWorkStudentWorkRequest>badRequest(SubmittedWorkStudentWorkRequest.class.getSimpleName())
+                    .setResponseMsg(BaseMessage.Error.INSERT_ERROR.getMessage());
         }
-
     }
 
     @PutMapping("/update-student-score")
@@ -140,7 +138,6 @@ public class SubmittedWorkController {
                     .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
                     .setData(submittedWorkStudentScoreRequest1);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             return ApiResponse.setError(e.getMessage());
         }
     }
@@ -159,7 +156,6 @@ public class SubmittedWorkController {
                     .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
                     .setData(submittedWorkUpdateStudentWorkRequest1);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             return ApiResponse.setError(e.getMessage());
         }
     }
@@ -181,7 +177,6 @@ public class SubmittedWorkController {
             return ApiResponse.<Boolean>badRequest("")
                     .setResponseMsg("Can't delete! Because of violates foreign key constraint");
         }
-
     }
 
     @GetMapping("get-by-classMaterialId/{classMaterialId}")
@@ -197,7 +192,6 @@ public class SubmittedWorkController {
                     .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
                     .setData(submittedWorkResponses);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             return ApiResponse.setError(e.getMessage());
         }
     }
@@ -218,7 +212,6 @@ public class SubmittedWorkController {
                     .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
                     .setData(submittedWorkByClassroomClassSubmittableResponses);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             return ApiResponse.setError(e.getMessage());
         }
     }
