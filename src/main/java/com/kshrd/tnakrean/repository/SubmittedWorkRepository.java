@@ -82,4 +82,7 @@ public interface SubmittedWorkRepository {
     @Result(property = "submitted_work_id", column = "id")
     @Result(property = "studentWork", column = "student_work", typeHandler = JsonTypeHandler.class)
     List<SubmittedWorkByClassroomClassSubmittableResponse> getByClassroomClassSubmittable(Integer classroom_id, Integer class_id, Integer submittable_work_id);
+
+    @Select("SELECT EXISTS(SELECT * FROM submittable_work WHERE id = #{submittable_work_id} )")
+    boolean checkIfSubmiitableIdExist(Integer submittable_work_id);
 }
