@@ -114,9 +114,11 @@ public class SubmittedWorkController {
         Integer userId = AuthRestController.user_id;
         boolean checkSubmiitableId = submittedWorkRepository.checkIfSubmiitableIdExist(submittedWorkStudentWorkRequest.getSubmittable_work_id());
         try {
-            if (checkSubmiitableId == false) {
+            if (userId == 0) {
+                return ApiResponse.unAuthorized("Unauthorized");
+            } else if (checkSubmiitableId == false) {
                 return ApiResponse.<SubmittedWorkStudentWorkRequest>notFound(SubmittedWorkStudentWorkRequest.class.getSimpleName())
-                        .setResponseMsg("The Submittable_work_id: "+submittedWorkStudentWorkRequest.getSubmittable_work_id()+ " doesn't exit in the table" );
+                        .setResponseMsg("The Submittable_work_id: " + submittedWorkStudentWorkRequest.getSubmittable_work_id() + " doesn't exist in the table");
             } else {
                 submittedWorkImpl.addSubmittedWork(submittedWorkStudentWorkRequest, userId);
                 return ApiResponse.<SubmittedWorkStudentWorkRequest>ok(SubmittedWorkStudentWorkRequest.class.getSimpleName())
@@ -173,9 +175,9 @@ public class SubmittedWorkController {
                         .setResponseMsg("Can't delete ! ID: " + id + " doesn't exist")
                         .setData(false);
             } else {
-                    return ApiResponse.<Boolean>ok(SubmittedWorkResponse.class.getSimpleName())
-                            .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
-                            .setData(true);
+                return ApiResponse.<Boolean>ok(SubmittedWorkResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
+                        .setData(true);
             }
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());

@@ -13,8 +13,6 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentInsertRequest {
-    @Min(value = 1, message = "{validation.studentId.notNegative}")
-    private Integer student_id;
     @Min(value = 1, message = "{validation.MaterialDetailId.notNegative}")
     private Integer class_materials_detail_id;
     @NotBlank(message = "{validation.comment.notEmpty}")

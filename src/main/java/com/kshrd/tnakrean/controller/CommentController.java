@@ -4,10 +4,9 @@ import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.request.CommentInsertRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.CommentUpdateRequest;
-import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.CommentByClassClassroomStudentResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.CommentByMaterialIdResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.CommentResponse;
+import com.kshrd.tnakrean.model.classmaterials.request.SubmittedWorkStudentWorkRequest;
+import com.kshrd.tnakrean.model.classmaterials.response.*;
+import com.kshrd.tnakrean.model.user.response.TeacherResponse;
 import com.kshrd.tnakrean.repository.CommentRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.CommentServiceImp;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -46,10 +45,10 @@ public class CommentController {
         }
     }
 
-    @GetMapping("get-by-id/{id}")
-    ApiResponse<CommentResponse> getById(@RequestParam @Min(value = 1) Integer id) {
+    @GetMapping("get-by-comment_id/{comment_id}")
+    ApiResponse<CommentResponse> getById(@RequestParam @Min(value = 1) Integer comment_id) {
         try {
-            CommentResponse commentResponses = commentServiceImp.getById(id);
+            CommentResponse commentResponses = commentServiceImp.getById(comment_id);
             if (commentResponses == null) {
                 return ApiResponse.<CommentResponse>notFound(CommentResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
@@ -57,6 +56,48 @@ public class CommentController {
             return ApiResponse.<CommentResponse>ok(CommentResponse.class.getSimpleName())
                     .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
                     .setData(commentResponses);
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
+
+    @GetMapping("get-by-student_id/{student_id}")
+    ApiResponse<List<CommentResponse>> getByStudentId() {
+        try {
+            Integer userId = AuthRestController.user_id;
+            List<CommentResponse> commentResponses = commentServiceImp.getByStudentId(userId);
+            if (userId == 0) {
+                return ApiResponse.<List<CommentResponse>>unAuthorized(CommentResponse.class.getSimpleName())
+                        .setResponseMsg("Unauthorized");
+            } else if (commentResponses.isEmpty()) {
+                return ApiResponse.<List<CommentResponse>>notFound(CommentResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
+            } else {
+                return ApiResponse.<List<CommentResponse>>ok(CommentResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+                        .setData(commentResponses);
+            }
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
+
+    @GetMapping("get-by-teacher_user_id/{teacher_user_id}")
+    ApiResponse<List<CommentByTeacherResponse>> getByTecherId() {
+        try {
+            Integer userId = AuthRestController.user_id;
+            List<CommentByTeacherResponse> commentResponses = commentServiceImp.getByTecherId(userId);
+            if (userId == 0) {
+                return ApiResponse.<List<CommentByTeacherResponse>>unAuthorized(CommentByTeacherResponse.class.getSimpleName())
+                        .setResponseMsg("Unauthorized");
+            } else if (commentResponses.isEmpty()){
+                return ApiResponse.<List<CommentByTeacherResponse>>notFound(CommentByTeacherResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
+            } else {
+                return ApiResponse.<List<CommentByTeacherResponse>>ok(CommentByTeacherResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+                        .setData(commentResponses);
+            }
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
@@ -103,14 +144,25 @@ public class CommentController {
     ApiResponse<CommentInsertRequest> insertComment(
             @RequestBody @Valid CommentInsertRequest commentInsertRequest
     ) {
+        Integer userId = AuthRestController.user_id;
+        boolean checkUserId = commentRepository.ifUserIdExist(userId);
+        boolean checkMaterialsDetailId = commentRepository.ifMaterialsDetailIdExist(commentInsertRequest.getClass_materials_detail_id());
         try {
-            commentServiceImp.insert(commentInsertRequest);
-            return ApiResponse.<CommentInsertRequest>ok(CommentInsertRequest.class.getSimpleName())
-                    .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
-                    .setData(commentInsertRequest);
+            if (checkMaterialsDetailId == false) {
+                return ApiResponse.<CommentInsertRequest>notFound(CommentInsertRequest.class.getSimpleName())
+                        .setResponseMsg("The Class_materials_detail_id: "+commentInsertRequest.getClass_materials_detail_id()+ " doesn't exist in the table");
+            } else if (userId == 0) {
+                return ApiResponse.unAuthorized("Unauthorized");
+            } else if(checkUserId == false) {
+                return ApiResponse.unAuthorized("Unauthorized");
+            } else {
+                commentServiceImp.insert(commentInsertRequest, userId);
+                return ApiResponse.<CommentInsertRequest>ok(CommentInsertRequest.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
+                        .setData(commentInsertRequest);
+            }
         } catch (Exception e) {
-            return ApiResponse.<CommentInsertRequest>badRequest(CommentInsertRequest.class.getSimpleName())
-                    .setResponseMsg("Can't insert comment because of violates foreign key constraint from student_id and class_materials_detail_id");
+            return ApiResponse.setError(e.getMessage());
         }
     }
 
@@ -122,7 +174,7 @@ public class CommentController {
             CommentUpdateRequest commentUpdateRequest1 = commentServiceImp.update(commentUpdateRequest);
             if (commentUpdateRequest1 == null) {
                 return ApiResponse.<CommentUpdateRequest>notFound(CommentUpdateRequest.class.getSimpleName())
-                        .setResponseMsg("Can't update! ID: "+commentUpdateRequest.getComment_id()+" doesn't exist");
+                        .setResponseMsg("Can't update! ID: " + commentUpdateRequest.getComment_id() + " doesn't exist");
             }
             return ApiResponse.<CommentUpdateRequest>ok(CommentUpdateRequest.class.getSimpleName())
                     .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
@@ -133,21 +185,21 @@ public class CommentController {
         }
     }
 
-        @GetMapping("get-by-materialId/{materialId}")
-        ApiResponse<List<CommentByMaterialIdResponse>> getByMaterialId (@RequestParam @Min(value = 1) Integer class_material_id){
-            try {
-                List<CommentByMaterialIdResponse> commentResponses = commentServiceImp.getByMaterialId(class_material_id);
-                if (commentResponses.isEmpty()) {
-                    return ApiResponse.<List<CommentByMaterialIdResponse>>notFound(CommentByMaterialIdResponse.class.getSimpleName())
-                            .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
-                            .setData(commentResponses);
-                }
-                return ApiResponse.<List<CommentByMaterialIdResponse>>ok(CommentByMaterialIdResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+    @GetMapping("get-by-materialId/{materialId}")
+    ApiResponse<List<CommentByMaterialIdResponse>> getByMaterialId(@RequestParam @Min(value = 1) Integer class_material_id) {
+        try {
+            List<CommentByMaterialIdResponse> commentResponses = commentServiceImp.getByMaterialId(class_material_id);
+            if (commentResponses.isEmpty()) {
+                return ApiResponse.<List<CommentByMaterialIdResponse>>notFound(CommentByMaterialIdResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
                         .setData(commentResponses);
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-                return ApiResponse.setError(e.getMessage());
             }
+            return ApiResponse.<List<CommentByMaterialIdResponse>>ok(CommentByMaterialIdResponse.class.getSimpleName())
+                    .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+                    .setData(commentResponses);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ApiResponse.setError(e.getMessage());
         }
     }
+}
