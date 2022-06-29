@@ -118,7 +118,7 @@ public class StudentController {
         }
     }
 
-    @PostMapping("insert-student")
+    @PostMapping("accept-student")
     public ApiResponse<StudentInsertRequest> insertStudentToTableStudent(
             @Min(value = 1, message = "{validation.id.notNegative}") Integer user_id,
             @Min(value = 1, message = "{validation.classroomId.notNegative}") Integer classroomId,

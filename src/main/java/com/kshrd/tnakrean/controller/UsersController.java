@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Size;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -36,7 +37,8 @@ public class UsersController {
     }
 
     @DeleteMapping("/delete-account")
-    public ApiResponse<UserDeleteAccountRequest> deleteAccount(String password, String confirmPassword) {
+    public ApiResponse<UserDeleteAccountRequest> deleteAccount(
+            @Size(min = 3, max = 15)String password, @Size(min = 3, max = 15)String confirmPassword) {
         Integer userId = AuthRestController.user_id;
         String oldPassword = usersRepository.getPassword(userId);
         boolean isMatch = passwordEncoder.matches(password, oldPassword);
@@ -79,7 +81,8 @@ public class UsersController {
     }
 
     @PutMapping("/deactivate-account")
-    public ApiResponse<UserDeactivateAccountRequest> deactivateAccount(String password, String confirmPassword) {
+    public ApiResponse<UserDeactivateAccountRequest> deactivateAccount(
+            @Size(min = 3, max = 15)String password, @Size(min = 3, max = 15)String confirmPassword) {
         Integer userId = AuthRestController.user_id;
         String oldPassword = usersRepository.getPassword(userId);
         boolean isMatch = passwordEncoder.matches(password, oldPassword);
@@ -126,7 +129,8 @@ public class UsersController {
     }
 
     @PutMapping("/activate-account")
-    public ApiResponse<UserActivateAccountRequest> activateAccount(String password, String passwordConfirm) {
+    public ApiResponse<UserActivateAccountRequest> activateAccount(
+            @Size(min = 3, max = 15)String password, @Size(min = 3, max = 15)String passwordConfirm) {
         Integer userId = AuthRestController.user_id;
         String oldPassword = usersRepository.getPassword(userId);
         boolean isMatch = passwordEncoder.matches(password, oldPassword);
