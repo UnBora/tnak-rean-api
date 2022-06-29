@@ -116,7 +116,7 @@ public class SubmittedWorkController {
         try {
             if (checkSubmiitableId == false) {
                 return ApiResponse.<SubmittedWorkStudentWorkRequest>notFound(SubmittedWorkStudentWorkRequest.class.getSimpleName())
-                        .setResponseMsg("The Submittable_work_id: "+submittedWorkStudentWorkRequest.getSubmittable_work_id()+ "doesn't exit in the table" );
+                        .setResponseMsg("The Submittable_work_id: "+submittedWorkStudentWorkRequest.getSubmittable_work_id()+ " doesn't exit in the table" );
             } else {
                 submittedWorkImpl.addSubmittedWork(submittedWorkStudentWorkRequest, userId);
                 return ApiResponse.<SubmittedWorkStudentWorkRequest>ok(SubmittedWorkStudentWorkRequest.class.getSimpleName())
