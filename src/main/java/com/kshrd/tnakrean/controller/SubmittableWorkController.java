@@ -90,6 +90,24 @@ public class SubmittableWorkController {
             return ApiResponse.setError(e.getMessage());
         }
     }
+    @PutMapping("update-classroomId-classId")
+    ApiResponse<SubmittableWorkUpdateClassClassroomRequest> updateClassClassroom(
+            @RequestBody @Valid SubmittableWorkUpdateClassClassroomRequest submittableWorkUpdateClassClassroomRequest
+    ) {
+        try {
+            SubmittedWorkResponse submittedWorkResponse = submittableWorkService.updateClassClassroom(submittableWorkUpdateClassClassroomRequest);
+            if (submittedWorkResponse == null) {
+                return ApiResponse.<SubmittableWorkUpdateClassClassroomRequest>notFound(SubmittableWorkUpdateDeadlineRequest.class.getSimpleName())
+                        .setResponseMsg("Can't update! ID: "+submittableWorkUpdateClassClassroomRequest.getSubmittable_work_id()+" doesn't exist");
+            }
+            return ApiResponse.<SubmittableWorkUpdateClassClassroomRequest>ok(SubmittableWorkUpdateDeadlineRequest.class.getSimpleName())
+                    .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
+                    .setData(submittableWorkUpdateClassClassroomRequest);
+        } catch (Exception e) {
+            return ApiResponse.<SubmittableWorkUpdateClassClassroomRequest>badRequest("")
+                    .setResponseMsg("Can't update! Because of violates foreign key constraint from classId and classroomId");
+        }
+    }
 
     @PutMapping("/update-deadline")
     ApiResponse<SubmittableWorkUpdateDeadlineRequest> updateSubmittableWork(
@@ -183,25 +201,6 @@ public class SubmittableWorkController {
                     .setData(submittableWorkResponses);
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
-        }
-    }
-
-    @PutMapping("update-classroomId-classId")
-    ApiResponse<SubmittableWorkUpdateClassClassroomRequest> updateClassClassroom(
-            @RequestBody @Valid SubmittableWorkUpdateClassClassroomRequest submittableWorkUpdateClassClassroomRequest
-    ) {
-        try {
-        SubmittedWorkResponse submittedWorkResponse = submittableWorkService.updateClassClassroom(submittableWorkUpdateClassClassroomRequest);
-        if (submittedWorkResponse == null) {
-            return ApiResponse.<SubmittableWorkUpdateClassClassroomRequest>notFound(SubmittableWorkUpdateDeadlineRequest.class.getSimpleName())
-                    .setResponseMsg("Can't update! ID: "+submittableWorkUpdateClassClassroomRequest.getSubmittable_work_id()+" doesn't exist");
-        }
-        return ApiResponse.<SubmittableWorkUpdateClassClassroomRequest>ok(SubmittableWorkUpdateDeadlineRequest.class.getSimpleName())
-                .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                .setData(submittableWorkUpdateClassClassroomRequest);
-    } catch (Exception e) {
-            return ApiResponse.<SubmittableWorkUpdateClassClassroomRequest>badRequest("")
-                    .setResponseMsg("Can't update! Because of violates foreign key constraint from classId and classroomId");
         }
     }
 }
