@@ -57,14 +57,14 @@ public class StudentController {
             GetStudentByIDResponse getStudentByIDResponses = studentServiceImp.getStudentById(user_id);
             if (!user_id.equals(0)) {
                 if (getStudentByIDResponses == null) {
-                    return ApiResponse.<GetStudentByIDResponse>setError(GetAllStudentResponse.class.getSimpleName())
+                    return ApiResponse.<GetStudentByIDResponse>setError(GetStudentByIDResponse.class.getSimpleName())
                             .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
                 } else {
-                    return ApiResponse.<GetStudentByIDResponse>ok(GetAllStudentResponse.class.getSimpleName())
+                    return ApiResponse.<GetStudentByIDResponse>ok(GetStudentByIDResponse.class.getSimpleName())
                             .setData(getStudentByIDResponses);
                 }
             } else {
-                return ApiResponse.<GetStudentByIDResponse>unAuthorized(GetAllStudentResponse.class.getSimpleName())
+                return ApiResponse.<GetStudentByIDResponse>unAuthorized(GetStudentByIDResponse.class.getSimpleName())
                         .setResponseMsg("Unauthorized!");
             }
         } catch (Exception e) {
