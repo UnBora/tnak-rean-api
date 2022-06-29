@@ -18,12 +18,12 @@ import java.util.List;
 public interface SubmittableWorkRepository {
     // select all
     @Select("SELECT * FROM submittable_work")
-    @Result(property = "submittable_work_id" , column = "id")
+    @Result(property = "submittable_work_id", column = "id")
     List<SubmittableWorkResponse> getAll();
 
     // get by id
     @Select("SELECT * FROM submittable_work WHERE id = #{id}")
-    @Result(property = "submittable_work_id" , column = "id")
+    @Result(property = "submittable_work_id", column = "id")
     SubmittableWorkResponse getById(int id);
 
     // insert
@@ -33,17 +33,17 @@ public interface SubmittableWorkRepository {
 
     // update deadline
     @Select("UPDATE submittable_work SET deadline =  #{update.deadline}  WHERE id = #{update.submittable_work_id} Returning *")
-    @Result(property = "submittable_work_id" , column = "id")
+    @Result(property = "submittable_work_id", column = "id")
     SubmittedWorkResponse updateSubmittableWork(@Param("update") SubmittableWorkUpdateDeadlineRequest submittableWorkUpdateDeadlineRequest);
 
     //delete
     @Select("DELETE FROM submittable_work WHERE id = #{submittable_work_id} Returning *")
-    @Result(property = "submittable_work_id" , column = "id")
+    @Result(property = "submittable_work_id", column = "id")
     SubmittableWorkResponse delete(Integer submittable_work_id);
 
     // get by Class Material Detail Type
     @Select("SELECT * FROM submittable_work WHERE class_materials_detail_id = #{id}")
-    @Result(property = "submittable_work_id" , column = "id")
+    @Result(property = "submittable_work_id", column = "id")
     List<SubmittableWorkResponse> getSubmittableWorkByClassMaterialDetailType(Integer id);
 
 
@@ -61,12 +61,20 @@ public interface SubmittableWorkRepository {
 
     // get By ClassId And ClassId
     @Select("SELECT * FROM submittable_work WHERE class_id = #{class_id} AND classroom_id = #{classroom_id}")
-    @Result(property = "submittable_work_id" , column = "id")
+    @Result(property = "submittable_work_id", column = "id")
     List<SubmittableWorkResponse> getByClassIdAndClassId(Integer classroom_id, Integer class_id);
 
     // update Class Classroom
     @Select("UPDATE submittable_work SET class_id = #{class_id}, classroom_id = #{classroom_id} WHERE id = #{submittable_work_id} returning *")
-    @Result(property = "submittable_work_id" , column = "id")
+    @Result(property = "submittable_work_id", column = "id")
     SubmittedWorkResponse updateClassClassroom(SubmittableWorkUpdateClassClassroomRequest submittableWorkUpdateClassClassroomRequest);
 
+    @Select("SELECT EXISTS(SELECT * FROM class_materials_detail WHERE id = #{class_materials_detail_id})")
+    boolean findClassMaterialsDetailId(Integer class_materials_detail_id);
+
+    @Select("SELECT EXISTS(SELECT * FROM classroom WHERE id = #{classroom_id})")
+    boolean findClassroomId(Integer classroom_id);
+
+    @Select("SELECT EXISTS(SELECT * FROM class WHERE id = #{class_id})")
+    boolean findClassId(Integer class_id);
 }
