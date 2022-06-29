@@ -97,7 +97,6 @@ public class StudentController {
             @Min(value = 1, message = "{validation.classId.notNegative}") Integer classId) {
         try {
             Integer user_id = AuthRestController.user_id;
-
             if (!user_id.equals(0)) {
                 Boolean checkId=studentRepository.checkIfClassExists(user_id,classroomId,classId);
                 if (checkId.equals(false)) {
@@ -106,7 +105,7 @@ public class StudentController {
                             .setData(new StudentLeaveClassRequest(user_id, classroomId, classId));
                 } else {
                     studentServiceImp.studentLeaveClassService(user_id, classroomId, classId);
-                    return ApiResponse.<StudentLeaveClassRequest>ok("student class")
+                    return ApiResponse.<StudentLeaveClassRequest>ok(StudentLeaveClassRequest.class.getSimpleName())
                             .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
                             .setData(new StudentLeaveClassRequest(user_id, classroomId, classId));
                 }
