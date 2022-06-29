@@ -131,11 +131,11 @@ public class StudentController {
                         .setResponseMsg("User ID: "+user_id+" Doesn't have in Table User!");
             } else if(checkClassroomID.equals(false)){
                 return ApiResponse.<StudentInsertRequest>notFound(StudentInsertRequest.class.getSimpleName())
-                        .setResponseMsg("User ID: "+classroomId+" Doesn't have in Table Classroom!");
+                        .setResponseMsg("Classroom ID: "+classroomId+" Doesn't have in Table Classroom!");
             }
             else if (checkClassID.equals(false)){
                 return ApiResponse.<StudentInsertRequest>notFound(StudentInsertRequest.class.getSimpleName())
-                        .setResponseMsg("User ID: "+checkClassID+" Doesn't have in Table Class!");
+                        .setResponseMsg("Class ID: "+classId+" Doesn't have in Table Class!");
             }else if (checkStudent.equals(true)){
                 return ApiResponse.<StudentInsertRequest>unAuthorized(StudentInsertRequest.class.getSimpleName())
                         .setResponseMsg("This student already exist!");
