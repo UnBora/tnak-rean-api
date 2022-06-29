@@ -52,16 +52,14 @@ public class AuthRestController {
 
     @PostMapping("/login")
     ResponseEntity<AppUserResponse> login(@RequestBody UserLoginRequest request) {
-
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new
-                UsernamePasswordAuthenticationToken(
-                request.getUsername(), request.getPassword()
-        );
+                UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
 
         Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         JwtTokenUtil jwtUtils = new JwtTokenUtil();
         String token = jwtUtils.generateJwtToken(authentication);
 //        System.out.println("Here is the value of the token : " + token);
+        Boolean checkName= appUserRepository.checkUserName(request.getUsername());
 
         UserDetails findUserByUsername = userServiceImp.loadUserByUsername(request.getUsername());
         AppUserResponse response = modelMapper.map(findUserByUsername, AppUserResponse.class);
@@ -97,10 +95,23 @@ public class AuthRestController {
     @PostMapping("/register")
     ApiResponse<UserRegisterResponse> register(@RequestBody UserRegisterRequest userRegisterRequest) {
         try {
-            System.out.println(userRegisterRequest);
-            userServiceImp.userRegister(userRegisterRequest);
-            return ApiResponse.<UserRegisterResponse>successCreate(UserRegisterResponse.class.getName())
-                    .setData(modelMapper.map(userRegisterRequest, UserRegisterResponse.class));
+            Boolean checkEmail = appUserRepository.checkEmailExist(userRegisterRequest.getEmail());
+            Boolean checkUserName= appUserRepository.checkUserName(userRegisterRequest.getUsername());
+            Integer checkUserRole = userRegisterRequest.getUser_role_id();
+            if (checkEmail.equals(true)) {
+                return ApiResponse.<UserRegisterResponse>badRequest(UserRegisterResponse.class.getSimpleName())
+                        .setResponseMsg("This Email has been exist!");
+            }else if(!(checkUserName.equals(1)&&checkUserRole.equals(2))){
+                return ApiResponse.<UserRegisterResponse>badRequest(UserRegisterResponse.class.getSimpleName())
+                        .setResponseMsg("User role can use only number 1 or 2!");
+            }else if(checkUserName.equals(true)){
+                return ApiResponse.<UserRegisterResponse>badRequest(UserRegisterResponse.class.getSimpleName())
+                        .setResponseMsg("This Username has been exist!");
+            } else {
+                userServiceImp.userRegister(userRegisterRequest);
+                return ApiResponse.<UserRegisterResponse>successCreate(UserRegisterResponse.class.getSimpleName())
+                        .setData(modelMapper.map(userRegisterRequest, UserRegisterResponse.class));
+            }
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }

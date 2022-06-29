@@ -25,4 +25,13 @@ public interface AppUserRepository {
 
     @InsertProvider(type = UserProvider.class, method = "userRegister")
     void userRegister(@Param("userRegister") UserRegisterRequest userRegisterRequest);
+
+    @Select("select exists (select * from users where email =#{email})")
+    Boolean checkEmailExist(String email);
+
+    @Select("select exists (select * from users where username =#{username})")
+    Boolean checkUserName(String username);
+
+    @Select("select exists (select * from users where user_role_id =#{user_role_id})")
+    Boolean checkUserRole(Integer user_role_id);
 }
