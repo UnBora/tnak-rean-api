@@ -94,7 +94,7 @@ public class SubmittedWorkController {
         List<SubmittedWorkByStudentIdAndClassIdResponse> submittedWorkResponses = submittedWorkImpl.getByStudentIdAndClassId(student_id, class_id);
         try {
             if (submittedWorkResponses.isEmpty()) {
-                return ApiResponse.<List<SubmittedWorkByStudentIdAndClassIdResponse>>ok(SubmittedWorkResponse.class
+                return ApiResponse.<List<SubmittedWorkByStudentIdAndClassIdResponse>>notFound(SubmittedWorkResponse.class
                                 .getSimpleName())
                         .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
             }
@@ -112,15 +112,19 @@ public class SubmittedWorkController {
             @RequestBody @Valid SubmittedWorkStudentWorkRequest submittedWorkStudentWorkRequest
     ) {
         Integer userId = AuthRestController.user_id;
+        boolean checkSubmiitableId = submittedWorkRepository.checkIfSubmiitableIdExist(submittedWorkStudentWorkRequest.getSubmittable_work_id());
         try {
-            System.out.println(userId);
-        submittedWorkImpl.addSubmittedWork(submittedWorkStudentWorkRequest, userId);
-            return ApiResponse.<SubmittedWorkStudentWorkRequest>ok(SubmittedWorkStudentWorkRequest.class.getSimpleName())
-                    .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
-                    .setData(submittedWorkStudentWorkRequest);
+            if (checkSubmiitableId == false) {
+                return ApiResponse.<SubmittedWorkStudentWorkRequest>notFound(SubmittedWorkStudentWorkRequest.class.getSimpleName())
+                        .setResponseMsg("The Submittable_work_id: "+submittedWorkStudentWorkRequest.getSubmittable_work_id()+ " doesn't exit in the table" );
+            } else {
+                submittedWorkImpl.addSubmittedWork(submittedWorkStudentWorkRequest, userId);
+                return ApiResponse.<SubmittedWorkStudentWorkRequest>ok(SubmittedWorkStudentWorkRequest.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
+                        .setData(submittedWorkStudentWorkRequest);
+            }
         } catch (Exception e) {
-            return ApiResponse.<SubmittedWorkStudentWorkRequest>badRequest(SubmittedWorkStudentWorkRequest.class.getSimpleName())
-                    .setResponseMsg(BaseMessage.Error.INSERT_ERROR.getMessage());
+            return ApiResponse.setError(e.getMessage());
         }
     }
 
@@ -132,7 +136,7 @@ public class SubmittedWorkController {
         try {
             if (submittedWorkStudentScoreRequest1 == null) {
                 return ApiResponse.<SubmittedWorkStudentScoreRequest>notFound(SubmittedWorkStudentScoreRequest.class.getSimpleName())
-                        .setResponseMsg("Can't update! Because ID: " +submittedWorkStudentScoreRequest.getSubmitted_work_id()+ " doesn't exist");
+                        .setResponseMsg("Can't update! Because ID: " + submittedWorkStudentScoreRequest.getSubmitted_work_id() + " doesn't exist");
             }
             return ApiResponse.<SubmittedWorkStudentScoreRequest>ok(SubmittedWorkStudentScoreRequest.class.getSimpleName())
                     .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
@@ -150,7 +154,7 @@ public class SubmittedWorkController {
         try {
             if (submittedWorkUpdateStudentWorkRequest1 == null) {
                 return ApiResponse.<SubmittedWorkUpdateStudentWorkRequest>notFound(SubmittedWorkUpdateStudentWorkRequest.class.getSimpleName())
-                        .setResponseMsg("Can't update! Because ID: " +submittedWorkUpdateStudentWorkRequest.getSubmitted_work_id()+ " doesn't exist");
+                        .setResponseMsg("Can't update! Because ID: " + submittedWorkUpdateStudentWorkRequest.getSubmitted_work_id() + " doesn't exist");
             }
             return ApiResponse.<SubmittedWorkUpdateStudentWorkRequest>ok(SubmittedWorkUpdateStudentWorkRequest.class.getSimpleName())
                     .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
@@ -166,16 +170,15 @@ public class SubmittedWorkController {
         try {
             if (submittedWorkResponse == null) {
                 return ApiResponse.<Boolean>notFound(SubmittedWorkResponse.class.getSimpleName())
-                        .setResponseMsg("Can't delete ! ID: " +id+ " doesn't exist")
+                        .setResponseMsg("Can't delete ! ID: " + id + " doesn't exist")
                         .setData(false);
+            } else {
+                    return ApiResponse.<Boolean>ok(SubmittedWorkResponse.class.getSimpleName())
+                            .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
+                            .setData(true);
             }
-            return ApiResponse.<Boolean>ok(SubmittedWorkResponse.class.getSimpleName())
-                    .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
-                    .setData(true);
-
         } catch (Exception e) {
-            return ApiResponse.<Boolean>badRequest("")
-                    .setResponseMsg("Can't delete! Because of violates foreign key constraint");
+            return ApiResponse.setError(e.getMessage());
         }
     }
 
