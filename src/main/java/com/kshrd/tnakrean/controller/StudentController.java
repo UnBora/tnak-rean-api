@@ -30,7 +30,6 @@ public class StudentController {
         this.studentRepository = studentRepository;
         this.studentServiceImp = studentServiceImp;
     }
-
     @GetMapping("/get-all-student")
     public ApiResponse<List<GetAllStudentResponse>> getAllStudentFromDB() {
         try {
@@ -68,27 +67,27 @@ public class StudentController {
             return ApiResponse.setError(e.getMessage());
         }
     }
-
-    @GetMapping("/get-student-by-class-and-classroom-id")
+    @GetMapping("/get-student-by-class-and-classroom-id/{class_id}/{classroom_id}")
     public ApiResponse<List<GetStudentByClassIDResponse>> getStudentByClassID(
-            @Min(value = 1, message = "{validation.classId.notNegative}") Integer id,
+            @Min(value = 1, message = "{validation.classId.notNegative}") Integer class_id,
             @Min(value = 1, message = "{validation.classroomId.notNegative}") Integer classroom_id) {
         try {
-            List<GetStudentByClassIDResponse> getStudentByClassIDResponses = studentServiceImp.selectStudentByClassID(id, classroom_id);
-            if (getStudentByClassIDResponses.isEmpty()) {
-                return ApiResponse.<List<GetStudentByClassIDResponse>>setError(GetStudentByClassIDResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
-                        .setData(getStudentByClassIDResponses);
-            } else {
+            Boolean checkClassIDAcdClassroomID= studentRepository.checkIfStudentclassIDClassroomIDExists(classroom_id,class_id);
+            if (checkClassIDAcdClassroomID.equals(false)){
+                return ApiResponse.<List<GetStudentByClassIDResponse>>notFound(GetStudentByClassIDResponse.class.getSimpleName())
+                        .setResponseMsg("Your classID and ClassroomID not Matched!");
+            }else {
+                List<GetStudentByClassIDResponse> getStudentByClassIDResponses = studentServiceImp.selectStudentByClassID(class_id, classroom_id);
                 return ApiResponse.<List<GetStudentByClassIDResponse>>ok(GetStudentByClassIDResponse.class.getSimpleName())
                         .setData(getStudentByClassIDResponses);
             }
+
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
     }
 
-    @PutMapping("leave-class")
+    @PutMapping("leave-class/{classroomId}/{classId}")
     public ApiResponse<StudentLeaveClassRequest> studentLeaveClass(
             @Min(value = 1, message = "{validation.classroomId.notNegative}") Integer classroomId,
             @Min(value = 1, message = "{validation.classId.notNegative}") Integer classId) {
@@ -115,7 +114,7 @@ public class StudentController {
         }
     }
 
-    @PostMapping("accept-student")
+    @PostMapping("accept-student/{user_id}/{classroomId}/{classId}")
     public ApiResponse<StudentInsertRequest> insertStudentToTableStudent(
             @Min(value = 1, message = "{validation.id.notNegative}") Integer user_id,
             @Min(value = 1, message = "{validation.classroomId.notNegative}") Integer classroomId,

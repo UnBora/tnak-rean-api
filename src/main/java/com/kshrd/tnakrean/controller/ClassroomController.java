@@ -53,18 +53,19 @@ public class ClassroomController {
         }
     }
 
-    @GetMapping("/get-classroom-by-id")
-    public ApiResponse<ClassroomResponse> getClassroomById(@Min(value = 1, message = "{validation.id.notNegative}") Integer id) {
+    @GetMapping("/get-classroom-by-id/{classroomId}")
+    public ApiResponse<ClassroomResponse> getClassroomById(
+            @Min(value = 1, message = "{validation.id.notNegative}") Integer classroomId) {
         try {
-            Boolean classroomID = classroomRepository.checkClassroomByID(id);
+            Boolean classroomID = classroomRepository.checkClassroomByID(classroomId);
             if (classroomID == null) {
                 return ApiResponse.<ClassroomResponse>badRequest(ClassroomResponse.class.getSimpleName())
                         .setResponseMsg("The Classroom ID cannot not null");
             } else if (classroomID.equals(false)) {
                 return ApiResponse.<ClassroomResponse>badRequest(ClassroomResponse.class.getSimpleName())
-                        .setResponseMsg("The Classroom ID:" + id + " does not have!");
+                        .setResponseMsg("The Classroom ID:" + classroomId + " does not have!");
             } else {
-                ClassroomResponse classroomResponse = classroomServiceImp.getClassroomByID(id);
+                ClassroomResponse classroomResponse = classroomServiceImp.getClassroomByID(classroomId);
                 return ApiResponse.<ClassroomResponse>ok(ClassroomResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
                         .setData(classroomResponse);
@@ -134,10 +135,10 @@ public class ClassroomController {
         try {
             Boolean a = classroomRepository.checkIfClassExists(classroomUpdateResponse.getClassroom_id(), classroomUpdateResponse.getCreated_by());
             if (classroomUpdateResponse.equals(null)) {
-                return ApiResponse.<ClassroomUpdateResponse>setError(GetAllStudentResponse.class.getSimpleName())
+                return ApiResponse.<ClassroomUpdateResponse>setError(ClassroomUpdateResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Error.UPDATE_ERROR.getMessage());
             } else if (a.equals(false)) {
-                return ApiResponse.<ClassroomUpdateResponse>setError(GetAllStudentResponse.class.getSimpleName())
+                return ApiResponse.<ClassroomUpdateResponse>setError(ClassroomUpdateResponse.class.getSimpleName())
                         .setResponseMsg("Your classroom ID and classID Not Matched!");
             } else {
                 classroomServiceImp.updateClassroom(classroomUpdateResponse.getClassroom_id(), classroomUpdateResponse.getCreated_by(), classroomUpdateResponse.getName(), classroomUpdateResponse.getDes());

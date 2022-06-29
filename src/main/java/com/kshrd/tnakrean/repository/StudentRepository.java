@@ -25,8 +25,13 @@ public interface StudentRepository {
 
 
     //    Select User by class ID
-    @Select("SELECT u.id as user_id,u.name,u.username,u.email,u.gender,s.class_id from  student s " +
-            "inner join users u on u.id = s.user_id where s.class_id = #{class_id} and s.classroom_id=#{classroom_id}")
+    @Select("SELECT u.id as user_id,u.name as name,u.username as username,u.email as email,u.gender as gender,s.class_id from  student s " +
+            "inner join users u on u.id = s.user_id where s.class_id = #{class_id} and s.classroom_id =#{classroom_id}")
+    @Result(property = "user_id", column = "user_id")
+    @Result(property = "name", column = "name")
+    @Result(property = "username", column = "username")
+    @Result(property = "email", column = "email")
+    @Result(property = "gender", column = "gender")
     List<GetStudentByClassIDResponse> selectStudentByClassID(@Param("class_id") Integer class_id, @Param("classroom_id") Integer classroom_id);
 
     @Insert("INSERT INTO student (user_id, classroom_id, class_id) VALUES (#{user_id},#{classroom_id},#{class_id})")
@@ -37,7 +42,9 @@ public interface StudentRepository {
            "AND classroom_id=#{classroomId} AND class_id= #{class_id})")
     Boolean checkIfStudentExists(Integer user_id, Integer classroomId, Integer class_id);
 
-
+    @Select("select exists (select * from student where " +
+            " classroom_id=#{classroomId} AND class_id= #{class_id})")
+    Boolean checkIfStudentclassIDClassroomIDExists(Integer classroomId, Integer class_id);
 
 //   Check User ID
     @Select("select exists (select * from users where id = #{id})")
