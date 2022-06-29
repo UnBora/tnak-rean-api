@@ -4,9 +4,7 @@ package com.kshrd.tnakrean.controller;
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.user.request.StudentInsertRequest;
-import com.kshrd.tnakrean.model.user.request.UserUpdateRequest;
 import com.kshrd.tnakrean.model.user.request.StudentLeaveClassRequest;
-import com.kshrd.tnakrean.model.user.request.UserActivateAccountRequest;
 import com.kshrd.tnakrean.model.user.response.GetStudentByClassIDResponse;
 import com.kshrd.tnakrean.model.user.response.GetStudentByIDResponse;
 import com.kshrd.tnakrean.model.user.response.GetAllStudentResponse;
@@ -16,7 +14,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.util.List;
 
@@ -97,16 +94,15 @@ public class StudentController {
             @Min(value = 1, message = "{validation.classId.notNegative}") Integer classId) {
         try {
             Integer user_id = AuthRestController.user_id;
-
             if (!user_id.equals(0)) {
-                Boolean checkId=studentRepository.checkIfClassExists(user_id,classroomId,classId);
+                Boolean checkId=studentRepository.checkIfStudentExists(user_id,classroomId,classId);
                 if (checkId.equals(false)) {
                     return ApiResponse.<StudentLeaveClassRequest>notFound(StudentLeaveClassRequest.class.getSimpleName())
                             .setResponseMsg("ClassID and ClassroomID not Matched")
                             .setData(new StudentLeaveClassRequest(user_id, classroomId, classId));
                 } else {
                     studentServiceImp.studentLeaveClassService(user_id, classroomId, classId);
-                    return ApiResponse.<StudentLeaveClassRequest>ok("student class")
+                    return ApiResponse.<StudentLeaveClassRequest>ok(StudentLeaveClassRequest.class.getSimpleName())
                             .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
                             .setData(new StudentLeaveClassRequest(user_id, classroomId, classId));
                 }
@@ -119,21 +115,41 @@ public class StudentController {
         }
     }
 
-    @PostMapping("insert-student")
+    @PostMapping("accept-student")
     public ApiResponse<StudentInsertRequest> insertStudentToTableStudent(
             @Min(value = 1, message = "{validation.id.notNegative}") Integer user_id,
             @Min(value = 1, message = "{validation.classroomId.notNegative}") Integer classroomId,
             @Min(value = 1, message = "{validation.classId.notNegative}") Integer classId) {
+
+            Boolean checkUserID=studentRepository.checkIfUserIDExists(user_id);
+            Boolean checkClassroomID=studentRepository.checkIfClassroomIDExists(classroomId);
+            Boolean checkClassID= studentRepository.checkIfClassIDExists(classId);
+            Boolean checkStudent= studentRepository.checkIfStudentExists(user_id,classroomId,classId);
         try {
-            if (user_id == 0 || classroomId == 0 || classId == 0) {
-                return ApiResponse.<StudentInsertRequest>setError("student class")
-                        .setResponseMsg(BaseMessage.Error.INSERT_ERROR.getMessage())
-                        .setData(new StudentInsertRequest(user_id, classroomId, classId));
+            if (checkUserID.equals(false)) {
+                return ApiResponse.<StudentInsertRequest>notFound(StudentInsertRequest.class.getSimpleName())
+                        .setResponseMsg("User ID: "+user_id+" Doesn't have in Table User!");
+            } else if(checkClassroomID.equals(false)){
+                return ApiResponse.<StudentInsertRequest>notFound(StudentInsertRequest.class.getSimpleName())
+                        .setResponseMsg("User ID: "+classroomId+" Doesn't have in Table Classroom!");
+            }
+            else if (checkClassID.equals(false)){
+                return ApiResponse.<StudentInsertRequest>notFound(StudentInsertRequest.class.getSimpleName())
+                        .setResponseMsg("User ID: "+checkClassID+" Doesn't have in Table Class!");
+            }else if (checkStudent.equals(true)){
+                return ApiResponse.<StudentInsertRequest>unAuthorized(StudentInsertRequest.class.getSimpleName())
+                        .setResponseMsg("This student already exist!");
             } else {
-                studentServiceImp.insertStudent(user_id, classroomId, classId);
-                return ApiResponse.<StudentInsertRequest>ok("student class")
-                        .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
-                        .setData(new StudentInsertRequest(user_id, classroomId, classId));
+                Integer roleID=studentRepository.checkUserRole(user_id);
+                if (roleID.equals(2)){
+                    return ApiResponse.<StudentInsertRequest>badRequest(StudentInsertRequest.class.getSimpleName())
+                            .setResponseMsg("You cannot Insert Teacher to student!");
+                }else {
+                    studentServiceImp.insertStudent(user_id, classroomId, classId);
+                    return ApiResponse.<StudentInsertRequest>ok(StudentInsertRequest.class.getSimpleName())
+                            .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
+                            .setData(new StudentInsertRequest(user_id, classroomId, classId));
+                }
             }
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());

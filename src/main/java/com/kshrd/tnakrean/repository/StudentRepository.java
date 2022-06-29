@@ -32,12 +32,26 @@ public interface StudentRepository {
     @Insert("INSERT INTO student (user_id, classroom_id, class_id) VALUES (#{user_id},#{classroom_id},#{class_id})")
     void insertUserToTableStudent(@Param("user_id") Integer user_id, @Param("classroom_id") Integer classroom_id, @Param("class_id") Integer class_id);
 
-//    check id class_id
+//    check id Student
    @Select("select exists (select * from student where user_id= #{user_id} " +
            "AND classroom_id=#{classroomId} AND class_id= #{class_id})")
-    Boolean checkIfClassExists(Integer user_id,Integer classroomId,  Integer class_id);
+    Boolean checkIfStudentExists(Integer user_id, Integer classroomId, Integer class_id);
 
-   //    check id class_id
-   @Select("select exists (select * from class where id = #{id})")
-    Boolean checkIfClassExistsClassroom(Integer id);
+
+
+//   Check User ID
+    @Select("select exists (select * from users where id = #{id})")
+   Boolean checkIfUserIDExists(Integer user_id);
+
+//    check role user before insert to table
+    @Select("select user_role_id from users where id =#{userId}")
+    Integer checkUserRole(Integer userId);
+
+    //   Check Classroom ID
+    @Select("select exists (select * from classroom where id = #{classroomId})")
+    Boolean checkIfClassroomIDExists(Integer classroomId);
+
+    //   Check Classroom ID
+    @Select("select exists (select * from class where id = #{classId})")
+    Boolean checkIfClassIDExists(Integer classId);
 }
