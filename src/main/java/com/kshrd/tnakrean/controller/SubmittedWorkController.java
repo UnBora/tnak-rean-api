@@ -48,7 +48,7 @@ public class SubmittedWorkController {
         }
     }
 
-    @GetMapping("/get-by-id/{id}")
+    @GetMapping("/get-by-id/")
     ApiResponse<SubmittedWorkResponse> getById(@RequestParam @Min(value = 1) Integer id) {
         try {
             SubmittedWorkResponse submittedWorkResponse = submittedWorkImpl.getById(id);
@@ -66,7 +66,7 @@ public class SubmittedWorkController {
         }
     }
 
-    @GetMapping("get-by-studentId/{id}")
+    @GetMapping("get-by-studentId/")
     ApiResponse<List<SubmittedWorkResponse>> getSubmittedByStudentId(@RequestParam @Min(value = 1) Integer studentId) throws IllegalStateException {
         try {
             List<SubmittedWorkResponse> submittedWorkResponses = submittedWorkImpl.getSubmittedByStudentId(studentId);
@@ -85,7 +85,7 @@ public class SubmittedWorkController {
         }
     }
 
-    @GetMapping("get-by-studentId-and-classId/{student_id}/{class_id}")
+    @GetMapping("get-by-studentId-and-classId/")
     ApiResponse<List<SubmittedWorkByStudentIdAndClassIdResponse>> getByStudentIdAndClassId(
             @RequestParam @Min(value = 1) Integer student_id,
             @RequestParam @Min(value = 1) Integer class_id
@@ -168,7 +168,7 @@ public class SubmittedWorkController {
         }
     }
 
-    @DeleteMapping("/delete-by-Id/{id}")
+    @DeleteMapping("/delete-by-Id/")
     ApiResponse<Boolean> deleteSubmittedWorkId(@RequestParam Integer id) {
         try {
             boolean checkSubmittedId = submittedWorkRepository.findSubmittedId(id);
@@ -187,7 +187,7 @@ public class SubmittedWorkController {
         }
     }
 
-    @GetMapping("get-by-classMaterialId/{classMaterialId}")
+    @GetMapping("get-by-classMaterialId/")
     ApiResponse<List<SubmittedWorkByMaterialIdResponse>> getByClassMaterialId(@RequestParam @Min(value = 1) Integer class_material_id) {
         try {
             List<SubmittedWorkByMaterialIdResponse> submittedWorkResponses = submittedWorkImpl.getByClassMaterialId(class_material_id);
@@ -204,7 +204,7 @@ public class SubmittedWorkController {
         }
     }
 
-    @GetMapping("get-by-classroom-class-submittable/{classroomId}/{classId}/{submittableId}")
+    @GetMapping("get-by-classroomId-classId-submittableId/")
     ApiResponse<List<SubmittedWorkByClassroomClassSubmittableResponse>> getByClassroomClassSubmittable(
             @RequestParam @Min(value = 1) Integer classroom_id,
             @RequestParam @Min(value = 1) Integer class_id,

@@ -33,7 +33,7 @@ public class TeacherController {
                 .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
                 .setData(teacherResponses);
     }
-    @GetMapping("/get-by-classId-and-classroomId/{class_id}/{classroom_id}")
+    @GetMapping("/get-by-classId-and-classroomId/")
     ApiResponse<List<TeacherByClassAndClassroomResponse>> getByClassAndClassrooms(
             @RequestParam @Min(value = 1) Integer class_id,
             @RequestParam @Min(value = 1) Integer classroom_id
@@ -50,7 +50,7 @@ public class TeacherController {
                 .setData(teacherResponses);
     }
 
-    @GetMapping("/get-by-UserId/{id}")
+    @GetMapping("/get-by-teacherUserId/")
     ApiResponse<TeacherResponse> getTeacherById() {
         Integer user_id = AuthRestController.user_id;
         TeacherResponse teacherByIdResponse = teacherImpl.getTeacherById(user_id);

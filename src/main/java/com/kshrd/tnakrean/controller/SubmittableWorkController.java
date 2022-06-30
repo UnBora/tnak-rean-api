@@ -46,7 +46,7 @@ public class SubmittableWorkController {
         }
     }
 
-    @GetMapping("/get-by-id/{id}")
+    @GetMapping("/get-by-id/")
     ApiResponse<SubmittableWorkResponse> getById(@RequestParam @Min(value = 1) Integer id) {
         try {
             SubmittableWorkResponse submittableWorkResponses = submittableWorkService.getById(id);
@@ -138,7 +138,7 @@ public class SubmittableWorkController {
         }
     }
 
-    @DeleteMapping("/delete-by-id/{id}")
+    @DeleteMapping("/delete-by-id/")
     ApiResponse<Boolean> delete(@RequestParam Integer submittable_work_id) {
         try {
             boolean checkSubmittableWorkIdInSubmiited = submittableWorkRepository.findSubmittableIdInSubmiitedWork(submittable_work_id);
@@ -162,7 +162,7 @@ public class SubmittableWorkController {
         }
     }
 
-    @GetMapping("/get-by-classMaterialDetailType/{id}")
+    @GetMapping("/get-by-classMaterialDetailTypeId/")
     ApiResponse<List<SubmittableWorkResponse>> getSubmittableWorkByClassMaterialDetailType
             (@RequestParam @Min(value = 1) Integer classMaterialDetailTypeId) {
         try {
@@ -180,7 +180,7 @@ public class SubmittableWorkController {
         }
     }
 
-    @GetMapping("getUpComingWorkByStudentId")
+    @GetMapping("get-upComingWork-by-StudentId")
     ApiResponse<List<UpComingSubmittableWorkResponse>> getUpComingSubmittableWorkByStudentId(
             @RequestParam @Min(value = 1) Integer studentId,
             @RequestParam @Min(value = 1) Integer classId,
@@ -200,7 +200,7 @@ public class SubmittableWorkController {
         }
     }
 
-    @GetMapping("get-by-classroomId-and-classId/{classroom_id}/{class_id}")
+    @GetMapping("get-by-classroomId-and-classId")
     ApiResponse<List<SubmittableWorkResponse>> getByClassIdAndClassId(
             @RequestParam @Min(value = 1) Integer classroom_id,
             @RequestParam @Min(value = 1) Integer class_id
