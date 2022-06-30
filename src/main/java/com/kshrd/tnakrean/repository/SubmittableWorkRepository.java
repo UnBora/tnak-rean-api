@@ -80,4 +80,7 @@ public interface SubmittableWorkRepository {
 
     @Select("SELECT EXISTS(SELECT * FROM submittable_work WHERE id = #{submittable_work_id})")
     boolean findSubmittableId(Integer submittable_work_id);
+
+    @Select("SELECT EXISTS(SELECT * FROM submitted_work WHERE submittable_work_id = #{submittable_work_id})")
+    boolean findSubmittableIdInSubmiitedWork(Integer submittable_work_id);
 }

@@ -141,18 +141,24 @@ public class SubmittableWorkController {
     @DeleteMapping("/delete-by-id/{id}")
     ApiResponse<Boolean> delete(@RequestParam Integer submittable_work_id) {
         try {
-            SubmittableWorkResponse submittableWorkResponse = submittableWorkService.delete(submittable_work_id);
-            if (submittableWorkResponse == null) {
+            boolean checkSubmittableWorkIdInSubmiited = submittableWorkRepository.findSubmittableIdInSubmiitedWork(submittable_work_id);
+            boolean checkSubmittableWorkId = submittableWorkRepository.findSubmittableId(submittable_work_id);
+
+            if (checkSubmittableWorkId == false) {
                 return ApiResponse.<Boolean>notFound("Submittable Work")
-                        .setResponseMsg("Can't delete! ID: " + submittable_work_id + " doesn't exist")
-                        .setData(null);
+                        .setResponseMsg("Can't delete! ID: " + submittable_work_id + " doesn't exist");
+            } else if (checkSubmittableWorkIdInSubmiited == true) {
+                System.out.println("b");
+                return ApiResponse.<Boolean>notFound("Submittable Work")
+                        .setResponseMsg("Can't delete! ID: " + submittable_work_id + " is still referenced from table submitted_work");
+            } else {
+                submittableWorkService.delete(submittable_work_id);
+                return ApiResponse.<Boolean>ok("Submittable Work")
+                        .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
+                        .setData(true);
             }
-            return ApiResponse.<Boolean>ok("Submittable Work")
-                    .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
-                    .setData(true);
         } catch (Exception e) {
-            return ApiResponse.<Boolean>badRequest("")
-                    .setResponseMsg("Can't delete! Because of violates foreign key constraint");
+            return ApiResponse.setError(e.getMessage());
         }
     }
 

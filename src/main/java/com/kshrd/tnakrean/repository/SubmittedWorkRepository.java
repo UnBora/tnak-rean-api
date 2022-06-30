@@ -85,4 +85,6 @@ public interface SubmittedWorkRepository {
 
     @Select("SELECT EXISTS(SELECT * FROM submittable_work WHERE id = #{submittable_work_id} )")
     boolean checkIfSubmiitableIdExist(Integer submittable_work_id);
+    @Select("SELECT EXISTS(SELECT * FROM submitted_work WHERE id = #{id})")
+    boolean findSubmittedId(Integer id);
 }

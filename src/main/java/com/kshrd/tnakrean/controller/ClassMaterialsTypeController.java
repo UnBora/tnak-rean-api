@@ -94,19 +94,22 @@ public class ClassMaterialsTypeController {
 
     @DeleteMapping("/delete-by-id/{id}")
     ApiResponse<Boolean> deleteById(@RequestParam @Min(value = 1) Integer id) {
+        boolean checkTypeID = classMaterialsTypeRepository.ifTypeIdExist(id);
+        boolean checkTypeIdInMaterial = classMaterialsTypeRepository.findTypeIdInMaterial(id);
         try {
-            ClassMaterialsTypeResponse classMaterialsTypeResponse = classMaterialsTypeImpl.deleteById(id);
-            if (classMaterialsTypeResponse == null) {
-                return ApiResponse.<Boolean>notFound("")
-                        .setResponseMsg("Can't delete! ID: " +id+ " doesn't exist")
-                        .setData(null);
-            }
-                return ApiResponse.<Boolean>ok("")
+            if (checkTypeID == false) {
+                return ApiResponse.<Boolean>notFound("ClassMaterialsType")
+                        .setResponseMsg("Can't delete! MaterialTypeID: " +id+ " doesn't exist");
+            } else if (checkTypeIdInMaterial == true) {
+                return ApiResponse.<Boolean>notFound("ClassMaterialsType")
+                        .setResponseMsg("Can't delete! MaterialTypeID: " +id+ " is still referenced from table class_material");
+            } else {
+            classMaterialsTypeImpl.deleteById(id);
+                return ApiResponse.<Boolean>ok("ClassMaterialsType")
                         .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
-                        .setData(true);
+                        .setData(true);}
         } catch (Exception e) {
-            return ApiResponse.<Boolean>badRequest("")
-                    .setResponseMsg("Can't delete! Because of violates foreign key constraint");
+            return ApiResponse.setError(e.getMessage());
         }
     }
 }

@@ -127,11 +127,12 @@ public class CommentController {
     @DeleteMapping("delete-by-id/{id}")
     ApiResponse<Boolean> deleteById(@RequestParam @Min(value = 1) Integer id) {
         try {
-            CommentResponse commentResponse = commentServiceImp.deleteById(id);
-            if (commentResponse == null) {
+            boolean checkCommentID = commentRepository.ifCommentIdExist(id);
+            if (checkCommentID == false) {
                 return ApiResponse.<Boolean>notFound(CommentResponse.class.getSimpleName())
                         .setResponseMsg("Can't delete! ID: " + id + " doesn't exist");
             }
+            commentServiceImp.deleteById(id);
             return ApiResponse.<Boolean>ok("Comment with id:" + id)
                     .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
                     .setData(true);

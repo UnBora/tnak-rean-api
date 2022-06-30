@@ -78,4 +78,8 @@ public interface CommentRepository {
     //
     @Select("SELECT EXISTS(SELECT * FROM student WHERE user_id = #{userId})")
     boolean ifUserIdExist(Integer userId);
+
+    //
+    @Select("SELECT EXISTS(SELECT * FROM comment WHERE id = #{id})")
+    boolean ifCommentIdExist(Integer id);
 }

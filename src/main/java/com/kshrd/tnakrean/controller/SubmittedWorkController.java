@@ -168,13 +168,14 @@ public class SubmittedWorkController {
 
     @DeleteMapping("/delete-by-Id/{id}")
     ApiResponse<Boolean> deleteSubmittedWorkId(@RequestParam Integer id) {
-        SubmittedWorkResponse submittedWorkResponse = submittedWorkImpl.deleteSubmittedWorkId(id);
         try {
-            if (submittedWorkResponse == null) {
+            boolean checkSubmittedId = submittedWorkRepository.findSubmittedId(id);
+
+            if (checkSubmittedId == false) {
                 return ApiResponse.<Boolean>notFound(SubmittedWorkResponse.class.getSimpleName())
-                        .setResponseMsg("Can't delete ! ID: " + id + " doesn't exist")
-                        .setData(false);
-            } else {
+                        .setResponseMsg("Can't delete ! ID: " + id + " doesn't exist");
+            } else  {
+                submittedWorkImpl.deleteSubmittedWorkId(id);
                 return ApiResponse.<Boolean>ok(SubmittedWorkResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
                         .setData(true);

@@ -53,12 +53,12 @@ public class ClassMaterialController {
             @RequestBody @Valid ClassMaterialRequest classMaterialRequest
     ) {
         Boolean created = classMaterialRepository.checkCreatedBy(classMaterialRequest.getCreated_by());
-        Boolean materialsTypeId = classMaterialRepository.checkMaterialsTypeId(classMaterialRequest.getClass_materials_type_id());
+        Boolean materialsTypeIdInMaterial = classMaterialRepository.checkMaterialsTypeId(classMaterialRequest.getClass_materials_type_id());
         try {
             if (created == false) {
                 return ApiResponse.<ClassMaterialRequest>notFound(ClassMaterialRequest.class.getSimpleName())
                         .setResponseMsg("The Created_by_id: "+classMaterialRequest.getCreated_by()+" doesn't exit in the table");
-            } else if (materialsTypeId == false) {
+            } else if (materialsTypeIdInMaterial == false) {
                 return ApiResponse.<ClassMaterialRequest>notFound(ClassMaterialRequest.class.getSimpleName())
                         .setResponseMsg("The class_materials_type_id: "+classMaterialRequest.getClass_materials_type_id()+" doesn't exit in the table");
             } else {
@@ -113,18 +113,23 @@ public class ClassMaterialController {
     @DeleteMapping("/delete-by-id/{id}")
     ApiResponse<Boolean> deleteById(@RequestParam @Min(value = 1) Integer id) {
         try {
-            ClassMaterialResponse response = classMaterialServiceImp.deleteById(id);
-            if (response == null) {
+            boolean checkMaterialId = classMaterialRepository.findMaterialId(id);
+            boolean checkMaterialIdInMaterialsDetail = classMaterialRepository.findMaterialIdInMaterialsDetail(id);
+
+            if (checkMaterialId == false) {
                 return ApiResponse.<Boolean>notFound("")
-                        .setResponseMsg("Can't delete! ID: " + id + " doesn't exist")
-                        .setData(null);
+                        .setResponseMsg("Can't delete! classMaterialId: " + id + " doesn't exist");
+            } else if (checkMaterialIdInMaterialsDetail == true ) {
+                return ApiResponse.<Boolean>notFound("")
+                        .setResponseMsg("Can't delete! classMaterialId: " + id + " is still referenced from table class_materials_detail");
+            } else {
+                classMaterialServiceImp.deleteById(id);
+                return ApiResponse.<Boolean>ok("Class Materials")
+                        .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
+                        .setData(true);
             }
-            return ApiResponse.<Boolean>ok("Class Materials")
-                    .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
-                    .setData(true);
         } catch (Exception e) {
-            return ApiResponse.<Boolean>badRequest("")
-                    .setResponseMsg("Can't delete! Because of violates foreign key constraint");
+            return ApiResponse.setError(e.getMessage());
         }
     }
 

@@ -35,4 +35,9 @@ public interface ClassMaterialsTypeRepository {
 
     @Select("SELECT EXISTS(SELECT * FROM class_materials_type WHERE type = #{type})")
     boolean ifTypeExist(String type);
+    @Select("SELECT EXISTS(SELECT * FROM class_materials_type WHERE id = #{id})")
+    boolean ifTypeIdExist(Integer id);
+
+    @Select("SELECT EXISTS(SELECT * FROM class_materials WHERE class_materials_type_id = #{id})")
+    boolean findTypeIdInMaterial(Integer id);
 }
