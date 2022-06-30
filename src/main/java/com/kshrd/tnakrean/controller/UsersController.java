@@ -28,7 +28,6 @@ public class UsersController {
         this.userServiceImp = userServiceImp;
         this.usersRepository = usersRepository;
     }
-
     PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -36,9 +35,10 @@ public class UsersController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @DeleteMapping("/delete-account")
+    @DeleteMapping("/delete-/{password}/{passwordConfirm}")
     public ApiResponse<UserDeleteAccountRequest> deleteAccount(
-            @Size(min = 3, max = 15)String password, @Size(min = 3, max = 15)String confirmPassword) {
+            @RequestParam @Size(min = 3, max = 16, message = "{validation.password.sizenotlesthen3}") String password,
+            @RequestParam @Size(min = 3, max = 16, message = "{validation.password.sizenotlesthen3}")String confirmPassword) {
         Integer userId = AuthRestController.user_id;
         String oldPassword = usersRepository.getPassword(userId);
         boolean isMatch = passwordEncoder.matches(password, oldPassword);
@@ -80,24 +80,27 @@ public class UsersController {
         }
     }
 
-    @PutMapping("/deactivate-account")
+    @PutMapping("/deactivate-account/{password}/{passwordConfirm}")
     public ApiResponse<UserDeactivateAccountRequest> deactivateAccount(
-            @Size(min = 3, max = 15)String password, @Size(min = 3, max = 15)String confirmPassword) {
+            @RequestParam @Size(min = 3, max = 16,message = "{validation.password.sizenotlesthen3}") String password,
+            @RequestParam @Size(min = 3, max = 16, message = "{validation.password.sizenotlesthen3}") String confirmPassword) {
+        System.out.println("user id:"+AuthRestController.user_id);
         Integer userId = AuthRestController.user_id;
         String oldPassword = usersRepository.getPassword(userId);
-        boolean isMatch = passwordEncoder.matches(password, oldPassword);
         Integer status = usersRepository.getStatus(userId);
+
         try {
+            boolean isMatch = passwordEncoder.matches(password, oldPassword);
             if (!userId.equals(0)) {
                 if (password.equals(confirmPassword)) {
                     if (status.equals(2)) {
                         if (isMatch) {
                             userServiceImp.userDeactivateAccount(userId);
-                            return ApiResponse.<UserDeactivateAccountRequest>successDelete(UserDeactivateAccountRequest.class.getSimpleName())
+                            return ApiResponse.<UserDeactivateAccountRequest>updateSuccess(UserDeactivateAccountRequest.class.getSimpleName())
                                     .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
                                     .setData(new UserDeactivateAccountRequest(userId));
                         } else if (!isMatch) {
-                            return ApiResponse.<UserDeactivateAccountRequest>successDelete(UserDeactivateAccountRequest.class.getSimpleName())
+                            return ApiResponse.<UserDeactivateAccountRequest>notFound(UserDeactivateAccountRequest.class.getSimpleName())
                                     .setResponseMsg("Your password incorrect!")
                                     .setData(new UserDeactivateAccountRequest(userId));
                         } else {
@@ -128,10 +131,12 @@ public class UsersController {
 
     }
 
-    @PutMapping("/activate-account")
+    @PutMapping("/activate-account/{password}/{passwordConfirm}")
     public ApiResponse<UserActivateAccountRequest> activateAccount(
-            @Size(min = 3, max = 15)String password, @Size(min = 3, max = 15)String passwordConfirm) {
+            @RequestParam @Size(min = 3, max = 16, message = "{validation.password.sizenotlesthen3}") String password,
+            @RequestParam @Size(min = 3, max = 16, message = "{validation.password.sizenotlesthen3}")String passwordConfirm) {
         Integer userId = AuthRestController.user_id;
+
         String oldPassword = usersRepository.getPassword(userId);
         boolean isMatch = passwordEncoder.matches(password, oldPassword);
         Integer status = usersRepository.getStatus(userId);
@@ -141,7 +146,7 @@ public class UsersController {
                     if (status.equals(1)) {
                         if (isMatch) {
                             userServiceImp.userActivateAccount(userId);
-                            return ApiResponse.<UserActivateAccountRequest>successDelete(UserActivateAccountRequest.class.getSimpleName())
+                            return ApiResponse.<UserActivateAccountRequest>updateSuccess(UserActivateAccountRequest.class.getSimpleName())
                                     .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
                                     .setData(new UserActivateAccountRequest(userId));
                         } else if (!isMatch) {

@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthRestController {
@@ -93,7 +95,7 @@ public class AuthRestController {
     }
 
     @PostMapping("/register")
-    ApiResponse<UserRegisterResponse> register(@RequestBody UserRegisterRequest userRegisterRequest) {
+    ApiResponse<UserRegisterResponse> register(@RequestBody @Valid UserRegisterRequest userRegisterRequest) {
         try {
             Boolean checkEmail = appUserRepository.checkEmailExist(userRegisterRequest.getEmail());
             Boolean checkUserName= appUserRepository.checkUserName(userRegisterRequest.getUsername());
@@ -103,7 +105,7 @@ public class AuthRestController {
                         .setResponseMsg("This Email has been exist!");
             }else if(!(checkUserRole.equals(1)||(checkUserRole.equals(2)))){
                 return ApiResponse.<UserRegisterResponse>badRequest(UserRegisterResponse.class.getSimpleName())
-                        .setResponseMsg("User role can use only number 1 or 2!");
+                        .setResponseMsg("User role can use only number 1(Student) or 2(Teacher)!");
             }else if(checkUserName.equals(true)){
                 return ApiResponse.<UserRegisterResponse>badRequest(UserRegisterResponse.class.getSimpleName())
                         .setResponseMsg("This Username has been exist!");
