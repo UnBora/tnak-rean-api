@@ -49,6 +49,7 @@ public class AuthRestController {
 
 
     static int user_id;
+    static AppUserResponse userDetails;
 
     @PostMapping("/login")
     ResponseEntity<AppUserResponse> login(@RequestBody UserLoginRequest request) {
@@ -60,13 +61,12 @@ public class AuthRestController {
         String token = jwtUtils.generateJwtToken(authentication);
 //        System.out.println("Here is the value of the token : " + token);
         Boolean checkName= appUserRepository.checkUserName(request.getUsername());
-
         UserDetails findUserByUsername = userServiceImp.loadUserByUsername(request.getUsername());
-        AppUserResponse response = modelMapper.map(findUserByUsername, AppUserResponse.class);
-        response.setToken(token);
-        System.out.println(response.getRole());
-        user_id = response.getId();
-        return ResponseEntity.ok(response);
+        userDetails  = modelMapper.map(findUserByUsername, AppUserResponse.class);
+        userDetails.setToken(token);
+        System.out.println(userDetails.getRole());
+        user_id = userDetails.getId();
+        return ResponseEntity.ok(userDetails);
 
     }
 

@@ -1,5 +1,6 @@
 package com.kshrd.tnakrean.controller;
 
+import com.kshrd.tnakrean.model.EmailMessage;
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassResponse;
@@ -7,12 +8,14 @@ import com.kshrd.tnakrean.model.classmaterials.response.NotificationResponse;
 import com.kshrd.tnakrean.model.user.response.GetStudentByIDResponse;
 import com.kshrd.tnakrean.repository.OneSignalPushNotificationRepository;
 import com.kshrd.tnakrean.repository.StudentRepository;
+import com.kshrd.tnakrean.repository.UsersRepository;
 import com.kshrd.tnakrean.service.PushNotificationService;
 import com.kshrd.tnakrean.service.serviceImplementation.NotificationImp;
+import com.kshrd.tnakrean.service.serviceInter.EmailService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import java.io.IOException;
-import java.lang.annotation.Documented;
 import java.util.List;
 
 @RestController
@@ -22,11 +25,15 @@ public class NotificationController {
     NotificationImp notificationImp;
     final OneSignalPushNotificationRepository repository;
     final StudentRepository studentRepository;
+    private final EmailService emailService;
+    final UsersRepository usersRepository;
 
-    public NotificationController(NotificationImp notificationImp, OneSignalPushNotificationRepository repository, StudentRepository studentRepository) {
+    public NotificationController(NotificationImp notificationImp, OneSignalPushNotificationRepository repository, StudentRepository studentRepository, EmailService emailService, UsersRepository usersRepository) {
         this.notificationImp = notificationImp;
         this.repository = repository;
         this.studentRepository = studentRepository;
+        this.emailService = emailService;
+        this.usersRepository = usersRepository;
     }
 
     @GetMapping("/get/{userId}")
@@ -44,29 +51,25 @@ public class NotificationController {
 
     }
 
-    @PostMapping("/studentRequestToJoin/{studentId}/{classId}/{classRoomId}")
-    ApiResponse<ClassResponse> requestJoinClassNotification(@RequestParam int studentId, @RequestParam int classId, @RequestParam int classRoomId) {
+    @PostMapping("/studentRequestToJoin/{classId}/{classRoomId}")
+    ApiResponse<ClassResponse> requestJoinClassNotification(@RequestParam int classId, @RequestParam int classRoomId) {
         try {
             ClassResponse classResponse = repository.getClassById(classRoomId, classId);
-            GetStudentByIDResponse response = studentRepository.getStudentFromDBById(studentId);
-            if (classResponse != null && response != null) {
-                PushNotificationService
-                        .sendMessageToUser(response.getName() + " Request to Join " + classResponse.getName(), classResponse.getCreated_by() + "");
+            if (classResponse != null && AuthRestController.userDetails != null) {
+//                PushNotificationService
+//                        .sendMessageToUser(AuthRestController.userDetails.getName()  + " Request to Join " + classResponse.getClass_name(), classResponse.getCreated_by() + "");
+                emailService.send(AuthRestController.userDetails.getName() + " Request to Join ", AuthRestController.userDetails.getName()
+                        + " Request to Join Class: " + classResponse.getClass_name()+" of " +classResponse.getClassRoomName(), usersRepository.getUserById(classResponse.getCreated_by()).getEmail());
                 return ApiResponse
-                        .<ClassResponse>ok(ClassResponse.class.getSimpleName()).setData(classResponse);
+                        .<ClassResponse>ok(ClassResponse.class.getSimpleName())
+                        .setData(classResponse).setResponseMsg("Request Join ClassRoom: " + classResponse.getClassRoomName() + "  Class: " + classResponse.getClass_name());
             } else {
                 return ApiResponse
-                        .<ClassResponse>notFound(GetStudentByIDResponse.class.getSimpleName()).setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
+                        .<ClassResponse>notFound("Your classID , ClassroomID , StudentID not Matched");
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return ApiResponse.setError(e.getMessage());
         }
     }
-
-
-
-
-
-
 }

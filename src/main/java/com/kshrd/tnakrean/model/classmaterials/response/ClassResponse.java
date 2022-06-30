@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ClassResponse {
     Integer created_by;
-    String name;
+    String classRoomName;
+    String class_name;
 }

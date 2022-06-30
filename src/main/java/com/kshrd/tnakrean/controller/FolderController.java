@@ -37,19 +37,6 @@ public class FolderController {
 
     }
 
-    @PostMapping("/createDetail")
-    ApiResponse<Integer> createFolderDetail(@RequestBody Integer class_material_detail_id) {
-        try {
-            boolean folderDetailResponse = folderServiceImp.createFolderDetail(class_material_detail_id);
-            System.out.println("in controller" + folderDetailResponse);
-            return ApiResponse.<Integer>successCreate(FolderDetailRequest.class.getSimpleName())
-                    .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage()).setData(class_material_detail_id);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ApiResponse.setError(e.getMessage());
-        }
-    }
-
 //    @GetMapping("/get/{id}")
 //    ApiResponse<FolderResponse> getFolderById(int id) {
 //        FolderResponse folderResponse = folderServiceImp.getFolderById(id);
