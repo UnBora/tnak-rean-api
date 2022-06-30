@@ -21,5 +21,5 @@ public class CommentInsertRequest {
     @NotBlank(message = "{validation.comment.notEmpty}")
     private String comment;
     @JsonIgnore
-    private LocalDateTime comment_date= LocalDateTime.now(ZoneOffset.of("+07:00"));
+    private LocalDateTime comment_date = LocalDateTime.now(ZoneOffset.of("+07:00"));
 }
