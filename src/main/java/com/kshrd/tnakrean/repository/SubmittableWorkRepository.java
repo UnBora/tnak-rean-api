@@ -67,7 +67,7 @@ public interface SubmittableWorkRepository {
     // update Class Classroom
     @Select("UPDATE submittable_work SET class_id = #{class_id}, classroom_id = #{classroom_id} WHERE id = #{submittable_work_id} returning *")
     @Result(property = "submittable_work_id", column = "id")
-    SubmittedWorkResponse updateClassClassroom(SubmittableWorkUpdateClassClassroomRequest submittableWorkUpdateClassClassroomRequest);
+    SubmittableWorkUpdateClassClassroomRequest updateClassClassroom(SubmittableWorkUpdateClassClassroomRequest submittableWorkUpdateClassClassroomRequest);
 
     @Select("SELECT EXISTS(SELECT * FROM class_materials_detail WHERE id = #{class_materials_detail_id})")
     boolean findClassMaterialsDetailId(Integer class_materials_detail_id);
@@ -77,4 +77,7 @@ public interface SubmittableWorkRepository {
 
     @Select("SELECT EXISTS(SELECT * FROM class WHERE id = #{class_id})")
     boolean findClassId(Integer class_id);
+
+    @Select("SELECT EXISTS(SELECT * FROM submittable_work WHERE id = #{submittable_work_id})")
+    boolean findSubmittableId(Integer submittable_work_id);
 }

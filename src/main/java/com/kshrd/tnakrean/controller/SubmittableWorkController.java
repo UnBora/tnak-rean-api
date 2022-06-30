@@ -94,18 +94,29 @@ public class SubmittableWorkController {
     ApiResponse<SubmittableWorkUpdateClassClassroomRequest> updateClassClassroom(
             @RequestBody @Valid SubmittableWorkUpdateClassClassroomRequest submittableWorkUpdateClassClassroomRequest
     ) {
+        boolean checkClassId = submittableWorkRepository.findClassId(submittableWorkUpdateClassClassroomRequest.getClass_id());
+        boolean checkClassroomId = submittableWorkRepository.findClassroomId(submittableWorkUpdateClassClassroomRequest.getClassroom_id());
+        boolean checkSubmittableId = submittableWorkRepository.findSubmittableId(submittableWorkUpdateClassClassroomRequest.getSubmittable_work_id());
         try {
-            SubmittedWorkResponse submittedWorkResponse = submittableWorkService.updateClassClassroom(submittableWorkUpdateClassClassroomRequest);
-            if (submittedWorkResponse == null) {
-                return ApiResponse.<SubmittableWorkUpdateClassClassroomRequest>notFound(SubmittableWorkUpdateDeadlineRequest.class.getSimpleName())
-                        .setResponseMsg("Can't update! ID: "+submittableWorkUpdateClassClassroomRequest.getSubmittable_work_id()+" doesn't exist");
+
+            if (checkSubmittableId == false) {
+                return ApiResponse.<SubmittableWorkUpdateClassClassroomRequest>notFound(SubmittableWorkUpdateClassClassroomRequest.class.getSimpleName())
+                        .setResponseMsg("Can't update! SubmittableId: "+submittableWorkUpdateClassClassroomRequest.getSubmittable_work_id()+ " doesn't exist");
+            } else if (checkClassId == false) {
+                return ApiResponse.<SubmittableWorkUpdateClassClassroomRequest>notFound(SubmittableWorkUpdateClassClassroomRequest.class.getSimpleName())
+                        .setResponseMsg("Can't update! ClassId: "+submittableWorkUpdateClassClassroomRequest.getClass_id()+" doesn't exist");
+            } else if (checkClassroomId == false) {
+                System.out.println("cc");
+                return ApiResponse.<SubmittableWorkUpdateClassClassroomRequest>notFound(SubmittableWorkUpdateClassClassroomRequest.class.getSimpleName())
+                        .setResponseMsg("Can't update! ClassroomId: "+submittableWorkUpdateClassClassroomRequest.getClassroom_id()+" doesn't exist");
+            } else {
+                submittableWorkService.updateClassClassroom(submittableWorkUpdateClassClassroomRequest);
+                return ApiResponse.<SubmittableWorkUpdateClassClassroomRequest>ok(SubmittableWorkUpdateClassClassroomRequest.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
+                        .setData(submittableWorkUpdateClassClassroomRequest);
             }
-            return ApiResponse.<SubmittableWorkUpdateClassClassroomRequest>ok(SubmittableWorkUpdateDeadlineRequest.class.getSimpleName())
-                    .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                    .setData(submittableWorkUpdateClassClassroomRequest);
         } catch (Exception e) {
-            return ApiResponse.<SubmittableWorkUpdateClassClassroomRequest>badRequest("")
-                    .setResponseMsg("Can't update! Because of violates foreign key constraint from classId and classroomId");
+            return ApiResponse.setError(e.getMessage());
         }
     }
 
@@ -117,7 +128,7 @@ public class SubmittableWorkController {
             SubmittedWorkResponse submittedWorkResponse = submittableWorkService.updateSubmittableWork(submittableWorkUpdateDeadlineRequest);
             if (submittedWorkResponse == null) {
                 return ApiResponse.<SubmittableWorkUpdateDeadlineRequest>notFound(SubmittableWorkUpdateDeadlineRequest.class.getSimpleName())
-                        .setResponseMsg("Can't update! ID: " + submittableWorkUpdateDeadlineRequest.getSubmittable_work_id() + " doesn't exist");
+                        .setResponseMsg("Can't update! SubmittableId: " + submittableWorkUpdateDeadlineRequest.getSubmittable_work_id() + " doesn't exist");
             }
             return ApiResponse.<SubmittableWorkUpdateDeadlineRequest>ok(SubmittableWorkUpdateDeadlineRequest.class.getSimpleName())
                     .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
