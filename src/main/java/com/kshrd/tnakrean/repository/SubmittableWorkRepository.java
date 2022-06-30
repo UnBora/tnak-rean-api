@@ -69,18 +69,18 @@ public interface SubmittableWorkRepository {
     @Result(property = "submittable_work_id", column = "id")
     SubmittableWorkUpdateClassClassroomRequest updateClassClassroom(SubmittableWorkUpdateClassClassroomRequest submittableWorkUpdateClassClassroomRequest);
 
-    @Select("SELECT EXISTS(SELECT * FROM class_materials_detail WHERE id = #{class_materials_detail_id})")
+    @Select("SELECT EXISTS(SELECT id FROM class_materials_detail WHERE id = #{class_materials_detail_id})")
     boolean findClassMaterialsDetailId(Integer class_materials_detail_id);
 
-    @Select("SELECT EXISTS(SELECT * FROM classroom WHERE id = #{classroom_id})")
+    @Select("SELECT EXISTS(SELECT id FROM classroom WHERE id = #{classroom_id})")
     boolean findClassroomId(Integer classroom_id);
 
-    @Select("SELECT EXISTS(SELECT * FROM class WHERE id = #{class_id})")
+    @Select("SELECT EXISTS(SELECT id FROM class WHERE id = #{class_id})")
     boolean findClassId(Integer class_id);
 
-    @Select("SELECT EXISTS(SELECT * FROM submittable_work WHERE id = #{submittable_work_id})")
+    @Select("SELECT EXISTS(SELECT id FROM submittable_work WHERE id = #{submittable_work_id})")
     boolean findSubmittableId(Integer submittable_work_id);
 
-    @Select("SELECT EXISTS(SELECT * FROM submitted_work WHERE submittable_work_id = #{submittable_work_id})")
+    @Select("SELECT EXISTS(SELECT submittable_work_id FROM submitted_work WHERE submittable_work_id = #{submittable_work_id})")
     boolean findSubmittableIdInSubmiitedWork(Integer submittable_work_id);
 }

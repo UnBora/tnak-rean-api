@@ -146,11 +146,11 @@ public class SubmittableWorkController {
 
             if (checkSubmittableWorkId == false) {
                 return ApiResponse.<Boolean>notFound("Submittable Work")
-                        .setResponseMsg("Can't delete! ID: " + submittable_work_id + " doesn't exist");
+                        .setResponseMsg("Can't delete! SubmittableWorkID: " + submittable_work_id + " doesn't exist");
             } else if (checkSubmittableWorkIdInSubmiited == true) {
                 System.out.println("b");
                 return ApiResponse.<Boolean>notFound("Submittable Work")
-                        .setResponseMsg("Can't delete! ID: " + submittable_work_id + " is still referenced from table submitted_work");
+                        .setResponseMsg("Can't delete! SubmittableWorkID: " + submittable_work_id + " is still referenced from table submitted_work");
             } else {
                 submittableWorkService.delete(submittable_work_id);
                 return ApiResponse.<Boolean>ok("Submittable Work")
