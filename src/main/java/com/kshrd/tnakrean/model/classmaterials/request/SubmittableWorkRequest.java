@@ -1,6 +1,7 @@
 package com.kshrd.tnakrean.model.classmaterials.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Date;
 
 @Data
@@ -20,7 +22,8 @@ public class SubmittableWorkRequest {
     Integer classroom_id;
     @Min(value = 1 , message="{validation.classId.notNegative}")
     Integer class_id;
-    Date assigned_date;
+    @JsonIgnore
+    LocalDateTime assigned_date = LocalDateTime.now(ZoneOffset.of("+07:00"));
     Date deadline;
     @Min(value = 0 , message="{validation.score.notNegative}") @Max(value = 1000 , message="{validation.score.notNegative}")
     Float score;

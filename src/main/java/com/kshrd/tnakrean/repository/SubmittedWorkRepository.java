@@ -28,8 +28,8 @@ public interface SubmittedWorkRepository {
     List<SubmittedWorkResponse> getSubmittedByStudentId(int studentId);
 
     // insert student work
-    @Insert("INSERT INTO submitted_work(student_id,status,submittable_work_id,student_work)" +
-            "VALUES((SELECT s.id FROM student s JOIN users u on  u.id = s.user_id WHERE u.id = #{userId}),0,#{submWork.submittable_work_id},#{submWork.studentWork,jdbcType=OTHER, typeHandler = com.kshrd.tnakrean.configuration.JsonTypeHandler})")
+    @Insert("INSERT INTO submitted_work(submitted_date,student_id,status,submittable_work_id,student_work)" +
+            "VALUES(#{submWork.submitted_date},(SELECT s.id FROM student s JOIN users u on  u.id = s.user_id WHERE u.id = #{userId}),0,#{submWork.submittable_work_id},#{submWork.studentWork,jdbcType=OTHER, typeHandler = com.kshrd.tnakrean.configuration.JsonTypeHandler})")
     @Result(property = "studentWork", column = "student_work", typeHandler = JsonTypeHandler.class)
     @Result(property = "student_id", column = "userId")
     boolean addSubmittedWork(@Param("submWork") SubmittedWorkStudentWorkRequest submittedWorkStudentWorkRequest,Integer userId);
@@ -83,6 +83,8 @@ public interface SubmittedWorkRepository {
     @Result(property = "studentWork", column = "student_work", typeHandler = JsonTypeHandler.class)
     List<SubmittedWorkByClassroomClassSubmittableResponse> getByClassroomClassSubmittable(Integer classroom_id, Integer class_id, Integer submittable_work_id);
 
-    @Select("SELECT EXISTS(SELECT * FROM submittable_work WHERE id = #{submittable_work_id} )")
+    @Select("SELECT EXISTS(SELECT id FROM submittable_work WHERE id = #{submittable_work_id} )")
     boolean checkIfSubmiitableIdExist(Integer submittable_work_id);
+    @Select("SELECT EXISTS(SELECT id FROM submitted_work WHERE id = #{id})")
+    boolean findSubmittedId(Integer id);
 }

@@ -26,5 +26,5 @@ public interface SubmittableService {
 
     List<SubmittableWorkResponse> getByClassIdAndClassId(Integer classroom_id, Integer class_id);
 
-    SubmittedWorkResponse updateClassClassroom(SubmittableWorkUpdateClassClassroomRequest submittableWorkUpdateClassClassroomRequest);
+    SubmittableWorkUpdateClassClassroomRequest updateClassClassroom(SubmittableWorkUpdateClassClassroomRequest submittableWorkUpdateClassClassroomRequest);
 }

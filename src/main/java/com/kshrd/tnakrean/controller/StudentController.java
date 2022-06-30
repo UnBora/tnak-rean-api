@@ -6,9 +6,11 @@ import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassResponse;
 import com.kshrd.tnakrean.model.user.request.StudentInsertRequest;
 import com.kshrd.tnakrean.model.user.request.StudentLeaveClassRequest;
+import com.kshrd.tnakrean.model.user.request.UserActivateAccountRequest;
 import com.kshrd.tnakrean.model.user.response.GetStudentByClassIDResponse;
 import com.kshrd.tnakrean.model.user.response.GetStudentByIDResponse;
 import com.kshrd.tnakrean.model.user.response.GetAllStudentResponse;
+import com.kshrd.tnakrean.model.user.response.StudentRequestClassResponse;
 import com.kshrd.tnakrean.repository.OneSignalPushNotificationRepository;
 import com.kshrd.tnakrean.repository.StudentRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.StudentServiceImp;
@@ -17,6 +19,8 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Min;
 import java.util.List;
 
@@ -27,15 +31,11 @@ public class StudentController {
 
     final StudentRepository studentRepository;
     final StudentServiceImp studentServiceImp;
-    final OneSignalPushNotificationRepository repository;
-    private final EmailService emailService;
 
     @Autowired
-    public StudentController(StudentRepository studentRepository, StudentServiceImp studentServiceImp, OneSignalPushNotificationRepository repository, EmailService emailService) {
+    public StudentController(StudentRepository studentRepository, StudentServiceImp studentServiceImp) {
         this.studentRepository = studentRepository;
         this.studentServiceImp = studentServiceImp;
-        this.repository = repository;
-        this.emailService = emailService;
     }
 
     @GetMapping("/get-all-student")
@@ -148,6 +148,23 @@ public class StudentController {
                 }
             }
         } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
+    @GetMapping("get-student-request")
+    public ApiResponse<List<StudentRequestClassResponse>> getRequestClass(
+            @RequestParam @Min(value = 1) Integer classroom_id,
+            @RequestParam @Min(value = 1) Integer class_id
+    ){  List<StudentRequestClassResponse> studentRequestClassResponse = studentServiceImp.getRequestClass(classroom_id,class_id);
+        try {
+            if (studentRequestClassResponse.isEmpty()) {
+                return ApiResponse.<List<StudentRequestClassResponse>>notFound(StudentRequestClassResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
+            }
+            return ApiResponse.<List<StudentRequestClassResponse>>ok(StudentRequestClassResponse.class.getSimpleName())
+                    .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+                    .setData(studentRequestClassResponse);
+        } catch (Exception e){
             return ApiResponse.setError(e.getMessage());
         }
     }

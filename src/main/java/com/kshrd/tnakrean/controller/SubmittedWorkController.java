@@ -48,7 +48,7 @@ public class SubmittedWorkController {
         }
     }
 
-    @GetMapping("/get-by-id/{id}")
+    @GetMapping("/get-by-id/")
     ApiResponse<SubmittedWorkResponse> getById(@RequestParam @Min(value = 1) Integer id) {
         try {
             SubmittedWorkResponse submittedWorkResponse = submittedWorkImpl.getById(id);
@@ -66,7 +66,7 @@ public class SubmittedWorkController {
         }
     }
 
-    @GetMapping("get-by-studentId/{id}")
+    @GetMapping("get-by-studentId/")
     ApiResponse<List<SubmittedWorkResponse>> getSubmittedByStudentId(@RequestParam @Min(value = 1) Integer studentId) throws IllegalStateException {
         try {
             List<SubmittedWorkResponse> submittedWorkResponses = submittedWorkImpl.getSubmittedByStudentId(studentId);
@@ -85,7 +85,7 @@ public class SubmittedWorkController {
         }
     }
 
-    @GetMapping("get-by-studentId-and-classId/{student_id}/{class_id}")
+    @GetMapping("get-by-studentId-and-classId/")
     ApiResponse<List<SubmittedWorkByStudentIdAndClassIdResponse>> getByStudentIdAndClassId(
             @RequestParam @Min(value = 1) Integer student_id,
             @RequestParam @Min(value = 1) Integer class_id
@@ -134,15 +134,16 @@ public class SubmittedWorkController {
     ApiResponse<SubmittedWorkStudentScoreRequest> insertScore(
             @RequestBody @Valid SubmittedWorkStudentScoreRequest submittedWorkStudentScoreRequest
     ) {
-        SubmittedWorkStudentScoreRequest submittedWorkStudentScoreRequest1 = submittedWorkImpl.insertScore(submittedWorkStudentScoreRequest);
+        boolean checkSubmittedId = submittedWorkRepository.findSubmittedId(submittedWorkStudentScoreRequest.getSubmitted_work_id());
         try {
-            if (submittedWorkStudentScoreRequest1 == null) {
+            if (checkSubmittedId == false) {
                 return ApiResponse.<SubmittedWorkStudentScoreRequest>notFound(SubmittedWorkStudentScoreRequest.class.getSimpleName())
                         .setResponseMsg("Can't update! Because ID: " + submittedWorkStudentScoreRequest.getSubmitted_work_id() + " doesn't exist");
             }
+            submittedWorkImpl.insertScore(submittedWorkStudentScoreRequest);
             return ApiResponse.<SubmittedWorkStudentScoreRequest>ok(SubmittedWorkStudentScoreRequest.class.getSimpleName())
                     .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                    .setData(submittedWorkStudentScoreRequest1);
+                    .setData(submittedWorkStudentScoreRequest);
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
@@ -152,29 +153,31 @@ public class SubmittedWorkController {
     ApiResponse<SubmittedWorkUpdateStudentWorkRequest> updateStudentWork(
             @RequestBody @Valid SubmittedWorkUpdateStudentWorkRequest submittedWorkUpdateStudentWorkRequest
     ) {
-        SubmittedWorkUpdateStudentWorkRequest submittedWorkUpdateStudentWorkRequest1 = submittedWorkImpl.updateSubmittedWork(submittedWorkUpdateStudentWorkRequest);
+        boolean checkSubmittedId = submittedWorkRepository.findSubmittedId(submittedWorkUpdateStudentWorkRequest.getSubmitted_work_id());
         try {
-            if (submittedWorkUpdateStudentWorkRequest1 == null) {
+            if (checkSubmittedId == false) {
                 return ApiResponse.<SubmittedWorkUpdateStudentWorkRequest>notFound(SubmittedWorkUpdateStudentWorkRequest.class.getSimpleName())
                         .setResponseMsg("Can't update! Because ID: " + submittedWorkUpdateStudentWorkRequest.getSubmitted_work_id() + " doesn't exist");
             }
+            submittedWorkImpl.updateSubmittedWork(submittedWorkUpdateStudentWorkRequest);
             return ApiResponse.<SubmittedWorkUpdateStudentWorkRequest>ok(SubmittedWorkUpdateStudentWorkRequest.class.getSimpleName())
                     .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                    .setData(submittedWorkUpdateStudentWorkRequest1);
+                    .setData(submittedWorkUpdateStudentWorkRequest);
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
     }
 
-    @DeleteMapping("/delete-by-Id/{id}")
+    @DeleteMapping("/delete-by-Id/")
     ApiResponse<Boolean> deleteSubmittedWorkId(@RequestParam Integer id) {
-        SubmittedWorkResponse submittedWorkResponse = submittedWorkImpl.deleteSubmittedWorkId(id);
         try {
-            if (submittedWorkResponse == null) {
+            boolean checkSubmittedId = submittedWorkRepository.findSubmittedId(id);
+
+            if (checkSubmittedId == false) {
                 return ApiResponse.<Boolean>notFound(SubmittedWorkResponse.class.getSimpleName())
-                        .setResponseMsg("Can't delete ! ID: " + id + " doesn't exist")
-                        .setData(false);
-            } else {
+                        .setResponseMsg("Can't delete ! ID: " + id + " doesn't exist");
+            } else  {
+                submittedWorkImpl.deleteSubmittedWorkId(id);
                 return ApiResponse.<Boolean>ok(SubmittedWorkResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
                         .setData(true);
@@ -184,7 +187,7 @@ public class SubmittedWorkController {
         }
     }
 
-    @GetMapping("get-by-classMaterialId/{classMaterialId}")
+    @GetMapping("get-by-classMaterialId/")
     ApiResponse<List<SubmittedWorkByMaterialIdResponse>> getByClassMaterialId(@RequestParam @Min(value = 1) Integer class_material_id) {
         try {
             List<SubmittedWorkByMaterialIdResponse> submittedWorkResponses = submittedWorkImpl.getByClassMaterialId(class_material_id);
@@ -201,7 +204,7 @@ public class SubmittedWorkController {
         }
     }
 
-    @GetMapping("get-by-classroom-class-submittable/{classroomId}/{classId}/{submittableId}")
+    @GetMapping("get-by-classroomId-classId-submittableId/")
     ApiResponse<List<SubmittedWorkByClassroomClassSubmittableResponse>> getByClassroomClassSubmittable(
             @RequestParam @Min(value = 1) Integer classroom_id,
             @RequestParam @Min(value = 1) Integer class_id,

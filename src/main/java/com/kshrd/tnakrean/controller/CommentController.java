@@ -45,7 +45,7 @@ public class CommentController {
         }
     }
 
-    @GetMapping("get-by-comment_id/{comment_id}")
+    @GetMapping("get-by-commentId/")
     ApiResponse<CommentResponse> getById(@RequestParam @Min(value = 1) Integer comment_id) {
         try {
             CommentResponse commentResponses = commentServiceImp.getById(comment_id);
@@ -61,7 +61,7 @@ public class CommentController {
         }
     }
 
-    @GetMapping("get-by-student_id/{student_id}")
+    @GetMapping("get-by-studentId/")
     ApiResponse<List<CommentResponse>> getByStudentId() {
         try {
             Integer userId = AuthRestController.user_id;
@@ -82,7 +82,7 @@ public class CommentController {
         }
     }
 
-    @GetMapping("get-by-teacher_user_id/{teacher_user_id}")
+    @GetMapping("get-by-teacherUserId/")
     ApiResponse<List<CommentByTeacherResponse>> getByTecherId() {
         try {
             Integer userId = AuthRestController.user_id;
@@ -103,7 +103,7 @@ public class CommentController {
         }
     }
 
-    @GetMapping("get-by-claaId-classroomId-studentId/{claaId}/{classroomId}/{studentId}")
+    @GetMapping("get-by-claaId-classroomId-studentId/")
     ApiResponse<List<CommentByClassClassroomStudentResponse>> getByClassClassroomStudent(
             @RequestParam @Min(value = 1) Integer classroom_id,
             @RequestParam @Min(value = 1) Integer class_id,
@@ -124,14 +124,15 @@ public class CommentController {
         }
     }
 
-    @DeleteMapping("delete-by-id/{id}")
+    @DeleteMapping("delete-by-id/")
     ApiResponse<Boolean> deleteById(@RequestParam @Min(value = 1) Integer id) {
         try {
-            CommentResponse commentResponse = commentServiceImp.deleteById(id);
-            if (commentResponse == null) {
+            boolean checkCommentID = commentRepository.ifCommentIdExist(id);
+            if (checkCommentID == false) {
                 return ApiResponse.<Boolean>notFound(CommentResponse.class.getSimpleName())
                         .setResponseMsg("Can't delete! ID: " + id + " doesn't exist");
             }
+            commentServiceImp.deleteById(id);
             return ApiResponse.<Boolean>ok("Comment with id:" + id)
                     .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
                     .setData(true);
@@ -156,6 +157,7 @@ public class CommentController {
             } else if(checkUserId == false) {
                 return ApiResponse.unAuthorized("Unauthorized");
             } else {
+                commentInsertRequest.setComment(commentInsertRequest.getComment().trim());
                 commentServiceImp.insert(commentInsertRequest, userId);
                 return ApiResponse.<CommentInsertRequest>ok(CommentInsertRequest.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
@@ -171,21 +173,22 @@ public class CommentController {
             @RequestBody @Valid CommentUpdateRequest commentUpdateRequest
     ) {
         try {
-            CommentUpdateRequest commentUpdateRequest1 = commentServiceImp.update(commentUpdateRequest);
-            if (commentUpdateRequest1 == null) {
+            boolean checkCommentID = commentRepository.ifCommentIdExist(commentUpdateRequest.getComment_id());
+            if (checkCommentID == false) {
                 return ApiResponse.<CommentUpdateRequest>notFound(CommentUpdateRequest.class.getSimpleName())
-                        .setResponseMsg("Can't update! ID: " + commentUpdateRequest.getComment_id() + " doesn't exist");
+                        .setResponseMsg("Can't update! Comment ID: " + commentUpdateRequest.getComment_id() + " doesn't exist");
             }
+            commentUpdateRequest.setComment(commentUpdateRequest.getComment().trim());
+            commentServiceImp.update(commentUpdateRequest);
             return ApiResponse.<CommentUpdateRequest>ok(CommentUpdateRequest.class.getSimpleName())
                     .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                    .setData(commentUpdateRequest1);
+                    .setData(commentUpdateRequest);
         } catch (Exception e) {
-            return ApiResponse.<CommentUpdateRequest>badRequest(CommentUpdateRequest.class.getSimpleName())
-                    .setResponseMsg("Can't update! Because of violates foreign key constraint from student_id and class_materials_detail_id");
+            return ApiResponse.setError(e.getMessage());
         }
     }
 
-    @GetMapping("get-by-materialId/{materialId}")
+    @GetMapping("get-by-materialId/")
     ApiResponse<List<CommentByMaterialIdResponse>> getByMaterialId(@RequestParam @Min(value = 1) Integer class_material_id) {
         try {
             List<CommentByMaterialIdResponse> commentResponses = commentServiceImp.getByMaterialId(class_material_id);

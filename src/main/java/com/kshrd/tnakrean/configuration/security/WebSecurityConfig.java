@@ -60,9 +60,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.csrf().disable().authorizeRequests().antMatchers("/api/v1/auth/**").permitAll()
-                .antMatchers("/api/v1/teacher/**"
-                        ,"/api/v1/submittedWork/**",
-                        "/api/v1/class/**", "/api/v1/classroom/**", "/api/v1/classMaterialsType/**",
+                .antMatchers("/api/v1/teacher/**",
+                        "/api/v1/submittedWork/**",
+                        "/api/v1/class/**",
+                        "/api/v1/classroom/**",
+                        "/api/v1/classMaterialsType/**",
                         "/api/v1/classMaterial/**",
                         "/api/v1/comment/get-by-teacher_user_id","/api/v1/student/accept-student"
                 )
@@ -70,7 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
                 .antMatchers("/api/v1/student/**",
-                        "/api/v1/comment/**","api/v1/submittableWork/**",
+                        "/api/v1/comment/**",
                         "/api/v1/submittedWork/get-by-studentId",
                         "/api/v1/submittedWork/get-by-studentId-and-classId",
                         "/api/v1/submittedWork/insert-student-work",
@@ -78,7 +80,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/v1/classMaterial/get-by-studentId-classId-classroomId"
                 )
                 .hasAnyAuthority("Student");
-
 
 //        This is for the jwt
         http.addFilterBefore(jwtRequestFilter(), UsernamePasswordAuthenticationFilter.class);

@@ -150,11 +150,17 @@ public interface ClassMaterialRepository {
     @Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class)
     List<ClassMaterialByStudentIdClassIdAndClassroomIdResponse> getByUserClassClassroom(Integer user_id, Integer class_id, Integer classroom_id);
 
-    @Select("SELECT EXISTS(SELECT * FROM users WHERE id = #{created_by})")
+    @Select("SELECT EXISTS(SELECT id FROM users WHERE id = #{created_by})")
     Boolean checkCreatedBy(Integer created_by);
-    @Select("SELECT EXISTS(SELECT * FROM class_materials WHERE id = #{class_materials_type_id})")
+    @Select("SELECT EXISTS(SELECT id FROM class_materials_type WHERE id = #{class_materials_type_id})")
     Boolean checkMaterialsTypeId(Integer class_materials_type_id);
 
     @Select("SELECT EXISTS(SELECT * FROM class_materials WHERE id = #{id})")
     Boolean checkMaterialsId(Integer id);
+
+    @Select("SELECT EXISTS(SELECT id FROM class_materials WHERE id = #{id})")
+    boolean findMaterialId(Integer id);
+
+    @Select("SELECT EXISTS(SELECT class_material_id FROM class_materials_detail WHERE class_material_id = #{id})")
+    boolean findMaterialIdInMaterialsDetail(Integer id);
 }

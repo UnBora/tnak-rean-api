@@ -35,7 +35,7 @@ public interface CommentRepository {
 
     // update
     @Select("UPDATE comment " +
-            "SET student_id = #{student_id}, comment_date = #{comment_date}, class_materials_detail_id = #{class_materials_detail_id}, comment = #{comment} " +
+            "SET comment = #{comment} " +
             "WHERE id = #{comment_id} Returning *")
     @Result(property = "comment_id",column = "id")
     CommentUpdateRequest update(CommentUpdateRequest commentUpdateRequest);
@@ -72,10 +72,14 @@ public interface CommentRepository {
     List<CommentByTeacherResponse> getByTecherId(Integer userId);
 
     //
-    @Select("SELECT EXISTS(SELECT * FROM class_materials_detail WHERE id = #{class_materials_detail_id})")
+    @Select("SELECT EXISTS(SELECT id FROM class_materials_detail WHERE id = #{class_materials_detail_id})")
     boolean ifMaterialsDetailIdExist(Integer class_materials_detail_id);
 
     //
-    @Select("SELECT EXISTS(SELECT * FROM student WHERE user_id = #{userId})")
+    @Select("SELECT EXISTS(SELECT user_id FROM student WHERE user_id = #{userId})")
     boolean ifUserIdExist(Integer userId);
+
+    //
+    @Select("SELECT EXISTS(SELECT id FROM comment WHERE id = #{id})")
+    boolean ifCommentIdExist(Integer id);
 }
