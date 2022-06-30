@@ -5,7 +5,6 @@ import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialsTypeRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialsTypeUpdateRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialsTypeResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.CommentResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittableWorkResponse;
 import com.kshrd.tnakrean.repository.ClassMaterialsTypeRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.ClassMaterialsTypeImpl;
