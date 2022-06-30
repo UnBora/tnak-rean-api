@@ -134,15 +134,16 @@ public class SubmittedWorkController {
     ApiResponse<SubmittedWorkStudentScoreRequest> insertScore(
             @RequestBody @Valid SubmittedWorkStudentScoreRequest submittedWorkStudentScoreRequest
     ) {
-        SubmittedWorkStudentScoreRequest submittedWorkStudentScoreRequest1 = submittedWorkImpl.insertScore(submittedWorkStudentScoreRequest);
+        boolean checkSubmittedId = submittedWorkRepository.findSubmittedId(submittedWorkStudentScoreRequest.getSubmitted_work_id());
         try {
-            if (submittedWorkStudentScoreRequest1 == null) {
+            if (checkSubmittedId == false) {
                 return ApiResponse.<SubmittedWorkStudentScoreRequest>notFound(SubmittedWorkStudentScoreRequest.class.getSimpleName())
                         .setResponseMsg("Can't update! Because ID: " + submittedWorkStudentScoreRequest.getSubmitted_work_id() + " doesn't exist");
             }
+            submittedWorkImpl.insertScore(submittedWorkStudentScoreRequest);
             return ApiResponse.<SubmittedWorkStudentScoreRequest>ok(SubmittedWorkStudentScoreRequest.class.getSimpleName())
                     .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                    .setData(submittedWorkStudentScoreRequest1);
+                    .setData(submittedWorkStudentScoreRequest);
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
@@ -152,15 +153,16 @@ public class SubmittedWorkController {
     ApiResponse<SubmittedWorkUpdateStudentWorkRequest> updateStudentWork(
             @RequestBody @Valid SubmittedWorkUpdateStudentWorkRequest submittedWorkUpdateStudentWorkRequest
     ) {
-        SubmittedWorkUpdateStudentWorkRequest submittedWorkUpdateStudentWorkRequest1 = submittedWorkImpl.updateSubmittedWork(submittedWorkUpdateStudentWorkRequest);
+        boolean checkSubmittedId = submittedWorkRepository.findSubmittedId(submittedWorkUpdateStudentWorkRequest.getSubmitted_work_id());
         try {
-            if (submittedWorkUpdateStudentWorkRequest1 == null) {
+            if (checkSubmittedId == false) {
                 return ApiResponse.<SubmittedWorkUpdateStudentWorkRequest>notFound(SubmittedWorkUpdateStudentWorkRequest.class.getSimpleName())
                         .setResponseMsg("Can't update! Because ID: " + submittedWorkUpdateStudentWorkRequest.getSubmitted_work_id() + " doesn't exist");
             }
+            submittedWorkImpl.updateSubmittedWork(submittedWorkUpdateStudentWorkRequest);
             return ApiResponse.<SubmittedWorkUpdateStudentWorkRequest>ok(SubmittedWorkUpdateStudentWorkRequest.class.getSimpleName())
                     .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                    .setData(submittedWorkUpdateStudentWorkRequest1);
+                    .setData(submittedWorkUpdateStudentWorkRequest);
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
