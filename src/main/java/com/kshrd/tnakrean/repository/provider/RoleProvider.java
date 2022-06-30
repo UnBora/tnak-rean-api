@@ -7,7 +7,7 @@ public class RoleProvider {
         return new SQL() {{
             SELECT("*");
             FROM("user_role");
-            WHERE("id= #{user_role_id}");
+            WHERE("id = #{user_role_id}");
         }}.toString();
     }
 }

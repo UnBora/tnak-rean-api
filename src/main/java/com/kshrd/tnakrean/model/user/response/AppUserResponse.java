@@ -1,13 +1,18 @@
 package com.kshrd.tnakrean.model.user.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -15,10 +20,12 @@ import java.util.Collection;
 public class AppUserResponse implements UserDetails {
     private Integer id;
     private String name;
+    @JsonIgnore
     private String password;
     private String username;
+    private String email;
     private String token;
-    private RoleResponse role;
+    private Set<String> role;
 
 
     @Override
@@ -31,10 +38,13 @@ public class AppUserResponse implements UserDetails {
         return this.username;
     }
 
-    private Collection<? extends GrantedAuthority> authorities;
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        Set<String> roles = this.role;
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        for (String role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role));
+        }
         return authorities;
     }
 
