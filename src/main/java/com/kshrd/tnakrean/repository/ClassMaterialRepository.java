@@ -154,4 +154,7 @@ public interface ClassMaterialRepository {
     Boolean checkCreatedBy(Integer created_by);
     @Select("SELECT EXISTS(SELECT * FROM class_materials WHERE id = #{class_materials_type_id})")
     Boolean checkMaterialsTypeId(Integer class_materials_type_id);
+
+    @Select("SELECT EXISTS(SELECT * FROM class_materials WHERE id = #{id})")
+    Boolean checkMaterialsId(Integer id);
 }

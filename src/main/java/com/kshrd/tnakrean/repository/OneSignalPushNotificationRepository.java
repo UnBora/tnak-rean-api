@@ -22,7 +22,7 @@ public interface OneSignalPushNotificationRepository {
 
     @Select("SELECT c.class_name , cr.name as classRoomName,cr.created_by FROM class c" +
             " INNER JOIN classroom_detail cd on c.id = cd.class_id" +
-            " INNER JOIN classroom cr on cd.classroom_id = cr.id WHERE c.id = #{classId} AND cd.classroom_id = #{classRoomId}")
+            " INNER JOIN classroom cr on cd.classroom_id = cr.id WHERE cd.class_id = #{classId} AND cd.classroom_id = #{classRoomId}")
     ClassResponse getClassById(int classId, int classRoomId);
 
 

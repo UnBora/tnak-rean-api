@@ -35,4 +35,7 @@ public interface ClassRepository {
     //    Create User By Teacher's ID
     @Insert("INSERT INTO class (id, class_name) VALUES (#{id},#{class_name})")
     void creatClassByUserID(@Param("id") Integer id,@Param("class_name") String class_ame);
+
+    @Select("select exists (select * from classroom_detail where id = #{id})")
+    Boolean checkIfClassRoomDetailExists(Integer id);
 }

@@ -15,8 +15,9 @@ public class GetStudentByIDResponse {
     String username;
     String email;
     String gender;
-    @JsonIgnore
     Integer class_id;
+    Integer classRoom_id;
+    Integer status;
     @JsonIgnore
     String password;
 }

@@ -17,6 +17,7 @@ public interface StudentRepository {
 
     //   Get Student By ID
     @Select("Select * from users where user_role_id=1 and id= #{id}")
+    @Result(property = "user_id", column = "id")
     GetStudentByIDResponse getStudentFromDBById(@Param("id") Integer id);
 
     //  Student Leave Class
@@ -62,4 +63,9 @@ public interface StudentRepository {
     //   Check Classroom ID
     @Select("select exists (select * from class where id = #{classId})")
     Boolean checkIfClassIDExists(Integer classId);
+
+
+    @Select("SELECT u.id,u.name,u.email,u.gender,u.status ,s.class_id,s.classRoom_id FROM users u \n" +
+            "INNER JOIN student s on u.id = s.user_id WHERE u.id = #{id}")
+    GetStudentByIDResponse getStudentDetailById(@Param("id") Integer user_id);
 }
