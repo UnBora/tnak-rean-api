@@ -53,15 +53,17 @@ public class ClassMaterialController {
             @RequestBody @Valid ClassMaterialRequest classMaterialRequest
     ) {
         Boolean created = classMaterialRepository.checkCreatedBy(classMaterialRequest.getCreated_by());
-        Boolean materialsTypeIdInMaterial = classMaterialRepository.checkMaterialsTypeId(classMaterialRequest.getClass_materials_type_id());
+        Boolean materialsTypeId = classMaterialRepository.checkMaterialsTypeId(classMaterialRequest.getClass_materials_type_id());
         try {
             if (created == false) {
                 return ApiResponse.<ClassMaterialRequest>notFound(ClassMaterialRequest.class.getSimpleName())
                         .setResponseMsg("The Created_by_id: "+classMaterialRequest.getCreated_by()+" doesn't exit in the table");
-            } else if (materialsTypeIdInMaterial == false) {
+            } else if (materialsTypeId == false) {
                 return ApiResponse.<ClassMaterialRequest>notFound(ClassMaterialRequest.class.getSimpleName())
                         .setResponseMsg("The class_materials_type_id: "+classMaterialRequest.getClass_materials_type_id()+" doesn't exit in the table");
             } else {
+                classMaterialRequest.setTitle(classMaterialRequest.getTitle().trim());
+                classMaterialRequest.setDescription(classMaterialRequest.getDescription().trim());
                 classMaterialServiceImp.insertClassMaterial(classMaterialRequest);
                 return ApiResponse.<ClassMaterialRequest>ok(ClassMaterialRequest.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
@@ -83,9 +85,12 @@ public class ClassMaterialController {
                 return ApiResponse.<ClassMaterialUpdateTitleDesRequest>notFound(ClassMaterialUpdateTitleDesRequest.class.getSimpleName())
                         .setResponseMsg("Can't update! ID: " + classMaterialUpdateTitleDesRequest.getClass_material_id() + " doesn't exist");
             }
+            classMaterialUpdateTitleDesRequest.setTitle(classMaterialUpdateTitleDesRequest.getTitle().trim());
+            classMaterialUpdateTitleDesRequest.setDescription(classMaterialUpdateTitleDesRequest.getDescription().trim());
+            classMaterialServiceImp.updateClassMaterial(classMaterialUpdateTitleDesRequest);
             return ApiResponse.<ClassMaterialUpdateTitleDesRequest>ok(ClassMaterialUpdateTitleDesRequest.class.getSimpleName())
                     .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                    .setData(classMaterialUpdateTitleDesRequest1);
+                    .setData(classMaterialUpdateTitleDesRequest);
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
