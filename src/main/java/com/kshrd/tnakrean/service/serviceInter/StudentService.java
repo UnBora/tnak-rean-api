@@ -21,7 +21,7 @@ public interface StudentService {
     List<GetStudentByClassIDResponse> selectStudentByClassID(Integer class_id, Integer classroom_id);
 
     //Insert Student
-    void insertStudent(Integer user_id, Integer classroom_id, Integer class_id);
+    void insertStudent(Integer user_id);
 
 
 }

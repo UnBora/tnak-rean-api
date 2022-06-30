@@ -43,8 +43,8 @@ public class StudentServiceImp implements StudentService {
     }
 
     @Override
-    public void insertStudent(Integer users_id, Integer classroom_id, Integer class_id) {
-        studentRepository.insertUserToTableStudent(users_id, classroom_id, class_id);
+    public void insertStudent(Integer users_id) {
+        studentRepository.insertUserToTableStudent(users_id);
     }
 
 
