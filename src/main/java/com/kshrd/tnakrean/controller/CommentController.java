@@ -157,6 +157,7 @@ public class CommentController {
             } else if(checkUserId == false) {
                 return ApiResponse.unAuthorized("Unauthorized");
             } else {
+                commentInsertRequest.setComment(commentInsertRequest.getComment().trim());
                 commentServiceImp.insert(commentInsertRequest, userId);
                 return ApiResponse.<CommentInsertRequest>ok(CommentInsertRequest.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
@@ -172,17 +173,18 @@ public class CommentController {
             @RequestBody @Valid CommentUpdateRequest commentUpdateRequest
     ) {
         try {
-            CommentUpdateRequest commentUpdateRequest1 = commentServiceImp.update(commentUpdateRequest);
-            if (commentUpdateRequest1 == null) {
+            boolean checkCommentID = commentRepository.ifCommentIdExist(commentUpdateRequest.getComment_id());
+            if (checkCommentID == false) {
                 return ApiResponse.<CommentUpdateRequest>notFound(CommentUpdateRequest.class.getSimpleName())
-                        .setResponseMsg("Can't update! ID: " + commentUpdateRequest.getComment_id() + " doesn't exist");
+                        .setResponseMsg("Can't update! Comment ID: " + commentUpdateRequest.getComment_id() + " doesn't exist");
             }
+            commentUpdateRequest.setComment(commentUpdateRequest.getComment().trim());
+            commentServiceImp.update(commentUpdateRequest);
             return ApiResponse.<CommentUpdateRequest>ok(CommentUpdateRequest.class.getSimpleName())
                     .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                    .setData(commentUpdateRequest1);
+                    .setData(commentUpdateRequest);
         } catch (Exception e) {
-            return ApiResponse.<CommentUpdateRequest>badRequest(CommentUpdateRequest.class.getSimpleName())
-                    .setResponseMsg("Can't update! Because of violates foreign key constraint from student_id and class_materials_detail_id");
+            return ApiResponse.setError(e.getMessage());
         }
     }
 
