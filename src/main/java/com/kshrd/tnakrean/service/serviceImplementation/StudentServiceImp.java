@@ -48,10 +48,14 @@ public class StudentServiceImp implements StudentService {
         studentRepository.insertUserToTableStudent(users_id);
     }
 
+    @Override
+    public void updateprofileByID(Integer user_id, String name, String username, String img, String gender) {
+        studentRepository.updateProfile(user_id, name, username, img, gender);
+    }
 
     @Override
     public List<StudentRequestClassResponse> getRequestClass(Integer classroom_id, Integer class_id) {
-        return studentRepository.getRequestClass(classroom_id,class_id);
+        return studentRepository.getRequestClass(classroom_id, class_id);
     }
 
 

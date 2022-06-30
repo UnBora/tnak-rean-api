@@ -6,7 +6,6 @@ import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassResponse;
 import com.kshrd.tnakrean.model.user.request.StudentInsertRequest;
 import com.kshrd.tnakrean.model.user.request.StudentLeaveClassRequest;
-import com.kshrd.tnakrean.model.user.request.UserActivateAccountRequest;
 import com.kshrd.tnakrean.model.user.response.GetStudentByClassIDResponse;
 import com.kshrd.tnakrean.model.user.response.GetStudentByIDResponse;
 import com.kshrd.tnakrean.model.user.response.GetAllStudentResponse;
@@ -19,8 +18,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.Min;
 import java.util.List;
 
@@ -31,11 +28,15 @@ public class StudentController {
 
     final StudentRepository studentRepository;
     final StudentServiceImp studentServiceImp;
+    final EmailService emailService;
+    final OneSignalPushNotificationRepository repository;
 
     @Autowired
-    public StudentController(StudentRepository studentRepository, StudentServiceImp studentServiceImp) {
+    public StudentController(StudentRepository studentRepository, StudentServiceImp studentServiceImp, EmailService emailService, OneSignalPushNotificationRepository repository) {
         this.studentRepository = studentRepository;
         this.studentServiceImp = studentServiceImp;
+        this.emailService = emailService;
+        this.repository = repository;
     }
 
     @GetMapping("/get-all-student")
@@ -142,7 +143,8 @@ public class StudentController {
                 } else {
                     studentServiceImp.insertStudent(user_id);
                     ClassResponse classResponse = repository.getClassById(student.getClass_id(), student.getClassRoom_id());
-                    System.out.println(student.getEmail());  emailService.send("You Have Been Accepted", "You have been accepted into " + classResponse.getClass_name() + " of " + classResponse.getClassRoomName(), student.getEmail());
+                    System.out.println(student.getEmail());
+                    emailService.send("You Have Been Accepted", "You have been accepted into " + classResponse.getClass_name() + " of " + classResponse.getClassRoomName(), student.getEmail());
                     return ApiResponse.<StudentInsertRequest>ok(StudentInsertRequest.class.getSimpleName())
                             .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage());
                 }
@@ -151,11 +153,13 @@ public class StudentController {
             return ApiResponse.setError(e.getMessage());
         }
     }
+
     @GetMapping("get-student-request")
     public ApiResponse<List<StudentRequestClassResponse>> getRequestClass(
             @RequestParam @Min(value = 1) Integer classroom_id,
             @RequestParam @Min(value = 1) Integer class_id
-    ){  List<StudentRequestClassResponse> studentRequestClassResponse = studentServiceImp.getRequestClass(classroom_id,class_id);
+    ) {
+        List<StudentRequestClassResponse> studentRequestClassResponse = studentServiceImp.getRequestClass(classroom_id, class_id);
         try {
             if (studentRequestClassResponse.isEmpty()) {
                 return ApiResponse.<List<StudentRequestClassResponse>>notFound(StudentRequestClassResponse.class.getSimpleName())
@@ -164,7 +168,7 @@ public class StudentController {
             return ApiResponse.<List<StudentRequestClassResponse>>ok(StudentRequestClassResponse.class.getSimpleName())
                     .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
                     .setData(studentRequestClassResponse);
-        } catch (Exception e){
+        } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
     }
