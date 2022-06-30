@@ -14,11 +14,11 @@ import javax.validation.constraints.Size;
 public class UserRegisterResponse {
     Integer user_role_id;
     @Size(min = 3, max = 20)
-    @NotBlank(message = "{validation.description.notEmpty}")
+    @NotBlank(message = "{validation.username.size}")
     String name;
-    @Size(min = 4, max = 20)
+    @Size(min = 4, max = 20, message = "{validation.username.size}")
     String username;
-    @Email
+    @Email(message = "{validation.password.sizenotlesthen3}")
     String email;
     @Size(min = 1, max = 6)
     String gender;

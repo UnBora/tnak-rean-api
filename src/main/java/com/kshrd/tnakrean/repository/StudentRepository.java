@@ -34,8 +34,9 @@ public interface StudentRepository {
     @Result(property = "gender", column = "gender")
     List<GetStudentByClassIDResponse> selectStudentByClassID(@Param("class_id") Integer class_id, @Param("classroom_id") Integer classroom_id);
 
-    @Insert("INSERT INTO student (user_id, classroom_id, class_id) VALUES (#{user_id},#{classroom_id},#{class_id})")
-    void insertUserToTableStudent(@Param("user_id") Integer user_id, @Param("classroom_id") Integer classroom_id, @Param("class_id") Integer class_id);
+//    @Insert("INSERT INTO student (user_id, classroom_id, class_id) VALUES (#{user_id},#{classroom_id},#{class_id})")
+    @Update("UPDATE users SET status = 2 WHERE id = #{user_id}")
+    void insertUserToTableStudent(@Param("user_id") Integer user_id);
 
 //    check id Student
    @Select("select exists (select * from student where user_id= #{user_id} " +

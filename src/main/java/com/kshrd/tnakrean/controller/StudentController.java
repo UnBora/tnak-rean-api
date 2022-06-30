@@ -67,37 +67,36 @@ public class StudentController {
             return ApiResponse.setError(e.getMessage());
         }
     }
-    @GetMapping("/get-student-by-class-and-classroom-id/{class_id}/{classroom_id}")
+    @GetMapping("/get-student-by-class-and-classroom-id")
     public ApiResponse<List<GetStudentByClassIDResponse>> getStudentByClassID(
-            @Min(value = 1, message = "{validation.classId.notNegative}") Integer class_id,
-            @Min(value = 1, message = "{validation.classroomId.notNegative}") Integer classroom_id) {
+            @RequestParam @Min(value = 1, message = "{validation.classId.notNegative}") Integer class_id,
+            @RequestParam @Min(value = 1, message = "{validation.classroomId.notNegative}") Integer classroom_id) {
         try {
             Boolean checkClassIDAcdClassroomID= studentRepository.checkIfStudentclassIDClassroomIDExists(classroom_id,class_id);
             if (checkClassIDAcdClassroomID.equals(false)){
                 return ApiResponse.<List<GetStudentByClassIDResponse>>notFound(GetStudentByClassIDResponse.class.getSimpleName())
-                        .setResponseMsg("Your classID and ClassroomID not Matched!");
+                        .setResponseMsg("Your classID:"+class_id+" and ClassroomID:"+classroom_id+" not found!");
             }else {
                 List<GetStudentByClassIDResponse> getStudentByClassIDResponses = studentServiceImp.selectStudentByClassID(class_id, classroom_id);
                 return ApiResponse.<List<GetStudentByClassIDResponse>>ok(GetStudentByClassIDResponse.class.getSimpleName())
                         .setData(getStudentByClassIDResponses);
             }
-
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
     }
 
-    @PutMapping("leave-class/{classroomId}/{classId}")
+    @PutMapping("leave-class")
     public ApiResponse<StudentLeaveClassRequest> studentLeaveClass(
-            @Min(value = 1, message = "{validation.classroomId.notNegative}") Integer classroomId,
-            @Min(value = 1, message = "{validation.classId.notNegative}") Integer classId) {
+            @RequestParam @Min(value = 1, message = "{validation.classroomId.notNegative}") Integer classroomId,
+            @RequestParam @Min(value = 1, message = "{validation.classId.notNegative}") Integer classId) {
         try {
             Integer user_id = AuthRestController.user_id;
             if (!user_id.equals(0)) {
                 Boolean checkId=studentRepository.checkIfStudentExists(user_id,classroomId,classId);
                 if (checkId.equals(false)) {
                     return ApiResponse.<StudentLeaveClassRequest>notFound(StudentLeaveClassRequest.class.getSimpleName())
-                            .setResponseMsg("ClassID and ClassroomID not Matched")
+                            .setResponseMsg("Your classID and ClassroomID not Matched!")
                             .setData(new StudentLeaveClassRequest(user_id, classroomId, classId));
                 } else {
                     studentServiceImp.studentLeaveClassService(user_id, classroomId, classId);
@@ -114,46 +113,28 @@ public class StudentController {
         }
     }
 
-    @PostMapping("accept-student/{user_id}/{classroomId}/{classId}")
+    @PostMapping("accept-student")
     public ApiResponse<StudentInsertRequest> insertStudentToTableStudent(
-            @Min(value = 1, message = "{validation.id.notNegative}") Integer user_id,
-            @Min(value = 1, message = "{validation.classroomId.notNegative}") Integer classroomId,
-            @Min(value = 1, message = "{validation.classId.notNegative}") Integer classId) {
+            @RequestParam @Min(value = 1, message = "{validation.id.notNegative}") Integer user_id) {
 
             Boolean checkUserID=studentRepository.checkIfUserIDExists(user_id);
-            Boolean checkClassroomID=studentRepository.checkIfClassroomIDExists(classroomId);
-            Boolean checkClassID= studentRepository.checkIfClassIDExists(classId);
-            Boolean checkStudent= studentRepository.checkIfStudentExists(user_id,classroomId,classId);
         try {
             if (checkUserID.equals(false)) {
                 return ApiResponse.<StudentInsertRequest>notFound(StudentInsertRequest.class.getSimpleName())
                         .setResponseMsg("User ID: "+user_id+" Doesn't have in Table User!");
-            } else if(checkClassroomID.equals(false)){
-                return ApiResponse.<StudentInsertRequest>notFound(StudentInsertRequest.class.getSimpleName())
-                        .setResponseMsg("Classroom ID: "+classroomId+" Doesn't have in Table Classroom!");
-            }
-            else if (checkClassID.equals(false)){
-                return ApiResponse.<StudentInsertRequest>notFound(StudentInsertRequest.class.getSimpleName())
-                        .setResponseMsg("Class ID: "+classId+" Doesn't have in Table Class!");
-            }else if (checkStudent.equals(true)){
-                return ApiResponse.<StudentInsertRequest>unAuthorized(StudentInsertRequest.class.getSimpleName())
-                        .setResponseMsg("This student already exist!");
             } else {
                 Integer roleID=studentRepository.checkUserRole(user_id);
                 if (roleID.equals(2)){
                     return ApiResponse.<StudentInsertRequest>badRequest(StudentInsertRequest.class.getSimpleName())
                             .setResponseMsg("You cannot Insert Teacher to student!");
                 }else {
-                    studentServiceImp.insertStudent(user_id, classroomId, classId);
+                    studentServiceImp.insertStudent(user_id);
                     return ApiResponse.<StudentInsertRequest>ok(StudentInsertRequest.class.getSimpleName())
-                            .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
-                            .setData(new StudentInsertRequest(user_id, classroomId, classId));
+                            .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage());
                 }
             }
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
     }
-
-
 }

@@ -53,9 +53,9 @@ public class ClassroomController {
         }
     }
 
-    @GetMapping("/get-classroom-by-id/{classroomId}")
+    @GetMapping("/get-classroom-by-id")
     public ApiResponse<ClassroomResponse> getClassroomById(
-            @Min(value = 1, message = "{validation.id.notNegative}") Integer classroomId) {
+            @RequestParam @Min(value = 1, message = "{validation.id.notNegative}") Integer classroomId) {
         try {
             Boolean classroomID = classroomRepository.checkClassroomByID(classroomId);
             if (classroomID == null) {
