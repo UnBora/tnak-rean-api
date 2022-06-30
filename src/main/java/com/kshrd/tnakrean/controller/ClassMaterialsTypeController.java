@@ -57,12 +57,13 @@ public class ClassMaterialsTypeController {
     ApiResponse<ClassMaterialsTypeRequest> insertClassMaterialsType(
             @RequestBody @Valid ClassMaterialsTypeRequest classMaterialsTypeRequest
     ) {
-        boolean checkType = classMaterialsTypeRepository.ifTypeExist(classMaterialsTypeRequest.getType());
+        boolean checkType = classMaterialsTypeRepository.ifTypeExistByType(classMaterialsTypeRequest.getType().trim());
         try {
             if (checkType == true) {
                 return ApiResponse.<ClassMaterialsTypeRequest>notFound(ClassMaterialsTypeRequest.class.getSimpleName())
                         .setResponseMsg("Can't Insert! Because type: "+classMaterialsTypeRequest.getType()+ ". already exist");
             } else {
+                classMaterialsTypeRequest.setType(classMaterialsTypeRequest.getType().toUpperCase().trim());
                 classMaterialsTypeImpl.insertClassMaterialsType(classMaterialsTypeRequest);
                 return ApiResponse.<ClassMaterialsTypeRequest>ok(ClassMaterialsTypeRequest.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())

@@ -4,6 +4,7 @@ package com.kshrd.tnakrean.service.serviceImplementation;
 import com.kshrd.tnakrean.model.user.response.GetStudentByClassIDResponse;
 import com.kshrd.tnakrean.model.user.response.GetStudentByIDResponse;
 import com.kshrd.tnakrean.model.user.response.GetAllStudentResponse;
+import com.kshrd.tnakrean.model.user.response.StudentRequestClassResponse;
 import com.kshrd.tnakrean.repository.StudentRepository;
 import com.kshrd.tnakrean.service.serviceInter.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,11 @@ public class StudentServiceImp implements StudentService {
     @Override
     public void updateprofileByID(Integer user_id, String name, String username,String img, String gender) {
         studentRepository.updateProfile(user_id,name, username, img, gender);
+    }
+
+    @Override
+    public List<StudentRequestClassResponse> getRequestClass(Integer classroom_id, Integer class_id) {
+        return studentRepository.getRequestClass(classroom_id,class_id);
     }
 
 

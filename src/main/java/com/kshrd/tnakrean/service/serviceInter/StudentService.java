@@ -3,6 +3,7 @@ package com.kshrd.tnakrean.service.serviceInter;
 import com.kshrd.tnakrean.model.user.response.GetStudentByClassIDResponse;
 import com.kshrd.tnakrean.model.user.response.GetStudentByIDResponse;
 import com.kshrd.tnakrean.model.user.response.GetAllStudentResponse;
+import com.kshrd.tnakrean.model.user.response.StudentRequestClassResponse;
 
 import java.util.List;
 
@@ -33,4 +34,6 @@ public interface StudentService {
 
     //update profile
     void updateprofileByID(Integer user_id, String name, String username,String img, String gender);
+
+    List<StudentRequestClassResponse> getRequestClass(Integer classroom_id, Integer class_id);
 }

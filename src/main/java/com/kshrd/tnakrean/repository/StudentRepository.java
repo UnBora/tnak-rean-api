@@ -4,6 +4,7 @@ package com.kshrd.tnakrean.repository;
 import com.kshrd.tnakrean.model.user.response.GetStudentByClassIDResponse;
 import com.kshrd.tnakrean.model.user.response.GetStudentByIDResponse;
 import com.kshrd.tnakrean.model.user.response.GetAllStudentResponse;
+import com.kshrd.tnakrean.model.user.response.StudentRequestClassResponse;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -48,4 +49,13 @@ public interface StudentRepository {
     //    Update profile
     @Update("UPDATE users SET name=#{name}, username=#{username}, img=#{img} gender=#{gender} WHERE id = #{user_id}")
     void updateProfile(Integer user_id, String name, String username, String img, String gender);
+
+    // student request
+    @Select("SELECT r.id, r.user_id, u.name, u.email, u.gender, u.img, s.class_id,s.classroom_id, u.status " +
+            "FROM student_request r " +
+            "JOIN users u ON r.user_id = u.id " +
+            "JOIN student s ON u.id = s.user_id " +
+            "WHERE status = -1 AND classroom_id = #{classroom_id} AND class_id = #{class_id}")
+    @Result(property = "student_request_id" ,column = "id")
+    List<StudentRequestClassResponse> getRequestClass(Integer classroom_id, Integer class_id);
 }

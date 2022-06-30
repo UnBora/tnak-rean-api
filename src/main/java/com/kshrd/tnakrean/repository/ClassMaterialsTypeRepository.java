@@ -33,11 +33,11 @@ public interface ClassMaterialsTypeRepository {
     @Select("DELETE FROM class_materials_type WHERE id = #{id} Returning *")
     ClassMaterialsTypeResponse deleteById(int id);
 
-    @Select("SELECT EXISTS(SELECT * FROM class_materials_type WHERE type = #{type})")
-    boolean ifTypeExist(String type);
-    @Select("SELECT EXISTS(SELECT * FROM class_materials_type WHERE id = #{id})")
+    @Select("SELECT EXISTS(SELECT type FROM class_materials_type WHERE type = #{type})")
+    boolean ifTypeExistByType(String type);
+    @Select("SELECT EXISTS(SELECT id FROM class_materials_type WHERE id = #{id})")
     boolean ifTypeIdExist(Integer id);
 
-    @Select("SELECT EXISTS(SELECT * FROM class_materials WHERE class_materials_type_id = #{id})")
+    @Select("SELECT EXISTS(SELECT class_materials_type_id FROM class_materials WHERE class_materials_type_id = #{id})")
     boolean findTypeIdInMaterial(Integer id);
 }
