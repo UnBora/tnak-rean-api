@@ -57,13 +57,15 @@ public class ClassMaterialsTypeController {
     ApiResponse<ClassMaterialsTypeRequest> insertClassMaterialsType(
             @RequestBody @Valid ClassMaterialsTypeRequest classMaterialsTypeRequest
     ) {
-        boolean checkType = classMaterialsTypeRepository.ifTypeExistByType(classMaterialsTypeRequest.getType().trim());
+        boolean checkTypeExist = classMaterialsTypeRepository.findTypeExistByType(classMaterialsTypeRequest.getType().toUpperCase().trim());
+        boolean checkTypeExist1 = classMaterialsTypeRepository.findTypeExistByType(classMaterialsTypeRequest.getType().toLowerCase().trim());
         try {
-            if (checkType == true) {
+            if (checkTypeExist == true || checkTypeExist1 == true) {
                 return ApiResponse.<ClassMaterialsTypeRequest>notFound(ClassMaterialsTypeRequest.class.getSimpleName())
-                        .setResponseMsg("Can't Insert! Because type: "+classMaterialsTypeRequest.getType()+ ". already exist");
-            } else {
-                classMaterialsTypeRequest.setType(classMaterialsTypeRequest.getType().toUpperCase().trim());
+                        .setResponseMsg("Can't Insert! Because type: "+classMaterialsTypeRequest.getType().trim()+ ". already exist");
+            }
+            else {
+                classMaterialsTypeRequest.setType(classMaterialsTypeRequest.getType().trim());
                 classMaterialsTypeImpl.insertClassMaterialsType(classMaterialsTypeRequest);
                 return ApiResponse.<ClassMaterialsTypeRequest>ok(ClassMaterialsTypeRequest.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
@@ -73,18 +75,22 @@ public class ClassMaterialsTypeController {
             return ApiResponse.setError(e.getMessage());
         }
     }
-
     @PutMapping("/update")
     ApiResponse<ClassMaterialsTypeUpdateRequest> updateClassMaterialsType(
             @RequestBody @Valid ClassMaterialsTypeUpdateRequest classMaterialsTypeUpdateRequest
     ) {
         try {
-            ClassMaterialsTypeResponse classMaterialsTypeResponse = classMaterialsTypeImpl.updateClassMaterialsType(classMaterialsTypeUpdateRequest);
-            if (classMaterialsTypeResponse == null) {
+            boolean checkTypeID = classMaterialsTypeRepository.findTypeIdExist(classMaterialsTypeUpdateRequest.getId());
+            boolean checkTypeExist = classMaterialsTypeRepository.findTypeExistByType(classMaterialsTypeUpdateRequest.getType().toUpperCase().trim());
+            boolean checkTypeExist1 = classMaterialsTypeRepository.findTypeExistByType(classMaterialsTypeUpdateRequest.getType().toLowerCase().trim());
+            if (checkTypeID == false) {
                 return ApiResponse.<ClassMaterialsTypeUpdateRequest>notFound(ClassMaterialsTypeUpdateRequest.class.getSimpleName())
-                        .setResponseMsg("Can't update! ID: " + classMaterialsTypeUpdateRequest.getId() + " doesn't exist")
-                        .setData(null);
+                        .setResponseMsg("Can't update! ID: " + classMaterialsTypeUpdateRequest.getId()+ " doesn't exist");
+            } else if (checkTypeExist == true || checkTypeExist1 == true) {
+                return ApiResponse.<ClassMaterialsTypeUpdateRequest>notFound(ClassMaterialsTypeRequest.class.getSimpleName())
+                        .setResponseMsg("Can't Insert! Because type: "+classMaterialsTypeUpdateRequest.getType().trim()+ ". already exist");
             }
+            classMaterialsTypeImpl.updateClassMaterialsType(classMaterialsTypeUpdateRequest);
             return ApiResponse.<ClassMaterialsTypeUpdateRequest>ok(ClassMaterialsTypeUpdateRequest.class.getSimpleName())
                     .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
                     .setData(classMaterialsTypeUpdateRequest);
@@ -95,7 +101,7 @@ public class ClassMaterialsTypeController {
 
     @DeleteMapping("/delete-by-id/{id}")
     ApiResponse<Boolean> deleteById(@RequestParam @Min(value = 1) Integer id) {
-        boolean checkTypeID = classMaterialsTypeRepository.ifTypeIdExist(id);
+        boolean checkTypeID = classMaterialsTypeRepository.findTypeIdExist(id);
         boolean checkTypeIdInMaterial = classMaterialsTypeRepository.findTypeIdInMaterial(id);
         try {
             if (checkTypeID == false) {
