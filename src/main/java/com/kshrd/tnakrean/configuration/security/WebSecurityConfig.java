@@ -64,7 +64,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/v1/submittedWork/**",
                         "/api/v1/class/**",
                         "/api/v1/classroom/**",
-                        "/api/v1/ffffff/**",
+                        "/api/v1/classMaterialsType/**",
                         "/api/v1/classMaterial/**",
                         "/api/v1/submittableWork/**",
                         "/api/v1/comment/get-by-teacher_user_id"
@@ -72,7 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .hasAnyAuthority("Teacher")
 
 
-                .antMatchers("/api/v/student/**",
+                .antMatchers("/api/v1/student/**",
                         "/api/v1/comment/**",
                         "/api/v1/submittedWork/get-by-studentId",
                         "/api/v1/submittedWork/get-by-studentId-and-classId",
