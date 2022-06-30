@@ -32,4 +32,7 @@ public interface ClassMaterialsTypeRepository {
     // DELETE
     @Select("DELETE FROM class_materials_type WHERE id = #{id} Returning *")
     ClassMaterialsTypeResponse deleteById(int id);
+
+    @Select("SELECT EXISTS(SELECT * FROM class_materials_type WHERE type = #{type})")
+    boolean ifTypeExist(String type);
 }
