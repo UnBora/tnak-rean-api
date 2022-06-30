@@ -55,9 +55,9 @@ public class ClassController {
             return ApiResponse.setError(e.getMessage());
         }
     }
-    @DeleteMapping("/delete-class/{classId}")
+    @DeleteMapping("/delete-class")
     public ApiResponse<ClassDeleteResponse> deleteClass(
-            @Min(value = 1, message = "{validation.classId.notNegative}") Integer classId)
+            @RequestParam @Min(value = 1, message = "{validation.classId.notNegative}") Integer classId)
     {
         try {
             Boolean checkClassId=classRepository.checkIfClassExists(classId);

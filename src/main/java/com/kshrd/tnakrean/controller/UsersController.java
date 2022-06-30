@@ -9,6 +9,7 @@ import com.kshrd.tnakrean.model.user.request.UserUpdateRequest;
 import com.kshrd.tnakrean.model.user.request.UserActivateAccountRequest;
 import com.kshrd.tnakrean.repository.UsersRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.UserServiceImp;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import javax.validation.constraints.Size;
 
 @RestController
 @RequestMapping("/api/v1/user")
+@Slf4j
 public class UsersController {
 
     final UserServiceImp userServiceImp;
@@ -35,7 +37,7 @@ public class UsersController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @DeleteMapping("/delete-/{password}/{passwordConfirm}")
+    @DeleteMapping("/delete-account")
     public ApiResponse<UserDeleteAccountRequest> deleteAccount(
             @RequestParam @Size(min = 3, max = 16, message = "{validation.password.sizenotlesthen3}") String password,
             @RequestParam @Size(min = 3, max = 16, message = "{validation.password.sizenotlesthen3}")String confirmPassword) {
@@ -50,7 +52,7 @@ public class UsersController {
                         if (isMatch) {
                             userServiceImp.userDeleteAccount(userId);
                             return ApiResponse.<UserDeleteAccountRequest>successDelete(UserDeleteAccountRequest.class.getSimpleName())
-                                    .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
+                                    .setResponseMsg("A Record of UserDeleteAccountRequest has  been updated successfully!")
                                     .setData(new UserDeleteAccountRequest(userId));
                         } else if (!isMatch) {
                             return ApiResponse.<UserDeleteAccountRequest>successDelete(UserDeleteAccountRequest.class.getSimpleName())
@@ -80,7 +82,7 @@ public class UsersController {
         }
     }
 
-    @PutMapping("/deactivate-account/{password}/{passwordConfirm}")
+    @PutMapping("/deactivate-account")
     public ApiResponse<UserDeactivateAccountRequest> deactivateAccount(
             @RequestParam @Size(min = 3, max = 16,message = "{validation.password.sizenotlesthen3}") String password,
             @RequestParam @Size(min = 3, max = 16, message = "{validation.password.sizenotlesthen3}") String confirmPassword) {
@@ -97,7 +99,7 @@ public class UsersController {
                         if (isMatch) {
                             userServiceImp.userDeactivateAccount(userId);
                             return ApiResponse.<UserDeactivateAccountRequest>updateSuccess(UserDeactivateAccountRequest.class.getSimpleName())
-                                    .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
+                                    .setResponseMsg("A Record of UserDeactivateAccountRequest has  been updated successfully")
                                     .setData(new UserDeactivateAccountRequest(userId));
                         } else if (!isMatch) {
                             return ApiResponse.<UserDeactivateAccountRequest>notFound(UserDeactivateAccountRequest.class.getSimpleName())
@@ -131,7 +133,7 @@ public class UsersController {
 
     }
 
-    @PutMapping("/activate-account/{password}/{passwordConfirm}")
+    @PutMapping("/activate-account")
     public ApiResponse<UserActivateAccountRequest> activateAccount(
             @RequestParam @Size(min = 3, max = 16, message = "{validation.password.sizenotlesthen3}") String password,
             @RequestParam @Size(min = 3, max = 16, message = "{validation.password.sizenotlesthen3}")String passwordConfirm) {
@@ -146,8 +148,17 @@ public class UsersController {
                     if (status.equals(1)) {
                         if (isMatch) {
                             userServiceImp.userActivateAccount(userId);
+
+
+                            String simpleName = UserActivateAccountRequest.class.getSimpleName();
+                            System.out.println("simple name:"+simpleName);
+                            String message = BaseMessage.Success.UPDATE_SUCCESS.getMessage();
+                            System.out.println();
+                            log.info("Activate: {}", simpleName);
+                            log.info("Message: {}", message);
+
                             return ApiResponse.<UserActivateAccountRequest>updateSuccess(UserActivateAccountRequest.class.getSimpleName())
-                                    .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
+                                    .setResponseMsg("A Record of UserActivateAccountRequest has  been updated successfully")
                                     .setData(new UserActivateAccountRequest(userId));
                         } else if (!isMatch) {
                             return ApiResponse.<UserActivateAccountRequest>successDelete(UserActivateAccountRequest.class.getSimpleName())

@@ -67,10 +67,10 @@ public class StudentController {
             return ApiResponse.setError(e.getMessage());
         }
     }
-    @GetMapping("/get-student-by-class-and-classroom-id/{class_id}/{classroom_id}")
+    @GetMapping("/get-student-by-class-and-classroom-id")
     public ApiResponse<List<GetStudentByClassIDResponse>> getStudentByClassID(
-            @Min(value = 1, message = "{validation.classId.notNegative}") Integer class_id,
-            @Min(value = 1, message = "{validation.classroomId.notNegative}") Integer classroom_id) {
+            @RequestParam @Min(value = 1, message = "{validation.classId.notNegative}") Integer class_id,
+            @RequestParam @Min(value = 1, message = "{validation.classroomId.notNegative}") Integer classroom_id) {
         try {
             Boolean checkClassIDAcdClassroomID= studentRepository.checkIfStudentclassIDClassroomIDExists(classroom_id,class_id);
             if (checkClassIDAcdClassroomID.equals(false)){
@@ -87,17 +87,17 @@ public class StudentController {
         }
     }
 
-    @PutMapping("leave-class/{classroomId}/{classId}")
+    @PutMapping("leave-class")
     public ApiResponse<StudentLeaveClassRequest> studentLeaveClass(
-            @Min(value = 1, message = "{validation.classroomId.notNegative}") Integer classroomId,
-            @Min(value = 1, message = "{validation.classId.notNegative}") Integer classId) {
+            @RequestParam @Min(value = 1, message = "{validation.classroomId.notNegative}") Integer classroomId,
+            @RequestParam @Min(value = 1, message = "{validation.classId.notNegative}") Integer classId) {
         try {
             Integer user_id = AuthRestController.user_id;
             if (!user_id.equals(0)) {
                 Boolean checkId=studentRepository.checkIfStudentExists(user_id,classroomId,classId);
                 if (checkId.equals(false)) {
                     return ApiResponse.<StudentLeaveClassRequest>notFound(StudentLeaveClassRequest.class.getSimpleName())
-                            .setResponseMsg("ClassID and ClassroomID not Matched")
+                            .setResponseMsg("Your classID and ClassroomID not Matched!")
                             .setData(new StudentLeaveClassRequest(user_id, classroomId, classId));
                 } else {
                     studentServiceImp.studentLeaveClassService(user_id, classroomId, classId);
@@ -114,11 +114,11 @@ public class StudentController {
         }
     }
 
-    @PostMapping("accept-student/{user_id}/{classroomId}/{classId}")
+    @PostMapping("accept-student")
     public ApiResponse<StudentInsertRequest> insertStudentToTableStudent(
-            @Min(value = 1, message = "{validation.id.notNegative}") Integer user_id,
-            @Min(value = 1, message = "{validation.classroomId.notNegative}") Integer classroomId,
-            @Min(value = 1, message = "{validation.classId.notNegative}") Integer classId) {
+            @RequestParam @Min(value = 1, message = "{validation.id.notNegative}") Integer user_id,
+            @RequestParam @Min(value = 1, message = "{validation.classroomId.notNegative}") Integer classroomId,
+            @RequestParam @Min(value = 1, message = "{validation.classId.notNegative}") Integer classId) {
 
             Boolean checkUserID=studentRepository.checkIfUserIDExists(user_id);
             Boolean checkClassroomID=studentRepository.checkIfClassroomIDExists(classroomId);
