@@ -1,9 +1,11 @@
 package com.kshrd.tnakrean;
 
 import com.kshrd.tnakrean.service.serviceInter.FilesStorageService;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import org.springframework.boot.CommandLineRunner;
@@ -29,6 +31,11 @@ import javax.annotation.Resource;
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER,
         bearerFormat = "JWT"
+)
+@OpenAPIDefinition(
+        servers = {
+                @Server(url = "/", description = "Default Server URL")
+        }
 )
 public class TnakReanApplication {
     @Resource
