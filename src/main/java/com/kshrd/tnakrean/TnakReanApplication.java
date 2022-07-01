@@ -4,6 +4,8 @@ import com.kshrd.tnakrean.service.serviceInter.FilesStorageService;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.filter.ForwardedHeaderFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -24,7 +27,8 @@ import javax.annotation.Resource;
         name = "bearerAuth",
         type = SecuritySchemeType.HTTP,
         scheme = "bearer",
-        in = SecuritySchemeIn.HEADER
+        in = SecuritySchemeIn.HEADER,
+        bearerFormat = "JWT"
 )
 public class TnakReanApplication {
     @Resource
@@ -34,21 +38,17 @@ public class TnakReanApplication {
         SpringApplication.run(TnakReanApplication.class, args);
     }
 
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("*");
-            }
-        };
-    }
-
     //    @Override
 //    public void run(String... arg) throws Exception {
 //        storageService.deleteAll();
 //        storageService.init();
 //    }
+
+
+    @Bean
+    ForwardedHeaderFilter forwardedHeaderFilter() {
+        return new ForwardedHeaderFilter();
+    }
 
     @Bean
     public CorsFilter corsFilter() {
@@ -64,4 +64,8 @@ public class TnakReanApplication {
         source.registerCorsConfiguration("/v3/api-docs", config);
         return new CorsFilter(source);
     }
+
+
+
+
 }
