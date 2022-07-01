@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 @RestController
 //@CrossOrigin("http://localhost:8080")
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/file")
 public class FilesController {
     @Autowired

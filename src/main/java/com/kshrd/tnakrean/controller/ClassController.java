@@ -20,6 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/class")
 @SecurityRequirement(name = "bearerAuth")
+@CrossOrigin(origins = "*")
 public class ClassController {
 
     final ClassServiceImp classServiceImp;

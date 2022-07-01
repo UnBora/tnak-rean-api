@@ -21,6 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/classMaterial")
 @SecurityRequirement(name = "bearerAuth")
+@CrossOrigin(origins = "*")
 public class ClassMaterialController {
 
     final

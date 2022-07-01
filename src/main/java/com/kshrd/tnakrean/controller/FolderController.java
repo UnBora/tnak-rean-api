@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/folder")
+@CrossOrigin(origins = "*")
 public class FolderController {
     final FolderServiceImp folderServiceImp;
     final FolderRepository folderRepository;

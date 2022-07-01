@@ -5,6 +5,7 @@ import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.service.serviceInter.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.mail.MessagingException;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class EmailController {
     @Autowired
     final EmailService emailService;

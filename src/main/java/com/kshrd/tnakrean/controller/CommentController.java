@@ -19,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/comment")
 @SecurityRequirement(name = "bearerAuth")
+@CrossOrigin(origins = "*")
 public class CommentController {
     final CommentServiceImp commentServiceImp;
     final CommentRepository commentRepository;

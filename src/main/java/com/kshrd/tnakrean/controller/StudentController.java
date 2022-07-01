@@ -24,6 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/student")
 @SecurityRequirement(name = "bearerAuth")
+@CrossOrigin(origins = "*")
 public class StudentController {
 
     final StudentRepository studentRepository;

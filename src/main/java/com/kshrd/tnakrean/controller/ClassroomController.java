@@ -23,6 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/classroom")
 @SecurityRequirement(name = "bearerAuth")
+@CrossOrigin(origins = "*")
 public class ClassroomController {
 
     final ClassroomServiceImp classroomServiceImp;

@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/teacher")
 @SecurityRequirement(name = "bearerAuth")
+@CrossOrigin(origins = "*")
 public class TeacherController {
     final TeacherImpl teacherImpl;
 

@@ -19,6 +19,7 @@ import javax.validation.constraints.Size;
 
 @RestController
 @RequestMapping("/api/v1/user")
+@CrossOrigin(origins = "*")
 @Slf4j
 public class UsersController {
 
