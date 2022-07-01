@@ -15,8 +15,9 @@ import java.util.Scanner;
 @Service
 public class PushNotificationService {
 
-    public static final String REST_API_KEY = "ZDc0M2MwMDktM2EwMS00NmY3LWE4YTUtNDZlMzY4MmVhOWE2";
-    public static final String APP_ID = "c52f4ef1-f5b6-4095-86d5-1ad49f0359c8";
+    public static final String REST_API_KEY = "YTM0MjYzOGYtMDNmNy00OWQ1LWE3MzUtY2IxMzZkMGJmY2Fj";
+//    public static final String APP_ID = "1557ea45-8f4a-473d-ad64-dff9355214ec";
+    public static final String APP_ID = "1557ea45-8f4a-473d-ad64-dff9355214ec";
     final
     OneSignalPushNotificationRepository oneSignalPushNotificationRepository;
 
@@ -51,6 +52,7 @@ public class PushNotificationService {
                 + "}";
 
         System.out.println("strJsonBody:\n" + strJsonBody);
+
 
 
         byte[] sendBytes = strJsonBody.getBytes("UTF-8");
