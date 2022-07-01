@@ -2,10 +2,7 @@ package com.kshrd.tnakrean.repository;
 
 import com.kshrd.tnakrean.configuration.JsonTypeHandler;
 import com.kshrd.tnakrean.model.classmaterials.request.*;
-import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkByClassroomClassSubmittableResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkByMaterialIdResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkByStudentIdAndClassIdResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.*;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -83,8 +80,20 @@ public interface SubmittedWorkRepository {
     @Result(property = "studentWork", column = "student_work", typeHandler = JsonTypeHandler.class)
     List<SubmittedWorkByClassroomClassSubmittableResponse> getByClassroomClassSubmittable(Integer classroom_id, Integer class_id, Integer submittable_work_id);
 
+    // get StuScore By Class Classroom
+    @Select("SELECT m.title, d.class_material_id, sw.student_id, u.name as student_name, u.gender, sw.student_score, w.class_materials_detail_id, sw.submittable_work_id, sw.id as submitted_work_id, s.classroom_id, s.class_id\n" +
+            "FROM class_materials m \n" +
+            "JOIN class_materials_detail d ON m.id = d.class_material_id " +
+            "JOIN submittable_work w ON d.id = w.class_materials_detail_id " +
+            "JOIN submitted_work sw ON w.id = sw.submittable_work_id " +
+            "JOIN student s ON s.id = sw.student_id " +
+            "JOIN users u ON u.id = s.user_id " +
+            "WHERE sw.status = 3 AND s.classroom_id = #{classroomId} AND s.class_id = #{classId} AND sw.submittable_work_id = #{submitted_work_id}")
+    List<StudentScoreByClassroomIdAndClassIdResponse> getStuScoreByClassClassroom(Integer classroomId, Integer classId, Integer submitted_work_id);
     @Select("SELECT EXISTS(SELECT id FROM submittable_work WHERE id = #{submittable_work_id} )")
     boolean checkIfSubmiitableIdExist(Integer submittable_work_id);
     @Select("SELECT EXISTS(SELECT id FROM submitted_work WHERE id = #{id})")
     boolean findSubmittedId(Integer id);
+
+
 }
