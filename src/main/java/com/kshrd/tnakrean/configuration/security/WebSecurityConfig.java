@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilde
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -106,14 +107,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     //    ignore resources
     @Override
     public void configure(WebSecurity web) throws Exception {
-//           web.ignoring().antMatchers("/v2/api-docs",
-//                "/configuration/ui",
-//                "/swagger-resources/",
-//                "/configuration/security",
-//                "/swagger-ui.html",
-//                "/image/**",
-//                "/webjars/");
-//        web.ignoring().antMatchers(HttpMethod.OPTIONS,"/**");
+        web.ignoring().antMatchers("/v3/api-docs",
+                "/configuration/ui",
+                "/swagger-resources/",
+                "/configuration/security",
+                "/swagger-ui.html",
+                "/image/**",
+                "/webjars/");
+        web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
     }
 
 
