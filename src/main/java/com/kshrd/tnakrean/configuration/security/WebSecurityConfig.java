@@ -103,8 +103,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManager();
     }
 
-
-    //    ignore resources
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/v3/api-docs",
@@ -112,10 +110,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/swagger-resources/",
                 "/configuration/security",
                 "/swagger-ui.html",
-                "/image/**",
+                "/image/",
                 "/webjars/");
-        web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
+        web.ignoring().antMatchers(HttpMethod.OPTIONS, "/");
     }
-
-
 }
