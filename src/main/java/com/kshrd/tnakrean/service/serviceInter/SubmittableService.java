@@ -10,7 +10,7 @@ import com.kshrd.tnakrean.model.classmaterials.response.UpComingSubmittableWorkR
 import java.util.List;
 public interface SubmittableService {
 
-    Boolean delete(int id);
+    SubmittableWorkResponse delete(Integer id);
 
     List<SubmittableWorkResponse> getAll();
 
@@ -26,5 +26,5 @@ public interface SubmittableService {
 
     List<SubmittableWorkResponse> getByClassIdAndClassId(Integer classroom_id, Integer class_id);
 
-    SubmittedWorkResponse updateClassClassroom(SubmittableWorkUpdateClassClassroomRequest submittableWorkUpdateClassClassroomRequest);
+    SubmittableWorkUpdateClassClassroomRequest updateClassClassroom(SubmittableWorkUpdateClassClassroomRequest submittableWorkUpdateClassClassroomRequest);
 }

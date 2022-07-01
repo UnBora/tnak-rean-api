@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 public class ClassroomUpdateResponse {
     Integer classroom_id;
     Integer created_by;
-    String des;
     String name;
+    String des;
 }

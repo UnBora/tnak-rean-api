@@ -45,7 +45,7 @@ public class SubmittableWorkServiceImpl implements SubmittableService {
     }
 
     @Override
-    public Boolean delete(int id) {
+    public SubmittableWorkResponse delete(Integer id) {
         return submittableWorkRepository.delete(id);
     }
 
@@ -67,7 +67,7 @@ public class SubmittableWorkServiceImpl implements SubmittableService {
     }
 
     @Override
-    public SubmittedWorkResponse updateClassClassroom(SubmittableWorkUpdateClassClassroomRequest submittableWorkUpdateClassClassroomRequest) {
+    public SubmittableWorkUpdateClassClassroomRequest updateClassClassroom(SubmittableWorkUpdateClassClassroomRequest submittableWorkUpdateClassClassroomRequest) {
         return submittableWorkRepository.updateClassClassroom(submittableWorkUpdateClassClassroomRequest);
     }
 }

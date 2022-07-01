@@ -19,7 +19,7 @@ public class EmailService {
     @Autowired
     private JavaMailSender javaMailSender;
 
-    public void sendConfirmationEmail(String token, String email) {
+    public void sendConfirmationEmail(String token, String email) throws MessagingException {
         // build email
         // send message
         String message = "Welcome to , test token" + token;
@@ -28,8 +28,8 @@ public class EmailService {
     }
 
     @Async
-    public void send(String subject, String message, String to) {
-        try {
+    public void send(String subject, String message, String to) throws MessagingException {
+
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper helper =
                     new MimeMessageHelper(mimeMessage, "utf-8");
@@ -37,8 +37,6 @@ public class EmailService {
             helper.setSubject(subject);
             helper.setText(message);
             javaMailSender.send(mimeMessage);
-        } catch (MessagingException e) {
-            throw new IllegalStateException("failed to send email");
-        }
+
     }
 }

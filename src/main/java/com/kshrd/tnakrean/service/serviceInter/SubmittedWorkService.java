@@ -15,13 +15,13 @@ public interface SubmittedWorkService {
 
    List<SubmittedWorkResponse> getSubmittedByStudentId(int studentId);
 
-   boolean addSubmittedWork(SubmittedWorkStudentWorkRequest submittedWorkStudentWorkRequest);
+   boolean addSubmittedWork(SubmittedWorkStudentWorkRequest submittedWorkStudentWorkRequest, Integer userId);
 
    SubmittedWorkUpdateStudentWorkRequest updateSubmittedWork(SubmittedWorkUpdateStudentWorkRequest submittedWorkUpdateStudentWorkRequest);
 
    SubmittedWorkResponse deleteSubmittedWorkId(int id);
 
-   List<SubmittedWorkResponse> getById(Integer id);
+   SubmittedWorkResponse getById(Integer id);
 
    List<SubmittedWorkByStudentIdAndClassIdResponse> getByStudentIdAndClassId(Integer student_id, Integer class_id);
 

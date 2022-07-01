@@ -7,15 +7,14 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ClassMaterialUpdateRequest {
+public class ClassMaterialUpdateTitleDesRequest {
     @Min(value = 1 , message="{validation.id.notNegative}")
-    private int id;
+    private int class_material_id;
     @NotBlank(message = "{validation.title.notEmpty}")
     private String title;
     @NotBlank(message = "{validation.description.notEmpty}")

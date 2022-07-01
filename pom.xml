@@ -8,9 +8,10 @@
         <version>2.7.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.kshrd.tnakrean</groupId>
+    <groupId>com.kshrd</groupId>
     <artifactId>tnakrean</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
     <name>tnakrean</name>
     <description>tnakrean</description>
     <properties>

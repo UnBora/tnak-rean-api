@@ -1,5 +1,6 @@
 package com.kshrd.tnakrean.model.classmaterials.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kshrd.tnakrean.model.classmaterials.json.ClassMaterialContent;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,6 +10,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Date;
 
 @Data
@@ -25,5 +27,6 @@ public class ClassMaterialRequest {
     private Integer class_materials_type_id;
     @Valid
     private ClassMaterialContent classMaterialContent;
-    private Date created_date;
+    @JsonIgnore
+    private LocalDateTime created_date = LocalDateTime.now(ZoneOffset.of("+07:00"));
 }

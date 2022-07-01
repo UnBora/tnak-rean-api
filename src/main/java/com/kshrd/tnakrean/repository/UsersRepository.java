@@ -1,5 +1,6 @@
 package com.kshrd.tnakrean.repository;
 
+import com.kshrd.tnakrean.model.user.response.AppUserResponse;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -32,4 +33,18 @@ public interface UsersRepository {
     //    Update profile
     @Update("UPDATE users SET name=#{name}, username=#{username},email=#{email}, gender=#{gender} WHERE id = #{user_id}")
     void updateProfile(Integer user_id, String name, String username, String email, String gender);
+
+    @Select("select exists (select * from users where email =#{email})")
+    Boolean checkEmailExist(String email);
+
+    @Select("select exists (select * from users where username =#{username})")
+    Boolean checkUserName(String username);
+
+    @Select("select exists (select * from users where id =#{id})")
+    Boolean checkUserById(Integer id);
+
+    @Select("select * from users where id = #{id}")
+    AppUserResponse getUserById(@Param("id") int userId);
+
+
 }

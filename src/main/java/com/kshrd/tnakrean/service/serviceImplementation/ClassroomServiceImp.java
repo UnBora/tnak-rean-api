@@ -24,9 +24,9 @@ public class ClassroomServiceImp implements ClassroomService {
     }
 
     @Override
-    public void insertClassroom(Integer class_id, Integer created_by, String des, String name){
+    public void insertClassroom(Integer created_by, String name, String des){
         try {
-            classroomRepository.insertClassroom(class_id, created_by, des, name);
+            classroomRepository.insertClassroom(created_by, name , des);
         }catch (Exception e){
 
         }
@@ -39,8 +39,8 @@ public class ClassroomServiceImp implements ClassroomService {
     }
 
     @Override
-    public void updateClassroom( Integer classroom_id, Integer created_by, String des, String name) {
-            classroomRepository.updateClassroomDB( classroom_id, created_by,des ,name);
+    public void updateClassroom( Integer classroom_id, Integer created_by , String name, String des) {
+            classroomRepository.updateClassroomDB( classroom_id, created_by ,name,des);
 
     }
 

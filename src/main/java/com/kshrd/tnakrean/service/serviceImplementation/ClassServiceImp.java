@@ -1,6 +1,7 @@
 package com.kshrd.tnakrean.service.serviceImplementation;
 
 import com.kshrd.tnakrean.model.classmaterials.request.GetClassRequest;
+import com.kshrd.tnakrean.model.classmaterials.response.ClassDeleteResponse;
 import com.kshrd.tnakrean.repository.ClassRepository;
 import com.kshrd.tnakrean.service.serviceInter.ClassService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,9 @@ public class ClassServiceImp implements ClassService {
     }
 
     @Override
-    public void deleteClass(Integer classId) {
-        classRepository.deleteClass(classId);
+    public Boolean deleteClass(Integer classId) {
+        return classRepository.deleteClass(classId);
+
     }
 
     @Override

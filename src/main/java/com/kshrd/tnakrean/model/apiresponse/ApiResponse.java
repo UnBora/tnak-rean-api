@@ -30,6 +30,7 @@ public class ApiResponse<T> {
 
     private int responseCode;
     private String responseMsg;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime time = LocalDateTime.now(ZoneOffset.of("+07:00"));
@@ -58,7 +59,6 @@ public class ApiResponse<T> {
         response.setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage());
         response.setResponseCode(200);
         return response;
-
     }
     // SUCCESS
 
@@ -108,10 +108,16 @@ public class ApiResponse<T> {
         return response;
     }
 
-
     public static <T> ApiResponse<T> setError(String errorMsg) {
         ApiResponse<T> response = new ApiResponse<>();
         response.setResponseMsg(errorMsg);
+        return response;
+    }
+
+    public static <T> ApiResponse<T> unAuthorized(String errorMsg) {
+        ApiResponse<T> response = new ApiResponse<>();
+        response.setResponseCode(401);
+        response.setResponseMsg(HttpStatus.UNAUTHORIZED.toString());
         return response;
     }
 

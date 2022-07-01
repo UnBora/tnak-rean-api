@@ -9,11 +9,11 @@ public interface ClassroomService {
 
     List<ClassroomResponse> getAllClassroom();
 
-    void insertClassroom(Integer class_id, Integer created_by, String des, String name);
+    void insertClassroom(Integer created_by, String name, String des);
 
     ClassroomResponse getClassroomByID(Integer id);
 
-    void updateClassroom( Integer classroom_id, Integer created_by, String des, String name);
+    void updateClassroom( Integer classroom_id, Integer created_by, String name, String des);
 
     List<GetClassByTeacherIdResponse> getClassByTeacherId(Integer classroom_id, Integer class_id, String teacher_name, String class_name, Integer user_id);
 }

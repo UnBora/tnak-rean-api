@@ -3,7 +3,6 @@ package com.kshrd.tnakrean.repository;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialsTypeRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialsTypeUpdateRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassMaterialsTypeResponse;
-import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -26,11 +25,19 @@ public interface ClassMaterialsTypeRepository {
     @Insert("INSERT INTO class_materials_type (type) VALUES (#{type})")
     boolean insertClassMaterialsType(ClassMaterialsTypeRequest classMaterialsTypeRequest);
 
-    //
-    @Insert("UPDATE class_materials_type SET type = #{type} WHERE id = #{id}")
-    boolean updateClassMaterialsType(ClassMaterialsTypeUpdateRequest classMaterialsTypeUpdateRequest);
+    // update
+    @Select("UPDATE class_materials_type SET type = #{type} WHERE id = #{id} Returning *")
+    ClassMaterialsTypeResponse updateClassMaterialsType(ClassMaterialsTypeUpdateRequest classMaterialsTypeUpdateRequest);
 
-    //
-    @Delete("DELETE FROM class_materials_type WHERE id = #{id}")
-    boolean deleteById(int id);
+    // DELETE
+    @Select("DELETE FROM class_materials_type WHERE id = #{id} Returning *")
+    ClassMaterialsTypeResponse deleteById(int id);
+
+    @Select("SELECT EXISTS(SELECT type FROM class_materials_type WHERE type = #{type})")
+    boolean findTypeExistByType(String type);
+    @Select("SELECT EXISTS(SELECT id FROM class_materials_type WHERE id = #{id})")
+    boolean findTypeIdExist(Integer id);
+
+    @Select("SELECT EXISTS(SELECT class_materials_type_id FROM class_materials WHERE class_materials_type_id = #{id})")
+    boolean findTypeIdInMaterial(Integer id);
 }

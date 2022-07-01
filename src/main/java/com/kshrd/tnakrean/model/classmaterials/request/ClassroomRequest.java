@@ -4,12 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClassroomRequest {
-    Integer class_id;
-    Integer created_by;
-    String des;
+
+    @NotBlank(message = "{validation.className.notEmpty}")
     String name;
+    @NotBlank(message = "{validation.description.notEmpty}")
+    String des;
 }

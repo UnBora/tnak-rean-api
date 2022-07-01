@@ -13,12 +13,9 @@ import java.util.Date;
 @NoArgsConstructor
 public class CommentUpdateRequest {
     @Min(value = 1, message = "{validation.id.notNegative}")
-    private Integer id;
-    @Min(value = 1, message = "{validation.studentId.notNegative}")
-    private Integer student_id;
-    @Min(value = 1, message = "{validation.MaterialDetailId.notNegative}")
-    private Integer class_materials_detail_id;
+    private Integer comment_id;
+//    @Min(value = 1, message = "{validation.MaterialDetailId.notNegative}")
+//    private Integer class_materials_detail_id;
     @NotBlank(message = "{validation.comment.notEmpty}")
     private String comment;
-    private Date comment_date;
 }

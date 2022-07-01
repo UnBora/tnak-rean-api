@@ -13,8 +13,6 @@ import java.util.Date;
 public class SubmittableWorkUpdateDeadlineRequest {
     @Min(value = 1 , message="{validation.id.notNegative}")
     Integer submittable_work_id;
-    @Min(value = 1 , message="{validation.MaterialTypeId.notNegative}")
-    Integer class_materials_detail_id;
 //    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     Date deadline;
 }

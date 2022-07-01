@@ -8,16 +8,14 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetStudentByIDResponse {
-    @JsonIgnore
+public class StudentRequestClassResponse {
+    Integer student_request_id;
     Integer user_id;
     String name;
-    String username;
     String email;
     String gender;
+    String img;
     Integer class_id;
-    Integer classRoom_id;
+    Integer classroom_id;
     Integer status;
-    @JsonIgnore
-    String password;
 }

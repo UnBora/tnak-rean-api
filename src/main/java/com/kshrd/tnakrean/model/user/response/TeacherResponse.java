@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class TeacherResponse {
     Integer user_id;
+    String role ;
     String name;
     String username;
     String email;

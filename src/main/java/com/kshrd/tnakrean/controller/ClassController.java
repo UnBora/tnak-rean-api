@@ -9,14 +9,17 @@ import com.kshrd.tnakrean.model.classmaterials.response.ClassUpdateResponse;
 import com.kshrd.tnakrean.model.user.response.GetAllStudentResponse;
 import com.kshrd.tnakrean.repository.ClassRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.ClassServiceImp;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/class")
+@SecurityRequirement(name = "bearerAuth")
 public class ClassController {
 
     final ClassServiceImp classServiceImp;
@@ -28,69 +31,92 @@ public class ClassController {
         this.classRepository = classRepository;
     }
 
-    @PostMapping("/addClass")
-    public ApiResponse<ClassInertResponse> insertClass(@Valid String className) {
+    @PostMapping("/create-class")
+    public ApiResponse<ClassInertResponse> insertClass(@RequestBody @Valid ClassInertResponse classInertResponse) {
+
+        Boolean classNameCheck=classRepository.checkIfClassExistsDuplecateClassName(classInertResponse.getClassName().toUpperCase());
+        System.out.println(classInertResponse.getClassName().toUpperCase());
         try {
-            classServiceImp.insertClass(className);
-            if (className.isEmpty()) {
-                return ApiResponse.<ClassInertResponse>setError("student class")
+            if (classInertResponse.equals(null)) {
+                return ApiResponse.<ClassInertResponse>setError(ClassInertResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Error.INSERT_ERROR.getMessage())
-                        .setData(new ClassInertResponse(className));
-            } else {
-                return ApiResponse.<ClassInertResponse>ok("student class")
+                        .setData(new ClassInertResponse(classInertResponse.getClassName()));
+            } else if(classNameCheck.equals(true)){
+                return ApiResponse.<ClassInertResponse>duplicateEntry(ClassInertResponse.class.getSimpleName())
+                        .setResponseMsg("The class name already exists!")
+                        .setData(new ClassInertResponse(classInertResponse.getClassName()));
+            }else {
+                classServiceImp.insertClass(classInertResponse.getClassName().toUpperCase());
+                return ApiResponse.<ClassInertResponse>ok(ClassInertResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
-                        .setData(new ClassInertResponse(className));
+                        .setData(new ClassInertResponse(classInertResponse.getClassName()));
             }
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
     }
-
-    @DeleteMapping("/deleteClass")
-    public ApiResponse<ClassDeleteResponse> deleteClass(Integer classId) {
+    @DeleteMapping("/delete-class")
+    public ApiResponse<ClassDeleteResponse> deleteClass(
+            @RequestParam @Min(value = 1, message = "{validation.classId.notNegative}") Integer classId)
+    {
         try {
-            classServiceImp.deleteClass(classId);
+            Boolean checkClassId=classRepository.checkIfClassExists(classId);
             if (classId == null) {
-                return ApiResponse.<ClassDeleteResponse>setError("student class")
+                return ApiResponse.<ClassDeleteResponse>setError(ClassDeleteResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Error.DELETE_ERROR.getMessage())
                         .setData(new ClassDeleteResponse(classId));
-            } else {
-                return ApiResponse.<ClassDeleteResponse>ok("student class")
-                        .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
-                        .setData(new ClassDeleteResponse(classId))
-                        .setResponseMsg(classId + " had deleted");
+            } else if(checkClassId.equals(false)){
+                return ApiResponse.<ClassDeleteResponse>notFound(ClassDeleteResponse.class.getSimpleName())
+                        .setResponseMsg("The Class ID:"+classId+" does not have!")
+                        .setData(new ClassDeleteResponse(classId));
+            } else{
+
+                try{
+                    boolean del = classServiceImp.deleteClass(classId);
+                    if (del) {
+                        return ApiResponse.<ClassDeleteResponse>ok(ClassDeleteResponse.class.getSimpleName())
+                                .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
+                                .setData(new ClassDeleteResponse(classId));
+                    }
+                }catch (Exception e) {
+                    return ApiResponse.<ClassDeleteResponse>ok(ClassDeleteResponse.class.getSimpleName())
+                            .setResponseMsg(BaseMessage.Error.DELETE_ERROR.getMessage()+" because of primary key")
+                            .setData(new ClassDeleteResponse(classId));
+                }
             }
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
+        return null;
     }
-
-    @PutMapping("/updateClass")
+    @PutMapping("/update-class")
     public ApiResponse<ClassUpdateResponse> updateClassName(@RequestBody @Valid ClassUpdateResponse classUpdateResponse) {
         Boolean a = classRepository.checkIfClassExists(classUpdateResponse.getId());
+        Boolean nameCheck=classRepository.checkIfClassExistsDuplecateClassName(classUpdateResponse.getClassname().toUpperCase());
         try {
-            classServiceImp.UpdateClass(classUpdateResponse.getId(), classUpdateResponse.getClassname());
             if (classUpdateResponse.equals(null)) {
                 return ApiResponse.<ClassUpdateResponse>setError(GetAllStudentResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Error.UPDATE_ERROR.getMessage());
             } else if (a.equals(false)) {
-                return ApiResponse.<ClassUpdateResponse>setError(GetAllStudentResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.UPDATE_ERROR.getMessage());
+                return ApiResponse.<ClassUpdateResponse>notFound(GetAllStudentResponse.class.getSimpleName())
+                        .setResponseMsg("The Class ID:"+classUpdateResponse.getId()+" does not have!");
+            } else if(nameCheck.equals(true)){
+                return ApiResponse.<ClassUpdateResponse>duplicateEntry(GetAllStudentResponse.class.getSimpleName())
+                        .setResponseMsg("The class name already exists!");
             } else {
+                classServiceImp.UpdateClass(classUpdateResponse.getId(), classUpdateResponse.getClassname().toUpperCase());
                 String className = "Student ID: " + classUpdateResponse.getId() + " Class new name: " + classUpdateResponse.getClassname();
                 return ApiResponse
                         .<ClassUpdateResponse>ok(className)
                         .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                        .setData(new ClassUpdateResponse(classUpdateResponse.getId(), classUpdateResponse.getClassname()));
+                        .setData(new ClassUpdateResponse(classUpdateResponse.getId(), classUpdateResponse.getClassname().toUpperCase()));
             }
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
-
-
     }
 
-    @GetMapping("/GetAllClass")
+    @GetMapping("/get-all-class")
     public ApiResponse<List<GetClassRequest>> getAllStudent() {
         try {
             List<GetClassRequest> getClassRequests = classServiceImp.getAllClass();
@@ -99,7 +125,7 @@ public class ClassController {
                         .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
                         .setData(getClassRequests);
             } else {
-                return ApiResponse.<List<GetClassRequest>>ok("Get All Class")
+                return ApiResponse.<List<GetClassRequest>>ok(GetClassRequest.class.getSimpleName())
                         .setData(getClassRequests);
             }
         } catch (Exception e) {

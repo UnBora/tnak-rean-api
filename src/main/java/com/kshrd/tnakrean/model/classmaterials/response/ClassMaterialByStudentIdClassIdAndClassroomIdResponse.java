@@ -16,7 +16,7 @@ import java.util.Date;
 public class ClassMaterialByStudentIdClassIdAndClassroomIdResponse {
     private Integer class_id;
     private Integer classroom_id;
-    private Integer student_id;
+    private Integer student_user_id;
     private Integer class_material_id;
     private String title;
     private String description;
