@@ -46,4 +46,9 @@ public class FolderServiceImp implements FolderService {
     public List<FolderResponse> getListFolderByTeacherId(int teacherId) {
         return folderRepository.getListFolderByTeacherId(teacherId);
     }
+
+    @Override
+    public FolderResponse deleteByParentId(Integer parent_id) {
+        return folderRepository.deleteByParentId(parent_id);
+    }
 }

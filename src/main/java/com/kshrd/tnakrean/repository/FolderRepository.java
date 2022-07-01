@@ -53,4 +53,8 @@ public interface FolderRepository {
             " JOIN class_materials_type cmt on cmt.id = cm.class_materials_type_id"+
             " WHERE fd.folder_id = #{id}")
     List<FolderDetailResponse> getFolderDetail(int id);
+
+    // delete
+    @Select("DELETE FROM folder WHERE id = #{parent_id} RETURNING *")
+    FolderResponse deleteByParentId(Integer parent_id);
 }

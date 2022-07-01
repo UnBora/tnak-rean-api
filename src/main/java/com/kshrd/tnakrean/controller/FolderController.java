@@ -11,6 +11,7 @@ import com.kshrd.tnakrean.service.serviceImplementation.FolderServiceImp;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController
@@ -113,5 +114,14 @@ public class FolderController {
             return ApiResponse.badRequest(FolderResponse.class.getSimpleName());
         }
     }
-
+    @DeleteMapping("delete-by-id") // delete child folder too
+    ApiResponse<Boolean> deleteByParentId(@RequestParam @Min(value = 1) Integer parent_id){
+        FolderResponse folderResponse = folderServiceImp.deleteByParentId(parent_id);
+        if (folderResponse == null ) {
+            return ApiResponse.<Boolean>notFound("Folder")
+                    .setResponseMsg("Can't Delete! Folder Id: "+parent_id+" is not exist");
+        }
+        return ApiResponse.<Boolean>ok("Folder")
+                .setResponseMsg("Delete folder on Id: "+parent_id+" successfully with their child id" ).setData(true);
+    }
 }
