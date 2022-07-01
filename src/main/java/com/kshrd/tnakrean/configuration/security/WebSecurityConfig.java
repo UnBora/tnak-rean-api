@@ -102,6 +102,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManager();
     }
 
+
     //    ignore resources
     @Override
     public void configure(WebSecurity web) throws Exception {
