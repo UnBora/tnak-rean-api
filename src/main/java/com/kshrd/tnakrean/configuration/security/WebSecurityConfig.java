@@ -72,7 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
                 .antMatchers("/api/v1/student/**",
-                        "/api/v/comment/**",
+                        "/api/v1/comment/**",
                         "/api/v1/submittedWork/get-by-studentId",
                         "/api/v1/submittedWork/get-by-studentId-and-classId",
                         "/api/v1/submittedWork/insert-student-work",

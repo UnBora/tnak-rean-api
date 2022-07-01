@@ -13,6 +13,8 @@ import java.sql.Date;
 public class CommentByMaterialIdResponse {
     private Integer comment_id;
     private Integer class_material_id;
+    private Integer class_id;
+    private Integer classroom_id;
     private Integer student_id;
     private Integer class_materials_detail_id;
     private String comment;

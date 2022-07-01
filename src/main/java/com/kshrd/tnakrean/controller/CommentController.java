@@ -1,5 +1,6 @@
 package com.kshrd.tnakrean.controller;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.request.CommentInsertRequest;
@@ -90,7 +91,7 @@ public class CommentController {
             if (userId == 0) {
                 return ApiResponse.<List<CommentByTeacherResponse>>unAuthorized(CommentByTeacherResponse.class.getSimpleName())
                         .setResponseMsg("Unauthorized");
-            } else if (commentResponses.isEmpty()){
+            } else if (commentResponses.isEmpty()) {
                 return ApiResponse.<List<CommentByTeacherResponse>>notFound(CommentByTeacherResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
             } else {
@@ -151,10 +152,10 @@ public class CommentController {
         try {
             if (checkMaterialsDetailId == false) {
                 return ApiResponse.<CommentInsertRequest>notFound(CommentInsertRequest.class.getSimpleName())
-                        .setResponseMsg("The Class_materials_detail_id: "+commentInsertRequest.getClass_materials_detail_id()+ " doesn't exist in the table");
+                        .setResponseMsg("The Class_materials_detail_id: " + commentInsertRequest.getClass_materials_detail_id() + " doesn't exist in the table");
             } else if (userId == 0) {
                 return ApiResponse.unAuthorized("Unauthorized");
-            } else if(checkUserId == false) {
+            } else if (checkUserId == false) {
                 return ApiResponse.unAuthorized("Unauthorized");
             } else {
                 commentInsertRequest.setComment(commentInsertRequest.getComment().trim());
@@ -188,10 +189,14 @@ public class CommentController {
         }
     }
 
-    @GetMapping("get-by-materialId/")
-    ApiResponse<List<CommentByMaterialIdResponse>> getByMaterialId(@RequestParam @Min(value = 1) Integer class_material_id) {
+    @GetMapping("get-by-materialId-classroomId-classId/")
+    ApiResponse<List<CommentByMaterialIdResponse>> getByMaterialId(
+            @RequestParam @Min(value = 1) Integer class_material_id,
+            @RequestParam @Min(value = 1) Integer classroom_id,
+            @RequestParam @Min(value = 1) Integer class_id
+    ) {
         try {
-            List<CommentByMaterialIdResponse> commentResponses = commentServiceImp.getByMaterialId(class_material_id);
+            List<CommentByMaterialIdResponse> commentResponses = commentServiceImp.getByMaterialId(class_material_id, class_id, classroom_id);
             if (commentResponses.isEmpty()) {
                 return ApiResponse.<List<CommentByMaterialIdResponse>>notFound(CommentByMaterialIdResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
@@ -202,6 +207,27 @@ public class CommentController {
                     .setData(commentResponses);
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
+
+    @GetMapping("get-count-comment-by-materialId-classroomId-classId")
+    ApiResponse<CommentCountResponse> getCountComment(
+            @RequestParam @Min(value = 1) Integer class_material_id,
+            @RequestParam @Min(value = 1) Integer classroom_id,
+            @RequestParam @Min(value = 1) Integer class_id
+    ) {
+        CommentCountResponse commentCount = commentServiceImp.getCountComment(class_material_id, class_id, classroom_id);
+        try {
+            if (commentCount.getTotal_comment() == 0) {
+                return ApiResponse.<CommentCountResponse>notFound(CommentCountResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
+            }
+            commentCount.setClass_material_id(class_material_id);
+            return ApiResponse.<CommentCountResponse>ok(CommentCountResponse.class.getSimpleName())
+                    .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
+                    .setData(commentCount);
+        } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
     }
