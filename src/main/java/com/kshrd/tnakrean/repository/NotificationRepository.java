@@ -23,26 +23,15 @@ public interface NotificationRepository {
     List<NotificationResponse> getNotificationByUserId(Integer id);
 
 
-    @Insert("INSERT INTO notification_detail (noti_id,action_id) " +
-            " VALUES((insert into notification(notification_type_id" +
-            ",sender_id,received_id,content,received_date) VALUES(#{notificationRequest.notification_type_id},#{notificationRequest.sender_id},#{notificationRequest.received_id},#{notificationRequest.content}" +
-            ",#{notificationRequest.received_date}) returning id), #{notificationClassRequest.action_id})")
+    @Insert("insert into notification_draft(notification_type_id, received_id, content, received_date, received_class_id, sender_id, action_id)" +
+            "values(#{notificationRequest.notification_type_id},#{notificationRequest.received_id},#{notificationRequest.content}" +
+            ",#{notificationRequest.received_date},null,#{notificationRequest.sender_id},#{notificationRequest.action_id})")
     void sendNotificationToUser(@Param("notificationRequest") NotificationUserRequest notificationRequest);
 
-//    @Insert("INSERT INTO notification(notification_type_id, sender_id, received_class_id, content) " +
-//            "VALUES (#{notificationClassRequest.notification_type_id}," +
-//            "#{notificationClassRequest.sender_id}," +
-//            " #{notificationClassRequest.classId},#{notificationClassRequest.content})")
-//    Integer insertClassNotification(@Param("notificationClassRequest") NotificationClassRequest notificationClassRequest);
-
-
-    @Insert("INSERT INTO notification_detail (noti_id,action_id)" +
-            " VALUES((insert into notification(notification_type_id,sender_id" +
-            " ,received_class_id,content,received_date) " +
-            " VALUES(#{notificationClassRequest.notification_type_id},#{notificationClassRequest.sender_id}" +
-            " ,#{notificationClassRequest.classId},#{notificationRequest.content}" +
-            " ,#{notificationRequest.received_date}) returning id), #{notificationClassRequest.action_id})")
-    void sendNotificationToClass(NotificationClassRequest notificationClassRequest);
+    @Insert("insert into notification_draft(notification_type_id, received_id, content, received_date, received_class_id, sender_id, action_id)" +
+            "values(#{notificationRequest.notification_type_id},null,#{notificationRequest.content}" +
+            ",#{notificationRequest.received_date},#{notificationRequest.classId},#{notificationRequest.sender_id},#{notificationRequest.action_id})")
+    void sendNotificationToClass(@Param("notificationRequest") NotificationClassRequest notificationClassRequest);
 
 
 }

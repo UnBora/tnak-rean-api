@@ -61,8 +61,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-        http.csrf().disable().authorizeRequests().antMatchers("/api/v1/auth/**").permitAll()
+        http.cors().and()
+                .csrf().disable()
+                .authorizeRequests().antMatchers("/api/v1/auth/**").permitAll()
                 .antMatchers("/api/v1/teacher/**",
                         "/api/v1/submittedWork/**",
                         "/api/v1/class/**",
@@ -88,6 +89,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(jwtRequestFilter(), UsernamePasswordAuthenticationFilter.class);
 
     }
+
 
     @Bean
     public JwtRequestFilter jwtRequestFilter() {

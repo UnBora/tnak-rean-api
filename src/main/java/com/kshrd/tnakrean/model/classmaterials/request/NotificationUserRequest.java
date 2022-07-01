@@ -1,5 +1,6 @@
 package com.kshrd.tnakrean.model.classmaterials.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,7 +20,7 @@ public class NotificationUserRequest {
     Integer received_id;
     @JsonIgnore
     Integer sender_id;
-//    @NotBlank(message = "{validation.noti.message}")
+    @NotBlank(message = "{validation.noti.message}")
     String content;
     Integer action_id;
     @JsonIgnore

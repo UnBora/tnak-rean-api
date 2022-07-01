@@ -65,8 +65,8 @@ public class NotificationController {
         try {
             ClassResponse classResponse = repository.getClassById(classRoomId, classId);
             if (classResponse != null && AuthRestController.userDetails != null) {
-//                PushNotificationService
-//                        .sendMessageToUser(AuthRestController.userDetails.getName()  + " Request to Join " + classResponse.getClass_name(), classResponse.getCreated_by() + "");
+//                pushNotificationService
+//                        .sendMessageToUser(AuthRestController.userDetails.getName() + " Request to Join " + classResponse.getClass_name(), classResponse.getCreated_by() + "");
 
                 emailService.send(AuthRestController.userDetails.getName() + " Request to Join ", AuthRestController.userDetails.getName() + " Request to Join Class: " + classResponse.getClass_name() + " of " + classResponse.getClassRoomName(), usersRepository.getUserById(classResponse.getCreated_by()).getEmail());
                 return ApiResponse.<ClassResponse>ok(ClassResponse.class.getSimpleName()).setData(classResponse).setResponseMsg("Request Join ClassRoom: " + classResponse.getClassRoomName() + "  Class: " + classResponse.getClass_name());
@@ -80,16 +80,16 @@ public class NotificationController {
     }
 
     enum NOTI_TYPE {
-        REQUEST("1"), COMMENT("2"), UPLOAD("3"), RESULT("4");
+        REQUEST(1), COMMENT(2), UPLOAD(3), RESULT(4);
 
-        private String message;
+        private int id;
 
-        NOTI_TYPE(String message) {
-            this.message = message;
+        NOTI_TYPE(int id) {
+            this.id = id;
         }
 
-        public String getMessage() {
-            return message;
+        public int getId() {
+            return id;
         }
 
     }
@@ -103,19 +103,8 @@ public class NotificationController {
         } else if (!classMaterialRepository.checkMaterialsId(notificationUserRequest.getAction_id())) {
             return ApiResponse.<NotificationUserRequest>notFound(NotificationUserRequest.class.getSimpleName()).setResponseMsg("Action id does not exist");
         }
-
-
-        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(dataSourceConfiguration.myPostgresDb()).withFunctionName("insert_noti");
-
-        SqlParameterSource in = new MapSqlParameterSource()
-                .addValue("noti_type_id", Integer.parseInt(notificationType.getMessage()))
-                .addValue("sender_id", notificationUserRequest.getSender_id())
-                .addValue("received_id", notificationUserRequest.getReceived_id())
-                .addValue("content", notificationUserRequest.getContent());
-
-        jdbcCall.execute(in);
-
-        notificationUserRequest.setNotification_type_id(Integer.parseInt(notificationType.message));
+        notificationUserRequest.setNotification_type_id(notificationType.id);
+        notificationUserRequest.setSender_id(AuthRestController.userDetails.getId());
         notificationRepository.sendNotificationToUser(notificationUserRequest);
         return ApiResponse.<NotificationUserRequest>ok(NotificationUserRequest.class.getSimpleName()).setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage()).setData(notificationUserRequest);
 
@@ -124,33 +113,27 @@ public class NotificationController {
 
     @PostMapping("/send-notification-to-class")
     ApiResponse<NotificationClassRequest> sendNotificationToClass(@RequestBody @Valid NotificationClassRequest notificationClassRequest, NOTI_TYPE notificationType) {
-        notificationClassRequest.setSender_id(AuthRestController.userDetails.getId());
 
-        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(dataSourceConfiguration.myPostgresDb()).withFunctionName("insert_noti");
-
-//        SqlParameterSource in = new MapSqlParameterSource().addValue("noti_type_id", Integer.parseInt(notificationType.getMessage()), "sender_id", notificationClassRequest.getSender_id(), "received_id", notificationClassRequest.g);
-//        String name = jdbcCall.executeFunction(String.class, in);
-
-
-//        try {
-//            if (!usersRepository.checkUserById(notificationClassRequest.getSender_id())) {
-//                return ApiResponse.<NotificationClassRequest>unAuthorized(NotificationClassRequest.class.getSimpleName())
-//                        .setResponseMsg("Unauthorized!");
-//            } else if (!classRepository.checkIfClassRoomDetailExists(notificationClassRequest.getClassId())) {
-//                return ApiResponse.<NotificationClassRequest>notFound(NotificationClassRequest.class.getSimpleName())
-//                        .setResponseMsg("class id does not exist");
-//            } else if (!classMaterialRepository.checkMaterialsId(notificationClassRequest.getAction_id())) {
-//                return ApiResponse.<NotificationClassRequest>notFound(NotificationClassRequest.class.getSimpleName())
-//                        .setResponseMsg("Action id does not exist");
-//            }
-//            notificationClassRequest.setNotification_type_id(Integer.parseInt(notificationType.message));
-//            notificationRepository.sendNotificationToClass(notificationClassRequest);
-//            return ApiResponse.<NotificationClassRequest>
-//                            ok(NotificationClassRequest.class.getSimpleName())
-//                    .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS
-//                            .getMessage()).setData(notificationClassRequest);
-//        } catch (Exception e) {
-        return ApiResponse.setError("test");
-//        }
+        try {
+            if (AuthRestController.userDetails == null) {
+                return ApiResponse.<NotificationClassRequest>unAuthorized(NotificationClassRequest.class.getSimpleName())
+                        .setResponseMsg("Unauthorized!");
+            } else if (!classRepository.checkIfClassRoomDetailExists(notificationClassRequest.getClassId())) {
+                return ApiResponse.<NotificationClassRequest>notFound(NotificationClassRequest.class.getSimpleName())
+                        .setResponseMsg("class id does not exist");
+            } else if (!classMaterialRepository.checkMaterialsId(notificationClassRequest.getAction_id())) {
+                return ApiResponse.<NotificationClassRequest>notFound(NotificationClassRequest.class.getSimpleName())
+                        .setResponseMsg("Action id does not exist");
+            }
+            notificationClassRequest.setNotification_type_id(notificationType.id);
+            notificationClassRequest.setSender_id(AuthRestController.userDetails.getId());
+            notificationRepository.sendNotificationToClass(notificationClassRequest);
+            return ApiResponse.<NotificationClassRequest>
+                            ok(NotificationClassRequest.class.getSimpleName())
+                    .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS
+                            .getMessage()).setData(notificationClassRequest);
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
     }
 }
