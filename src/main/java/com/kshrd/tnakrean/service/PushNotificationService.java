@@ -15,8 +15,8 @@ import java.util.Scanner;
 @Service
 public class PushNotificationService {
 
-    public static final String REST_API_KEY = "ZWUyNWFjOTAtYTJhOC00Y2ViLThiZmYtMTNkZTRjMThhODdj";
-    public static final String APP_ID = "d619bf9c-14b7-4ed3-98cd-a1f7a4256156";
+    public static final String REST_API_KEY = "ZDc0M2MwMDktM2EwMS00NmY3LWE4YTUtNDZlMzY4MmVhOWE2";
+    public static final String APP_ID = "c52f4ef1-f5b6-4095-86d5-1ad49f0359c8";
     final
     OneSignalPushNotificationRepository oneSignalPushNotificationRepository;
 
