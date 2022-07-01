@@ -61,9 +61,8 @@ public class ClassMaterialsTypeController {
         try {
             if (checkTypeExist == true || checkTypeExist1 == true) {
                 return ApiResponse.<ClassMaterialsTypeRequest>notFound(ClassMaterialsTypeRequest.class.getSimpleName())
-                        .setResponseMsg("Can't Insert! Because type: "+classMaterialsTypeRequest.getType().trim()+ ". already exist");
-            }
-            else {
+                        .setResponseMsg("Can't Insert! Because type: " + classMaterialsTypeRequest.getType().trim() + ". already exist");
+            } else {
                 classMaterialsTypeRequest.setType(classMaterialsTypeRequest.getType().trim());
                 classMaterialsTypeImpl.insertClassMaterialsType(classMaterialsTypeRequest);
                 return ApiResponse.<ClassMaterialsTypeRequest>ok(ClassMaterialsTypeRequest.class.getSimpleName())
@@ -84,10 +83,10 @@ public class ClassMaterialsTypeController {
             boolean checkTypeExist1 = classMaterialsTypeRepository.findTypeExistByType(classMaterialsTypeUpdateRequest.getType().toLowerCase().trim());
             if (checkTypeID == false) {
                 return ApiResponse.<ClassMaterialsTypeUpdateRequest>notFound(ClassMaterialsTypeUpdateRequest.class.getSimpleName())
-                        .setResponseMsg("Can't update! ID: " + classMaterialsTypeUpdateRequest.getId()+ " doesn't exist");
+                        .setResponseMsg("Can't update! ID: " + classMaterialsTypeUpdateRequest.getId() + " doesn't exist");
             } else if (checkTypeExist == true || checkTypeExist1 == true) {
                 return ApiResponse.<ClassMaterialsTypeUpdateRequest>notFound(ClassMaterialsTypeRequest.class.getSimpleName())
-                        .setResponseMsg("Can't Insert! Because type: "+classMaterialsTypeUpdateRequest.getType().trim()+ ". already exist");
+                        .setResponseMsg("Can't Insert! Because type: " + classMaterialsTypeUpdateRequest.getType().trim() + ". already exist");
             }
             classMaterialsTypeImpl.updateClassMaterialsType(classMaterialsTypeUpdateRequest);
             return ApiResponse.<ClassMaterialsTypeUpdateRequest>ok(ClassMaterialsTypeUpdateRequest.class.getSimpleName())
@@ -105,15 +104,16 @@ public class ClassMaterialsTypeController {
         try {
             if (checkTypeID == false) {
                 return ApiResponse.<Boolean>notFound("ClassMaterialsType")
-                        .setResponseMsg("Can't delete! MaterialTypeID: " +id+ " doesn't exist");
+                        .setResponseMsg("Can't delete! MaterialTypeID: " + id + " doesn't exist");
             } else if (checkTypeIdInMaterial == true) {
                 return ApiResponse.<Boolean>notFound("ClassMaterialsType")
-                        .setResponseMsg("Can't delete! MaterialTypeID: " +id+ " is still referenced from table class_material");
+                        .setResponseMsg("Can't delete! MaterialTypeID: " + id + " is still referenced from table class_material");
             } else {
-            classMaterialsTypeImpl.deleteById(id);
+                classMaterialsTypeImpl.deleteById(id);
                 return ApiResponse.<Boolean>ok("ClassMaterialsType")
                         .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
-                        .setData(true);}
+                        .setData(true);
+            }
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }

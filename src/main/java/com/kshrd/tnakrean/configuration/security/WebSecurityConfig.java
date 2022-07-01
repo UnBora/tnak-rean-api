@@ -16,7 +16,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @Configuration
 @EnableWebSecurity
@@ -66,7 +69,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/v1/classroom/**",
                         "/api/v1/classMaterialsType/**",
                         "/api/v1/classMaterial/**",
-                        "/api/v1/comment/get-by-teacher_user_id","/api/v1/student/accept-student"
+                        "/api/v1/comment/get-by-teacher_user_id", "/api/v1/student/accept-student"
                 )
                 .hasAnyAuthority("Teacher")
 
