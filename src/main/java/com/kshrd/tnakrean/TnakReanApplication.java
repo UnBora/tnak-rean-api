@@ -67,8 +67,7 @@ public class TnakReanApplication {
         config.addAllowedOrigin("*");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
-
-        source.registerCorsConfiguration("/v3/api-docs", config);
+        source.registerCorsConfiguration("//**", config);
         return new CorsFilter(source);
     }
 }
