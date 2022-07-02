@@ -103,15 +103,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManager();
     }
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/v3/api-docs",
-                "/configuration/ui",
-                "/swagger-resources/",
-                "/configuration/security",
-                "/swagger-ui.html",
-                "/image/",
-                "/webjars/");
-        web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
-    }
+//    @Override
+//    public void configure(WebSecurity web) throws Exception {
+//        web.ignoring().antMatchers("/v3/api-docs",
+//                "/configuration/ui",
+//                "/swagger-resources/",
+//                "/configuration/security",
+//                "/swagger-ui.html",
+//                "/image/",
+//                "/webjars/");
+//        web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
+//    }
 }
