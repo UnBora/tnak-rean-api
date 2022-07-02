@@ -71,8 +71,4 @@ public class TnakReanApplication {
         source.registerCorsConfiguration("/v3/api-docs", config);
         return new CorsFilter(source);
     }
-
-
-
-
 }
