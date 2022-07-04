@@ -135,7 +135,7 @@ public class ClassController {
         }
     }
 
-    @GetMapping("get-by-teacherUserId/{user_id}")
+    @GetMapping("get-by-teacherUserId")
     public ApiResponse<List<GetClassRequest>> getByTeacherUserId() {
         try {
             Integer user_id = AuthRestController.user_id;
