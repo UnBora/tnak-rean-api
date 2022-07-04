@@ -35,6 +35,9 @@ public interface ClassroomRepository {
     //check ID
     @Select("select exists (select * from classroom where id = #{id})")
     Boolean checkClassroomByID(Integer id);
+    //check class ID
+    @Select("select exists (select * from class where id = #{id})")
+    Boolean checkClassmByID(Integer id);
 
     //check school's name
     @Select("select exists (select * from classroom where name =#{className})")
