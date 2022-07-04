@@ -6,6 +6,7 @@ import com.kshrd.tnakrean.service.serviceInter.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Service
@@ -17,9 +18,8 @@ public class ScheduleServiceImp implements ScheduleService {
     public List<ScheduleResponse> getScheduleByTeacherId(Integer id) {
         return scheduleRepository.getScheduleByTeacherId(id);
     }
-
     @Override
-    public List<ScheduleResponse> getScheduleByClassId(Integer id) {
-        return scheduleRepository.getScheduleByClassId(id);
+    public List<ScheduleResponse> getScheduleByClassId(Integer classroomId, Integer classId) {
+        return scheduleRepository.getScheduleByClassId(classroomId,classId);
     }
 }

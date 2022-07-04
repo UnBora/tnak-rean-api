@@ -23,8 +23,8 @@ public interface ScheduleRepository {
             "INNER JOIN weekly_schedule ws on t.id = ws.teacher_schedule_id " +
             "INNER JOIN day_schedule ds on ws.day_schedule_id = ds.id " +
             "INNER JOIN session ses on ds.session_id = ses.id " +
-            "INNER JOIN day_of_week d on ds.day_of_week_id = d.id WHERE t.teacher_id = #{id}")
+            "INNER JOIN day_of_week d on ds.day_of_week_id = d.id " +
+            "WHERE classroom_id = #{classroomId} AND class_id = #{classId}")
     @Result(property = "subject", column = "sub")
-    List<ScheduleResponse> getScheduleByClassId(Integer id);
-
+    List<ScheduleResponse> getScheduleByClassId(Integer classroomId, Integer classId);
 }

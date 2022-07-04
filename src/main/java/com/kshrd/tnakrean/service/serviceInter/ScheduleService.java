@@ -7,5 +7,5 @@ import java.util.List;
 public interface ScheduleService {
     List<ScheduleResponse> getScheduleByTeacherId(Integer id);
 
-    List<ScheduleResponse> getScheduleByClassId(Integer id);
+    List<ScheduleResponse> getScheduleByClassId(Integer classroomId, Integer classId);
 }
