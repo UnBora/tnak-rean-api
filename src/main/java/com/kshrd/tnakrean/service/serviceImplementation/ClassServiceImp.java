@@ -1,7 +1,7 @@
 package com.kshrd.tnakrean.service.serviceImplementation;
 
 import com.kshrd.tnakrean.model.classmaterials.request.GetClassRequest;
-import com.kshrd.tnakrean.model.classmaterials.response.ClassDeleteResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.ClassByUserTeacherIdResponse;
 import com.kshrd.tnakrean.repository.ClassRepository;
 import com.kshrd.tnakrean.service.serviceInter.ClassService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +45,7 @@ public class ClassServiceImp implements ClassService {
     }
 
     @Override
-    public List<GetClassRequest> getByTeacherUserId(Integer user_id) {
+    public List<ClassByUserTeacherIdResponse> getByTeacherUserId(Integer user_id) {
         return classRepository.getByTeacherUserId(user_id);
     }
 }

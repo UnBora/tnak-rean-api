@@ -1,6 +1,7 @@
 package com.kshrd.tnakrean.repository;
 
 import com.kshrd.tnakrean.model.classmaterials.request.GetClassRequest;
+import com.kshrd.tnakrean.model.classmaterials.response.ClassByUserTeacherIdResponse;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -40,9 +41,20 @@ public interface ClassRepository {
     Boolean checkIfClassRoomDetailExists(Integer id);
 
     // get By TeacherUserId
-    @Select("SELECT d.class_id, c.class_name, d.classroom_id, r.name as classroom_name FROM classroom_detail d " +
-            "JOIN class c ON d.class_id = c.id " +
-            "JOIN classroom r ON d.classroom_id = r.id " +
+    @Select("SELECT d.class_id, c.class_name, d.classroom_id ,r.name ,\n" +
+            "(SELECT count(dc.id) \n" +
+            "FROM classroom_detail dc\n" +
+            "JOIN student sc\n" +
+            "ON dc.class_id = sc.class_id AND dc.classroom_id = sc.classroom_id \n" +
+            "WHERE sc.classroom_id = r.id AND sc.class_id = c.id) \n" +
+            "FROM classroom_detail d \n" +
+            "JOIN class c ON d.class_id = c.id\n" +
+            "JOIN classroom r ON d.classroom_id = r.id\n" +
             "WHERE created_by = #{user_id}")
-    List<GetClassRequest> getByTeacherUserId(Integer user_id);
+    @Result(property = "classId",column = "class_id")
+    @Result(property = "className",column = "class_name")
+    @Result(property = "classroomId",column = "classroom_id")
+    @Result(property = "classroomName",column = "name")
+    @Result(property = "totalStudentInClass",column = "count")
+    List<ClassByUserTeacherIdResponse> getByTeacherUserId(Integer user_id);
 }
