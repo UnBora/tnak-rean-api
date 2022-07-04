@@ -1,10 +1,7 @@
 package com.kshrd.tnakrean.service.serviceImplementation;
 
 import com.kshrd.tnakrean.model.classmaterials.request.*;
-import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkByClassroomClassSubmittableResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkByMaterialIdResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkByStudentIdAndClassIdResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.*;
 import com.kshrd.tnakrean.repository.SubmittedWorkRepository;
 import com.kshrd.tnakrean.service.serviceInter.SubmittedWorkService;
 import org.springframework.stereotype.Service;
@@ -66,5 +63,10 @@ public class SubmittedWorkImpl implements SubmittedWorkService {
     @Override
     public List<SubmittedWorkByClassroomClassSubmittableResponse> getByClassroomClassSubmittable(Integer classroom_id, Integer class_id, Integer submittable_work_id) {
         return submittedWorkRepository.getByClassroomClassSubmittable(classroom_id,class_id,submittable_work_id);
+    }
+
+    @Override
+    public List<StudentScoreByClassroomIdAndClassIdResponse> getStuScoreByClassClassroom(Integer classroomId, Integer classId, Integer submitted_work_id) {
+        return submittedWorkRepository.getStuScoreByClassClassroom(classroomId,classId,submitted_work_id);
     }
 }

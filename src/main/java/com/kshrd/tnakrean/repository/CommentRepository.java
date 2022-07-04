@@ -2,10 +2,7 @@ package com.kshrd.tnakrean.repository;
 
 import com.kshrd.tnakrean.model.classmaterials.request.CommentInsertRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.CommentUpdateRequest;
-import com.kshrd.tnakrean.model.classmaterials.response.CommentByClassClassroomStudentResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.CommentByMaterialIdResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.CommentByTeacherResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.CommentResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.*;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -51,11 +48,11 @@ public interface CommentRepository {
     List<CommentByClassClassroomStudentResponse> getByClassClassroomStudent(Integer classroom_id, Integer class_id, Integer student_id);
 
     // get By MaterialId
-    @Select("SELECT c.*, s.class_material_id FROM comment c " +
+    @Select("SELECT c.*, s.class_material_id, s.classroom_id, s.class_id FROM comment c " +
             "JOIN class_materials_detail s ON c.class_materials_detail_id = s.id " +
-            "WHERE class_material_id = #{class_material_id}")
+            "WHERE class_material_id = #{class_material_id} AND s.classroom_id = #{classroom_id} AND s.class_id = #{class_id}")
     @Result(property = "comment_id",column = "id")
-    List<CommentByMaterialIdResponse> getByMaterialId(Integer class_material_id);
+    List<CommentByMaterialIdResponse> getByMaterialId(Integer class_material_id, Integer class_id, Integer classroom_id);
 
     // get By Student Id
     @Select("SELECT * FROM comment WHERE student_id = " +
@@ -63,6 +60,7 @@ public interface CommentRepository {
     @Result(property = "comment_id",column = "id")
     List<CommentResponse> getByStudentId(Integer userId);
 
+    // get by teacherId
     @Select("SELECT c.*, m.created_by, d.class_material_id FROM comment c " +
             "JOIN class_materials_detail d ON c.class_materials_detail_id = d.id " +
             "JOIN class_materials m ON d.class_material_id = m.id " +
@@ -70,6 +68,12 @@ public interface CommentRepository {
     @Result(property = "comment_id",column = "id")
     @Result(property = "teacher_id",column = "created_by")
     List<CommentByTeacherResponse> getByTecherId(Integer userId);
+
+    // get Count Comment
+    @Select("SELECT count(*) as total_comment FROM comment c " +
+            "JOIN class_materials_detail s ON c.class_materials_detail_id = s.id " +
+            "WHERE class_material_id = #{class_material_id} AND classroom_id = #{classroom_id} AND class_id = #{class_id} ")
+    CommentCountResponse getCountComment(Integer class_id, Integer class_material_id, Integer classroom_id);
 
     //
     @Select("SELECT EXISTS(SELECT id FROM class_materials_detail WHERE id = #{class_materials_detail_id})")
@@ -82,4 +86,6 @@ public interface CommentRepository {
     //
     @Select("SELECT EXISTS(SELECT id FROM comment WHERE id = #{id})")
     boolean ifCommentIdExist(Integer id);
+
+
 }

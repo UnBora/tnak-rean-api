@@ -4,10 +4,7 @@ import com.kshrd.tnakrean.model.SubmittableWork;
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.request.*;
-import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkByClassroomClassSubmittableResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkByMaterialIdResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkByStudentIdAndClassIdResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.*;
 import com.kshrd.tnakrean.repository.SubmittedWorkRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.SubmittedWorkImpl;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -221,6 +218,25 @@ public class SubmittedWorkController {
                     .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
                     .setData(submittedWorkByClassroomClassSubmittableResponses);
         } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
+    @GetMapping("get-studentScore-by-classroomId-and-classId")
+    ApiResponse<List<StudentScoreByClassroomIdAndClassIdResponse>> getStuScoreByClassClassroom(
+            @RequestParam @Min(value = 1)Integer classroomId ,
+            @RequestParam @Min(value = 1)Integer classId,
+            @RequestParam @Min(value = 1)Integer submitted_work_id
+            ){
+        try {
+           List<StudentScoreByClassroomIdAndClassIdResponse> response = submittedWorkImpl.getStuScoreByClassClassroom(classroomId,classId,submitted_work_id);
+           if (response.isEmpty()) {
+               return ApiResponse.<List<StudentScoreByClassroomIdAndClassIdResponse>>notFound(StudentScoreByClassroomIdAndClassIdResponse.class.getSimpleName())
+                       .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
+           }
+           return ApiResponse.<List<StudentScoreByClassroomIdAndClassIdResponse>>ok(StudentScoreByClassroomIdAndClassIdResponse.class.getSimpleName())
+                   .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+                   .setData(response);
+        } catch (Exception e){
             return ApiResponse.setError(e.getMessage());
         }
     }
