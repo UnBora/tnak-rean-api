@@ -21,7 +21,7 @@ public class ScheduleController {
         this.scheduleServiceImp = scheduleServiceImp;
     }
 
-    @GetMapping("/getScheduleByTeacherId")
+    @GetMapping("/get-Schedule-By-TeacherId")
     ApiResponse<List<ScheduleResponse>> getScheduleByTeacherId(@RequestParam("id") @Min(value = 1) Integer id) {
         List<ScheduleResponse> responses = scheduleServiceImp.getScheduleByTeacherId(id);
         try {
@@ -38,7 +38,7 @@ public class ScheduleController {
         }
     }
 
-    @GetMapping("/get-schedule-by--classroomId-classId/")
+    @GetMapping("/get-schedule-by-classroomId-classId")
     ApiResponse<List<ScheduleResponse>> getScheduleByClassId(
             @RequestParam @Min(value = 1) Integer classroomId,
             @RequestParam @Min(value = 1) Integer classId) {
