@@ -23,6 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/classroom")
 @SecurityRequirement(name = "bearerAuth")
+@CrossOrigin(origins = "*")
 public class ClassroomController {
 
     final ClassroomServiceImp classroomServiceImp;
@@ -54,17 +55,18 @@ public class ClassroomController {
     }
 
     @GetMapping("/get-classroom-by-id")
-    public ApiResponse<ClassroomResponse> getClassroomById(@Min(value = 1, message = "{validation.id.notNegative}") Integer id) {
+    public ApiResponse<ClassroomResponse> getClassroomById(
+            @RequestParam @Min(value = 1, message = "{validation.id.notNegative}") Integer classroomId) {
         try {
-            Boolean classroomID = classroomRepository.checkClassroomByID(id);
+            Boolean classroomID = classroomRepository.checkClassroomByID(classroomId);
             if (classroomID == null) {
                 return ApiResponse.<ClassroomResponse>badRequest(ClassroomResponse.class.getSimpleName())
                         .setResponseMsg("The Classroom ID cannot not null");
             } else if (classroomID.equals(false)) {
                 return ApiResponse.<ClassroomResponse>badRequest(ClassroomResponse.class.getSimpleName())
-                        .setResponseMsg("The Classroom ID:" + id + " does not have!");
+                        .setResponseMsg("The Classroom ID:" + classroomId + " does not have!");
             } else {
-                ClassroomResponse classroomResponse = classroomServiceImp.getClassroomByID(id);
+                ClassroomResponse classroomResponse = classroomServiceImp.getClassroomByID(classroomId);
                 return ApiResponse.<ClassroomResponse>ok(ClassroomResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
                         .setData(classroomResponse);
@@ -77,20 +79,22 @@ public class ClassroomController {
     @PostMapping("/insert-classroom")
     public ApiResponse<ClassroomRequest> insertClassroom(@RequestBody @Valid ClassroomRequest classroomRequest) {
         try {
-            Integer classId = classroomRequest.getClass_id(), createdby = AuthRestController.user_id;
+            Integer createdby = AuthRestController.user_id;
             String dec = classroomRequest.getDes(), name = classroomRequest.getName();
+            Boolean classroomName= classroomRepository.checkIfClassExistsDuplecateClassName(name.toUpperCase());
+
             if (!createdby.equals(0)) {
                 if (classroomRequest == null) {
                     return ApiResponse.<ClassroomRequest>setError(ClassroomRequest.class.getSimpleName())
                             .setResponseMsg(BaseMessage.Error.INSERT_ERROR.getMessage());
-                } else if (createdby.equals(0)) {
-                    return ApiResponse.<ClassroomRequest>unAuthorized(ClassroomRequest.class.getSimpleName())
-                            .setResponseMsg("Unauthorized!");
+                } else if (classroomName.equals(true)) {
+                    return ApiResponse.<ClassroomRequest>badRequest(ClassroomRequest.class.getSimpleName())
+                            .setResponseMsg("The classroom name already exists!");
                 } else {
-                    classroomServiceImp.insertClassroom(classId, createdby, dec, name);
+                    classroomServiceImp.insertClassroom( createdby, name.toUpperCase(), dec);
                     return ApiResponse.<ClassroomRequest>ok(ClassroomRequest.class.getSimpleName())
                             .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
-                            .setData(new ClassroomRequest(classId, createdby, dec, name));
+                            .setData(new ClassroomRequest( name.toUpperCase(), dec));
                 }
             }else {
                 return ApiResponse.<ClassroomRequest>unAuthorized(ClassroomRequest.class.getSimpleName())
@@ -132,10 +136,10 @@ public class ClassroomController {
         try {
             Boolean a = classroomRepository.checkIfClassExists(classroomUpdateResponse.getClassroom_id(), classroomUpdateResponse.getCreated_by());
             if (classroomUpdateResponse.equals(null)) {
-                return ApiResponse.<ClassroomUpdateResponse>setError(GetAllStudentResponse.class.getSimpleName())
+                return ApiResponse.<ClassroomUpdateResponse>setError(ClassroomUpdateResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Error.UPDATE_ERROR.getMessage());
             } else if (a.equals(false)) {
-                return ApiResponse.<ClassroomUpdateResponse>setError(GetAllStudentResponse.class.getSimpleName())
+                return ApiResponse.<ClassroomUpdateResponse>setError(ClassroomUpdateResponse.class.getSimpleName())
                         .setResponseMsg("Your classroom ID and classID Not Matched!");
             } else {
                 classroomServiceImp.updateClassroom(classroomUpdateResponse.getClassroom_id(), classroomUpdateResponse.getCreated_by(), classroomUpdateResponse.getName(), classroomUpdateResponse.getDes());

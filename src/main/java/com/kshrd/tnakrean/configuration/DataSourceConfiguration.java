@@ -20,7 +20,5 @@ public class DataSourceConfiguration {
         dataSource.username("postgres");
         dataSource.password("seanghorn");
         return dataSource.build();
-
-
     }
 }

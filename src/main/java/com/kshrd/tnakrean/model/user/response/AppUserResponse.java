@@ -23,6 +23,7 @@ public class AppUserResponse implements UserDetails {
     @JsonIgnore
     private String password;
     private String username;
+    private String email;
     private String token;
     private Set<String> role;
 

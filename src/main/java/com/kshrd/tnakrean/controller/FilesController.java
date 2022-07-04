@@ -10,6 +10,7 @@ import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.service.serviceInter.FilesStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -20,12 +21,13 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 
 @RestController
-//@CrossOrigin("http://localhost:8080")
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/file")
 public class FilesController {
     @Autowired
     FilesStorageService storageService;
-
+    @Value("${base.url}")
+    String baseurl;
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     ApiResponse<FileInfo> uploadFile(@RequestParam("file") MultipartFile file) {
         try {
@@ -40,7 +42,10 @@ public class FilesController {
     public ApiResponse<List<FileInfo>> getListFiles() {
         List<FileInfo> fileInfos = storageService.loadAll().map(path -> {
             String filename = path.getFileName().toString();
-            String url = MvcUriComponentsBuilder.fromMethodName(FilesController.class, "getFile", path.getFileName().toString()).build().toString();
+
+           // String url = MvcUriComponentsBuilder.fromMethodName(FilesController.class, "getFile", path.getFileName().toString()).build().toString();
+            String url = baseurl+filename;
+                    //MvcUriComponentsBuilder.fromMethodName(FilesController.class, "getFile", (baseurl
             return new FileInfo(url);
         }).toList();
         return ApiResponse.<List<FileInfo>>ok(FileInfo.class.getSimpleName()).setData(fileInfos);

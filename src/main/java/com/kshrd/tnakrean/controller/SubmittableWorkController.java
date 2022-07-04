@@ -20,6 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/submittableWork")
 @SecurityRequirement(name = "bearerAuth")
+@CrossOrigin(origins = "*")
 public class SubmittableWorkController {
     final SubmittableWorkServiceImpl submittableWorkService;
     final SubmittableWorkRepository submittableWorkRepository;

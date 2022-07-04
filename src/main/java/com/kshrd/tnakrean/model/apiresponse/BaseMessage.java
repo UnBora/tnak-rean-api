@@ -30,7 +30,6 @@ public class BaseMessage {
         INSERT_ERROR("Inserting of " +obj+" has  been failed"),
         UPDATE_ERROR("Updating of " +obj+"  has been failed"),
         DELETE_ERROR("Deleting of " +obj+" has  been failed");
-
         private  String message;
 
         Error(String message) {

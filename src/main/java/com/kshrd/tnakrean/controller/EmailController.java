@@ -5,11 +5,15 @@ import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.service.serviceInter.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.mail.MessagingException;
+
 @RestController
+@CrossOrigin(origins = "*")
 public class EmailController {
     @Autowired
     final EmailService emailService;
@@ -20,7 +24,11 @@ public class EmailController {
 
     @PostMapping("/send-email")
     public ApiResponse<EmailMessage> sendEmail(@RequestParam String subject, @RequestParam String message, @RequestParam String email) {
-        emailService.send(subject, message, email);
+        try {
+            emailService.send(subject, message, email);
+        } catch (MessagingException e) {
+           return ApiResponse.<EmailMessage>setError("failed to send email");
+        }
         EmailMessage emailMessage = new EmailMessage(subject, message, email);
         return ApiResponse.<EmailMessage>ok(EmailMessage.class.getSimpleName())
                 .setResponseMsg("Send Email Successfully").setData(emailMessage);

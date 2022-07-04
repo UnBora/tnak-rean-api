@@ -11,6 +11,7 @@ public interface ClassroomRepository {
 
     //    Get All Classroom
     @Select("Select * From classroom")
+    @Result(property = "classroom_id", column = "id")
     List<ClassroomResponse> getAllClassroom();
 
     //    Get By ID
@@ -19,8 +20,8 @@ public interface ClassroomRepository {
     ClassroomResponse getClassroomByID(Integer id);
 
     //    Insert Classroom
-    @Select("INSERT INTO classroom (class_id, created_by, des, name) VALUES (#{class_id},#{created_by},#{des},#{name})")
-    void insertClassroom(@Param("class_id") Integer class_id, @Param("created_by") Integer created_by, @Param("des") String des, @Param("name") String name);
+    @Select("INSERT INTO classroom (created_by, des, name) VALUES (#{created_by},#{des},#{name})")
+    void insertClassroom( @Param("created_by") Integer created_by, @Param("name") String name ,  @Param("des") String des);
 
     //    Update Table
     @Update("UPDATE classroom SET des=#{des}, name=#{name}  WHERE created_by = #{created_by} And  id = #{classroom_id}")
@@ -33,6 +34,11 @@ public interface ClassroomRepository {
     //check ID
     @Select("select exists (select * from classroom where id = #{id})")
     Boolean checkClassroomByID(Integer id);
+
+    //check school's name
+    @Select("select exists (select * from classroom where name =#{className})")
+    Boolean checkIfClassExistsDuplecateClassName(String className);
+
 
 
 //    Get Class by Teacher ID

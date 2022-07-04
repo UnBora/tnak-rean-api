@@ -4,10 +4,7 @@ import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.response.ScheduleResponse;
 import com.kshrd.tnakrean.service.serviceImplementation.ScheduleServiceImp;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -15,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/schedule")
+@CrossOrigin(origins = "*")
 public class ScheduleController {
     final
     ScheduleServiceImp scheduleServiceImp;

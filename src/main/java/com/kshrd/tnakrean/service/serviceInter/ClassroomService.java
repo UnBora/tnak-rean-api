@@ -9,7 +9,7 @@ public interface ClassroomService {
 
     List<ClassroomResponse> getAllClassroom();
 
-    void insertClassroom(Integer class_id, Integer created_by, String des, String name);
+    void insertClassroom(Integer created_by, String name, String des);
 
     ClassroomResponse getClassroomByID(Integer id);
 

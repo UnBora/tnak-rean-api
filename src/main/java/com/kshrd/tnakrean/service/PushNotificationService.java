@@ -1,5 +1,9 @@
 package com.kshrd.tnakrean.service;
 
+import com.kshrd.tnakrean.model.classmaterials.response.ClassResponse;
+import com.kshrd.tnakrean.repository.ClassRepository;
+import com.kshrd.tnakrean.repository.OneSignalPushNotificationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -11,8 +15,16 @@ import java.util.Scanner;
 @Service
 public class PushNotificationService {
 
-    public static final String REST_API_KEY = "ZWUyNWFjOTAtYTJhOC00Y2ViLThiZmYtMTNkZTRjMThhODdj";
-    public static final String APP_ID = "d619bf9c-14b7-4ed3-98cd-a1f7a4256156";
+    public static final String REST_API_KEY = "YTM0MjYzOGYtMDNmNy00OWQ1LWE3MzUtY2IxMzZkMGJmY2Fj";
+//    public static final String APP_ID = "1557ea45-8f4a-473d-ad64-dff9355214ec";
+    public static final String APP_ID = "1557ea45-8f4a-473d-ad64-dff9355214ec";
+    final
+    OneSignalPushNotificationRepository oneSignalPushNotificationRepository;
+
+
+    public PushNotificationService(OneSignalPushNotificationRepository oneSignalPushNotificationRepository) {
+        this.oneSignalPushNotificationRepository = oneSignalPushNotificationRepository;
+    }
 
     public static HttpURLConnection httpURLConnection(String method) throws IOException {
         URL url = new URL("https://onesignal.com/api/v1/notifications");
@@ -40,6 +52,8 @@ public class PushNotificationService {
                 + "}";
 
         System.out.println("strJsonBody:\n" + strJsonBody);
+
+
 
         byte[] sendBytes = strJsonBody.getBytes("UTF-8");
         con.setFixedLengthStreamingMode(sendBytes.length);
@@ -99,16 +113,18 @@ public class PushNotificationService {
         System.out.println("jsonResponse:\n" + jsonResponse);
     }
 
-    public static void sendMessageFilterToAllUsers(String message, int classId) throws IOException {
+    public void sendMessageFilterToAllUsers(String message, ClassResponse classResponse) throws IOException {
 
         String jsonResponse;
         HttpURLConnection con = httpURLConnection("POST");
         String strJsonBody = "{"
                 + "\"app_id\": \"" + APP_ID + "\","
-                + "\"filters\": [{\"field\": \"tag\", \"key\": \"class\", \"relation\": \"=\", \"value\": \"pp\"}],"
+                + "\"filters\": [{\"field\": \"tag\", \"key\": \"class\", \"relation\": \"=\", \"value\": \""+classResponse.getClass_name()+"\"},{\"field\": \"tag\", \"key\": \"classRoom\"," +
+                " \"relation\": \"=\", \"value\": \""+classResponse.getClassRoomName()+"\"}],"
                 + "\"data\": {\"foo\": \"bar\"},"
                 + "\"contents\": {\"en\": \"" + message + "\"}"
                 + "}";
+
 
         System.out.println("strJsonBody:\n" + strJsonBody);
 

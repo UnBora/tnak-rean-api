@@ -30,6 +30,7 @@ public class ApiResponse<T> {
 
     private int responseCode;
     private String responseMsg;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime time = LocalDateTime.now(ZoneOffset.of("+07:00"));

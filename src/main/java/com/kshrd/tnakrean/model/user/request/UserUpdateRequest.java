@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Data
@@ -20,7 +21,6 @@ public class UserUpdateRequest {
     @NotBlank(message = "{validation.gender.notEmpty}")
     String gender;
     String img;
-    @NotBlank(message = "{validation.gender.notEmpty}")
+    @Email
     String email;
-
 }

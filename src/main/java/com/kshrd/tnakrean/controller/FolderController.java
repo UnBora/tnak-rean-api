@@ -16,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/folder")
+@CrossOrigin(origins = "*")
 public class FolderController {
     final FolderServiceImp folderServiceImp;
     final FolderRepository folderRepository;
@@ -36,19 +37,6 @@ public class FolderController {
             return ApiResponse.<FolderRequest>exception(e).setData(null);
         }
 
-    }
-
-    @PostMapping("/createDetail")
-    ApiResponse<Integer> createFolderDetail(@RequestBody Integer class_material_detail_id) {
-        try {
-            boolean folderDetailResponse = folderServiceImp.createFolderDetail(class_material_detail_id);
-            System.out.println("in controller" + folderDetailResponse);
-            return ApiResponse.<Integer>successCreate(FolderDetailRequest.class.getSimpleName())
-                    .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage()).setData(class_material_detail_id);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ApiResponse.setError(e.getMessage());
-        }
     }
 
 //    @GetMapping("/get/{id}")

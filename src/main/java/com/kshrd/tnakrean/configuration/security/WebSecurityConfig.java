@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -58,8 +57,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-        http.csrf().disable().authorizeRequests().antMatchers("/api/v1/auth/**").permitAll()
+        http.cors().and()
+                .csrf().disable()
+                .authorizeRequests().antMatchers("/api/v1/auth/**").permitAll()
                 .antMatchers("/api/v1/teacher/**",
                         "/api/v1/submittedWork/**",
                         "/api/v1/class/**",
@@ -67,7 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/v1/folder/**",
                         "/api/v1/classMaterialsType/**",
                         "/api/v1/classMaterial/**",
-                        "/api/v1/comment/get-by-teacher_user_id"
+                        "/api/v1/comment/get-by-teacher_user_id", "/api/v1/student/accept-student"
                 )
                 .hasAnyAuthority("Teacher")
 
@@ -87,6 +87,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
+
     @Bean
     public JwtRequestFilter jwtRequestFilter() {
         return new JwtRequestFilter();
@@ -97,12 +98,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManager() throws Exception {
         return super.authenticationManager();
     }
-
-    //    ignore resources
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-//        web.ignoring().antMatchers("/swagger-ui/**", "/v3/api-docs/**");
-    }
-
-
 }
