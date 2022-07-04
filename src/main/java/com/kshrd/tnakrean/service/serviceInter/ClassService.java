@@ -22,4 +22,5 @@ public interface ClassService {
 //    create class by user ID
     void creatClassByUserID(Integer id, String className);
 
+    List<GetClassRequest> getByTeacherUserId(Integer user_id);
 }

@@ -38,4 +38,11 @@ public interface ClassRepository {
 
     @Select("select exists (select * from classroom_detail where id = #{id})")
     Boolean checkIfClassRoomDetailExists(Integer id);
+
+    // get By TeacherUserId
+    @Select("SELECT d.class_id, c.class_name, d.classroom_id, r.name as classroom_name FROM classroom_detail d " +
+            "JOIN class c ON d.class_id = c.id " +
+            "JOIN classroom r ON d.classroom_id = r.id " +
+            "WHERE created_by = #{user_id}")
+    List<GetClassRequest> getByTeacherUserId(Integer user_id);
 }

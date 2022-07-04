@@ -135,25 +135,24 @@ public class ClassController {
         }
     }
 
-//    @GetMapping("get-by-teacherUserId/{user_id}")
-//    public ApiResponse<List<GetClassRequest>> getByUserId() {
-//        try {
-//            Integer user_id = AuthRestController.user_id;
-//            List<GetClassRequest> getClassRequests = classServiceImp.getByUserId(user_id);
-//            if (user_id == 0 ){
-//
-//            }
-//            else if (getClassRequests.isEmpty()) {
-//                return ApiResponse.<List<GetClassRequest>>ok(GetClassRequest.class.getSimpleName())
-//                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
-//                        .setData(getClassRequests);
-//            }
-//            return ApiResponse.<List<GetClassRequest>>ok("Get All Class")
-//                    .setResponseMsg("Get All Class by teacherUserid: " + user_id + " Successfully")
-//                    .setData(getClassRequests);
-//
-//        } catch (Exception e) {
-//            return ApiResponse.setError(e.getMessage());
-//        }
-//    }
+    @GetMapping("get-by-teacherUserId/{user_id}")
+    public ApiResponse<List<GetClassRequest>> getByTeacherUserId() {
+        try {
+            Integer user_id = AuthRestController.user_id;
+            List<GetClassRequest> getClassRequests = classServiceImp.getByTeacherUserId(user_id);
+            if (user_id == 0) {
+                return ApiResponse.unAuthorized("Unauthorized");
+            } else if (getClassRequests.isEmpty()) {
+                return ApiResponse.<List<GetClassRequest>>ok(GetClassRequest.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setData(getClassRequests);
+            }
+            return ApiResponse.<List<GetClassRequest>>ok("Get All Class")
+                    .setResponseMsg("Get All Class by teacherUserid: " + user_id + " Successfully")
+                    .setData(getClassRequests);
+
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
 }
