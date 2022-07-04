@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 
@@ -20,6 +21,7 @@ public class UserRegisterRequest {
     String name;
     @Size(min = 3, max = 20, message = "{validation.username.size}")
     @NotBlank(message = "{validation.username.notEmpty}")
+    @Pattern(regexp = "^[a-z0-9_^-]*$", message = "Cannot Contain Space")
     String username;
     @Email
     String email;

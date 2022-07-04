@@ -149,14 +149,12 @@ public class UsersController {
                     if (status.equals(1)) {
                         if (isMatch) {
                             userServiceImp.userActivateAccount(userId);
-
-
                             String simpleName = UserActivateAccountRequest.class.getSimpleName();
                             System.out.println("simple name:"+simpleName);
                             String message = BaseMessage.Success.UPDATE_SUCCESS.getMessage();
-                            System.out.println();
-                            log.info("Activate: {}", simpleName);
-                            log.info("Message: {}", message);
+//                            System.out.println();
+//                            log.info("Activate: {}", simpleName);
+//                            log.info("Message: {}", message);
 
                             return ApiResponse.<UserActivateAccountRequest>updateSuccess(UserActivateAccountRequest.class.getSimpleName())
                                     .setResponseMsg("A Record of UserActivateAccountRequest has  been updated successfully")
@@ -200,6 +198,9 @@ public class UsersController {
             if (!userId.equals(0)) {
                 Boolean checkUsername= usersRepository.checkUserName(userUpdateRequest.getUsername());
                 Boolean checkEmail= usersRepository.checkEmailExist(userUpdateRequest.getEmail());
+
+                String nameSelected= usersRepository.selectName(userId);
+                String nameEmail= usersRepository.selectEmail(userId);
                 if (checkUsername.equals(true)){
                     return ApiResponse.<UserUpdateRequest>ok(UserUpdateRequest.class.getSimpleName())
                             .setResponseMsg("This Username is exist!");
