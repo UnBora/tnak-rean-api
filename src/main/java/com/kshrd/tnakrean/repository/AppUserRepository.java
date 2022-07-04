@@ -32,6 +32,9 @@ public interface AppUserRepository {
     @Select("select exists (select * from users where username =#{username})")
     Boolean checkUserName(String username);
 
-    @Select("select exists (select * from users where user_role_id =#{user_role_id})")
-    Boolean checkUserRole(Integer user_role_id);
+    @Select("SELECT MAX(id) AS last_id FROM users")
+    Integer lastUserId();
+
+    @Insert("INSERT INTO student (user_id,classroom_id,class_id) VALUES(#{userId},#{classroomId},#{classId})")
+    void studenRegistrationAndRequese(Integer userId, Integer classroomId, Integer classId);
 }

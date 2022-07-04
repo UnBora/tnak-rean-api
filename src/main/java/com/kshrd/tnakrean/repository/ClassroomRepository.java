@@ -64,6 +64,4 @@ public interface ClassroomRepository {
     @Result(property = "img", column = "image")
     List<GetClassByClassroomIDResponse> getClassByClassroomID(Integer classroomId);
 
-    @Select("SELECT COUNT(u.username) FROM student s inner join users u on u.id = s.user_id where s.class_id = #{classId} and s.classroom_id =#{classroomId}")
-    Integer countStudent(Integer classId, Integer classroomId);
 }

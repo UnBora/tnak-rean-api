@@ -112,6 +112,8 @@ public class AuthRestController {
                         .setResponseMsg("This Username has been exist!");
             } else {
                 userServiceImp.userRegister(userRegisterRequest);
+                Integer userId= appUserRepository.lastUserId();
+                appUserRepository.studenRegistrationAndRequese(userId, userRegisterRequest.getClassroomId(),userRegisterRequest.getClassId());
                 return ApiResponse.<UserRegisterResponse>successCreate(UserRegisterResponse.class.getSimpleName())
                         .setData(modelMapper.map(userRegisterRequest, UserRegisterResponse.class));
             }
