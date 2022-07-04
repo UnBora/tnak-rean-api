@@ -44,8 +44,6 @@ public class ClassController {
                         .setResponseMsg(BaseMessage.Error.INSERT_ERROR.getMessage())
                         .setData(new ClassInertResponse(classInertResponse.getClassName()));
             } else if (classNameCheck.equals(true)) {
-                return ApiResponse.<ClassInertResponse>duplicateEntry(ClassUpdateResponse.class.getSimpleName())
-            } else if (classNameCheck.equals(true)) {
                 return ApiResponse.<ClassInertResponse>duplicateEntry(ClassInertResponse.class.getSimpleName())
                         .setResponseMsg("The class name already exists!")
                         .setData(new ClassInertResponse(classInertResponse.getClassName()));
@@ -85,10 +83,6 @@ public class ClassController {
                 } catch (Exception e) {
                     return ApiResponse.<ClassDeleteResponse>ok(ClassDeleteResponse.class.getSimpleName())
                             .setResponseMsg(BaseMessage.Error.DELETE_ERROR.getMessage() + " because of primary key");
-                } catch (Exception e) {
-                    return ApiResponse.<ClassDeleteResponse>badRequest(ClassDeleteResponse.class.getSimpleName())
-                            .setResponseMsg(BaseMessage.Error.DELETE_ERROR.getMessage())
-                            .setData(new ClassDeleteResponse(classId));
                 }
             }
         } catch (Exception e) {
