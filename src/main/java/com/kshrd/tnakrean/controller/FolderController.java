@@ -129,7 +129,7 @@ public class FolderController {
                         .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
                         .setData(responseList);
             }
-            return ApiResponse.notFound(FolderResponse.class.getSimpleName());
+            return ApiResponse.<List<FolderResponse>>notFound(FolderResponse.class.getSimpleName()).setData(responseList);
         } catch (Exception e) {
             return ApiResponse.badRequest(FolderResponse.class.getSimpleName());
         }
