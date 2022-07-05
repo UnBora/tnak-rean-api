@@ -60,4 +60,25 @@ public class ScheduleController {
             return ApiResponse.setError(e.getMessage());
         }
     }
+
+    @GetMapping("/get-schedule-by-studentUserId")
+    ApiResponse<List<ScheduleResponse>> getScheduleByStudentUserId() {
+        Integer user_id = AuthRestController.user_id;
+        List<ScheduleResponse> responses = scheduleServiceImp.getScheduleByStudentUserId(user_id);
+        try {
+            if (user_id == 0){
+                return ApiResponse.unAuthorized("unAuthorized");
+            }
+            else if (!responses.isEmpty()) {
+                return ApiResponse.<List<ScheduleResponse>>ok(ScheduleResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+                        .setData(responses);
+            }
+            return ApiResponse.<List<ScheduleResponse>>notFound(ScheduleResponse.class.getSimpleName())
+                    .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
+
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
 }

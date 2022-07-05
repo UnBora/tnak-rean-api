@@ -38,4 +38,15 @@ public interface ScheduleRepository {
             "INNER JOIN class cl ON t.class_id = cl.id " +
             "WHERE teacher_id = #{user_id} AND day_of_week_id = #{dayId} AND classroom_id = #{classroomId} ")
     List<ScheduleResponse> getScheduleByTeacherDayClassClassroom(Integer classroomId, Integer dayId, Integer user_id);
+
+    // getScheduleByStudentUserId
+    @Select("SELECT day,time,subject FROM student st \n" +
+            "JOIN teacher_schedule ts ON st.classroom_id = ts.classroom_id AND st.class_id = ts.class_id\n" +
+            "JOIN weekly_schedule ws ON ts.id = ws.teacher_schedule_id\n" +
+            "JOIN day_schedule ds ON ws.day_schedule_id = ds.id\n" +
+            "JOIN day_of_week dw ON ds.day_of_week_id = dw.id\n" +
+            "JOIN session ss ON ds.session_id = ss.id\n" +
+            "JOIN subject sj ON ts.subject_id = sj.id\n" +
+            "WHERE user_id = #{user_id}")
+    List<ScheduleResponse> getScheduleByStudentUserId(Integer user_id);
 }
