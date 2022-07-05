@@ -8,6 +8,7 @@ import com.kshrd.tnakrean.model.classmaterials.response.FolderDetailResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.FolderResponse;
 import com.kshrd.tnakrean.repository.FolderRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.FolderServiceImp;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -17,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/folder")
 @CrossOrigin(origins = "*")
+@SecurityRequirement(name = "bearerAuth")
 public class FolderController {
     final FolderServiceImp folderServiceImp;
     final FolderRepository folderRepository;
@@ -102,14 +104,34 @@ public class FolderController {
             return ApiResponse.badRequest(FolderResponse.class.getSimpleName());
         }
     }
-    @DeleteMapping("delete-by-id") // delete child folder too
-    ApiResponse<Boolean> deleteByParentId(@RequestParam @Min(value = 1) Integer parent_id){
+
+    @DeleteMapping("delete-by-id")
+        // delete child folder too
+    ApiResponse<Boolean> deleteByParentId(@RequestParam @Min(value = 1) Integer parent_id) {
         FolderResponse folderResponse = folderServiceImp.deleteByParentId(parent_id);
-        if (folderResponse == null ) {
+        if (folderResponse == null) {
             return ApiResponse.<Boolean>notFound("Folder")
-                    .setResponseMsg("Can't Delete! Folder Id: "+parent_id+" is not exist");
+                    .setResponseMsg("Can't Delete! Folder Id: " + parent_id + " is not exist");
         }
         return ApiResponse.<Boolean>ok("Folder")
-                .setResponseMsg("Delete folder on Id: "+parent_id+" successfully with their child id" ).setData(true);
+                .setResponseMsg("Delete folder on Id: " + parent_id + " successfully with their child id").setData(true);
+    }
+
+    @GetMapping("/get-courseFolder-by-teacherUserId")
+    ApiResponse<List<FolderResponse>> getCourseFolderByTeacher(@RequestParam @Min(value = 1) Integer classroom_id
+    ) {
+        Integer user_id = AuthRestController.user_id;
+        List<FolderResponse> responseList = folderServiceImp.getCourseFolderByTeacher(user_id,classroom_id);
+        try {
+            if (!responseList.isEmpty()) {
+                return ApiResponse.<List<FolderResponse>>
+                                ok(FolderResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+                        .setData(responseList);
+            }
+            return ApiResponse.notFound(FolderResponse.class.getSimpleName());
+        } catch (Exception e) {
+            return ApiResponse.badRequest(FolderResponse.class.getSimpleName());
+        }
     }
 }
