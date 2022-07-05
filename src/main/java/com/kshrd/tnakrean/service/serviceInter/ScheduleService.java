@@ -11,5 +11,5 @@ public interface ScheduleService {
 
     List<ScheduleResponse> getScheduleByTeacherDayClassClassroom(Integer classroomId, Integer dayId, Integer user_id);
 
-    List<ScheduleResponse> getScheduleByStudentUserId(Integer user_id);
+    List<ScheduleResponse> getScheduleByStudentUserId(Integer user_id,Integer dayId);
 }

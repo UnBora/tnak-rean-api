@@ -47,6 +47,6 @@ public interface ScheduleRepository {
             "JOIN day_of_week dw ON ds.day_of_week_id = dw.id\n" +
             "JOIN session ss ON ds.session_id = ss.id\n" +
             "JOIN subject sj ON ts.subject_id = sj.id\n" +
-            "WHERE user_id = #{user_id}")
-    List<ScheduleResponse> getScheduleByStudentUserId(Integer user_id);
+            "WHERE user_id = #{user_id} AND day_of_week_id = #{dayId}")
+    List<ScheduleResponse> getScheduleByStudentUserId(Integer user_id, Integer dayId);
 }

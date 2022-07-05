@@ -62,9 +62,9 @@ public class ScheduleController {
     }
 
     @GetMapping("/get-schedule-by-studentUserId")
-    ApiResponse<List<ScheduleResponse>> getScheduleByStudentUserId() {
+    ApiResponse<List<ScheduleResponse>> getScheduleByStudentUserId(@RequestParam @Min(value = 1) Integer dayId) {
         Integer user_id = AuthRestController.user_id;
-        List<ScheduleResponse> responses = scheduleServiceImp.getScheduleByStudentUserId(user_id);
+        List<ScheduleResponse> responses = scheduleServiceImp.getScheduleByStudentUserId(user_id,dayId);
         try {
             if (user_id == 0){
                 return ApiResponse.unAuthorized("unAuthorized");
