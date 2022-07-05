@@ -63,11 +63,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/teacher/**",
                         "/api/v1/class/**",
                         "/api/v1/classroom/**",
-                        "/api/v1/folder/**",
                         "/api/v1/classMaterialsType/**",
                         "/api/v1/classMaterial/**",
                         "/api/v1/comment/get-by-teacher_user_id",
-                        "/api/v1/student/accept-student"
+                        "/api/v1/folder/**",
+                        "/api/v1/schedule/get-schedule-by-teacherUserId-dayId-classroomId",
+                        "/api/v1/student/accept-student",
+                        "/api/v1/submittedWork/**"
                 )
                 .hasAnyAuthority("Teacher")
 
@@ -76,9 +78,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/v1/comment/**",
                         "/api/v1/classMaterial/get-by-studentId",
                         "/api/v1/classMaterial/get-by-studentId-classId-classroomId",
+                        "/api/v1/schedule/get-schedule-by-studentUserId",
                         "/api/v1/submittedWork/insert-student-work",
                         "/api/v1/submittedWork/get-studentScore-by-classroomId-and-classId",
-                        "/api/v1/submittedWork/get-by-studentId"
+                        "/api/v1/submittedWork/delete-by-Id"
                 )
                 .hasAnyAuthority("Student");
 
