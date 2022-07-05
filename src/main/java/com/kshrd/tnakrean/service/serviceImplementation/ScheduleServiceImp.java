@@ -29,7 +29,7 @@ public class ScheduleServiceImp implements ScheduleService {
     }
 
     @Override
-    public List<ScheduleResponse> getScheduleByStudentUserId(Integer user_id) {
-        return scheduleRepository.getScheduleByStudentUserId(user_id);
+    public List<ScheduleResponse> getScheduleByStudentUserId(Integer user_id,Integer dayId) {
+        return scheduleRepository.getScheduleByStudentUserId(user_id,dayId);
     }
 }
