@@ -12,4 +12,5 @@ public class ScheduleResponse {
     String subject;
     String day;
     String time;
+    String class_name;
 }
