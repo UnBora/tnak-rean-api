@@ -67,7 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/v1/classMaterial/**",
                         "/api/v1/comment/get-by-teacher_user_id",
                         "/api/v1/folder/**",
-                        "/api/v1/schedule/get-schedule-by-teacherUserId-dayId-classroomId",
+                        "/api/v1/schedule/**",
                         "/api/v1/student/accept-student",
                         "/api/v1/submittedWork/**"
                 )
