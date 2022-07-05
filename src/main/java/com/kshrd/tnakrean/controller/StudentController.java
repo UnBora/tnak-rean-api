@@ -96,7 +96,6 @@ public class StudentController {
             return ApiResponse.setError(e.getMessage());
         }
     }
-
     @PutMapping("leave-class")
     public ApiResponse<StudentLeaveClassRequest> studentLeaveClass(
             @RequestParam @Min(value = 1, message = "{validation.classroomId.notNegative}") Integer classroomId,

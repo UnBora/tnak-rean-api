@@ -1,5 +1,6 @@
 package com.kshrd.tnakrean.repository;
 
+import com.kshrd.tnakrean.model.classmaterials.response.GetClassByClassroomIDResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassroomResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.GetClassByTeacherIdResponse;
 import org.apache.ibatis.annotations.*;
@@ -34,6 +35,9 @@ public interface ClassroomRepository {
     //check ID
     @Select("select exists (select * from classroom where id = #{id})")
     Boolean checkClassroomByID(Integer id);
+    //check class ID
+    @Select("select exists (select * from class where id = #{id})")
+    Boolean checkClassmByID(Integer id);
 
     //check school's name
     @Select("select exists (select * from classroom where name =#{className})")
@@ -52,4 +56,15 @@ public interface ClassroomRepository {
     @Result(property = "class_name",column = "class_name")
     @Result(property = "user_id",column = "user_id")
     List<GetClassByTeacherIdResponse> getClassByTeacherId(@Param("c.id") Integer class_id, @Param("c2.id")Integer id, @Param("u.name") String teacherName, @Param("c2.class_name")String classname, @Param("user_id") Integer user_id);
+
+    @Select("select c.class_name,c3.image ,c.id, (SELECT COUNT(*) FROM classroom_detail WHERE class_id=c.id) as allStudent " +
+            "from classroom_detail as c3 " +
+            "join class c on c3.class_id = c.id " +
+            "join classroom c2 on c2.id = c3.classroom_id " +
+            "where c3.classroom_id=#{classroomId}")
+    @Result(property = "className", column = "class_name")
+    @Result(property = "allStudent", column = "allStudent")
+    @Result(property = "img", column = "image")
+    List<GetClassByClassroomIDResponse> getClassByClassroomID(Integer classroomId);
+
 }

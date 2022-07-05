@@ -8,6 +8,8 @@ import com.kshrd.tnakrean.model.user.request.UserRegisterRequest;
 import com.kshrd.tnakrean.model.user.response.AppUserResponse;
 import com.kshrd.tnakrean.model.user.request.UserUpdatePasswordRequestModel;
 import com.kshrd.tnakrean.model.user.response.UserRegisterResponse;
+import com.kshrd.tnakrean.repository.ClassroomRepository;
+import com.kshrd.tnakrean.repository.UsersRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.UserServiceImp;
 import com.kshrd.tnakrean.repository.AppUserRepository;
 import org.modelmapper.ModelMapper;
@@ -39,6 +41,8 @@ public class AuthRestController {
 
     @Autowired
     AppUserRepository appUserRepository;
+    @Autowired
+    ClassroomRepository classroomRepository;
 
     ModelMapper modelMapper = new ModelMapper();
 
@@ -110,8 +114,16 @@ public class AuthRestController {
             }else if(checkUserName.equals(true)){
                 return ApiResponse.<UserRegisterResponse>badRequest(UserRegisterResponse.class.getSimpleName())
                         .setResponseMsg("This Username has been exist!");
+            }else if (classroomRepository.checkClassroomByID(userRegisterRequest.getClassroomId()).equals(false)){
+                return ApiResponse.<UserRegisterResponse>badRequest(UserRegisterResponse.class.getSimpleName())
+                        .setResponseMsg("The Classroom ID:" + userRegisterRequest.getClassroomId() + " does not have!");
+            } else if (classroomRepository.checkClassmByID(userRegisterRequest.getClassId()).equals(false)){
+                return ApiResponse.<UserRegisterResponse>badRequest(UserRegisterResponse.class.getSimpleName())
+                        .setResponseMsg("The Class ID:" + userRegisterRequest.getClassId() + " does not have!");
             } else {
                 userServiceImp.userRegister(userRegisterRequest);
+                Integer userId= appUserRepository.lastUserId();
+                appUserRepository.studenRegistrationAndRequese(userId, userRegisterRequest.getClassroomId(),userRegisterRequest.getClassId());
                 return ApiResponse.<UserRegisterResponse>successCreate(UserRegisterResponse.class.getSimpleName())
                         .setData(modelMapper.map(userRegisterRequest, UserRegisterResponse.class));
             }

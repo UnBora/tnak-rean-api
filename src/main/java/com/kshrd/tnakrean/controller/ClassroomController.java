@@ -2,13 +2,13 @@ package com.kshrd.tnakrean.controller;
 
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
+import com.kshrd.tnakrean.model.classmaterials.response.GetClassByClassroomIDResponse;
 import com.kshrd.tnakrean.model.classmaterials.request.GetClassRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassroomRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassroomUpdateResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassroomResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.GetClassByTeacherIdResponse;
 
-import com.kshrd.tnakrean.model.user.response.GetAllStudentResponse;
 import com.kshrd.tnakrean.model.user.response.GetStudentByClassIDResponse;
 import com.kshrd.tnakrean.repository.ClassroomRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.ClassroomServiceImp;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @RestController
@@ -151,7 +152,28 @@ public class ClassroomController {
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
+    }
 
+    @GetMapping("get-class-by-classroom-id")
+    public ApiResponse<List<GetClassByClassroomIDResponse>> ClassByClassroomID(
+            @RequestParam @Min(value = 1, message = "{validation.id.notNegative}") @NotBlank Integer classroomId) {
+        try {
+            Boolean classroomID = classroomRepository.checkClassroomByID(classroomId);
+            List<GetClassByClassroomIDResponse> getClassByClassroomIDResponses =classroomServiceImp.getClassByClassroomID(classroomId);
+            if (classroomID == null) {
+                return ApiResponse.<List<GetClassByClassroomIDResponse>>badRequest(GetClassByClassroomIDResponse.class.getSimpleName())
+                        .setResponseMsg("The Classroom ID cannot not null");
+            } else if (classroomID.equals(false)) {
+                return ApiResponse.<List<GetClassByClassroomIDResponse>>badRequest(GetClassByClassroomIDResponse.class.getSimpleName())
+                        .setResponseMsg("The Classroom ID:" + classroomId + " does not have!");
+            } else {
 
+                return ApiResponse.<List<GetClassByClassroomIDResponse>>ok(GetClassByClassroomIDResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
+                        .setData(getClassByClassroomIDResponses);
+            }
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
     }
 }

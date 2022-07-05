@@ -1,5 +1,6 @@
 package com.kshrd.tnakrean.service.serviceImplementation;
 
+import com.kshrd.tnakrean.model.classmaterials.response.GetClassByClassroomIDResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassroomResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.GetClassByTeacherIdResponse;
 import com.kshrd.tnakrean.repository.ClassroomRepository;
@@ -42,6 +43,12 @@ public class ClassroomServiceImp implements ClassroomService {
     public void updateClassroom( Integer classroom_id, Integer created_by , String name, String des) {
             classroomRepository.updateClassroomDB( classroom_id, created_by ,name,des);
 
+    }
+
+    @Override
+    public List<GetClassByClassroomIDResponse> getClassByClassroomID(Integer classroomId) {
+
+        return classroomRepository.getClassByClassroomID(classroomId);
     }
 
     @Override
