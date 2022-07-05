@@ -36,6 +36,6 @@ public interface ScheduleRepository {
             "INNER JOIN session ses on ds.session_id = ses.id \n" +
             "INNER JOIN day_of_week d on ds.day_of_week_id = d.id \n" +
             "INNER JOIN class cl ON t.class_id = cl.id " +
-            "WHERE teacher_id = #{user_id} AND day_of_week_id = #{dayId} AND classroom_id = #{classroomId} AND class_id = #{classId} ")
-    List<ScheduleResponse> getScheduleByTeacherDayClassClassroom(Integer classId, Integer classroomId, Integer dayId, Integer user_id);
+            "WHERE teacher_id = #{user_id} AND day_of_week_id = #{dayId} AND classroom_id = #{classroomId} ")
+    List<ScheduleResponse> getScheduleByTeacherDayClassClassroom(Integer classroomId, Integer dayId, Integer user_id);
 }

@@ -38,32 +38,12 @@ public class ScheduleController {
         }
     }
 
-    @GetMapping("/get-schedule-by-classroomId-classId")
-    ApiResponse<List<ScheduleResponse>> getScheduleByClassId(
-            @RequestParam @Min(value = 1) Integer classroomId,
-            @RequestParam @Min(value = 1) Integer classId) {
-        List<ScheduleResponse> responses = scheduleServiceImp.getScheduleByClassId(classroomId, classId);
-        try {
-            if (!responses.isEmpty()) {
-                return ApiResponse.<List<ScheduleResponse>>ok(ScheduleResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
-                        .setData(responses);
-            }
-            return ApiResponse.<List<ScheduleResponse>>notFound(ScheduleResponse.class.getSimpleName())
-                    .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
-
-        } catch (Exception e) {
-            return ApiResponse.setError(e.getMessage());
-        }
-    }
-
-    @GetMapping("/get-schedule-by-teacherUserId-dayId-classId-classroomId")
+    @GetMapping("/get-schedule-by-teacherUserId-dayId-classroomId")
     ApiResponse<List<ScheduleResponse>> getScheduleByTeacherDayClassClassroom(
             @RequestParam @Min(value = 1) Integer classroomId,
-            @RequestParam @Min(value = 1) Integer classId,
             @RequestParam @Min(value = 1) Integer dayId) {
         Integer user_id = AuthRestController.user_id;
-        List<ScheduleResponse> responses = scheduleServiceImp.getScheduleByTeacherDayClassClassroom(classroomId, classId, dayId,user_id);
+        List<ScheduleResponse> responses = scheduleServiceImp.getScheduleByTeacherDayClassClassroom(classroomId, dayId,user_id);
         try {
             if (user_id == 0){
                 return ApiResponse.unAuthorized("unAuthorized");
