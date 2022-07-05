@@ -64,7 +64,7 @@ public class SubmittedWorkController {
         }
     }
 
-    @GetMapping("get-by-studentId/")
+    @GetMapping("get-by-studentId")
     ApiResponse<List<SubmittedWorkResponse>> getSubmittedByStudentId(@RequestParam @Min(value = 1) Integer studentId) throws IllegalStateException {
         try {
             List<SubmittedWorkResponse> submittedWorkResponses = submittedWorkImpl.getSubmittedByStudentId(studentId);
