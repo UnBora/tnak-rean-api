@@ -33,7 +33,7 @@ public class ClassMaterialController {
         this.classMaterialRepository = classMaterialRepository;
     }
 
-    @GetMapping("/get-by-id/")
+    @GetMapping("/get-by-id")
     ApiResponse<ClassMaterialResponse> getById(@RequestParam @Min(value = 1) int class_material_id) {
         try {
             ClassMaterialResponse classMaterialResponses = classMaterialServiceImp.getClassMaterial(class_material_id);
@@ -116,7 +116,7 @@ public class ClassMaterialController {
         }
     }
 
-    @DeleteMapping("/delete-by-id/")
+    @DeleteMapping("/delete-by-id")
     ApiResponse<Boolean> deleteById(@RequestParam @Min(value = 1) Integer id) {
         try {
             boolean checkMaterialId = classMaterialRepository.findMaterialId(id);
@@ -156,7 +156,7 @@ public class ClassMaterialController {
         }
     }
 
-    @GetMapping("/get-by-teacheId/")
+    @GetMapping("/get-by-teacheId")
     ApiResponse<List<ClassMaterialResponse>> getAllClassMaterialByTeacherUserId(
             @RequestParam @Min(value = 1) Integer teacher_id) {
         try {
@@ -174,7 +174,7 @@ public class ClassMaterialController {
         }
     }
 
-    @GetMapping("/get-by-teacherId-and-materialTypeId/")
+    @GetMapping("/get-by-teacherId-and-materialTypeId")
     ApiResponse<List<ClassMaterialResponse>> getClassMaterialByTeacherUserIdAndMaterialType(
             @RequestParam @Min(value = 1) Integer teacher_id,
             @RequestParam @Min(value = 1) Integer class_materials_type_id
@@ -194,7 +194,7 @@ public class ClassMaterialController {
         }
     }
 
-    @GetMapping("/get-by-materialTypeId/")
+    @GetMapping("/get-by-materialTypeId")
     ApiResponse<List<ClassMaterialResponse>> getClassMaterialByMaterialTypeId(
             @RequestParam @Min(value = 1) Integer class_materials_type_id
     ) {
@@ -213,7 +213,7 @@ public class ClassMaterialController {
         }
     }
 
-    @GetMapping("/get-by-classId-and-teacherId/")
+    @GetMapping("/get-by-classId-and-teacherId")
     ApiResponse<List<ClassMaterialByTeacherIdAndClassIdResponse>> getByClassIdAndTeacherId(
             @RequestParam @Min(value = 1) Integer teacher_id,
             @RequestParam @Min(value = 1) Integer class_id
@@ -233,7 +233,7 @@ public class ClassMaterialController {
         }
     }
 
-    @GetMapping("/get-by-classId/")
+    @GetMapping("/get-by-classId")
     ApiResponse<List<ClassMaterialByClassIdResponse>> getByClassId(@RequestParam @Min(value = 1) Integer class_id) {
         try {
             List<ClassMaterialByClassIdResponse> classMaterialByClassIdResponses = classMaterialServiceImp.getByClassId(class_id);
@@ -250,7 +250,7 @@ public class ClassMaterialController {
         }
     }
 
-    @GetMapping("/get-by-classId-and-classroomId/")
+    @GetMapping("/get-by-classId-and-classroomId")
     ApiResponse<List<ClassMaterialByClassIdAndClassroomIdResponse>> getByClassIdAndClassroomId(
             @RequestParam @Min(value = 1) Integer class_id,
             @RequestParam @Min(value = 1) Integer classroom_id
@@ -270,7 +270,7 @@ public class ClassMaterialController {
         }
     }
 
-    @GetMapping("/get-by-materialType-and-classId/")
+    @GetMapping("/get-by-materialType-and-classId")
     ApiResponse<List<ClassMaterialByClassIdAndMaterialTypeResponse>> getByMaterialTypeAndClassId(
             @RequestParam @Min(value = 1) Integer class_materials_type_id,
             @RequestParam @Min(value = 1) Integer class_id
@@ -290,7 +290,7 @@ public class ClassMaterialController {
         }
     }
 
-    @GetMapping("get-by-studentUserId/")
+    @GetMapping("get-by-studentUserId")
     ApiResponse<List<ClassMaterialByStudentIdResponse>> getByStudentId(@RequestParam @Min(value = 1) Integer student_user_id) throws IllegalStateException {
         try {
             List<ClassMaterialByStudentIdResponse> classMaterialResponses = classMaterialServiceImp.getByStudentId(student_user_id);
@@ -307,7 +307,7 @@ public class ClassMaterialController {
         }
     }
 
-    @GetMapping("get-by-studentUserId-classId-classroomId/}")
+    @GetMapping("get-by-studentUserId-classId-classroomId}")
     ApiResponse<List<ClassMaterialByStudentIdClassIdAndClassroomIdResponse>> getByUserClassClassroom(
             @RequestParam @Min(value = 1) Integer student_user_id,
             @RequestParam @Min(value = 1) Integer class_id,
