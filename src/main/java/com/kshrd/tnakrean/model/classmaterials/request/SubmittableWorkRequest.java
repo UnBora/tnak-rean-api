@@ -25,6 +25,6 @@ public class SubmittableWorkRequest {
     @JsonIgnore
     LocalDateTime assigned_date = LocalDateTime.now(ZoneOffset.of("+07:00"));
     Date deadline;
-    @Min(value = 0 , message="{validation.score.notNegative}") @Max(value = 1000 , message="{validation.score.notNegative}")
+    @Min(value = 0 , message="{validation.score.notEmpty}") @Max(value = 1000 , message="{validation.score.notEmpty}")
     Float score;
 }
