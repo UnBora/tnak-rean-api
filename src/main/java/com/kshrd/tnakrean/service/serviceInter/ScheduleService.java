@@ -8,4 +8,6 @@ public interface ScheduleService {
     List<ScheduleResponse> getScheduleByTeacherId(Integer id);
 
     List<ScheduleResponse> getScheduleByClassId(Integer classroomId, Integer classId);
+
+    List<ScheduleResponse> getScheduleByTeacherDayClassClassroom(Integer classroomId, Integer classId, Integer dayId, Integer user_id);
 }
