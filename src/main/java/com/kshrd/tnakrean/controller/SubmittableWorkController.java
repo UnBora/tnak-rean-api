@@ -5,6 +5,7 @@ import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateClassClassroomRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateDeadlineRequest;
+import com.kshrd.tnakrean.model.classmaterials.response.SubmittableWorkByClassResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittableWorkResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.UpComingSubmittableWorkResponse;
@@ -201,19 +202,19 @@ public class SubmittableWorkController {
         }
     }
 
-    @GetMapping("get-by-classroomId-and-classId")
-    ApiResponse<List<SubmittableWorkResponse>> getByClassIdAndClassId(
-            @RequestParam @Min(value = 1) Integer classroom_id,
-            @RequestParam @Min(value = 1) Integer class_id
+    @GetMapping("get-by-classId-classroomId")
+    ApiResponse<List<SubmittableWorkByClassResponse>> getByClassIdAndClassId(
+            @RequestParam @Min(value = 1) Integer class_id,
+            @RequestParam @Min(value = 1) Integer classroom_id
     ) {
         try {
-            List<SubmittableWorkResponse> submittableWorkResponses = submittableWorkService.getByClassIdAndClassId(classroom_id, class_id);
+            List<SubmittableWorkByClassResponse> submittableWorkResponses = submittableWorkService.getByClassIdAndClassId(classroom_id, class_id);
             if (submittableWorkResponses.isEmpty()) {
-                return ApiResponse.<List<SubmittableWorkResponse>>notFound(SubmittableWorkResponse.class
+                return ApiResponse.<List<SubmittableWorkByClassResponse>>notFound(SubmittableWorkByClassResponse.class
                                 .getSimpleName())
                         .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
             }
-            return ApiResponse.<List<SubmittableWorkResponse>>ok(SubmittableWorkResponse.class
+            return ApiResponse.<List<SubmittableWorkByClassResponse>>ok(SubmittableWorkByClassResponse.class
                             .getSimpleName())
                     .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
                     .setData(submittableWorkResponses);
