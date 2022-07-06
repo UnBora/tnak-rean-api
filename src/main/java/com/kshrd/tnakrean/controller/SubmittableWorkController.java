@@ -204,8 +204,8 @@ public class SubmittableWorkController {
 
     @GetMapping("get-by-classId-classroomId")
     ApiResponse<List<SubmittableWorkByClassResponse>> getByClassIdAndClassId(
-            @RequestParam @Min(value = 1) Integer classroom_id,
-            @RequestParam @Min(value = 1) Integer class_id
+            @RequestParam @Min(value = 1) Integer class_id,
+            @RequestParam @Min(value = 1) Integer classroom_id
     ) {
         try {
             List<SubmittableWorkByClassResponse> submittableWorkResponses = submittableWorkService.getByClassIdAndClassId(classroom_id, class_id);
