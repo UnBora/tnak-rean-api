@@ -70,7 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                        "/api/v1/folder/**",
 //                        "/api/v1/schedule/**",
 //                        "/api/v1/student/accept-student",
-                        "/api/v/submittedWork/**"
+                        "/api/v1/submittedWork/**"
                 )
                 .hasAnyAuthority("Teacher")
 
@@ -85,7 +85,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                        "/api/v1/submittedWork/get-studentScore-by-classroomId-and-classId",
                         "/api/v/submittedWork/delete-by-Id"
                 )
-                .hasAnyAuthority("Student");
+                .hasAnyAuthority("Student")
+
+                .antMatchers( HttpMethod.GET, "/api/v1/student/get-student-by-classId")
+                .hasAnyAuthority( "Teacher")
+
+        ;
 
 //        This is for the jwt
         http.addFilterBefore(jwtRequestFilter(), UsernamePasswordAuthenticationFilter.class);

@@ -82,13 +82,12 @@ public class StudentController {
     public ApiResponse<List<GetStudentByClassIDResponse>> getStudentByClassID(
             @RequestParam @Min(value = 1, message = "{validation.classId.notNegative}") Integer class_id){
         try {
-            Integer user_id = AuthRestController.user_id;
             Boolean checkClassIDAcdClassroomID = studentRepository.checkIfStudentclassIDClassroomIDExists(class_id);
             if (checkClassIDAcdClassroomID.equals(false)) {
                 return ApiResponse.<List<GetStudentByClassIDResponse>>notFound(GetStudentByClassIDResponse.class.getSimpleName())
                         .setResponseMsg("Your classID:" + class_id + " not found!");
             } else {
-                List<GetStudentByClassIDResponse> getStudentByClassIDResponses = studentServiceImp.selectStudentByClassID(class_id, user_id);
+                List<GetStudentByClassIDResponse> getStudentByClassIDResponses = studentServiceImp.selectStudentByClassID(class_id);
                 return ApiResponse.<List<GetStudentByClassIDResponse>>ok(GetStudentByClassIDResponse.class.getSimpleName())
                         .setData(getStudentByClassIDResponses);
             }
