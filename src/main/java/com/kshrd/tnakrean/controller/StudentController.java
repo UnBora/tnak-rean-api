@@ -153,7 +153,7 @@ public class StudentController {
         }
     }
 
-    @GetMapping("get-student-request")
+    @GetMapping("get-student-request-by-classId")
     public ApiResponse<List<StudentRequestClassResponse>> getRequestClass(
             @RequestParam @Min(value = 1) Integer classroom_id,
             @RequestParam @Min(value = 1) Integer class_id

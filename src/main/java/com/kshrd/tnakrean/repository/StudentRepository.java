@@ -54,13 +54,19 @@ public interface StudentRepository {
     @Update("UPDATE users SET name=#{name}, username=#{username}, img=#{img} gender=#{gender} WHERE id = #{user_id}")
     void updateProfile(Integer user_id, String name, String username, String img, String gender);
 
-    // student request
-    @Select("SELECT r.id, r.user_id, u.name, u.email, u.gender, u.img, s.class_id,s.classroom_id, u.status " +
-            "FROM student_request r " +
-            "JOIN users u ON r.user_id = u.id " +
-            "JOIN student s ON u.id = s.user_id " +
-            "WHERE status = -1 AND classroom_id = #{classroom_id} AND class_id = #{class_id}")
+    // get student request
+    @Select("SELECT r.id, r.user_id, c.class_name, s.class_id,u.name, u.img, status, " +
+            " (SELECT count(uc.id) FROM student_request src\n" +
+            "JOIN users uc ON src.user_id = uc.id\n" +
+            "JOIN student stc ON uc.id = stc.user_id\n" +
+            "WHERE status = -1 AND class_id = s.class_id)\n" +
+            "FROM student_request r \n" +
+            "JOIN users u ON r.user_id = u.id \n" +
+            "JOIN student s ON u.id = s.user_id \n" +
+            "JOIN class c ON s.class_id = c.id\n" +
+            "WHERE status = -1 AND classroom_id = #{classroom_id} AND class_id = #{class_id} ")
     @Result(property = "student_request_id" ,column = "id")
+    @Result(property = "total_request" ,column = "count")
     List<StudentRequestClassResponse> getRequestClass(Integer classroom_id, Integer class_id);
 //    check role user before insert to table
     @Select("select user_role_id from users where id =#{userId}")
