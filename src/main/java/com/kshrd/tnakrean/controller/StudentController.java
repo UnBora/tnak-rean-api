@@ -26,7 +26,6 @@ import java.util.List;
 @SecurityRequirement(name = "bearerAuth")
 @CrossOrigin(origins = "*")
 public class StudentController {
-
     final StudentRepository studentRepository;
     final StudentServiceImp studentServiceImp;
     final EmailService emailService;
