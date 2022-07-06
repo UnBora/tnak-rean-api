@@ -27,13 +27,10 @@ public interface FolderRepository {
     FolderResponse getFolderByClassId(int id);
 
 
-    @Select("SELECT fd.folder_id, f.folder_name, f.parent_id, ct.type , class_id\n" +
-            "FROM folder f \n" +
-            "JOIN folder_detail fd ON f.id = fd.folder_id\n" +
-            "JOIN class_materials_detail cd ON fd.class_materials_detail_id = cd.id\n" +
-            "JOIN class_materials cm ON cd.class_material_id = cm.id\n" +
-            "JOIN class_materials_type ct ON cm.class_materials_type_id = ct.id\n" +
-            "WHERE class_materials_type_id = 1 AND classroom_id = #{classRoomId} AND class_id = #{classId}")
+    @Select("SELECT folder_id, type ,folder_name, f.parent_id, class_id FROM folder f\n" +
+            "JOIN class_materials_type cm ON f.material_type_id = cm.id\n" +
+            "JOIN class_material_folder cmf ON f.id = cmf.folder_id\n" +
+            "WHERE material_type_id = 1 AND classroom_id = #{classRoomId} AND class_id = #{classId}")
     List<FolderByClassResponse> getCourseFolderByClassId(int classId, int classRoomId);
 
     @Select("SELECT f.folder_name,f.id ,f.parent_id FROM class_materials cm " +
@@ -46,8 +43,6 @@ public interface FolderRepository {
             select = "getFolderDetail"
     ))
     List<FolderResponse> getListFolderByTeacherId(int teacherId);
-
-
     @Select("SELECT cm.id, cm.title, cm.content, cm.description, cm.created_by, cmt.type" +
             " from folder_detail fd " +
             " JOIN class_materials_detail cmd on fd.class_materials_detail_id = cmd.id" +
@@ -70,13 +65,9 @@ public interface FolderRepository {
     List<FolderResponse> getCourseFolderByTeacher(Integer user_id, Integer classroom_id);
 
     // get ClassWork Folder ByClassId
-    @Select("SELECT *\n" +
-            "FROM folder f \n" +
-            "JOIN folder_detail fd ON f.id = fd.folder_id\n" +
-            "JOIN class_materials_detail cd ON fd.class_materials_detail_id = cd.id\n" +
-            "JOIN class_materials cm ON cd.class_material_id = cm.id\n" +
-            "JOIN class_materials_type ct ON cm.class_materials_type_id = ct.id\n" +
-            "WHERE (class_materials_type_id = 2 OR class_materials_type_id = 3 OR class_materials_type_id = 4) " +
-            "AND classroom_id = #{classRoomId} AND class_id = #{classId}")
+    @Select("SELECT folder_id, type ,folder_name, f.parent_id, class_id FROM folder f\n" +
+            "JOIN class_materials_type cm ON f.material_type_id = cm.id\n" +
+            "JOIN class_material_folder cmf ON f.id = cmf.folder_id \n" +
+            "WHERE (material_type_id = 3 OR material_type_id = 4) AND classroom_id = #{classRoomId} AND class_id = #{classId}")
     List<FolderByClassResponse> getClassWorkFolderByClassId(Integer classId, Integer classRoomId);
 }
