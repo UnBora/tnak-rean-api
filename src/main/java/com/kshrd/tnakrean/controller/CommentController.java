@@ -47,7 +47,7 @@ public class CommentController {
         }
     }
 
-    @GetMapping("get-by-commentId/")
+    @GetMapping("get-by-commentId")
     ApiResponse<CommentResponse> getById(@RequestParam @Min(value = 1) Integer comment_id) {
         try {
             CommentResponse commentResponses = commentServiceImp.getById(comment_id);
@@ -63,7 +63,7 @@ public class CommentController {
         }
     }
 
-    @GetMapping("get-by-studentId/")
+    @GetMapping("get-by-studentId")
     ApiResponse<List<CommentResponse>> getByStudentId() {
         try {
             Integer userId = AuthRestController.user_id;
@@ -84,7 +84,7 @@ public class CommentController {
         }
     }
 
-    @GetMapping("get-by-teacherUserId/")
+    @GetMapping("get-by-teacherUserId")
     ApiResponse<List<CommentByTeacherResponse>> getByTecherId() {
         try {
             Integer userId = AuthRestController.user_id;
@@ -105,7 +105,7 @@ public class CommentController {
         }
     }
 
-    @GetMapping("get-by-claaId-classroomId-studentId/")
+    @GetMapping("get-by-claaId-classroomId-studentId")
     ApiResponse<List<CommentByClassClassroomStudentResponse>> getByClassClassroomStudent(
             @RequestParam @Min(value = 1) Integer classroom_id,
             @RequestParam @Min(value = 1) Integer class_id,
@@ -126,7 +126,7 @@ public class CommentController {
         }
     }
 
-    @DeleteMapping("delete-by-id/")
+    @DeleteMapping("delete-by-id")
     ApiResponse<Boolean> deleteById(@RequestParam @Min(value = 1) Integer id) {
         try {
             boolean checkCommentID = commentRepository.ifCommentIdExist(id);
@@ -190,7 +190,7 @@ public class CommentController {
         }
     }
 
-    @GetMapping("get-by-materialId-classroomId-classId/")
+    @GetMapping("get-by-materialId-classroomId-classId")
     ApiResponse<List<CommentByMaterialIdResponse>> getByMaterialId(
             @RequestParam @Min(value = 1) Integer class_material_id,
             @RequestParam @Min(value = 1) Integer classroom_id,

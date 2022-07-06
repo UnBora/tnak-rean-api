@@ -57,4 +57,13 @@ public interface FolderRepository {
     // delete
     @Select("DELETE FROM folder WHERE id = #{parent_id} RETURNING *")
     FolderResponse deleteByParentId(Integer parent_id);
+
+    // get Course Folder ByTeacher
+    @Select("SELECT  f.id, f.parent_id, f.folder_name  FROM folder f \n" +
+            "JOIN folder_detail fd ON f.id = fd.folder_id\n" +
+            "JOIN class_materials_detail cd ON fd.class_materials_detail_id = cd.id\n" +
+            "JOIN class_materials cm ON cd.class_material_id = cm.id\n" +
+            "JOIN class_materials_type mt ON cm.class_materials_type_id = mt.id\n" +
+            "WHERE f.created_by = #{user_id} AND class_materials_type_id = 1 AND classroom_id = #{classroom_id}")
+    List<FolderResponse> getCourseFolderByTeacher(Integer user_id, Integer classroom_id);
 }

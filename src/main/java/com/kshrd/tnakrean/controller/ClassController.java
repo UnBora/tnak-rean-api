@@ -3,10 +3,7 @@ package com.kshrd.tnakrean.controller;
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.request.GetClassRequest;
-import com.kshrd.tnakrean.model.classmaterials.response.ClassDeleteResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.ClassInertResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.ClassUpdateResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.ClassroomResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.*;
 import com.kshrd.tnakrean.model.user.response.GetAllStudentResponse;
 import com.kshrd.tnakrean.repository.ClassRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.ClassServiceImp;
@@ -135,25 +132,24 @@ public class ClassController {
         }
     }
 
-//    @GetMapping("get-by-teacherUserId/{user_id}")
-//    public ApiResponse<List<GetClassRequest>> getByUserId() {
-//        try {
-//            Integer user_id = AuthRestController.user_id;
-//            List<GetClassRequest> getClassRequests = classServiceImp.getByUserId(user_id);
-//            if (user_id == 0 ){
-//
-//            }
-//            else if (getClassRequests.isEmpty()) {
-//                return ApiResponse.<List<GetClassRequest>>ok(GetClassRequest.class.getSimpleName())
-//                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
-//                        .setData(getClassRequests);
-//            }
-//            return ApiResponse.<List<GetClassRequest>>ok("Get All Class")
-//                    .setResponseMsg("Get All Class by teacherUserid: " + user_id + " Successfully")
-//                    .setData(getClassRequests);
-//
-//        } catch (Exception e) {
-//            return ApiResponse.setError(e.getMessage());
-//        }
-//    }
+    @GetMapping("get-by-teacherUserId")
+    public ApiResponse<List<ClassByUserTeacherIdResponse>> getByTeacherUserId(@RequestParam Integer classroom_id) {
+        try {
+            Integer user_id = AuthRestController.user_id;
+            List<ClassByUserTeacherIdResponse> getClassRequests = classServiceImp.getByTeacherUserId(user_id,classroom_id);
+            if (user_id == 0) {
+                return ApiResponse.unAuthorized("Unauthorized");
+            } else if (getClassRequests.isEmpty()) {
+                return ApiResponse.<List<ClassByUserTeacherIdResponse>>notFound(ClassByUserTeacherIdResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setData(getClassRequests);
+            }
+            return ApiResponse.<List<ClassByUserTeacherIdResponse>>ok("Get All Class")
+                    .setResponseMsg("Get All Class by teacherUserid: " + user_id + " Successfully")
+                    .setData(getClassRequests);
+
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
 }

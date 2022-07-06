@@ -47,7 +47,7 @@ public class SubmittableWorkController {
         }
     }
 
-    @GetMapping("/get-by-id/")
+    @GetMapping("/get-by-id")
     ApiResponse<SubmittableWorkResponse> getById(@RequestParam @Min(value = 1) Integer id) {
         try {
             SubmittableWorkResponse submittableWorkResponses = submittableWorkService.getById(id);
@@ -139,7 +139,7 @@ public class SubmittableWorkController {
         }
     }
 
-    @DeleteMapping("/delete-by-id/")
+    @DeleteMapping("/delete-by-id")
     ApiResponse<Boolean> delete(@RequestParam Integer submittable_work_id) {
         try {
             boolean checkSubmittableWorkIdInSubmiited = submittableWorkRepository.findSubmittableIdInSubmiitedWork(submittable_work_id);
@@ -163,7 +163,7 @@ public class SubmittableWorkController {
         }
     }
 
-    @GetMapping("/get-by-classMaterialDetailTypeId/")
+    @GetMapping("/get-by-classMaterialDetailTypeId")
     ApiResponse<List<SubmittableWorkResponse>> getSubmittableWorkByClassMaterialDetailType
             (@RequestParam @Min(value = 1) Integer classMaterialDetailTypeId) {
         try {

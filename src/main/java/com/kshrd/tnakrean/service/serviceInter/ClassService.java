@@ -1,7 +1,7 @@
 package com.kshrd.tnakrean.service.serviceInter;
 
 import com.kshrd.tnakrean.model.classmaterials.request.GetClassRequest;
-import com.kshrd.tnakrean.model.classmaterials.response.ClassDeleteResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.ClassByUserTeacherIdResponse;
 
 import java.util.List;
 
@@ -22,4 +22,5 @@ public interface ClassService {
 //    create class by user ID
     void creatClassByUserID(Integer id, String className);
 
+    List<ClassByUserTeacherIdResponse> getByTeacherUserId(Integer user_id,Integer classroom_id);
 }

@@ -1,6 +1,7 @@
 package com.kshrd.tnakrean.model.classmaterials.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.kshrd.tnakrean.model.classmaterials.json.ClassMaterialContent;
 import com.kshrd.tnakrean.model.classmaterials.json.StudentWork;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +15,7 @@ import java.util.Date;
 public class UpComingSubmittableWorkResponse {
     String title;
     String description;
-    StudentWork content;
+    ClassMaterialContent content;
     Integer score;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     Date deadline;

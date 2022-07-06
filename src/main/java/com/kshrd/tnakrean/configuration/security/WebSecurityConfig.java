@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilde
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -60,27 +61,36 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and()
                 .csrf().disable()
                 .authorizeRequests().antMatchers("/api/v1/auth/**").permitAll()
-                .antMatchers("/api/v1/teacher/**",
-                        "/api/v1/submittedWork/**",
-                        "/api/v1/class/**",
-                        "/api/v1/classroom/**",
-                        "/api/v1/folder/**",
-                        "/api/v1/classMaterialsType/**",
-                        "/api/v1/classMaterial/**",
-                        "/api/v1/comment/get-by-teacher_user_id", "/api/v1/student/accept-student"
+                .antMatchers("/api/v/teacher/**",
+//                        "/api/v1/class/**",
+//                        "/api/v1/classroom/**",
+//                        "/api/v1/classMaterialsType/**",
+//                        "/api/v1/classMaterial/**",
+//                        "/api/v1/comment/get-by-teacher_user_id",
+//                        "/api/v1/folder/**",
+//                        "/api/v1/schedule/**",
+//                        "/api/v1/student/accept-student",
+                        "/api/v1/submittedWork/**"
                 )
                 .hasAnyAuthority("Teacher")
 
 
-                .antMatchers("/api/v1/student/**",
-                        "/api/v1/comment/**",
-                        "/api/v1/submittedWork/get-by-studentId",
-                        "/api/v1/submittedWork/get-by-studentId-and-classId",
-                        "/api/v1/submittedWork/insert-student-work",
-                        "/api/v1/classMaterial/get-by-studentId",
-                        "/api/v1/classMaterial/get-by-studentId-classId-classroomId"
+                .antMatchers("/api/v/student/**",
+                        "/api/v/comment/**",
+//                        "/api/v1/classMaterial/get-by-studentId",
+//                        "/api/v1/classMaterial/get-by-studentId-classId-classroomId",
+//                        "/api/v1/schedule/get-schedule-by-studentUserId",
+//                        "/api/v1/submittableWork/**",
+//                        "/api/v1/submittedWork/insert-student-work",
+//                        "/api/v1/submittedWork/get-studentScore-by-classroomId-and-classId",
+                        "/api/v/submittedWork/delete-by-Id"
                 )
-                .hasAnyAuthority("Student");
+                .hasAnyAuthority("Student")
+
+                .antMatchers( HttpMethod.GET, "/api/v1/student/get-student-by-classId")
+                .hasAnyAuthority( "Teacher")
+
+        ;
 
 //        This is for the jwt
         http.addFilterBefore(jwtRequestFilter(), UsernamePasswordAuthenticationFilter.class);

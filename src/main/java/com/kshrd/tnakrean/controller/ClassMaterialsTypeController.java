@@ -41,7 +41,7 @@ public class ClassMaterialsTypeController {
                 .setData(classMaterialsTypeResponse);
     }
 
-    @GetMapping("/get-by-id/")
+    @GetMapping("/get-by-id")
     ApiResponse<ClassMaterialsTypeResponse> getClassMaterialsTypeById(@RequestParam @Min(value = 1) Integer id) {
         ClassMaterialsTypeResponse classMaterialsTypeResponse = classMaterialsTypeImpl.getClassMaterialsTypeById(id);
         if (classMaterialsTypeResponse == null) {
@@ -98,7 +98,7 @@ public class ClassMaterialsTypeController {
         }
     }
 
-    @DeleteMapping("/delete-by-id/")
+    @DeleteMapping("/delete-by-id")
     ApiResponse<Boolean> deleteById(@RequestParam @Min(value = 1) Integer id) {
         boolean checkTypeID = classMaterialsTypeRepository.findTypeIdExist(id);
         boolean checkTypeIdInMaterial = classMaterialsTypeRepository.findTypeIdInMaterial(id);

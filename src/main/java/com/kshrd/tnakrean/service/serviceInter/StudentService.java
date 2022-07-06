@@ -19,7 +19,7 @@ public interface StudentService {
     void studentLeaveClassService(Integer users_id, Integer classroom_id, Integer class_id);
 
     //    Select User By Class ID
-    List<GetStudentByClassIDResponse> selectStudentByClassID(Integer class_id, Integer classroom_id);
+    List<GetStudentByClassIDResponse> selectStudentByClassID(Integer class_id);
 
     //Insert Student
     void insertStudent(Integer user_id);

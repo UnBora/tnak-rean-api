@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ScheduleResponse {
-    String subject;
-    String day;
-    String time;
-    String class_name;
+public class ClassByUserTeacherIdResponse {
+    Integer classId;
+    String className;
+    Integer totalStudentInClass;
+
 }
