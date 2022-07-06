@@ -4,6 +4,7 @@ package com.kshrd.tnakrean.service.serviceImplementation;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateClassClassroomRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateDeadlineRequest;
+import com.kshrd.tnakrean.model.classmaterials.response.SubmittableWorkByClassResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittableWorkResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.UpComingSubmittableWorkResponse;
@@ -62,7 +63,7 @@ public class SubmittableWorkServiceImpl implements SubmittableService {
     }
 
     @Override
-    public List<SubmittableWorkResponse> getByClassIdAndClassId(Integer classroom_id, Integer class_id) {
+    public List<SubmittableWorkByClassResponse> getByClassIdAndClassId(Integer classroom_id, Integer class_id) {
         return submittableWorkRepository.getByClassIdAndClassId(classroom_id,class_id);
     }
 
