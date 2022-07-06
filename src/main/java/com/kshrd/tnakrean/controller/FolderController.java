@@ -4,6 +4,7 @@ import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.request.FolderDetailRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.FolderRequest;
+import com.kshrd.tnakrean.model.classmaterials.response.FolderByClassResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.FolderDetailResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.FolderResponse;
 import com.kshrd.tnakrean.repository.FolderRepository;
@@ -56,19 +57,40 @@ public class FolderController {
 //        }
 //    }
 
-    @GetMapping("/get-folders-by-class-id")
-    ApiResponse<List<FolderResponse>> getFolderByClassId(@RequestParam int classId, @RequestParam int classRoomId) {
-        List<FolderResponse> responseList = folderServiceImp.getListFolderByClassId(classId, classRoomId);
+    @GetMapping("/get-courseFolders-by-class-id")
+    ApiResponse<List<FolderByClassResponse>> getCourseFolderByClassId(
+            @RequestParam @Min(value = 1) int classId,
+            @RequestParam @Min(value = 1) int classRoomId) {
+        List<FolderByClassResponse> responseList = folderServiceImp.getCourseFolderByClassId(classId, classRoomId);
         try {
             if (!responseList.isEmpty()) {
-                return ApiResponse.<List<FolderResponse>>
-                                ok(FolderResponse.class.getSimpleName()).
+                return ApiResponse.<List<FolderByClassResponse>>
+                                ok(FolderByClassResponse.class.getSimpleName()).
                         setData(responseList)
                         .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage());
             }
-            return ApiResponse.notFound(FolderResponse.class.getSimpleName());
+            return ApiResponse.notFound(FolderByClassResponse.class.getSimpleName());
         } catch (Exception e) {
-            return ApiResponse.badRequest(FolderResponse.class.getSimpleName());
+            return ApiResponse.badRequest(FolderByClassResponse.class.getSimpleName());
+        }
+    }
+
+    @GetMapping("/get-classWorkFolders-by-class-id")
+    ApiResponse<List<FolderByClassResponse>> getClassWorkFolderByClassId(
+            @RequestParam @Min(value = 1) Integer classId,
+            @RequestParam @Min(value = 1) Integer classRoomId) {
+        List<FolderByClassResponse> responseList = folderServiceImp.getClassWorkFolderByClassId(classId, classRoomId);
+        try {
+            if (!responseList.isEmpty()) {
+                return ApiResponse.<List<FolderByClassResponse>>ok(FolderByClassResponse.class.getSimpleName())
+                        .setData(responseList)
+                        .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage());
+            }
+            return ApiResponse.<List<FolderByClassResponse>>notFound(FolderByClassResponse.class.getSimpleName())
+                    .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                    .setData(responseList);
+        } catch (Exception e) {
+            return ApiResponse.badRequest(FolderByClassResponse.class.getSimpleName());
         }
     }
 
