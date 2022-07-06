@@ -82,7 +82,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                        "/api/v1/submittableWork/**",
 //                        "/api/v1/submittedWork/insert-student-work",
 //                        "/api/v1/submittedWork/get-studentScore-by-classroomId-and-classId",
-                        "/api/v1/submittedWork/delete-by-Id"
+                        "/api/v/submittedWork/delete-by-Id"
                 )
                 .hasAnyAuthority("Student");
 
