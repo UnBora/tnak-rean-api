@@ -140,7 +140,7 @@ public class ClassController {
             if (user_id == 0) {
                 return ApiResponse.unAuthorized("Unauthorized");
             } else if (getClassRequests.isEmpty()) {
-                return ApiResponse.<List<ClassByUserTeacherIdResponse>>ok(ClassByUserTeacherIdResponse.class.getSimpleName())
+                return ApiResponse.<List<ClassByUserTeacherIdResponse>>notFound(ClassByUserTeacherIdResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
                         .setData(getClassRequests);
             }
