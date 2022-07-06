@@ -60,7 +60,9 @@ public interface UsersRepository {
     AppUserResponse getUserById(@Param("id") int userId);
 
     @Select("SELECT n.received_id, (SELECT username from users where id=n.received_id) as received_name,(SELECT users.img from users where id=n.received_id) as received_img, " +
-            "n.sender_id,(SELECT username from users where id=n.sender_id) as sender_name,(SELECT users.img from users where id=n.sender_id) sender_img, n.received_class_id, c.class_name, nt.type, nt.title, nt.action_on, n.received_date FROM notification_detail nd " +
+            "n.sender_id,(SELECT username from users where id=n.sender_id) as sender_name," +
+            "(SELECT users.img from users where id=n.sender_id) sender_img, n.received_class_id as received_class_id, " +
+            " (SELECT class_name from class where id= n.received_class_id) as class_name, nt.type, nt.title, nt.action_on, n.received_date FROM notification_detail nd " +
             "join notification n on nd.noti_id = n.id " +
             "join notification_type nt on n.notification_type_id = nt.id " +
             "join users u on n.received_id = u.id " +
