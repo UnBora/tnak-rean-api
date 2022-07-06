@@ -106,16 +106,15 @@ public interface ClassMaterialRepository {
     List<ClassMaterialByClassIdResponse> getByClassId(@Param("class_id") Integer class_id);
 
     // get By ClassId And ClassroomId
-    @Select("SELECT class_material_id,title,description, class_id, cm.created_by,\n" +
-            "(SELECT count(*) FROM comment c  \n" +
+    @Select("SELECT class_id, material_id, title,description,clm.created_by , (SELECT count(*) FROM comment c \n" +
             "JOIN class_materials_detail s ON c.class_materials_detail_id = s.id \n" +
-            "WHERE class_material_id = cm.id)\n" +
-            "FROM folder f \n" +
-            "JOIN folder_detail fd ON f.id = fd.folder_id\n" +
-            "JOIN class_materials_detail cd ON fd.class_materials_detail_id = cd.id\n" +
-            "JOIN class_materials cm ON cd.class_material_id = cm.id\n" +
-            "JOIN class_materials_type ct ON cm.class_materials_type_id = ct.id\n" +
-            "WHERE class_materials_type_id = 1 AND class_id = #{class_id} AND classroom_id = #{classroom_id}")
+            "WHERE class_material_id = mf.material_id)\n" +
+            "FROM folder f\n" +
+            "JOIN class_materials_type cm ON f.material_type_id = cm.id\n" +
+            "JOIN class_material_folder cmf ON f.id = cmf.folder_id \n" +
+            "JOIN material_folder mf ON f.id = mf.folder_id\n" +
+            "JOIN class_materials clm ON mf.material_id = clm.id " +
+            "WHERE class_materials_type_id = 1 AND classroom_id = #{classroom_id} AND class_id = #{class_id} ")
     @Result(property = "total_comment", column = "count")
     List<ClassMaterialByClassIdAndClassroomIdResponse> getByClassIdAndClassroomId(Integer class_id, Integer classroom_id);
 
