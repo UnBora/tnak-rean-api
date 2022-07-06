@@ -85,7 +85,6 @@ public class UsersController {
             return ApiResponse.setError(e.getMessage());
         }
     }
-
     @PutMapping("/deactivate-account")
     public ApiResponse<UserDeactivateAccountRequest> deactivateAccount(
             @RequestParam @Size(min = 3, max = 16,message = "{validation.password.sizenotlesthen3}") String password,
