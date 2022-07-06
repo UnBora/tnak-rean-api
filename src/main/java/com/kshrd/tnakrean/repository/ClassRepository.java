@@ -41,21 +41,15 @@ public interface ClassRepository {
     Boolean checkIfClassRoomDetailExists(Integer id);
 
     // get By TeacherUserId
-    @Select("SELECT d.class_id, c.class_name, d.classroom_id ,r.name ,\n" +
-            "(SELECT count(dc.id) \n" +
-            "FROM classroom_detail dc\n" +
-            "JOIN student sc\n" +
-            "ON dc.class_id = sc.class_id AND dc.classroom_id = sc.classroom_id \n" +
-            "JOIN users u ON u.id = sc.user_id " +
-            "WHERE sc.classroom_id = r.id AND sc.class_id = c.id AND status = 2) \n" +
-            "FROM classroom_detail d \n" +
-            "JOIN class c ON d.class_id = c.id\n" +
-            "JOIN classroom r ON d.classroom_id = r.id\n" +
-            "WHERE created_by = #{user_id}")
-    @Result(property = "classId",column = "class_id")
+    @Select("SELECT c.id,c.class_name, \n" +
+            "(SELECT count(st.id) FROM student st \n" +
+            "JOIN users u ON st.user_id = u.id\n" +
+            "WHERE class_id = t.class_id AND status = 2) \n" +
+            "FROM class c \n" +
+            "JOIN teacher t ON c.id = t.class_id\n" +
+            "WHERE user_id = #{user_id} AND classroom_id = #{classroom_id}")
+    @Result(property = "classId",column = "id")
     @Result(property = "className",column = "class_name")
-    @Result(property = "classroomId",column = "classroom_id")
-    @Result(property = "classroomName",column = "name")
     @Result(property = "totalStudentInClass",column = "count")
-    List<ClassByUserTeacherIdResponse> getByTeacherUserId(Integer user_id);
+    List<ClassByUserTeacherIdResponse> getByTeacherUserId(Integer user_id, Integer classroom_id);
 }

@@ -26,15 +26,16 @@ public interface StudentRepository {
     void studentLeaveClassDB(@Param("user_id") Integer user_id, @Param("classroom_id") Integer classroom_id, @Param("class_id") Integer class_id);
 
 
-    //    Select User by class ID
-    @Select("SELECT u.id as user_id,u.name as name,u.username as username,u.email as email,u.gender as gender,s.class_id from  student s " +
-            "inner join users u on u.id = s.user_id where s.class_id = #{class_id} and s.classroom_id =#{classroom_id}")
-    @Result(property = "user_id", column = "user_id")
-    @Result(property = "name", column = "name")
-    @Result(property = "username", column = "username")
-    @Result(property = "email", column = "email")
-    @Result(property = "gender", column = "gender")
-    List<GetStudentByClassIDResponse> selectStudentByClassID(@Param("class_id") Integer class_id, @Param("classroom_id") Integer classroom_id);
+    //  Get student by class ID
+    @Select("SELECT u.id, st.class_id, u.name, u.email, u.gender\n" +
+            "FROM classroom_detail d \n" +
+            "JOIN class c ON d.class_id = c.id\n" +
+            "JOIN classroom r ON d.classroom_id = r.id\n" +
+            "JOIN student st ON c.id = st.class_id\n" +
+            "JOIN users u ON st.user_id = u.id\n" +
+            "WHERE created_by = #{teacher_id} AND u.status = 2 AND st.class_id = #{class_id}")
+    @Result(column = "id", property = "stu_user_id")
+    List<GetStudentByClassIDResponse> selectStudentByClassID(@Param("class_id") Integer class_id, @Param("teacher_id") Integer user_id);
 
 //    @Insert("INSERT INTO student (user_id, classroom_id, class_id) VALUES (#{user_id},#{classroom_id},#{class_id})")
     @Update("UPDATE users SET status = 2 WHERE id = #{user_id}")
@@ -46,8 +47,8 @@ public interface StudentRepository {
     Boolean checkIfStudentExists(Integer user_id, Integer classroomId, Integer class_id);
 
     @Select("select exists (select * from student where " +
-            " classroom_id=#{classroomId} AND class_id= #{class_id})")
-    Boolean checkIfStudentclassIDClassroomIDExists(Integer classroomId, Integer class_id);
+            " class_id= #{class_id})")
+    Boolean checkIfStudentclassIDClassroomIDExists(Integer class_id);
 
 //   Check User ID
     @Select("select exists (select * from users where id = #{id})")

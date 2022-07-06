@@ -39,8 +39,8 @@ public class StudentServiceImp implements StudentService {
     }
 
     @Override
-    public List<GetStudentByClassIDResponse> selectStudentByClassID(Integer class_id, Integer classroom_id) {
-        return studentRepository.selectStudentByClassID(class_id, classroom_id);
+    public List<GetStudentByClassIDResponse> selectStudentByClassID(Integer class_id, Integer user_id) {
+        return studentRepository.selectStudentByClassID(class_id, user_id);
     }
 
     @Override

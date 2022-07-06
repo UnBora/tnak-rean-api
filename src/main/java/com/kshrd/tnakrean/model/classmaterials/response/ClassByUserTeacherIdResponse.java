@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 public class ClassByUserTeacherIdResponse {
     Integer classId;
     String className;
-    Integer classroomId;
-    String classroomName;
     Integer totalStudentInClass;
 
 }
