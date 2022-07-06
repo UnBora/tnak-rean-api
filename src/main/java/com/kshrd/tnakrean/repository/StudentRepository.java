@@ -27,15 +27,11 @@ public interface StudentRepository {
 
 
     //  Get student by class ID
-    @Select("SELECT u.id, st.class_id, u.name, u.email, u.gender\n" +
-            "FROM classroom_detail d \n" +
-            "JOIN class c ON d.class_id = c.id\n" +
-            "JOIN classroom r ON d.classroom_id = r.id\n" +
-            "JOIN student st ON c.id = st.class_id\n" +
+    @Select("SELECT * FROM student st \n" +
             "JOIN users u ON st.user_id = u.id\n" +
-            "WHERE created_by = #{teacher_id} AND u.status = 2 AND st.class_id = #{class_id}")
+            "WHERE class_id = #{class_id} AND status = 2")
     @Result(column = "id", property = "stu_user_id")
-    List<GetStudentByClassIDResponse> selectStudentByClassID(@Param("class_id") Integer class_id, @Param("teacher_id") Integer user_id);
+    List<GetStudentByClassIDResponse> selectStudentByClassID(@Param("class_id") Integer class_id);
 
 //    @Insert("INSERT INTO student (user_id, classroom_id, class_id) VALUES (#{user_id},#{classroom_id},#{class_id})")
     @Update("UPDATE users SET status = 2 WHERE id = #{user_id}")
