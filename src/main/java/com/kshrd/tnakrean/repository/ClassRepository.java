@@ -46,7 +46,8 @@ public interface ClassRepository {
             "FROM classroom_detail dc\n" +
             "JOIN student sc\n" +
             "ON dc.class_id = sc.class_id AND dc.classroom_id = sc.classroom_id \n" +
-            "WHERE sc.classroom_id = r.id AND sc.class_id = c.id) \n" +
+            "JOIN users u ON u.id = sc.user_id " +
+            "WHERE sc.classroom_id = r.id AND sc.class_id = c.id AND status = 2) \n" +
             "FROM classroom_detail d \n" +
             "JOIN class c ON d.class_id = c.id\n" +
             "JOIN classroom r ON d.classroom_id = r.id\n" +
