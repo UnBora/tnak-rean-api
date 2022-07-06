@@ -74,12 +74,12 @@ public class ClassController {
                     del = classServiceImp.deleteClass(classId);
                     if (del) {
                         return ApiResponse.<ClassDeleteResponse>ok(ClassDeleteResponse.class.getSimpleName())
-                                .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
+                                .setResponseMsg("Class ID:"+ classId + " delete successfully")
                                 .setData(new ClassDeleteResponse(classId));
                     }
                 } catch (Exception e) {
                     return ApiResponse.<ClassDeleteResponse>ok(ClassDeleteResponse.class.getSimpleName())
-                            .setResponseMsg(BaseMessage.Error.DELETE_ERROR.getMessage() + " because of primary key");
+                            .setResponseMsg("Class ID:"+classId + " cannot delete because of primary key");
                 }
             }
         } catch (Exception e) {

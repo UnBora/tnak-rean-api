@@ -121,6 +121,7 @@ public class ClassroomController {
                             .setData(getClassByTeacherIdResponses);
                 } else {
                     return ApiResponse.<List<GetClassByTeacherIdResponse>>ok(GetClassByTeacherIdResponse.class.getSimpleName())
+                            .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
                             .setData(getClassByTeacherIdResponses);
                 }
             } else {
@@ -141,12 +142,12 @@ public class ClassroomController {
                         .setResponseMsg(BaseMessage.Error.UPDATE_ERROR.getMessage());
             } else if (a.equals(false)) {
                 return ApiResponse.<ClassroomUpdateResponse>setError(ClassroomUpdateResponse.class.getSimpleName())
-                        .setResponseMsg("Your classroom ID and classID Not Matched!");
+                        .setResponseMsg("Your classroom ID and CreatedBy ID Not Matched!");
             } else {
                 classroomServiceImp.updateClassroom(classroomUpdateResponse.getClassroom_id(), classroomUpdateResponse.getCreated_by(), classroomUpdateResponse.getName(), classroomUpdateResponse.getDes());
                 return ApiResponse
                         .<ClassroomUpdateResponse>updateSuccess(ClassroomUpdateResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
+                        .setResponseMsg("Classroom ID:"+classroomUpdateResponse.getClassroom_id()+" CreatedBy ID: "+classroomUpdateResponse.getCreated_by() +" cannot delete because of primary key")
                         .setData(new ClassroomUpdateResponse(classroomUpdateResponse.getClassroom_id(), classroomUpdateResponse.getCreated_by(), classroomUpdateResponse.getName(), classroomUpdateResponse.getDes()));
             }
         } catch (Exception e) {
@@ -167,9 +168,8 @@ public class ClassroomController {
                 return ApiResponse.<List<GetClassByClassroomIDResponse>>badRequest(GetClassByClassroomIDResponse.class.getSimpleName())
                         .setResponseMsg("The Classroom ID:" + classroomId + " does not have!");
             } else {
-
                 return ApiResponse.<List<GetClassByClassroomIDResponse>>ok(GetClassByClassroomIDResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
+                        .setResponseMsg("The Classroom ID:" + classroomId + " get successfully")
                         .setData(getClassByClassroomIDResponses);
             }
         } catch (Exception e) {
