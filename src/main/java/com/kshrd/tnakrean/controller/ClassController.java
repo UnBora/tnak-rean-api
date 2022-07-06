@@ -133,10 +133,10 @@ public class ClassController {
     }
 
     @GetMapping("get-by-teacherUserId")
-    public ApiResponse<List<ClassByUserTeacherIdResponse>> getByTeacherUserId() {
+    public ApiResponse<List<ClassByUserTeacherIdResponse>> getByTeacherUserId(@RequestParam Integer classroom_id) {
         try {
             Integer user_id = AuthRestController.user_id;
-            List<ClassByUserTeacherIdResponse> getClassRequests = classServiceImp.getByTeacherUserId(user_id);
+            List<ClassByUserTeacherIdResponse> getClassRequests = classServiceImp.getByTeacherUserId(user_id,classroom_id);
             if (user_id == 0) {
                 return ApiResponse.unAuthorized("Unauthorized");
             } else if (getClassRequests.isEmpty()) {

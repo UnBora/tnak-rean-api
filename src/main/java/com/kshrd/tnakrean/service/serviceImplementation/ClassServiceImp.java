@@ -45,7 +45,7 @@ public class ClassServiceImp implements ClassService {
     }
 
     @Override
-    public List<ClassByUserTeacherIdResponse> getByTeacherUserId(Integer user_id) {
-        return classRepository.getByTeacherUserId(user_id);
+    public List<ClassByUserTeacherIdResponse> getByTeacherUserId(Integer user_id,Integer classroom_id) {
+        return classRepository.getByTeacherUserId(user_id,classroom_id);
     }
 }
