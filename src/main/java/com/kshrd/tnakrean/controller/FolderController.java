@@ -75,6 +75,25 @@ public class FolderController {
         }
     }
 
+    @GetMapping("/get-classWorkFolders-by-class-id")
+    ApiResponse<List<FolderByClassResponse>> getClassWorkFolderByClassId(
+            @RequestParam @Min(value = 1) Integer classId,
+            @RequestParam @Min(value = 1) Integer classRoomId) {
+        List<FolderByClassResponse> responseList = folderServiceImp.getClassWorkFolderByClassId(classId, classRoomId);
+        try {
+            if (!responseList.isEmpty()) {
+                return ApiResponse.<List<FolderByClassResponse>>ok(FolderByClassResponse.class.getSimpleName())
+                        .setData(responseList)
+                        .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage());
+            }
+            return ApiResponse.<List<FolderByClassResponse>>notFound(FolderByClassResponse.class.getSimpleName())
+                    .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                    .setData(responseList);
+        } catch (Exception e) {
+            return ApiResponse.badRequest(FolderByClassResponse.class.getSimpleName());
+        }
+    }
+
 
     @GetMapping("/get-folders-by-teacher-id")
     ApiResponse<List<FolderResponse>> getFolderByClassId(@RequestParam int id) {

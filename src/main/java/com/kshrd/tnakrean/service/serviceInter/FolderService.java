@@ -23,4 +23,6 @@ public interface FolderService {
     FolderResponse deleteByParentId(Integer parent_id);
 
     List<FolderResponse> getCourseFolderByTeacher(Integer user_id, Integer classroom_id);
+
+    List<FolderByClassResponse> getClassWorkFolderByClassId(Integer classId, Integer classRoomId);
 }

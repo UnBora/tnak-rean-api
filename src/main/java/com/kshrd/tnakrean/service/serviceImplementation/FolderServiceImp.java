@@ -55,4 +55,9 @@ public class FolderServiceImp implements FolderService {
     public List<FolderResponse> getCourseFolderByTeacher(Integer user_id,Integer classroom_id) {
         return folderRepository.getCourseFolderByTeacher(user_id, classroom_id);
     }
+
+    @Override
+    public List<FolderByClassResponse> getClassWorkFolderByClassId(Integer classId, Integer classRoomId) {
+        return folderRepository.getClassWorkFolderByClassId(classId,classRoomId);
+    }
 }

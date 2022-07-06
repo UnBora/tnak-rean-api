@@ -68,4 +68,15 @@ public interface FolderRepository {
             "JOIN class_materials_type mt ON cm.class_materials_type_id = mt.id\n" +
             "WHERE f.created_by = #{user_id} AND class_materials_type_id = 1 AND classroom_id = #{classroom_id}")
     List<FolderResponse> getCourseFolderByTeacher(Integer user_id, Integer classroom_id);
+
+    // get ClassWork Folder ByClassId
+    @Select("SELECT *\n" +
+            "FROM folder f \n" +
+            "JOIN folder_detail fd ON f.id = fd.folder_id\n" +
+            "JOIN class_materials_detail cd ON fd.class_materials_detail_id = cd.id\n" +
+            "JOIN class_materials cm ON cd.class_material_id = cm.id\n" +
+            "JOIN class_materials_type ct ON cm.class_materials_type_id = ct.id\n" +
+            "WHERE (class_materials_type_id = 2 OR class_materials_type_id = 3 OR class_materials_type_id = 4) " +
+            "AND classroom_id = #{classRoomId} AND class_id = #{classId}")
+    List<FolderByClassResponse> getClassWorkFolderByClassId(Integer classId, Integer classRoomId);
 }
