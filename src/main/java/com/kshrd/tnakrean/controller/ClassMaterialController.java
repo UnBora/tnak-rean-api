@@ -307,7 +307,7 @@ public class ClassMaterialController {
         }
     }
 
-    @GetMapping("get-by-studentUserId-classId-classroomId}")
+    @GetMapping("get-by-studentUserId-classId-classroomId")
     ApiResponse<List<ClassMaterialByStudentIdClassIdAndClassroomIdResponse>> getByUserClassClassroom(
             @RequestParam @Min(value = 1) Integer student_user_id,
             @RequestParam @Min(value = 1) Integer class_id,

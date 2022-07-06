@@ -56,7 +56,7 @@ public class FolderController {
 //        }
 //    }
 
-    @GetMapping("/get-folders-by-class-id/{classId}/{classRoomId}")
+    @GetMapping("/get-folders-by-class-id")
     ApiResponse<List<FolderResponse>> getFolderByClassId(@RequestParam int classId, @RequestParam int classRoomId) {
         List<FolderResponse> responseList = folderServiceImp.getListFolderByClassId(classId, classRoomId);
         try {
@@ -73,7 +73,7 @@ public class FolderController {
     }
 
 
-    @GetMapping("/get-folders-by-teacher-id/{id}")
+    @GetMapping("/get-folders-by-teacher-id")
     ApiResponse<List<FolderResponse>> getFolderByClassId(@RequestParam int id) {
         List<FolderResponse> responseList = folderServiceImp.getListFolderByTeacherId(id);
         try {
@@ -89,7 +89,7 @@ public class FolderController {
         }
     }
 
-    @GetMapping("/get-folder-detail-by-folder-id/{id}")
+    @GetMapping("/get-folder-detail-by-folder-id")
     ApiResponse<List<FolderDetailResponse>> getFolderDetail(@RequestParam int id) {
         List<FolderDetailResponse> responseList = folderRepository.getFolderDetail(id);
         try {
