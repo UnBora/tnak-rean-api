@@ -78,17 +78,17 @@ public class StudentController {
         }
     }
 
-    @GetMapping("/get-student-by-class-and-classroom-id")
+    @GetMapping("/get-student-by-classId")
     public ApiResponse<List<GetStudentByClassIDResponse>> getStudentByClassID(
-            @RequestParam @Min(value = 1, message = "{validation.classId.notNegative}") Integer class_id,
-            @RequestParam @Min(value = 1, message = "{validation.classroomId.notNegative}") Integer classroom_id) {
+            @RequestParam @Min(value = 1, message = "{validation.classId.notNegative}") Integer class_id){
         try {
-            Boolean checkClassIDAcdClassroomID = studentRepository.checkIfStudentclassIDClassroomIDExists(classroom_id, class_id);
+            Integer user_id = AuthRestController.user_id;
+            Boolean checkClassIDAcdClassroomID = studentRepository.checkIfStudentclassIDClassroomIDExists(class_id);
             if (checkClassIDAcdClassroomID.equals(false)) {
                 return ApiResponse.<List<GetStudentByClassIDResponse>>notFound(GetStudentByClassIDResponse.class.getSimpleName())
-                        .setResponseMsg("Your classID:" + class_id + " and ClassroomID:" + classroom_id + " not found!");
+                        .setResponseMsg("Your classID:" + class_id + " not found!");
             } else {
-                List<GetStudentByClassIDResponse> getStudentByClassIDResponses = studentServiceImp.selectStudentByClassID(class_id, classroom_id);
+                List<GetStudentByClassIDResponse> getStudentByClassIDResponses = studentServiceImp.selectStudentByClassID(class_id, user_id);
                 return ApiResponse.<List<GetStudentByClassIDResponse>>ok(GetStudentByClassIDResponse.class.getSimpleName())
                         .setData(getStudentByClassIDResponses);
             }
