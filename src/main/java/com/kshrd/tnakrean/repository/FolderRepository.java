@@ -26,7 +26,7 @@ public interface FolderRepository {
     FolderResponse getFolderByClassId(int id);
 
 
-    @Select("SELECT distinct f.id, f.folder_name,f.parent_id" +
+    @Select("SELECT distinct f.id, f.folder_name,f.parent_id, f.created_by" +
             " from folder f" +
             " JOIN folder_detail fd on f.id = fd.folder_id" +
             " JOIN class_materials_detail cmd on fd.class_materials_detail_id = cmd.id" +

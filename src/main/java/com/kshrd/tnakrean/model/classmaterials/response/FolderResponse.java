@@ -13,4 +13,5 @@ public class FolderResponse {
     Integer id;
     String folder_name;
     Integer parent_id;
+    Integer created_by;
 }
