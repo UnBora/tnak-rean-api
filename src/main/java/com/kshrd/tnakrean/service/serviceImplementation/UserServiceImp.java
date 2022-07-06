@@ -55,6 +55,11 @@ public class UserServiceImp implements UserService {
         usersRepository.updateProfile(user_id, name, username,email,gender);
     }
 
+    @Override
+    public void getnotificationById(Integer userId) {
+        usersRepository.getNotificationByUserId(userId);
+    }
+
 
     @Override
     public void userRegister(UserRegisterRequest userRegisterRequest) {

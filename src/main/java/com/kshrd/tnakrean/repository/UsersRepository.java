@@ -1,8 +1,11 @@
 package com.kshrd.tnakrean.repository;
 
 import com.kshrd.tnakrean.model.user.response.AppUserResponse;
+import com.kshrd.tnakrean.model.user.response.GetNotificationResponse;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Mapper
 @Repository
@@ -56,5 +59,9 @@ public interface UsersRepository {
     @Select("select * from users where id = #{id}")
     AppUserResponse getUserById(@Param("id") int userId);
 
-
+    @Select("SELECT n.received_id, n.sender_id, n.received_class_id, nt.type, nt.title, nt.action_on, n.received_date FROM notification_detail nd " +
+            "join notification n on nd.noti_id = n.id " +
+            "join notification_type nt on n.notification_type_id = nt.id " +
+            "where n.received_id=#{userId}")
+    List<GetNotificationResponse> getNotificationByUserId(Integer userId);
 }
