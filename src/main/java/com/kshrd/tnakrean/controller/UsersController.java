@@ -152,9 +152,6 @@ public class UsersController {
                             String simpleName = UserActivateAccountRequest.class.getSimpleName();
                             System.out.println("simple name:"+simpleName);
                             String message = BaseMessage.Success.UPDATE_SUCCESS.getMessage();
-//                            System.out.println();
-//                            log.info("Activate: {}", simpleName);
-//                            log.info("Message: {}", message);
 
                             return ApiResponse.<UserActivateAccountRequest>updateSuccess(UserActivateAccountRequest.class.getSimpleName())
                                     .setResponseMsg("A Record of UserActivateAccountRequest has  been updated successfully")
@@ -199,13 +196,13 @@ public class UsersController {
                 Boolean checkUsername= usersRepository.checkUserName(userUpdateRequest.getUsername());
                 Boolean checkEmail= usersRepository.checkEmailExist(userUpdateRequest.getEmail());
 
-                String nameSelected= usersRepository.selectName(userId);
-                String nameEmail= usersRepository.selectEmail(userId);
-                if (checkUsername.equals(true)){
-                    return ApiResponse.<UserUpdateRequest>ok(UserUpdateRequest.class.getSimpleName())
+                String email= usersRepository.selectEmail(userId);
+                String name=usersRepository.catchName(userUpdateRequest.getUsername().trim());
+                if (checkUsername.equals(true)&&(!(name.equals(userUpdateRequest.getUsername().trim())))){
+                    return ApiResponse.<UserUpdateRequest>badRequest(UserUpdateRequest.class.getSimpleName())
                             .setResponseMsg("This Username is exist!");
-                }else if (checkEmail.equals(true)){
-                    return ApiResponse.<UserUpdateRequest>ok(UserUpdateRequest.class.getSimpleName())
+                }else if (checkEmail.equals(true)&&(!(email.equals(userUpdateRequest.getEmail().trim())))){
+                    return ApiResponse.<UserUpdateRequest>badRequest(UserUpdateRequest.class.getSimpleName())
                             .setResponseMsg("This Email is Exist!");
                 }else {
                     userServiceImp.updateProfileByID(userId, userUpdateRequest.getName(), userUpdateRequest.getUsername(), userUpdateRequest.getEmail(), userUpdateRequest.getGender());

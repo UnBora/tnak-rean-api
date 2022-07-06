@@ -47,6 +47,9 @@ public interface UsersRepository {
     @Select("select exists (select username from users where username =#{username})")
     Boolean checkUserName(String username);
 
+    @Select("select username from users where username =#{username}")
+    String catchName(String userName);
+
     @Select("select exists (select * from users where id =#{id})")
     Boolean checkUserById(Integer id);
 
