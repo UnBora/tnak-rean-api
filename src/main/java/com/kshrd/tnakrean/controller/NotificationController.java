@@ -45,7 +45,7 @@ public class NotificationController {
         this.dataSourceConfiguration = dataSourceConfiguration;
     }
 
-    @GetMapping("/get/{userId}")
+    @GetMapping("/get")
     ApiResponse<List<NotificationResponse>> getNotificationByUserId(@RequestParam int userId) {
         List<NotificationResponse> notificationResponseList = notificationImp.notificationList(userId);
         System.out.println(notificationResponseList);

@@ -19,7 +19,6 @@ public interface NotificationRepository {
             " JOIN notification_detail nd on n.id = nd.noti_id" +
             " JOIN class_materials_detail cmd on nd.action_id = cmd.id" +
             " WHERE n.received_id = #{id}")
-    @Result(property = "content", column = "content", typeHandler = JsonTypeHandler.class)
     List<NotificationResponse> getNotificationByUserId(Integer id);
 
 
