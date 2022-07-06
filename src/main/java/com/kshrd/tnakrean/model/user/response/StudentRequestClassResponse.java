@@ -12,10 +12,9 @@ public class StudentRequestClassResponse {
     Integer student_request_id;
     Integer user_id;
     String name;
-    String email;
-    String gender;
     String img;
     Integer class_id;
-    Integer classroom_id;
+    String class_name;
     Integer status;
+    Integer total_request ;
 }
