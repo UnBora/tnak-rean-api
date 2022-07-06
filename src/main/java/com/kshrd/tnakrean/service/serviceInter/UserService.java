@@ -22,4 +22,7 @@ public interface UserService extends UserDetailsService {
 
     void updateProfileByID(Integer user_id, String name, String username, String email, String gender);
 
+//    User get notification by ID
+    void getnotificationById(Integer userId);
+
 }

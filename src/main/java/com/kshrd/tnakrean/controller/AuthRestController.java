@@ -89,9 +89,10 @@ public class AuthRestController {
                 String new_pass = passwordEncoder.encode(userUpdatePasswordRequestModel.getNew_password());
                 userServiceImp.resetPassword(new_pass, user_id);
                 return ApiResponse.<Boolean>updateSuccess("User")
-                        .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage());
+                        .setResponseMsg("Your password update successful");
             } else {
-                return response.setError("Your old password did not matched!");
+                return ApiResponse.<Boolean>badRequest("User")
+                        .setResponseMsg("Your old password did not matched!");
             }
         } catch (Exception e) {
             return response.setError(e.getMessage());

@@ -7,15 +7,18 @@ import com.kshrd.tnakrean.model.user.request.UserDeactivateAccountRequest;
 import com.kshrd.tnakrean.model.user.request.UserDeleteAccountRequest;
 import com.kshrd.tnakrean.model.user.request.UserUpdateRequest;
 import com.kshrd.tnakrean.model.user.request.UserActivateAccountRequest;
+import com.kshrd.tnakrean.model.user.response.GetNotificationResponse;
 import com.kshrd.tnakrean.repository.UsersRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.UserServiceImp;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -53,7 +56,7 @@ public class UsersController {
                         if (isMatch) {
                             userServiceImp.userDeleteAccount(userId);
                             return ApiResponse.<UserDeleteAccountRequest>successDelete(UserDeleteAccountRequest.class.getSimpleName())
-                                    .setResponseMsg("A Record of UserDeleteAccountRequest has  been updated successfully!")
+                                    .setResponseMsg("Your account delete successfully")
                                     .setData(new UserDeleteAccountRequest(userId));
                         } else if (!isMatch) {
                             return ApiResponse.<UserDeleteAccountRequest>successDelete(UserDeleteAccountRequest.class.getSimpleName())
@@ -100,7 +103,7 @@ public class UsersController {
                         if (isMatch) {
                             userServiceImp.userDeactivateAccount(userId);
                             return ApiResponse.<UserDeactivateAccountRequest>updateSuccess(UserDeactivateAccountRequest.class.getSimpleName())
-                                    .setResponseMsg("A Record of UserDeactivateAccountRequest has  been updated successfully")
+                                    .setResponseMsg("Your account deactivated successfully")
                                     .setData(new UserDeactivateAccountRequest(userId));
                         } else if (!isMatch) {
                             return ApiResponse.<UserDeactivateAccountRequest>notFound(UserDeactivateAccountRequest.class.getSimpleName())
@@ -195,7 +198,6 @@ public class UsersController {
             if (!userId.equals(0)) {
                 Boolean checkUsername= usersRepository.checkUserName(userUpdateRequest.getUsername());
                 Boolean checkEmail= usersRepository.checkEmailExist(userUpdateRequest.getEmail());
-
                 String email= usersRepository.selectEmail(userId);
                 String name=usersRepository.catchName(userUpdateRequest.getUsername().trim());
                 if (checkUsername.equals(true)&&(!(name.equals(userUpdateRequest.getUsername().trim())))){
@@ -207,7 +209,7 @@ public class UsersController {
                 }else {
                     userServiceImp.updateProfileByID(userId, userUpdateRequest.getName(), userUpdateRequest.getUsername(), userUpdateRequest.getEmail(), userUpdateRequest.getGender());
                     return ApiResponse.<UserUpdateRequest>ok(UserUpdateRequest.class.getSimpleName())
-                            .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
+                            .setResponseMsg("Your account activated successfully")
                             .setData(new UserUpdateRequest(userId, userUpdateRequest.getName(), userUpdateRequest.getUsername(), userUpdateRequest.getEmail(), userUpdateRequest.getImg(), userUpdateRequest.getGender()));
                 }
             } else {
@@ -218,4 +220,26 @@ public class UsersController {
             return ApiResponse.setError(e.getMessage());
         }
     }
+
+    @GetMapping("get-notification-by-userId")
+    public ApiResponse<List<GetNotificationResponse>> getNotificationByUserId(){
+            Integer userId= AuthRestController.user_id;
+
+        try {
+            if (userId.equals(0)){
+                return ApiResponse.<List<GetNotificationResponse>>notFound(GetNotificationResponse.class.getSimpleName())
+                        .setResponseMsg("Unauthorized!");
+
+            }else {
+                List<GetNotificationResponse> getNotificationResponse=usersRepository.getNotificationByUserId(userId);
+                return ApiResponse.<List<GetNotificationResponse>>ok(GetNotificationResponse.class.getSimpleName())
+                        .setResponseMsg("Get notification successfully")
+                        .setData(getNotificationResponse);
+            }
+        }catch (Exception e){
+            return ApiResponse.setError(e.getMessage());
+        }
+
+    }
+
 }
