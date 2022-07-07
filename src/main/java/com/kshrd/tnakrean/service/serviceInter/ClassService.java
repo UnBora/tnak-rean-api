@@ -14,7 +14,7 @@ public interface ClassService {
     Boolean deleteClass(Integer classId);
 
     //    Update Class
-    void UpdateClass(Integer id, String className);
+    void UpdateClass(Integer id, String className,String image);
 
     //Get Class
     List<GetClassRequest> getAllClass();

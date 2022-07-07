@@ -16,4 +16,5 @@ public class ClassUpdateResponse {
     Integer id;
     @NotBlank(message = "{validation.className.notEmpty}")
     String classname;
+    String image;
 }
