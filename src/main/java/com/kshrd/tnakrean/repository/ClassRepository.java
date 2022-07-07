@@ -41,7 +41,7 @@ public interface ClassRepository {
     Boolean checkIfClassRoomDetailExists(Integer id);
 
     // get By TeacherUserId
-    @Select("SELECT c.id,c.class_name, \n" +
+    @Select("SELECT c.id,c.class_name, image, \n" +
             "(SELECT count(st.id) FROM student st \n" +
             "JOIN users u ON st.user_id = u.id\n" +
             "WHERE class_id = t.class_id AND status = 2) \n" +

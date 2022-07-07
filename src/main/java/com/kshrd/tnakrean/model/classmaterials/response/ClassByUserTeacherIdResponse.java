@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 public class ClassByUserTeacherIdResponse {
     Integer classId;
     String className;
+    String image;
     Integer totalStudentInClass;
 
 }
