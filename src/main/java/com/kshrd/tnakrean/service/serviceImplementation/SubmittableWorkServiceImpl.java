@@ -4,10 +4,7 @@ package com.kshrd.tnakrean.service.serviceImplementation;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateClassClassroomRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateDeadlineRequest;
-import com.kshrd.tnakrean.model.classmaterials.response.SubmittableWorkByClassResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.SubmittableWorkResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.UpComingSubmittableWorkResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.*;
 import com.kshrd.tnakrean.repository.SubmittableWorkRepository;
 import com.kshrd.tnakrean.service.serviceInter.SubmittableService;
 import org.springframework.stereotype.Service;
@@ -70,5 +67,10 @@ public class SubmittableWorkServiceImpl implements SubmittableService {
     @Override
     public SubmittableWorkUpdateClassClassroomRequest updateClassClassroom(SubmittableWorkUpdateClassClassroomRequest submittableWorkUpdateClassClassroomRequest) {
         return submittableWorkRepository.updateClassClassroom(submittableWorkUpdateClassClassroomRequest);
+    }
+
+    @Override
+    public List<SubmittableWorkByTeacherResponse> getByTeacherUserId(Integer user_id) {
+        return submittableWorkRepository.getByTeacherUserId(user_id);
     }
 }

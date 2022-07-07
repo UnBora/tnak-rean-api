@@ -49,7 +49,7 @@ public class ClassMaterialImp implements ClassMaterialService {
     }
 
     @Override
-    public List<ClassMaterialResponse> getAllClassMaterialByTeacherUserId(Integer user_id) {
+    public List<ClassMaterialByTeacherResponse> getAllClassMaterialByTeacherUserId(Integer user_id) {
         return classMaterialRepository.getAllClassMaterialByTeacherUserId(user_id);
     }
 

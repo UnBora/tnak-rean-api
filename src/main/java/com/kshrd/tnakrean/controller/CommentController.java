@@ -190,28 +190,6 @@ public class CommentController {
         }
     }
 
-    @GetMapping("get-by-materialId-classroomId-classId")
-    ApiResponse<List<CommentByMaterialIdResponse>> getByMaterialId(
-            @RequestParam @Min(value = 1) Integer class_material_id,
-            @RequestParam @Min(value = 1) Integer classroom_id,
-            @RequestParam @Min(value = 1) Integer class_id
-    ) {
-        try {
-            List<CommentByMaterialIdResponse> commentResponses = commentServiceImp.getByMaterialId(class_material_id, class_id, classroom_id);
-            if (commentResponses.isEmpty()) {
-                return ApiResponse.<List<CommentByMaterialIdResponse>>notFound(CommentByMaterialIdResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
-                        .setData(commentResponses);
-            }
-            return ApiResponse.<List<CommentByMaterialIdResponse>>ok(CommentByMaterialIdResponse.class.getSimpleName())
-                    .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
-                    .setData(commentResponses);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ApiResponse.setError(e.getMessage());
-        }
-    }
-
     @GetMapping("get-count-comment-by-materialId-classroomId-classId")
     ApiResponse<CommentCountResponse> getCountComment(
             @RequestParam @Min(value = 1) Integer class_material_id,
@@ -229,6 +207,23 @@ public class CommentController {
                     .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
                     .setData(commentCount);
         } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
+    @GetMapping("get-by-materialId")
+    ApiResponse<List<CommentByMaterialResponse>> getByMaterialId(@RequestParam @Min(value = 1) Integer material_id) {
+        try {
+            List<CommentByMaterialResponse> commentResponses = commentServiceImp.getByClassMaterialId(material_id);
+            if (commentResponses.isEmpty()) {
+                return ApiResponse.<List<CommentByMaterialResponse>>notFound(CommentByMaterialResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setData(commentResponses);
+            }
+            return ApiResponse.<List<CommentByMaterialResponse>>ok(CommentByMaterialResponse.class.getSimpleName())
+                    .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+                    .setData(commentResponses);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
             return ApiResponse.setError(e.getMessage());
         }
     }

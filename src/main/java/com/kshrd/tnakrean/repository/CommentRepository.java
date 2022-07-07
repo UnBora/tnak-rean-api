@@ -47,13 +47,6 @@ public interface CommentRepository {
     @Result(property = "comment_id",column = "id")
     List<CommentByClassClassroomStudentResponse> getByClassClassroomStudent(Integer classroom_id, Integer class_id, Integer student_id);
 
-    // get By MaterialId
-    @Select("SELECT c.*, s.class_material_id, s.classroom_id, s.class_id FROM comment c " +
-            "JOIN class_materials_detail s ON c.class_materials_detail_id = s.id " +
-            "WHERE class_material_id = #{class_material_id} AND s.classroom_id = #{classroom_id} AND s.class_id = #{class_id}")
-    @Result(property = "comment_id",column = "id")
-    List<CommentByMaterialIdResponse> getByMaterialId(Integer class_material_id, Integer class_id, Integer classroom_id);
-
     // get By Student Id
     @Select("SELECT * FROM comment WHERE student_id = " +
             "(SELECT s.id FROM student s JOIN users u on  u.id = s.user_id WHERE u.id = #{userId}) ")
@@ -87,5 +80,11 @@ public interface CommentRepository {
     @Select("SELECT EXISTS(SELECT id FROM comment WHERE id = #{id})")
     boolean ifCommentIdExist(Integer id);
 
-
+ // get By ClassMaterialId
+    @Select("SELECT class_material_id, u.name , comment, comment_date FROM comment c " +
+            "JOIN class_materials_detail cmd ON c.class_materials_detail_id = cmd.id " +
+            "JOIN student st ON c.student_id = st.id AND st.class_id = cmd.class_id AND st.classroom_id = cmd.classroom_id\n" +
+            "JOIN users u ON st.user_id = u.id " +
+            "WHERE class_material_id = #{material_id}")
+    List<CommentByMaterialResponse> getByClassMaterialId(Integer material_id);
 }

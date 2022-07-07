@@ -4,10 +4,7 @@ import com.kshrd.tnakrean.configuration.JsonTypeHandler;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateClassClassroomRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateDeadlineRequest;
-import com.kshrd.tnakrean.model.classmaterials.response.SubmittableWorkByClassResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.SubmittableWorkResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.UpComingSubmittableWorkResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.*;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -96,4 +93,21 @@ public interface SubmittableWorkRepository {
 
     @Select("SELECT EXISTS(SELECT submittable_work_id FROM submitted_work WHERE submittable_work_id = #{submittable_work_id})")
     boolean findSubmittableIdInSubmiitedWork(Integer submittable_work_id);
+
+    // get By TeacherUserId
+    @Select("SELECT f.created_by ,saw.class_id, saw.id, material_id, title, description, score, assigned_date,deadline,\n" +
+            "(SELECT count(s.class_material_id) FROM comment c \n" +
+            "JOIN class_materials_detail s ON c.class_materials_detail_id = s.id \n" +
+            "WHERE class_material_id = material_id)\n" +
+            "FROM folder f\n" +
+            "JOIN class_materials_type cm ON f.material_type_id = cm.id\n" +
+            "JOIN class_material_folder cmf ON f.id = cmf.folder_id \n" +
+            "JOIN material_folder mf ON f.id = mf.folder_id\n" +
+            "JOIN class_materials clm ON mf.material_id = clm.id AND clm.class_materials_type_id = f.material_type_id\n" +
+            "JOIN class_materials_detail cmd ON clm.id = cmd.class_material_id AND cmd.class_id = cmf.class_id AND cmd.classroom_id = cmf.classroom_id\n" +
+            "JOIN submittable_work saw ON cmd.id = saw.class_materials_detail_id AND saw.class_id = cmd.class_id AND saw.classroom_id = cmd.classroom_id\n" +
+            "WHERE f.created_by = #{user_id} AND (class_materials_type_id = 3 OR class_materials_type_id = 4 OR class_materials_type_id = 2) ")
+    @Result(property = "total_comment", column = "count")
+    @Result(property = "submittable_work_id", column = "id")
+    List<SubmittableWorkByTeacherResponse> getByTeacherUserId(Integer user_id);
 }

@@ -3,10 +3,7 @@ package com.kshrd.tnakrean.service.serviceInter;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateClassClassroomRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateDeadlineRequest;
-import com.kshrd.tnakrean.model.classmaterials.response.SubmittableWorkByClassResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.SubmittableWorkResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.UpComingSubmittableWorkResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.*;
 
 import java.util.List;
 public interface SubmittableService {
@@ -28,4 +25,6 @@ public interface SubmittableService {
     List<SubmittableWorkByClassResponse> getByClassIdAndClassId(Integer classroom_id, Integer class_id);
 
     SubmittableWorkUpdateClassClassroomRequest updateClassClassroom(SubmittableWorkUpdateClassClassroomRequest submittableWorkUpdateClassClassroomRequest);
+
+    List<SubmittableWorkByTeacherResponse> getByTeacherUserId(Integer user_id);
 }

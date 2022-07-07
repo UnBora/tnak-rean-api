@@ -18,11 +18,12 @@ public interface CommentService {
     CommentUpdateRequest update(CommentUpdateRequest commentUpdateRequest);
 
     List<CommentByClassClassroomStudentResponse> getByClassClassroomStudent(Integer classroom_id, Integer class_id, Integer student_id);
-    List<CommentByMaterialIdResponse> getByMaterialId(Integer class_material_id, Integer class_id, Integer classroom_id);
 
     List<CommentResponse> getByStudentId(Integer userId);
 
     List<CommentByTeacherResponse> getByTecherId(Integer userId);
 
     CommentCountResponse getCountComment(Integer class_material_id, Integer class_id, Integer classroom_id);
+
+    List<CommentByMaterialResponse> getByClassMaterialId(Integer material_id);
 }

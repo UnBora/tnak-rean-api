@@ -1,9 +1,9 @@
 package com.kshrd.tnakrean.repository;
 
 
-import com.kshrd.tnakrean.configuration.JsonTypeHandler;
 import com.kshrd.tnakrean.model.classmaterials.request.FolderRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.FolderByClassResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.FolderByTeacherResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.FolderDetailResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.FolderResponse;
 import com.kshrd.tnakrean.repository.provider.FolderProvider;
@@ -33,16 +33,6 @@ public interface FolderRepository {
             "WHERE material_type_id = 1 AND classroom_id = #{classRoomId} AND class_id = #{classId}")
     List<FolderByClassResponse> getCourseFolderByClassId(int classId, int classRoomId);
 
-    @Select("SELECT f.folder_name,f.id ,f.parent_id FROM class_materials cm " +
-            "INNER JOIN class_materials_detail cmd on cm.id = cmd.class_material_id " +
-            "INNER JOIN folder_detail fd on cmd.id = fd.class_materials_detail_id " +
-            "INNER JOIN folder f on fd.folder_id = f.id WHERE cm.created_by = #{teacherId}")
-    @Result(property = "content", column = "content", typeHandler = JsonTypeHandler.class)
-    @Result(property = "id", column = "id")
-    @Result(property = "folderDetailResponseList", column = "id", many = @Many(
-            select = "getFolderDetail"
-    ))
-    List<FolderResponse> getListFolderByTeacherId(int teacherId);
     @Select("SELECT cm.id, cm.title, cm.content, cm.description, cm.created_by, cmt.type" +
             " from folder_detail fd " +
             " JOIN class_materials_detail cmd on fd.class_materials_detail_id = cmd.id" +
@@ -56,13 +46,11 @@ public interface FolderRepository {
     FolderResponse deleteByParentId(Integer parent_id);
 
     // get Course Folder ByTeacher
-    @Select("SELECT  f.id, f.parent_id, f.folder_name  FROM folder f \n" +
-            "JOIN folder_detail fd ON f.id = fd.folder_id\n" +
-            "JOIN class_materials_detail cd ON fd.class_materials_detail_id = cd.id\n" +
-            "JOIN class_materials cm ON cd.class_material_id = cm.id\n" +
-            "JOIN class_materials_type mt ON cm.class_materials_type_id = mt.id\n" +
-            "WHERE f.created_by = #{user_id} AND class_materials_type_id = 1 AND classroom_id = #{classroom_id}")
-    List<FolderResponse> getCourseFolderByTeacher(Integer user_id, Integer classroom_id);
+    @Select("SELECT f.id, created_by, folder_name,f.parent_id,class_id  FROM folder f \n" +
+            "JOIN class_material_folder cmf ON f.id = cmf.folder_id\n" +
+            "WHERE created_by = #{user_id} AND material_type_id = 1 ")
+    @Result(property = "folder_id", column = "id")
+    List<FolderByTeacherResponse> getCourseFolderByTeacher(Integer user_id);
 
     // get ClassWork Folder ByClassId
     @Select("SELECT folder_id, type ,folder_name, f.parent_id, class_id FROM folder f\n" +
@@ -70,4 +58,11 @@ public interface FolderRepository {
             "JOIN class_material_folder cmf ON f.id = cmf.folder_id \n" +
             "WHERE (material_type_id = 3 OR material_type_id = 4) AND classroom_id = #{classRoomId} AND class_id = #{classId}")
     List<FolderByClassResponse> getClassWorkFolderByClassId(Integer classId, Integer classRoomId);
+
+    // get Classwork Folder By teacherUserId
+    @Select("SELECT f.id, created_by, folder_name,f.parent_id,class_id FROM folder f \n" +
+            "JOIN class_material_folder cmf ON f.id = cmf.folder_id\n" +
+            "WHERE created_by = #{user_id} AND (material_type_id = 4 OR material_type_id = 3 OR material_type_id = 2)")
+    @Result(property = "folder_id", column = "id")
+    List<FolderByTeacherResponse> getClassworkFolderByteacherUserId(int user_id);
 }
