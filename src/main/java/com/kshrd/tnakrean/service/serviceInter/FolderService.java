@@ -3,6 +3,7 @@ package com.kshrd.tnakrean.service.serviceInter;
 
 import com.kshrd.tnakrean.model.classmaterials.request.FolderRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.FolderByClassResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.FolderByTeacherResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.FolderResponse;
 
 import java.util.List;
@@ -17,12 +18,11 @@ public interface FolderService {
     FolderResponse getFolderById(int id);
 
     List<FolderByClassResponse> getCourseFolderByClassId(int id, int classRoomId);
-
-    List<FolderResponse> getListFolderByTeacherId(int teacherId);
+    List<FolderByTeacherResponse> getClassworkFolderByteacherUserId(int user_id);
 
     FolderResponse deleteByParentId(Integer parent_id);
 
-    List<FolderResponse> getCourseFolderByTeacher(Integer user_id, Integer classroom_id);
+    List<FolderByTeacherResponse> getCourseFolderByTeacher(Integer user_id);
 
     List<FolderByClassResponse> getClassWorkFolderByClassId(Integer classId, Integer classRoomId);
 }

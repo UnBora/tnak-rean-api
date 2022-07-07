@@ -5,6 +5,7 @@ import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.request.FolderDetailRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.FolderRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.FolderByClassResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.FolderByTeacherResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.FolderDetailResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.FolderResponse;
 import com.kshrd.tnakrean.repository.FolderRepository;
@@ -94,23 +95,6 @@ public class FolderController {
         }
     }
 
-
-    @GetMapping("/get-folders-by-teacher-id")
-    ApiResponse<List<FolderResponse>> getFolderByClassId(@RequestParam int id) {
-        List<FolderResponse> responseList = folderServiceImp.getListFolderByTeacherId(id);
-        try {
-            if (!responseList.isEmpty()) {
-                return ApiResponse.<List<FolderResponse>>
-                                ok(FolderResponse.class.getSimpleName()).
-                        setData(responseList)
-                        .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage());
-            }
-            return ApiResponse.notFound(FolderResponse.class.getSimpleName());
-        } catch (Exception e) {
-            return ApiResponse.badRequest(FolderResponse.class.getSimpleName());
-        }
-    }
-
     @GetMapping("/get-folder-detail-by-folder-id")
     ApiResponse<List<FolderDetailResponse>> getFolderDetail(@RequestParam int id) {
         List<FolderDetailResponse> responseList = folderRepository.getFolderDetail(id);
@@ -140,18 +124,37 @@ public class FolderController {
     }
 
     @GetMapping("/get-courseFolder-by-teacherUserId")
-    ApiResponse<List<FolderResponse>> getCourseFolderByTeacher(@RequestParam @Min(value = 1) Integer classroom_id
-    ) {
+    ApiResponse<List<FolderByTeacherResponse>> getCourseFolderByTeacher() {
         Integer user_id = AuthRestController.user_id;
-        List<FolderResponse> responseList = folderServiceImp.getCourseFolderByTeacher(user_id,classroom_id);
+        List<FolderByTeacherResponse> responseList = folderServiceImp.getCourseFolderByTeacher(user_id);
         try {
             if (!responseList.isEmpty()) {
-                return ApiResponse.<List<FolderResponse>>
+                return ApiResponse.<List<FolderByTeacherResponse>>
                                 ok(FolderResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
                         .setData(responseList);
             }
-            return ApiResponse.<List<FolderResponse>>notFound(FolderResponse.class.getSimpleName()).setData(responseList);
+            return ApiResponse.<List<FolderByTeacherResponse>>notFound(FolderResponse.class.getSimpleName())
+                    .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                    .setData(responseList);
+        } catch (Exception e) {
+            return ApiResponse.badRequest(FolderResponse.class.getSimpleName());
+        }
+    }
+
+    @GetMapping("/get-classworkFolder-by-teacherUserId")
+    ApiResponse<List<FolderByTeacherResponse>> getClassworkFolderByteacherUserId() {
+        Integer user_id = AuthRestController.user_id;
+        List<FolderByTeacherResponse> responseList = folderServiceImp.getClassworkFolderByteacherUserId(user_id);
+        try {
+            if (!responseList.isEmpty()) {
+                return ApiResponse.<List<FolderByTeacherResponse>>ok(FolderByTeacherResponse.class.getSimpleName())
+                        .setData(responseList)
+                        .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage());
+            }
+            return ApiResponse.<List<FolderByTeacherResponse>>notFound(FolderByTeacherResponse.class.getSimpleName())
+                    .setData(responseList)
+                    .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
         } catch (Exception e) {
             return ApiResponse.badRequest(FolderResponse.class.getSimpleName());
         }
