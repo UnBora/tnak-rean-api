@@ -48,11 +48,6 @@ public class CommentServiceImp implements CommentService {
     }
 
     @Override
-    public List<CommentByMaterialIdResponse> getByMaterialId(Integer class_material_id, Integer class_id, Integer classroom_id) {
-        return commentRepository.getByMaterialId(class_material_id,class_id,classroom_id);
-    }
-
-    @Override
     public List<CommentResponse> getByStudentId(Integer userId) {
         return commentRepository.getByStudentId(userId);
     }
@@ -65,6 +60,11 @@ public class CommentServiceImp implements CommentService {
     @Override
     public CommentCountResponse getCountComment(Integer class_material_id, Integer class_id, Integer classroom_id) {
         return commentRepository.getCountComment(class_id,class_material_id,classroom_id);
+    }
+
+    @Override
+    public List<CommentByMaterialResponse> getByClassMaterialId(Integer material_id) {
+        return commentRepository.getByClassMaterialId(material_id);
     }
 
 }
