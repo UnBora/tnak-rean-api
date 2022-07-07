@@ -19,7 +19,7 @@ public class ClassServiceImp implements ClassService {
     }
 
     @Override
-    public void insertClass(String class_name, String img) {
+    public void insertClass( String class_name, String img) {
         classRepository.insertClass(class_name, img);
     }
 
@@ -30,8 +30,8 @@ public class ClassServiceImp implements ClassService {
     }
 
     @Override
-    public void UpdateClass(Integer id, String className) {
-        classRepository.updateClass(id, className);
+    public void UpdateClass(Integer id, String className,String image) {
+        classRepository.updateClass(id, className,image);
     }
 
     @Override
