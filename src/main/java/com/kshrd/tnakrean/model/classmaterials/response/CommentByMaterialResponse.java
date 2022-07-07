@@ -13,6 +13,7 @@ import java.sql.Date;
 public class CommentByMaterialResponse {
     private Integer class_material_id;
     private String name;
+    private String img;
     private String comment;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date comment_date;

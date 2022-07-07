@@ -81,7 +81,7 @@ public interface CommentRepository {
     boolean ifCommentIdExist(Integer id);
 
  // get By ClassMaterialId
-    @Select("SELECT class_material_id, u.name , comment, comment_date FROM comment c " +
+    @Select("SELECT class_material_id, u.name ,img, comment, comment_date FROM comment c " +
             "JOIN class_materials_detail cmd ON c.class_materials_detail_id = cmd.id " +
             "JOIN student st ON c.student_id = st.id AND st.class_id = cmd.class_id AND st.classroom_id = cmd.classroom_id\n" +
             "JOIN users u ON st.user_id = u.id " +

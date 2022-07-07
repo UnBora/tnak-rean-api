@@ -118,6 +118,7 @@ public class SubmittedWorkController {
                 return ApiResponse.<SubmittedWorkStudentWorkRequest>notFound(SubmittedWorkStudentWorkRequest.class.getSimpleName())
                         .setResponseMsg("The Submittable_work_id: " + submittedWorkStudentWorkRequest.getSubmittable_work_id() + " doesn't exist in the table");
             } else {
+
                 submittedWorkImpl.addSubmittedWork(submittedWorkStudentWorkRequest, userId);
                 return ApiResponse.<SubmittedWorkStudentWorkRequest>ok(SubmittedWorkStudentWorkRequest.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
