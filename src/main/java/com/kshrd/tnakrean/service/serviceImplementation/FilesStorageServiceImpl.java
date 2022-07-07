@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class FilesStorageServiceImpl implements FilesStorageService {
-    private final Path root = Paths.get("src/main/resources/images");
+    private final Path root = Paths.get("/resources/images");
     String serverPath = "/root/ssh/resources/tnakrean";
 //    @Value("${base.url}")
 //    String fileurl;
