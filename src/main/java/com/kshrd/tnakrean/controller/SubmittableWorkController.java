@@ -226,12 +226,11 @@ public class SubmittableWorkController {
             Integer user_id = AuthRestController.user_id;
             List<SubmittableWorkByTeacherResponse> submittableWorkResponses = submittableWorkService.getByTeacherUserId(user_id);
             if (submittableWorkResponses.isEmpty()) {
-                return ApiResponse.<List<SubmittableWorkByTeacherResponse>>notFound(SubmittableWorkByTeacherResponse.class
-                                .getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
+                return ApiResponse.<List<SubmittableWorkByTeacherResponse>>notFound(SubmittableWorkByTeacherResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setData(submittableWorkResponses);
             }
-            return ApiResponse.<List<SubmittableWorkByTeacherResponse>>ok(SubmittableWorkByTeacherResponse.class
-                            .getSimpleName())
+            return ApiResponse.<List<SubmittableWorkByTeacherResponse>>ok(SubmittableWorkByTeacherResponse.class.getSimpleName())
                     .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
                     .setData(submittableWorkResponses);
         } catch (Exception e) {

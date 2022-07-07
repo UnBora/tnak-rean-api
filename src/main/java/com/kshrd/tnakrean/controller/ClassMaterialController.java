@@ -162,11 +162,11 @@ public class ClassMaterialController {
             Integer user_id = AuthRestController.user_id;
             List<ClassMaterialByTeacherResponse> classMaterialResponses = classMaterialServiceImp.getAllClassMaterialByTeacherUserId(user_id);
             if (classMaterialResponses.isEmpty()) {
-                return ApiResponse.<List<ClassMaterialByTeacherResponse>>notFound(ClassMaterialResponse.class.getSimpleName())
+                return ApiResponse.<List<ClassMaterialByTeacherResponse>>notFound(ClassMaterialByTeacherResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
                         .setData(classMaterialResponses);
             }
-            return ApiResponse.<List<ClassMaterialByTeacherResponse>>ok(ClassMaterialResponse.class.getSimpleName())
+            return ApiResponse.<List<ClassMaterialByTeacherResponse>>ok(ClassMaterialByTeacherResponse.class.getSimpleName())
                     .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
                     .setData(classMaterialResponses);
         } catch (Exception e) {
