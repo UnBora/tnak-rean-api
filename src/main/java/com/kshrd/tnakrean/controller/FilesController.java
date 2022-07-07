@@ -1,5 +1,6 @@
 package com.kshrd.tnakrean.controller;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
+
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -32,7 +35,9 @@ public class FilesController {
     ApiResponse<FileInfo> uploadFile(@RequestParam("file") MultipartFile file) {
         try {
             String fileName = storageService.save(file);
-            return ApiResponse.<FileInfo>ok(FileInfo.class.getSimpleName()).setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage()).setData(new FileInfo(fileName));
+            Resource resource = storageService.load(fileName);
+            String url = resource.getFile().getAbsolutePath();
+            return ApiResponse.<FileInfo>ok(FileInfo.class.getSimpleName()).setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage()).setData(new FileInfo(url));
         } catch (Exception e) {
             return ApiResponse.<FileInfo>setError(e.getMessage()).setData(new FileInfo());
         }
@@ -51,13 +56,36 @@ public class FilesController {
         return ApiResponse.<List<FileInfo>>ok(FileInfo.class.getSimpleName()).setData(fileInfos);
     }
 
-
     @GetMapping("/{filename:.+}")
-    public ResponseEntity<Resource> getFile(@PathVariable String filename) {
-        Resource file = storageService.load(filename);
+    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
+        // Load file as Resource
+        Resource resource = storageService.load(fileName);
+
+        // Try to determine file's content type
+        String contentType = null;
+        try {
+            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+        } catch (IOException ex) {
+          //  loggers.info("Could not determine file type.");
+        }
+
+        // Fallback to the default content type if type could not be determined
+        if(contentType == null) {
+            contentType = "application/octet-stream";
+        }
+
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
     }
+
+//    @GetMapping("/{filename:.+}")
+//    public ResponseEntity<Resource> getFile(@PathVariable String filename) {
+//        Resource file = storageService.load(filename);
+//        return ResponseEntity.ok()
+//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+//    }
 
 //    @GetMapping("/files/{filename:.+}")
 //    public ApiResponse<FileInfo> getFiles(@PathVariable String filename) {

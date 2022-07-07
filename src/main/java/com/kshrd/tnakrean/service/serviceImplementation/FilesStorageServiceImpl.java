@@ -39,7 +39,6 @@ public class FilesStorageServiceImpl implements FilesStorageService {
             assert filename != null;
             String[] fileParts = filename.split("\\.");
             String extension = fileParts[1];
-
             filename = UUID.randomUUID() + "." + extension;
             Files.copy(file.getInputStream(), this.root.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
@@ -76,4 +75,5 @@ public class FilesStorageServiceImpl implements FilesStorageService {
             throw new RuntimeException("Could not load the files!");
         }
     }
+
 }
