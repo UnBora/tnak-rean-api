@@ -66,11 +66,18 @@ public interface ClassMaterialRepository {
     List<ClassMaterialResponse> getClassMaterialByCreatedByAndMaterialType(Integer created_by, Integer class_materials_type_id);
 
     // Get All Class Material By teacher User Id
-    @Select("SELECT * FROM class_materials WHERE created_by = #{user_id}")
-    @Result(property = "class_material_id",column = "id")
-    @Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class)
-    @Result(property = "classMaterialType", column = "class_materials_type_id", one = @One(select = "getClassMaterialTypeById"))
-    List<ClassMaterialResponse> getAllClassMaterialByTeacherUserId(@Param("user_id") Integer user_id);
+    @Select("SELECT class_id, material_id, title,description,f.created_by, " +
+            " (SELECT count(*) FROM comment c \n" +
+            "JOIN class_materials_detail s ON c.class_materials_detail_id = s.id \n" +
+            "WHERE class_material_id = mf.material_id) " +
+            "FROM folder f\n" +
+            "JOIN class_materials_type cm ON f.material_type_id = cm.id\n" +
+            "JOIN class_material_folder cmf ON f.id = cmf.folder_id \n" +
+            "JOIN material_folder mf ON f.id = mf.folder_id\n" +
+            "JOIN class_materials clm ON mf.material_id = clm.id " +
+            "WHERE f.created_by = #{user_id} AND class_materials_type_id = 1")
+    @Result(property = "total_comment", column = "count")
+    List<ClassMaterialByTeacherResponse> getAllClassMaterialByTeacherUserId(@Param("user_id") Integer user_id);
 
     // Get All Class Material class_materials_type_id
     @Select("SELECT * FROM class_materials WHERE class_materials_type_id = #{class_materials_type_id}")

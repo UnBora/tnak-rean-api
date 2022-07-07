@@ -5,10 +5,7 @@ import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateClassClassroomRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateDeadlineRequest;
-import com.kshrd.tnakrean.model.classmaterials.response.SubmittableWorkByClassResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.SubmittableWorkResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.SubmittedWorkResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.UpComingSubmittableWorkResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.*;
 import com.kshrd.tnakrean.repository.SubmittableWorkRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.SubmittableWorkServiceImpl;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -215,6 +212,25 @@ public class SubmittableWorkController {
                         .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
             }
             return ApiResponse.<List<SubmittableWorkByClassResponse>>ok(SubmittableWorkByClassResponse.class
+                            .getSimpleName())
+                    .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+                    .setData(submittableWorkResponses);
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
+
+    @GetMapping("get-by-teacherUserId")
+    ApiResponse<List<SubmittableWorkByTeacherResponse>> getByTeacherUserId() {
+        try {
+            Integer user_id = AuthRestController.user_id;
+            List<SubmittableWorkByTeacherResponse> submittableWorkResponses = submittableWorkService.getByTeacherUserId(user_id);
+            if (submittableWorkResponses.isEmpty()) {
+                return ApiResponse.<List<SubmittableWorkByTeacherResponse>>notFound(SubmittableWorkByTeacherResponse.class
+                                .getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
+            }
+            return ApiResponse.<List<SubmittableWorkByTeacherResponse>>ok(SubmittableWorkByTeacherResponse.class
                             .getSimpleName())
                     .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
                     .setData(submittableWorkResponses);

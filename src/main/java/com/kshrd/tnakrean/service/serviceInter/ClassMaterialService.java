@@ -21,7 +21,7 @@ public interface ClassMaterialService {
 
     List<ClassMaterialResponse> getClassMaterialByCreatedByAndMaterialType(Integer created_by, Integer class_materials_type_id);
 
-    List<ClassMaterialResponse> getAllClassMaterialByTeacherUserId(Integer user_id);
+    List<ClassMaterialByTeacherResponse> getAllClassMaterialByTeacherUserId(Integer user_id);
 
     List<ClassMaterialResponse> getClassMaterialByMaterialTypeId(Integer class_materials_type_id);
 
