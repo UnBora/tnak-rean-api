@@ -8,7 +8,7 @@ import java.util.List;
 public interface ClassService {
 
     //    Insert Class to Class Table
-    void insertClass(String class_name);
+    void insertClass(String class_name, String img);
 
     //    Delete Class fromm Class Table
     Boolean deleteClass(Integer classId);

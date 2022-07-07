@@ -19,8 +19,8 @@ public class ClassServiceImp implements ClassService {
     }
 
     @Override
-    public void insertClass(String class_name) {
-        classRepository.insertClass(class_name);
+    public void insertClass(String class_name, String img) {
+        classRepository.insertClass(class_name, img);
     }
 
     @Override

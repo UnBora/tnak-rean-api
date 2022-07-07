@@ -39,16 +39,16 @@ public class ClassController {
             if (classInertResponse.equals(null)) {
                 return ApiResponse.<ClassInertResponse>setError(ClassInertResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Error.INSERT_ERROR.getMessage())
-                        .setData(new ClassInertResponse(classInertResponse.getClassName()));
+                        .setData(new ClassInertResponse(classInertResponse.getClassName(), classInertResponse.getImage()));
             } else if (classNameCheck.equals(true)) {
                 return ApiResponse.<ClassInertResponse>duplicateEntry(ClassInertResponse.class.getSimpleName())
                         .setResponseMsg("The class name already exists!")
-                        .setData(new ClassInertResponse(classInertResponse.getClassName()));
+                        .setData(new ClassInertResponse(classInertResponse.getClassName(),classInertResponse.getImage()));
             } else {
-                classServiceImp.insertClass(classInertResponse.getClassName().toUpperCase());
+                classServiceImp.insertClass(classInertResponse.getClassName().toUpperCase(), classInertResponse.getImage());
                 return ApiResponse.<ClassInertResponse>ok(ClassInertResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
-                        .setData(new ClassInertResponse(classInertResponse.getClassName()));
+                        .setData(new ClassInertResponse(classInertResponse.getClassName(),classInertResponse.getImage()));
             }
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());

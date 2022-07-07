@@ -1,6 +1,5 @@
 package com.kshrd.tnakrean.controller;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.user.request.UserDeactivateAccountRequest;
@@ -11,7 +10,6 @@ import com.kshrd.tnakrean.model.user.response.GetNotificationResponse;
 import com.kshrd.tnakrean.repository.UsersRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.UserServiceImp;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -85,6 +83,7 @@ public class UsersController {
             return ApiResponse.setError(e.getMessage());
         }
     }
+
     @PutMapping("/deactivate-account")
     public ApiResponse<UserDeactivateAccountRequest> deactivateAccount(
             @RequestParam @Size(min = 3, max = 16,message = "{validation.password.sizenotlesthen3}") String password,
@@ -219,11 +218,9 @@ public class UsersController {
             return ApiResponse.setError(e.getMessage());
         }
     }
-
     @GetMapping("get-notification-by-userId")
     public ApiResponse<List<GetNotificationResponse>> getNotificationByUserId(){
             Integer userId= AuthRestController.user_id;
-
         try {
             if (userId.equals(0)){
                 return ApiResponse.<List<GetNotificationResponse>>notFound(GetNotificationResponse.class.getSimpleName())
