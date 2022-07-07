@@ -21,8 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class FilesStorageServiceImpl implements FilesStorageService {
     private final Path root = Paths.get("src/main/resources/images");
     String serverPath = "/root/ssh/resources/tnakrean";
-    @Value("${base.url}")
-    String fileurl;
+//    @Value("${base.url}")
+//    String fileurl;
     @Override
     public void init() {
         try {
@@ -39,9 +39,9 @@ public class FilesStorageServiceImpl implements FilesStorageService {
             assert filename != null;
             String[] fileParts = filename.split("\\.");
             String extension = fileParts[1];
-            Path path = Paths.get(fileurl);
+
             filename = UUID.randomUUID() + "." + extension;
-            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(file.getInputStream(), this.root.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
         }
