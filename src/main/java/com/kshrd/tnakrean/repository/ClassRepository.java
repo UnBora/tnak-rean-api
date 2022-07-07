@@ -10,8 +10,8 @@ import java.util.List;
 public interface ClassRepository {
 
     //    Insert Class
-    @Insert("INSERT INTO class (class_name)VALUES (#{class_name})")
-    void insertClass(@Param("class_name") String class_name);
+    @Insert("INSERT INTO class (class_name, image)VALUES (#{class_name}, #{image})")
+    void insertClass(@Param("class_name") String class_name, String image);
 
     //    Delete Class
     @Delete("DELETE  from class where id= #{class_id}")

@@ -12,4 +12,5 @@ import javax.validation.constraints.NotBlank;
 public class ClassInertResponse {
     @NotBlank(message = "{validation.className.notEmpty}")
     String className;
+    String image;
 }
