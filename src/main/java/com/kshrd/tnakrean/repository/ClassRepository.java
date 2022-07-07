@@ -18,8 +18,8 @@ public interface ClassRepository {
     boolean deleteClass(@Param("class_id") Integer class_id);
 
     //    Update Class name
-    @Update("UPDATE class SET class_name = #{class_name} WHERE id=#{id}")
-    void updateClass(@Param("id") Integer id, @Param("class_name") String class_name);
+    @Update("UPDATE class SET class_name = #{class_name}, image=#{image} WHERE id=#{id}")
+    void updateClass(@Param("id") Integer id, @Param("class_name") String class_name, String image);
 
     @Select("select exists (select * from class where id = #{id})")
     Boolean checkIfClassExists(Integer id);
@@ -41,15 +41,19 @@ public interface ClassRepository {
     Boolean checkIfClassRoomDetailExists(Integer id);
 
     // get By TeacherUserId
-    @Select("SELECT c.id,c.class_name, \n" +
-            "(SELECT count(st.id) FROM student st \n" +
-            "JOIN users u ON st.user_id = u.id\n" +
-            "WHERE class_id = t.class_id AND status = 2) \n" +
-            "FROM class c \n" +
-            "JOIN teacher t ON c.id = t.class_id\n" +
+    @Select("SELECT c.id,c.class_name, " +
+            "(SELECT count(st.id) FROM student st " +
+            "JOIN users u ON st.user_id = u.id " +
+            "WHERE class_id = t.class_id AND status = 2) " +
+            "FROM class c " +
+            "JOIN teacher t ON c.id = t.class_id " +
             "WHERE user_id = #{user_id} AND classroom_id = #{classroom_id}")
     @Result(property = "classId",column = "id")
     @Result(property = "className",column = "class_name")
     @Result(property = "totalStudentInClass",column = "count")
     List<ClassByUserTeacherIdResponse> getByTeacherUserId(Integer user_id, Integer classroom_id);
+
+//    Catch name
+    @Select("select class_name from class where id = #{id}")
+    String catchClassName(Integer id);
 }

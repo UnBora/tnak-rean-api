@@ -92,6 +92,8 @@ public class ClassController {
     public ApiResponse<ClassUpdateResponse> updateClassName(@RequestBody @Valid ClassUpdateResponse classUpdateResponse) {
         Boolean a = classRepository.checkIfClassExists(classUpdateResponse.getId());
         Boolean nameCheck = classRepository.checkIfClassExistsDuplecateClassName(classUpdateResponse.getClassname().toUpperCase());
+        String oldClassName= classRepository.catchClassName(classUpdateResponse.getId());
+        String newClassName= classUpdateResponse.getClassname();
         try {
             if (classUpdateResponse.equals(null)) {
                 return ApiResponse.<ClassUpdateResponse>setError(GetAllStudentResponse.class.getSimpleName())
@@ -99,16 +101,16 @@ public class ClassController {
             } else if (a.equals(false)) {
                 return ApiResponse.<ClassUpdateResponse>notFound(GetAllStudentResponse.class.getSimpleName())
                         .setResponseMsg("The Class ID:" + classUpdateResponse.getId() + " does not have!");
-            } else if (nameCheck.equals(true)) {
+            } else if (!(nameCheck.equals(true)&& (oldClassName.equalsIgnoreCase(newClassName)))) {
                 return ApiResponse.<ClassUpdateResponse>duplicateEntry(GetAllStudentResponse.class.getSimpleName())
                         .setResponseMsg("The class name already exists!");
             } else {
-                classServiceImp.UpdateClass(classUpdateResponse.getId(), classUpdateResponse.getClassname().toUpperCase());
-                String className = "Student ID: " + classUpdateResponse.getId() + " Class new name: " + classUpdateResponse.getClassname();
+                classServiceImp.UpdateClass(classUpdateResponse.getId(), classUpdateResponse.getClassname().toUpperCase(),classUpdateResponse.getImage());
+                String className = "Class ID: " + classUpdateResponse.getId() + " Class new name: " + classUpdateResponse.getClassname().toUpperCase();
                 return ApiResponse
                         .<ClassUpdateResponse>ok(className)
                         .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                        .setData(new ClassUpdateResponse(classUpdateResponse.getId(), classUpdateResponse.getClassname().toUpperCase()));
+                        .setData(new ClassUpdateResponse(classUpdateResponse.getId(), classUpdateResponse.getClassname().toUpperCase(),classUpdateResponse.getImage()));
             }
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
