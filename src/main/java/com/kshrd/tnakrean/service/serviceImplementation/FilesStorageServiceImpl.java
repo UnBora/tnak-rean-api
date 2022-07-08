@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class FilesStorageServiceImpl implements FilesStorageService {
-    private final Path root = Paths.get("/resources/images");
+    private final Path root = Paths.get("http://149.129.32.126/resources/images");
 
 
     @Override
