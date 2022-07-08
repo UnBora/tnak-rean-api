@@ -43,10 +43,10 @@ public class FileImplement implements FileService {
                     + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1);
             try {
                 Files.copy(file.getInputStream(), Paths.get(serverPath, fileDownloadUri));
-                Path filename = root.resolve(file.getName());
-                Resource resource = new UrlResource(filename.toUri());
-                System.out.println(resource.getFilename());
-                System.out.println("Upsolute path:"+resource.getFile().getAbsolutePath());
+//                Path filename = root.resolve(file.getName());
+//                Resource resource = new UrlResource(filename.toUri());
+//                System.out.println(resource.getFilename());
+//                System.out.println("Upsolute path:"+resource.getFile().getAbsolutePath());
                 return fileDownloadUri;
 
             } catch (IOException e) {
