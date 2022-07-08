@@ -35,54 +35,55 @@ public class ImageController {
     @Autowired
     FileService storageService;
 
-//    //Todo: Post New Image
+    //    //Todo: Post New Image
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity uploadMultiFile(@RequestPart(value = "files") MultipartFile[] files) {
         Map<String, Object> res = new HashMap<>();
         List<String> data = new ArrayList<>();
-        try{
-            for (MultipartFile file : files){
+        try {
+            for (MultipartFile file : files) {
                 String fileName = storageService.store(file);
-                data.add(imageUrl+fileName);
+                data.add(imageUrl + fileName);
                 String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                         .path("/download/")
-                     //  .path(name)
+                        //  .path(name)
                         .toUriString();
-                res.put("res",uri);
+                res.put("res", uri);
             }
 
-            res.put("message","You have uploaded image successfully");
-            res.put("status",true);
-            res.put("data",data);
+            res.put("message", "You have uploaded image successfully");
+            res.put("status", true);
+            res.put("data", data);
 
             return ResponseEntity.status(HttpStatus.OK).body(res);
         } catch (Exception e) {
-            res.put("message","Could not upload the file:");
-            res.put("status",false);
+            res.put("message", "Could not upload the file:");
+            res.put("status", false);
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(res);
         }
     }
 
-    @PostMapping(value = "/one",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/one", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity uploadFile(@RequestPart(value = "file") MultipartFile file, HttpServletRequest request) {
         Map<String, Object> res = new HashMap<>();
-        try{
+        try {
             String fileName = storageService.store(file);
-            res.put("message","You have uploaded image successfully");
-            res.put("status",true);
+            res.put("message", "You have uploaded image successfully");
+            res.put("status", true);
             Resource resource = new UrlResource(fileName);
 
 //            System.out.println(resource.getFile().getAbsolutePath());
             HttpHeaders headers = new HttpHeaders();
-                    new ServletContextResource(request.getServletContext(), "/WEB-INF/images/image-example.jpg");
-          //  res.put("data",resource.getFile().getAbsolutePath());
+            new ServletContextResource(request.getServletContext(), "/WEB-INF/images/image-example.jpg");
+            //  res.put("data",resource.getFile().getAbsolutePath());
             return ResponseEntity.status(HttpStatus.OK).body(res);
         } catch (Exception e) {
-            res.put("message","Could not upload the file:");
-            res.put("status",false);
+            res.put("message", "Could not upload the file:");
+            res.put("status", false);
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(res);
         }
     }
+
     @GetMapping("/")
     public String listAllFiles(Model model) {
 
