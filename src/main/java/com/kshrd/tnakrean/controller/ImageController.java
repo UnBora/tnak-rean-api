@@ -3,12 +3,15 @@ package com.kshrd.tnakrean.controller;
 import com.kshrd.tnakrean.service.serviceImplementation.FileImplement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,6 +60,9 @@ public class ImageController {
             res.put("message","You have uploaded image successfully");
             res.put("status",true);
             res.put("data",imageUrl+fileName);
+            Path filename = root.resolve(file.getName());
+            Resource resource = new UrlResource(filename.toUri());
+            System.out.println(resource.getFilename());
             return ResponseEntity.status(HttpStatus.OK).body(res);
         } catch (Exception e) {
             res.put("message","Could not upload the file:");
