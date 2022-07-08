@@ -56,7 +56,7 @@ public interface SubmittedWorkRepository {
     List<SubmittedWorkByStudentIdAndClassIdResponse> getByStudentIdAndClassId(Integer student_id, Integer class_id);
 
     // update score
-    @Select("UPDATE submitted_work SET status = 2, student_score = #{student_score} " +
+    @Select("UPDATE submitted_work SET status = 1, student_score = #{student_score} " +
             "WHERE id = #{submitted_work_id}  RETURNING * ")
     @Result(property = "submitted_work_id", column = "id")
     SubmittedWorkStudentScoreRequest insertScore(SubmittedWorkStudentScoreRequest submittedWorkStudentScoreRequest);
