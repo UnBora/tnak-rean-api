@@ -59,10 +59,9 @@ public class ImageController {
             String fileName = storageService.save(file);
             res.put("message","You have uploaded image successfully");
             res.put("status",true);
-            res.put("data",imageUrl+fileName);
-            Path filename = root.resolve(file.getName());
-            Resource resource = new UrlResource(filename.toUri());
-            System.out.println(resource.getFilename());
+            Resource resource = new UrlResource(fileName);
+            System.out.println(resource.getFile().getAbsolutePath());
+            res.put("data",resource.getFile().getAbsolutePath());
             return ResponseEntity.status(HttpStatus.OK).body(res);
         } catch (Exception e) {
             res.put("message","Could not upload the file:");
