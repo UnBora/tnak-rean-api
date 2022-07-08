@@ -19,7 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Min;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/student")
@@ -79,7 +81,7 @@ public class StudentController {
 
     @GetMapping("/get-student-by-classId")
     public ApiResponse<List<GetStudentByClassIDResponse>> getStudentByClassID(
-            @RequestParam @Min(value = 1, message = "{validation.classId.notNegative}") Integer class_id){
+            @RequestParam @Min(value = 1, message = "{validation.classId.notNegative}") Integer class_id) {
         try {
             Boolean checkClassIDAcdClassroomID = studentRepository.checkIfStudentclassIDClassroomIDExists(class_id);
             if (checkClassIDAcdClassroomID.equals(false)) {
@@ -94,6 +96,7 @@ public class StudentController {
             return ApiResponse.setError(e.getMessage());
         }
     }
+
     @PutMapping("leave-class")
     public ApiResponse<StudentLeaveClassRequest> studentLeaveClass(
             @RequestParam @Min(value = 1, message = "{validation.classroomId.notNegative}") Integer classroomId,
@@ -153,15 +156,18 @@ public class StudentController {
     }
 
     @GetMapping("get-student-request-by-classId")
-    public ApiResponse<List<StudentRequestClassResponse>> getRequestClass(
+    public ApiResponse<?> getRequestClass(
             @RequestParam @Min(value = 1) Integer classroom_id,
             @RequestParam @Min(value = 1) Integer class_id
     ) {
         List<StudentRequestClassResponse> studentRequestClassResponse = studentServiceImp.getRequestClass(classroom_id, class_id);
         try {
             if (studentRequestClassResponse.isEmpty()) {
-                return ApiResponse.<List<StudentRequestClassResponse>>notFound(StudentRequestClassResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
+                return ApiResponse.<Map>notFound(StudentRequestClassResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setData(new HashMap<String, Integer>() {{
+                            put("total_request", 0);
+                        }});
             }
             return ApiResponse.<List<StudentRequestClassResponse>>ok(StudentRequestClassResponse.class.getSimpleName())
                     .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
