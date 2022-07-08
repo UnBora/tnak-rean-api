@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.support.ServletContextResource;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.file.Path;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @CrossOrigin
 @RestController
@@ -48,7 +50,13 @@ public class ImageController {
             final Path root = Paths.get("/root/resources/images");
             Path file = root.resolve(root);
             Resource resource = new UrlResource(file.toUri());
-            res.put("resource",resource.getFile().getAbsolutePath());
+            List<String> filees = storageService.loadAll().map(
+                            path -> ServletUriComponentsBuilder.fromCurrentContextPath()
+                                    .path("/download/")
+                                    .path(path.getFileName().toString())
+                                    .toUriString())
+                    .collect(Collectors.toList());
+            res.put("resource",filees.get(0));
             res.put("message","You have uploaded image successfully");
             res.put("status",true);
             res.put("data",data);
@@ -69,6 +77,7 @@ public class ImageController {
             res.put("message","You have uploaded image successfully");
             res.put("status",true);
             Resource resource = new UrlResource(fileName);
+
 //            System.out.println(resource.getFile().getAbsolutePath());
             HttpHeaders headers = new HttpHeaders();
                     new ServletContextResource(request.getServletContext(), "/WEB-INF/images/image-example.jpg");
