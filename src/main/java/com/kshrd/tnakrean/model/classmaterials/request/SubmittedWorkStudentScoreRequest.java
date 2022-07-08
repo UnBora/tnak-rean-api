@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class SubmittedWorkStudentScoreRequest {
     @Min(value = 1 , message="{validation.id.notNegative}")
     private Integer submitted_work_id;
-    @Min (message = "{validation.score.notEmpty}", value = 0)
+    @Min (value = 0, message = "{validation.score.notEmpty}")
     @Max(value = 1000, message = "{validation.score.notEmpty}")
     private Float student_score;
 

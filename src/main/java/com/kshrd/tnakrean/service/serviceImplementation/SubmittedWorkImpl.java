@@ -66,12 +66,12 @@ public class SubmittedWorkImpl implements SubmittedWorkService {
     }
 
     @Override
-    public List<StudentScoreByClassroomIdAndClassIdResponse> getStuScoreByClassClassroom(Integer classroomId, Integer classId, Integer submitted_work_id) {
-        return submittedWorkRepository.getStuScoreByClassClassroom(classroomId,classId,submitted_work_id);
+    public List<SubmittedWorkResultByClassResponse> getByClassId(Integer class_id, Integer material_id) {
+        return submittedWorkRepository.getResultByClassId(class_id,material_id);
     }
 
     @Override
-    public List<SubmittedWorkByClassResponse> getByClassId(Integer class_id, Integer material_id) {
-        return submittedWorkRepository.getResultByClassId(class_id,material_id);
+    public List<SubmittedWorkNotGradedByClassResponse> getNotGradedByClassId(Integer class_id, Integer material_id) {
+        return submittedWorkRepository.getNotGradedByClassId(class_id,material_id);
     }
 }

@@ -11,6 +11,10 @@ import java.util.List;
 @Mapper
 @Repository
 public interface SubmittedWorkRepository {
+    @Select("SELECT EXISTS(SELECT id FROM submittable_work WHERE id = #{submittable_work_id} )")
+    boolean checkIfSubmiitableIdExist(Integer submittable_work_id);
+    @Select("SELECT EXISTS(SELECT id FROM submitted_work WHERE id = #{id})")
+    boolean findSubmittedId(Integer id);
     //get all
     @Select("SELECT * FROM submitted_work")
     @Results(id = "submitted", value = {
@@ -80,21 +84,6 @@ public interface SubmittedWorkRepository {
     @Result(property = "studentWork", column = "student_work", typeHandler = JsonTypeHandler.class)
     List<SubmittedWorkByClassroomClassSubmittableResponse> getByClassroomClassSubmittable(Integer classroom_id, Integer class_id, Integer submittable_work_id);
 
-    // get StuScore By Class Classroom
-    @Select("SELECT m.title, d.class_material_id, sw.student_id, u.name as student_name, u.gender, sw.student_score, w.class_materials_detail_id, sw.submittable_work_id, sw.id as submitted_work_id, s.classroom_id, s.class_id\n" +
-            "FROM class_materials m \n" +
-            "JOIN class_materials_detail d ON m.id = d.class_material_id " +
-            "JOIN submittable_work w ON d.id = w.class_materials_detail_id " +
-            "JOIN submitted_work sw ON w.id = sw.submittable_work_id " +
-            "JOIN student s ON s.id = sw.student_id " +
-            "JOIN users u ON u.id = s.user_id " +
-            "WHERE sw.status = 3 AND s.classroom_id = #{classroomId} AND s.class_id = #{classId} AND sw.submittable_work_id = #{submitted_work_id}")
-    List<StudentScoreByClassroomIdAndClassIdResponse> getStuScoreByClassClassroom(Integer classroomId, Integer classId, Integer submitted_work_id);
-    @Select("SELECT EXISTS(SELECT id FROM submittable_work WHERE id = #{submittable_work_id} )")
-    boolean checkIfSubmiitableIdExist(Integer submittable_work_id);
-    @Select("SELECT EXISTS(SELECT id FROM submitted_work WHERE id = #{id})")
-    boolean findSubmittedId(Integer id);
-
     // get Result By ClassId
     @Select("SELECT (CASE \n" +
             "     WHEN ( deadline - submitted_date > INTERVAL '0' ) THEN 'handed in '\n" +
@@ -109,5 +98,17 @@ public interface SubmittedWorkRepository {
             "JOIN users u ON st.user_id = u.id\n" +
             "WHERE saw.class_id = #{class_id} AND cmd.class_material_id = #{material_id} AND (sw.status = 1 OR sw.status = 2)")
      @Result(property = "submitted_work_id" , column = "id")
-    List<SubmittedWorkByClassResponse> getResultByClassId(Integer class_id, Integer material_id);
+    List<SubmittedWorkResultByClassResponse> getResultByClassId(Integer class_id, Integer material_id);
+
+    // get NotGraded By ClassId
+    @Select("SELECT class_material_id, title,submittable_work_id,user_id,name,sw.id,sw.status " +
+            "FROM submitted_work sw " +
+            "JOIN submittable_work saw ON sw.submittable_work_id = saw.id " +
+            "JOIN class_materials_detail cmd ON saw.class_materials_detail_id = cmd.id AND cmd.class_id = saw.class_id\n" +
+            "JOIN class_materials cm ON cmd.class_material_id = cm.id\n" +
+            "JOIN student st ON sw.student_id = st.id \n" +
+            "JOIN users u ON st.user_id = u.id\n" +
+            "WHERE sw.status = 0 AND class_material_id = #{material_id} AND saw.class_id = #{class_id}")
+    @Result(property = "submitted_work_id" , column = "id")
+    List<SubmittedWorkNotGradedByClassResponse> getNotGradedByClassId(Integer class_id, Integer material_id);
 }

@@ -1,6 +1,5 @@
 package com.kshrd.tnakrean.controller;
 
-import com.kshrd.tnakrean.model.SubmittableWork;
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.request.*;
@@ -105,18 +104,39 @@ public class SubmittedWorkController {
         }
     }
     @GetMapping("get-result-by-classId-materialId")
-    ApiResponse<List<SubmittedWorkByClassResponse>> getByClassId(
+    ApiResponse<List<SubmittedWorkResultByClassResponse>> getByClassId(
             @RequestParam @Min(value = 1) Integer class_id,
             @RequestParam @Min(value = 1) Integer material_id
     ) {
-        List<SubmittedWorkByClassResponse> submittedWorkResponses = submittedWorkImpl.getByClassId(class_id,material_id);
+        List<SubmittedWorkResultByClassResponse> submittedWorkResponses = submittedWorkImpl.getByClassId(class_id,material_id);
         try {
             if (submittedWorkResponses.isEmpty()) {
-                return ApiResponse.<List<SubmittedWorkByClassResponse>>notFound(SubmittedWorkByClassResponse.class
+                return ApiResponse.<List<SubmittedWorkResultByClassResponse>>notFound(SubmittedWorkResultByClassResponse.class
                                 .getSimpleName())
                         .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
             }
-            return ApiResponse.<List<SubmittedWorkByClassResponse>>ok(SubmittedWorkByClassResponse.class
+            return ApiResponse.<List<SubmittedWorkResultByClassResponse>>ok(SubmittedWorkResultByClassResponse.class
+                            .getSimpleName())
+                    .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
+                    .setData(submittedWorkResponses);
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
+    @GetMapping("get-not-graded-by-classId-materialId")
+    ApiResponse<List<SubmittedWorkNotGradedByClassResponse>> getNotGradedByClassId(
+            @RequestParam @Min(value = 1) Integer class_id,
+            @RequestParam @Min(value = 1) Integer material_id
+    ) {
+        List<SubmittedWorkNotGradedByClassResponse> submittedWorkResponses = submittedWorkImpl.getNotGradedByClassId(class_id,material_id);
+        try {
+            if (submittedWorkResponses.isEmpty()) {
+                return ApiResponse.<List<SubmittedWorkNotGradedByClassResponse>>notFound(SubmittedWorkNotGradedByClassResponse.class
+                                .getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setData(submittedWorkResponses);
+            }
+            return ApiResponse.<List<SubmittedWorkNotGradedByClassResponse>>ok(SubmittedWorkNotGradedByClassResponse.class
                             .getSimpleName())
                     .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
                     .setData(submittedWorkResponses);
@@ -239,25 +259,6 @@ public class SubmittedWorkController {
                     .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
                     .setData(submittedWorkByClassroomClassSubmittableResponses);
         } catch (Exception e) {
-            return ApiResponse.setError(e.getMessage());
-        }
-    }
-    @GetMapping("get-studentScore-by-classroomId-and-classId")
-    ApiResponse<List<StudentScoreByClassroomIdAndClassIdResponse>> getStuScoreByClassClassroom(
-            @RequestParam @Min(value = 1)Integer classroomId ,
-            @RequestParam @Min(value = 1)Integer classId,
-            @RequestParam @Min(value = 1)Integer submitted_work_id
-            ){
-        try {
-           List<StudentScoreByClassroomIdAndClassIdResponse> response = submittedWorkImpl.getStuScoreByClassClassroom(classroomId,classId,submitted_work_id);
-           if (response.isEmpty()) {
-               return ApiResponse.<List<StudentScoreByClassroomIdAndClassIdResponse>>notFound(StudentScoreByClassroomIdAndClassIdResponse.class.getSimpleName())
-                       .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
-           }
-           return ApiResponse.<List<StudentScoreByClassroomIdAndClassIdResponse>>ok(StudentScoreByClassroomIdAndClassIdResponse.class.getSimpleName())
-                   .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
-                   .setData(response);
-        } catch (Exception e){
             return ApiResponse.setError(e.getMessage());
         }
     }
