@@ -34,17 +34,12 @@ public class FilesController {
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     ApiResponse<FileInfo> uploadFile(@RequestParam("file") MultipartFile file) {
-        String fileName = storageService.save(file);
-
-        Resource resource = null;
-        resource = storageService.load(fileName);
-
         try {
-            return ApiResponse.<FileInfo>ok("ok").setData(new FileInfo(fileName));
+            String fileName = storageService.save(file);
+            return ApiResponse.<FileInfo>ok(FileInfo.class.getSimpleName()).setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage()).setData(new FileInfo(fileName));
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return ApiResponse.<FileInfo>setError(e.getMessage()).setData(new FileInfo());
         }
-
 
 //        try {
 //            String fileName = storageService.save(file);

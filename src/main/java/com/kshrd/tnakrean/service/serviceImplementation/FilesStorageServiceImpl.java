@@ -52,15 +52,15 @@ public class FilesStorageServiceImpl implements FilesStorageService {
     public Resource load(String filename) {
 
         try {
-            Path filePath = this.root.resolve(filename).normalize();
-            Resource resource = new UrlResource(filePath.toUri());
-            if (resource.exists()) {
+            Path file = root.resolve(filename);
+            Resource resource = new UrlResource(file.toUri());
+            if (resource.exists() || resource.isReadable()) {
                 return resource;
             } else {
                 throw new RuntimeException("Could not read the file!");
             }
-        } catch (MalformedURLException ex) {
-            throw new RuntimeException("Error: " + ex.getMessage());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("Error: " + e.getMessage());
         }
 
 
