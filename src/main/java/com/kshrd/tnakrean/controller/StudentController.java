@@ -143,6 +143,7 @@ public class StudentController {
                             .setResponseMsg("This student is already accepted");
                 } else {
                     studentServiceImp.insertStudent(user_id);
+                    studentRepository.removeStudentFromStudentRequest(user_id);
                     ClassResponse classResponse = repository.getClassById(student.getClass_id(), student.getClassRoom_id());
                     System.out.println(student.getEmail());
                     emailService.send("You Have Been Accepted", "You have been accepted into " + classResponse.getClass_name() + " of " + classResponse.getClassRoomName(), student.getEmail());
