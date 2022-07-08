@@ -11,7 +11,10 @@ import lombok.NoArgsConstructor;
 public class StudentRequestClassResponse {
     Integer student_request_id;
     Integer user_id;
+    String username;
     String name;
+    String gender;
+    String email;
     String img;
     Integer class_id;
     String class_name;

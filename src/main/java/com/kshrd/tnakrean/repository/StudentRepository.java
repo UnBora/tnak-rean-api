@@ -55,7 +55,7 @@ public interface StudentRepository {
     void updateProfile(Integer user_id, String name, String username, String img, String gender);
 
     // get student request
-    @Select("SELECT r.id, r.user_id, c.class_name, s.class_id,u.name, u.img, status, " +
+    @Select("SELECT r.id, r.user_id, c.class_name, s.class_id,u.name,u.gender,u.email,u.username, u.img, status, " +
             " (SELECT count(uc.id) FROM student_request src\n" +
             "JOIN users uc ON src.user_id = uc.id\n" +
             "JOIN student stc ON uc.id = stc.user_id\n" +
