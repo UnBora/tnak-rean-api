@@ -37,4 +37,8 @@ public interface AppUserRepository {
 
     @Insert("INSERT INTO student (user_id,classroom_id,class_id) VALUES(#{userId},#{classroomId},#{classId})")
     void studenRegistrationAndRequese(Integer userId, Integer classroomId, Integer classId);
+
+
+    @Insert("INSERT INTO student_request (user_id) VALUES (#{user_id})")
+    void studentRegisterAddtoStudentRequest(@Param("user_id") Integer user_id);
 }

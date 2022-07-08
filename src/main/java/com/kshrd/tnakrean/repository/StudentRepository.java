@@ -25,6 +25,8 @@ public interface StudentRepository {
     @Delete("DELETE  from student where user_id= #{user_id} AND classroom_id=#{classroom_id} AND class_id= #{class_id} ")
     void studentLeaveClassDB(@Param("user_id") Integer user_id, @Param("classroom_id") Integer classroom_id, @Param("class_id") Integer class_id);
 
+    @Delete("DELETE  from users where id= #{user_id}")
+    void studentLeaveUser(Integer user_id);
 
     //  Get student by class ID
     @Select("SELECT * FROM student st \n" +
