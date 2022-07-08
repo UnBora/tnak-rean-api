@@ -66,10 +66,10 @@ public interface SubmittableWorkRepository {
             "JOIN class_materials_type cm ON f.material_type_id = cm.id\n" +
             "JOIN class_material_folder cmf ON f.id = cmf.folder_id \n" +
             "JOIN material_folder mf ON f.id = mf.folder_id\n" +
-            "JOIN class_materials clm ON mf.material_id = clm.id AND clm.class_materials_type_id = f.material_type_id\n" +
+            "JOIN class_materials clm ON mf.material_id = clm.id " +
             "JOIN class_materials_detail cmd ON clm.id = cmd.class_material_id AND cmd.class_id = cmf.class_id AND cmd.classroom_id = cmf.classroom_id\n" +
             "JOIN submittable_work saw ON cmd.id = saw.class_materials_detail_id AND saw.class_id = cmd.class_id AND saw.classroom_id = cmd.classroom_id\n" +
-            "WHERE (class_materials_type_id = 3 OR class_materials_type_id = 4) AND saw.classroom_id = #{classroom_id} AND saw.class_id = #{class_id}")
+            "WHERE (class_materials_type_id = 3 OR class_materials_type_id = 4 OR class_materials_type_id = 5) AND saw.classroom_id = #{classroom_id} AND saw.class_id = #{class_id}")
     @Result(property = "submittable_work_id", column = "id")
     @Result(property = "total_comment", column = "count")
     List<SubmittableWorkByClassResponse> getByClassIdAndClassId(Integer classroom_id, Integer class_id);
@@ -103,7 +103,7 @@ public interface SubmittableWorkRepository {
             "JOIN class_materials_type cm ON f.material_type_id = cm.id\n" +
             "JOIN class_material_folder cmf ON f.id = cmf.folder_id \n" +
             "JOIN material_folder mf ON f.id = mf.folder_id\n" +
-            "JOIN class_materials clm ON mf.material_id = clm.id AND clm.class_materials_type_id = f.material_type_id\n" +
+            "JOIN class_materials clm ON mf.material_id = clm.id " +
             "JOIN class_materials_detail cmd ON clm.id = cmd.class_material_id AND cmd.class_id = cmf.class_id AND cmd.classroom_id = cmf.classroom_id\n" +
             "JOIN submittable_work saw ON cmd.id = saw.class_materials_detail_id AND saw.class_id = cmd.class_id AND saw.classroom_id = cmd.classroom_id\n" +
             "WHERE f.created_by = #{user_id} AND (class_materials_type_id = 3 OR class_materials_type_id = 4 OR class_materials_type_id = 2) ")

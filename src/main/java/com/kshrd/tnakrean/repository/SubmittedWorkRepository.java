@@ -107,7 +107,7 @@ public interface SubmittedWorkRepository {
             "JOIN class_materials cm ON cmd.class_material_id = cm.id\n" +
             "JOIN student st ON sw.student_id = st.id \n" +
             "JOIN users u ON st.user_id = u.id\n" +
-            "WHERE saw.class_id = #{class_id} AND (sw.status = 1 OR sw.status = 2)")
+            "WHERE saw.class_id = #{class_id} AND cmd.class_material_id = #{material_id} AND (sw.status = 1 OR sw.status = 2)")
      @Result(property = "submitted_work_id" , column = "id")
-    List<SubmittedWorkByClassResponse> getResultByClassId(Integer class_id);
+    List<SubmittedWorkByClassResponse> getResultByClassId(Integer class_id, Integer material_id);
 }
