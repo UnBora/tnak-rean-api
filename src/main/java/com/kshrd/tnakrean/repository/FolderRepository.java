@@ -56,13 +56,13 @@ public interface FolderRepository {
     @Select("SELECT folder_id, type ,folder_name, f.parent_id, class_id FROM folder f\n" +
             "JOIN class_materials_type cm ON f.material_type_id = cm.id\n" +
             "JOIN class_material_folder cmf ON f.id = cmf.folder_id \n" +
-            "WHERE (material_type_id = 3 OR material_type_id = 4) AND classroom_id = #{classRoomId} AND class_id = #{classId}")
+            "WHERE (material_type_id = 3 OR material_type_id = 4 OR material_type_id = 5) AND classroom_id = #{classRoomId} AND class_id = #{classId}")
     List<FolderByClassResponse> getClassWorkFolderByClassId(Integer classId, Integer classRoomId);
 
     // get Classwork Folder By teacherUserId
     @Select("SELECT f.id, created_by, folder_name,f.parent_id,class_id FROM folder f \n" +
             "JOIN class_material_folder cmf ON f.id = cmf.folder_id\n" +
-            "WHERE created_by = #{user_id} AND (material_type_id = 4 OR material_type_id = 3 OR material_type_id = 2)")
+            "WHERE created_by = #{user_id} AND (material_type_id = 4 OR material_type_id = 3 OR material_type_id = 5)")
     @Result(property = "folder_id", column = "id")
     List<FolderByTeacherResponse> getClassworkFolderByteacherUserId(int user_id);
 }
