@@ -70,7 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                        "/api/v1/folder/**",
 //                        "/api/v1/schedule/**",
 //                        "/api/v1/student/accept-student",
-                        "/api/v1/submittedWork/**"
+                        "/api/v/submittedWork/**"
                 )
                 .hasAnyAuthority("Teacher")
 
@@ -87,7 +87,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 )
                 .hasAnyAuthority("Student")
 
-                .antMatchers( HttpMethod.GET, "/api/v1/student/get-student-by-classId")
+                .antMatchers( HttpMethod.GET, "/api/v/student/get-student-by-classId")
                 .hasAnyAuthority( "Teacher")
 
         ;
