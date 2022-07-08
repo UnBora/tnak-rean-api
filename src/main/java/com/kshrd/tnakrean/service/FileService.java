@@ -8,20 +8,16 @@ import org.springframework.core.io.UrlResource;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 
-
 public interface FileService {
-    void init();
+    public void init();
 
-    String store(MultipartFile file);
+    public String save(MultipartFile file);
 
-    Stream<Path> loadAll();
+    public Resource load(String filename);
 
-    Path load(String filename);
+    public void deleteAll();
 
-    Resource loadAsResource(String filename);
-
-    void deleteAll();
-
+    public Stream<Path> loadAll();
 }
 
 
