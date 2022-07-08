@@ -30,5 +30,5 @@ public interface SubmittedWorkService {
 
     List<StudentScoreByClassroomIdAndClassIdResponse> getStuScoreByClassClassroom(Integer classroomId, Integer classId, Integer submitted_work_id);
 
-    List<SubmittedWorkByClassResponse> getByClassId(Integer class_id);
+    List<SubmittedWorkByClassResponse> getByClassId(Integer class_id, Integer material_id);
 }

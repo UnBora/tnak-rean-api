@@ -71,7 +71,7 @@ public class SubmittedWorkImpl implements SubmittedWorkService {
     }
 
     @Override
-    public List<SubmittedWorkByClassResponse> getByClassId(Integer class_id) {
-        return submittedWorkRepository.getResultByClassId(class_id);
+    public List<SubmittedWorkByClassResponse> getByClassId(Integer class_id, Integer material_id) {
+        return submittedWorkRepository.getResultByClassId(class_id,material_id);
     }
 }
