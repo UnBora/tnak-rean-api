@@ -10,14 +10,18 @@ import java.util.stream.Stream;
 
 @Service
 public interface FileService {
-    public void init();
+    void init();
 
-    public String save(MultipartFile file);
+    String store(MultipartFile file);
 
-    public Resource load(String filename);
+    Stream<Path> loadAll();
 
-    public void deleteAll();
+    Path load(String filename);
 
-    public Stream<Path> loadAll();
+    Resource loadAsResource(String filename);
+
+    void deleteAll();
+
+}
 
 }
