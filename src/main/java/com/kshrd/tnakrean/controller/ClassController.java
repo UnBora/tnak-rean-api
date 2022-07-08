@@ -101,7 +101,7 @@ public class ClassController {
             } else if (a.equals(false)) {
                 return ApiResponse.<ClassUpdateResponse>notFound(GetAllStudentResponse.class.getSimpleName())
                         .setResponseMsg("The Class ID:" + classUpdateResponse.getId() + " does not have!");
-            } else if (!(nameCheck.equals(true)&& (oldClassName.equalsIgnoreCase(newClassName)))) {
+            } else if (!(nameCheck.equals(true)&&(oldClassName.equalsIgnoreCase(newClassName)))) {
                 return ApiResponse.<ClassUpdateResponse>duplicateEntry(GetAllStudentResponse.class.getSimpleName())
                         .setResponseMsg("The class name already exists!");
             } else {
