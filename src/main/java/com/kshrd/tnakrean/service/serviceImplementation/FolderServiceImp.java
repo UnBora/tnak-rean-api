@@ -1,5 +1,7 @@
 package com.kshrd.tnakrean.service.serviceImplementation;
 
+import com.kshrd.tnakrean.model.classmaterials.request.FolderClassWorkRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.FolderCourseRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.FolderRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.FolderByClassResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.FolderByTeacherResponse;
@@ -60,5 +62,15 @@ public class FolderServiceImp implements FolderService {
     @Override
     public List<FolderByClassResponse> getClassWorkFolderByClassId(Integer classId, Integer classRoomId) {
         return folderRepository.getClassWorkFolderByClassId(classId,classRoomId);
+    }
+
+    @Override
+    public boolean createClassWorkFolder(FolderClassWorkRequest folderClassWorkRequest, Integer userId) {
+        return  folderRepository.createClassWorkFolder(folderClassWorkRequest,userId);
+    }
+
+    @Override
+    public boolean createCourseWorkFolder(FolderCourseRequest folderCourseRequest, Integer userId) {
+        return folderRepository.createCourseWorkFolder(folderCourseRequest,userId);
     }
 }

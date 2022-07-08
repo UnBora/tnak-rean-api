@@ -2,6 +2,8 @@ package com.kshrd.tnakrean.controller;
 
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
+import com.kshrd.tnakrean.model.classmaterials.request.FolderClassWorkRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.FolderCourseRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.FolderDetailRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.FolderRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.FolderByClassResponse;
@@ -159,4 +161,56 @@ public class FolderController {
             return ApiResponse.badRequest(FolderResponse.class.getSimpleName());
         }
     }
+    @PostMapping("/create-classWorkFolder")
+    ApiResponse<FolderClassWorkRequest> createClassWorkFolder(
+            @RequestBody @Valid FolderClassWorkRequest folderClassWorkRequest) {
+        Integer userId = AuthRestController.user_id;
+        boolean checkParentId = folderRepository.findParentId(folderClassWorkRequest.getParent_id());
+        boolean checkMaterialTypeId = folderRepository.findMaterialTypeId(folderClassWorkRequest.getMaterial_type_id());
+        try {
+            if (userId == 0){
+                return ApiResponse.unAuthorized("Unauthorized");
+            } else if (checkParentId == false) {
+                return ApiResponse.<FolderClassWorkRequest>notFound(FolderClassWorkRequest.class.getSimpleName())
+                        .setResponseMsg("The parent_id: " + folderClassWorkRequest.getParent_id() + " doesn't exist in the table");
+            } else if (checkMaterialTypeId == false) {
+                return ApiResponse.<FolderClassWorkRequest>notFound(FolderClassWorkRequest.class.getSimpleName())
+                        .setResponseMsg("The material_type_id: " + folderClassWorkRequest.getMaterial_type_id() + " doesn't exist in the table");
+            } else {
+                folderClassWorkRequest.setFolder_name(folderClassWorkRequest.getFolder_name().trim());
+                folderServiceImp.createClassWorkFolder(folderClassWorkRequest,userId);
+                return ApiResponse.<FolderClassWorkRequest>ok(FolderClassWorkRequest.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
+                        .setData(folderClassWorkRequest);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
+
+    @PostMapping("/create-courseWorkFolder")
+    ApiResponse<FolderCourseRequest> createCourseWorkFolder(
+            @RequestBody @Valid FolderCourseRequest folderCourseRequest) {
+        Integer userId = AuthRestController.user_id;
+        boolean checkParentId = folderRepository.findParentId(folderCourseRequest.getParent_id());
+        try {
+            if (userId == 0){
+                return ApiResponse.unAuthorized("Unauthorized");
+            } else if (checkParentId == false) {
+                return ApiResponse.<FolderCourseRequest>notFound(FolderCourseRequest.class.getSimpleName())
+                        .setResponseMsg("The parent_id: " + folderCourseRequest.getParent_id() + " doesn't exist in the table");
+            } else {
+                folderCourseRequest.setFolder_name(folderCourseRequest.getFolder_name().trim());
+                folderServiceImp.createCourseWorkFolder(folderCourseRequest,userId);
+                return ApiResponse.<FolderCourseRequest>ok(FolderCourseRequest.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
+                        .setData(folderCourseRequest);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
+
 }

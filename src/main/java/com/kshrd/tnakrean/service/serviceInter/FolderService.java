@@ -1,6 +1,8 @@
 package com.kshrd.tnakrean.service.serviceInter;
 
 
+import com.kshrd.tnakrean.model.classmaterials.request.FolderClassWorkRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.FolderCourseRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.FolderRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.FolderByClassResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.FolderByTeacherResponse;
@@ -25,4 +27,8 @@ public interface FolderService {
     List<FolderByTeacherResponse> getCourseFolderByTeacher(Integer user_id);
 
     List<FolderByClassResponse> getClassWorkFolderByClassId(Integer classId, Integer classRoomId);
+
+    boolean createClassWorkFolder(FolderClassWorkRequest folderClassWorkRequest, Integer userId);
+
+    boolean createCourseWorkFolder(FolderCourseRequest folderCourseRequest, Integer userId);
 }

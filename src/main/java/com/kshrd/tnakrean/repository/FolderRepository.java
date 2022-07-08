@@ -1,6 +1,8 @@
 package com.kshrd.tnakrean.repository;
 
 
+import com.kshrd.tnakrean.model.classmaterials.request.FolderClassWorkRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.FolderCourseRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.FolderRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.FolderByClassResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.FolderByTeacherResponse;
@@ -65,4 +67,18 @@ public interface FolderRepository {
             "WHERE created_by = #{user_id} AND (material_type_id = 4 OR material_type_id = 3 OR material_type_id = 5)")
     @Result(property = "folder_id", column = "id")
     List<FolderByTeacherResponse> getClassworkFolderByteacherUserId(int user_id);
+
+    @Select("SELECT EXISTS(SELECT id FROM folder WHERE id = #{parent_id})")
+    boolean findParentId(Integer parent_id);
+    @Select("SELECT EXISTS(SELECT id FROM class_materials_type WHERE id = #{material_type_id})")
+    boolean findMaterialTypeId(Integer material_type_id);
+
+    // create ClassWorkFolder
+    @Insert("INSERT INTO folder (folder_name, parent_id,created_by,material_type_id) " +
+            "VALUES (#{folder.folder_name},#{folder.parent_id},#{userId},#{folder.material_type_id})")
+    boolean createClassWorkFolder(@Param("folder") FolderClassWorkRequest folderClassWorkRequest, Integer userId);
+    // create CourseWorkFolder
+    @Insert("INSERT INTO folder (folder_name, parent_id,created_by,material_type_id) " +
+            "VALUES (#{folder.folder_name},#{folder.parent_id},#{userId},1)")
+    boolean createCourseWorkFolder(@Param("folder") FolderCourseRequest folderCourseRequest, Integer userId);
 }

@@ -15,6 +15,6 @@ public class FolderClassWorkRequest {
     String folder_name;
     @Min(value = 1,message = "{validation.parentId.notNegative}")
     Integer parent_id;
-    @Min(value = 2,message = "{validation.MaterialTypeId.notNegative}")
+    @Min(value = 3,message = "{validation.MaterialTypeId.notNegative}")
     Integer material_type_id;
 }
