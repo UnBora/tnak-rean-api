@@ -104,11 +104,12 @@ public class SubmittedWorkController {
             return ApiResponse.setError(e.getMessage());
         }
     }
-    @GetMapping("get-result-by-classId")
+    @GetMapping("get-result-by-classId-materialId")
     ApiResponse<List<SubmittedWorkByClassResponse>> getByClassId(
-            @RequestParam @Min(value = 1) Integer class_id
+            @RequestParam @Min(value = 1) Integer class_id,
+            @RequestParam @Min(value = 1) Integer material_id
     ) {
-        List<SubmittedWorkByClassResponse> submittedWorkResponses = submittedWorkImpl.getByClassId(class_id);
+        List<SubmittedWorkByClassResponse> submittedWorkResponses = submittedWorkImpl.getByClassId(class_id,material_id);
         try {
             if (submittedWorkResponses.isEmpty()) {
                 return ApiResponse.<List<SubmittedWorkByClassResponse>>notFound(SubmittedWorkByClassResponse.class
