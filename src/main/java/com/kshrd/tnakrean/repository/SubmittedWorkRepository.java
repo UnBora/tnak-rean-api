@@ -95,5 +95,19 @@ public interface SubmittedWorkRepository {
     @Select("SELECT EXISTS(SELECT id FROM submitted_work WHERE id = #{id})")
     boolean findSubmittedId(Integer id);
 
-
+    // get Result By ClassId
+    @Select("SELECT (CASE \n" +
+            "     WHEN ( deadline - submitted_date > INTERVAL '0' ) THEN 'handed in '\n" +
+            "\t\t WHEN (deadline - submitted_date < INTERVAL '0' ) THEN 'handed in late'\n" +
+            " END) as ui_status\n" +
+            ", u.name,user_id,u.gender,student_score,class_material_id,title,submittable_work_id,sw.id,sw.status\n" +
+            "FROM submitted_work sw \n" +
+            "JOIN submittable_work saw ON sw.submittable_work_id = saw.id\n" +
+            "JOIN class_materials_detail cmd ON saw.class_materials_detail_id = cmd.id AND cmd.class_id = saw.class_id\n" +
+            "JOIN class_materials cm ON cmd.class_material_id = cm.id\n" +
+            "JOIN student st ON sw.student_id = st.id \n" +
+            "JOIN users u ON st.user_id = u.id\n" +
+            "WHERE saw.class_id = #{class_id} AND (sw.status = 1 OR sw.status = 2)")
+     @Result(property = "submitted_work_id" , column = "id")
+    List<SubmittedWorkByClassResponse> getResultByClassId(Integer class_id);
 }

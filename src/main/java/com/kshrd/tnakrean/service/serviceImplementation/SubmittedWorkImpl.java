@@ -69,4 +69,9 @@ public class SubmittedWorkImpl implements SubmittedWorkService {
     public List<StudentScoreByClassroomIdAndClassIdResponse> getStuScoreByClassClassroom(Integer classroomId, Integer classId, Integer submitted_work_id) {
         return submittedWorkRepository.getStuScoreByClassClassroom(classroomId,classId,submitted_work_id);
     }
+
+    @Override
+    public List<SubmittedWorkByClassResponse> getByClassId(Integer class_id) {
+        return submittedWorkRepository.getResultByClassId(class_id);
+    }
 }

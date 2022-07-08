@@ -104,6 +104,25 @@ public class SubmittedWorkController {
             return ApiResponse.setError(e.getMessage());
         }
     }
+    @GetMapping("get-result-by-classId")
+    ApiResponse<List<SubmittedWorkByClassResponse>> getByClassId(
+            @RequestParam @Min(value = 1) Integer class_id
+    ) {
+        List<SubmittedWorkByClassResponse> submittedWorkResponses = submittedWorkImpl.getByClassId(class_id);
+        try {
+            if (submittedWorkResponses.isEmpty()) {
+                return ApiResponse.<List<SubmittedWorkByClassResponse>>notFound(SubmittedWorkByClassResponse.class
+                                .getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
+            }
+            return ApiResponse.<List<SubmittedWorkByClassResponse>>ok(SubmittedWorkByClassResponse.class
+                            .getSimpleName())
+                    .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
+                    .setData(submittedWorkResponses);
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
 
     @PostMapping("/insert-student-work")
     ApiResponse<SubmittedWorkStudentWorkRequest> addSubmittedWork(
@@ -118,6 +137,7 @@ public class SubmittedWorkController {
                 return ApiResponse.<SubmittedWorkStudentWorkRequest>notFound(SubmittedWorkStudentWorkRequest.class.getSimpleName())
                         .setResponseMsg("The Submittable_work_id: " + submittedWorkStudentWorkRequest.getSubmittable_work_id() + " doesn't exist in the table");
             } else {
+
                 submittedWorkImpl.addSubmittedWork(submittedWorkStudentWorkRequest, userId);
                 return ApiResponse.<SubmittedWorkStudentWorkRequest>ok(SubmittedWorkStudentWorkRequest.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
