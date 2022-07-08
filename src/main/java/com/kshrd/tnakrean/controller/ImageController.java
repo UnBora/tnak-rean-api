@@ -61,7 +61,7 @@ public class ImageController {
             res.put("status",true);
             Resource resource = new UrlResource(fileName);
             System.out.println(resource.getFile().getAbsolutePath());
-            res.put("data",resource.getFile());
+            res.put("data",imageUrl+fileName);
             return ResponseEntity.status(HttpStatus.OK).body(res);
         } catch (Exception e) {
             res.put("message","Could not upload the file:");
