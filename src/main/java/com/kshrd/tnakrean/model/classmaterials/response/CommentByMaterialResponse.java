@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -16,5 +17,5 @@ public class CommentByMaterialResponse {
     private String img;
     private String comment;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date comment_date;
+    private LocalDateTime comment_date;
 }
