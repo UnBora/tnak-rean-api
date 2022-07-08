@@ -25,5 +25,4 @@ public interface OneSignalPushNotificationRepository {
             " INNER JOIN classroom cr on cd.classroom_id = cr.id WHERE cd.class_id = #{classId} AND cd.classroom_id = #{classRoomId}")
     ClassResponse getClassById(int classId, int classRoomId);
 
-
 }

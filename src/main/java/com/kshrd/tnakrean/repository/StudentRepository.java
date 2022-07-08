@@ -84,4 +84,7 @@ public interface StudentRepository {
     @Select("SELECT u.id,u.name,u.email,u.gender,u.status ,s.class_id,s.classRoom_id FROM users u \n" +
             "INNER JOIN student s on u.id = s.user_id WHERE u.id = #{id}")
     GetStudentByIDResponse getStudentDetailById(@Param("id") Integer user_id);
+
+    @Delete("DELETE FROM student_request WHERE user_id = #{user_id}")
+    void removeStudentFromStudentRequest(Integer user_id);
 }
