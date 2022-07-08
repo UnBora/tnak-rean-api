@@ -46,17 +46,12 @@ public class ImageController {
             for (MultipartFile file : files){
                 String fileName = storageService.save(file);
                 data.add(imageUrl+fileName);
+                final Path root = Paths.get("/root/resources/images");
+                Path f = root.resolve(fileName);
+                Resource resource = new UrlResource(f.toUri());
+                res.put("res:",resource.toString());
             }
-            final Path root = Paths.get("/root/resources/images");
-            Path file = root.resolve(root);
-            Resource resource = new UrlResource(file.toUri());
-            List<String> filees = storageService.loadAll().map(
-                            path -> ServletUriComponentsBuilder.fromCurrentContextPath()
-                                    .path("/download/")
-                                    .path(path.getFileName().toString())
-                                    .toUriString())
-                    .collect(Collectors.toList());
-            res.put("resource",filees.get(0));
+
             res.put("message","You have uploaded image successfully");
             res.put("status",true);
             res.put("data",data);
