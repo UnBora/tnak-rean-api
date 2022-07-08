@@ -47,7 +47,7 @@ public class FileImplement implements FileService {
                 Resource resource = new UrlResource(filename.toUri());
                 System.out.println(resource.getFilename());
                 System.out.println("Upsolute path:"+resource.getFile().getAbsolutePath());
-                return resource.getFile().getAbsolutePath();
+                return fileDownloadUri;
 
             } catch (IOException e) {
                 e.printStackTrace();
