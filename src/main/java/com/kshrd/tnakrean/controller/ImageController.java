@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.support.ServletContextResource;
 import org.springframework.web.multipart.MultipartFile;
@@ -84,5 +85,16 @@ public class ImageController {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(res);
         }
     }
+    @GetMapping("/")
+    public String listAllFiles(Model model) {
 
+        model.addAttribute("files", storageService.loadAll().map(
+                        path -> ServletUriComponentsBuilder.fromCurrentContextPath()
+                                .path("/download/")
+                                .path(path.getFileName().toString())
+                                .toUriString())
+                .collect(Collectors.toList()));
+
+        return "listFiles";
+    }
 }
