@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,9 +45,14 @@ public class ImageController {
                 String fileName = storageService.save(file);
                 data.add(imageUrl+fileName);
             }
+            final Path root = Paths.get("/root/resources/images");
+            Path file = root.resolve(root);
+            Resource resource = new UrlResource(file.toUri());
+            res.put("resource",resource.getFile().getAbsolutePath());
             res.put("message","You have uploaded image successfully");
             res.put("status",true);
             res.put("data",data);
+
             return ResponseEntity.status(HttpStatus.OK).body(res);
         } catch (Exception e) {
             res.put("message","Could not upload the file:");
@@ -62,12 +68,11 @@ public class ImageController {
             String fileName = storageService.save(file);
             res.put("message","You have uploaded image successfully");
             res.put("status",true);
-//            Resource resource = new UrlResource(fileName);
+            Resource resource = new UrlResource(fileName);
 //            System.out.println(resource.getFile().getAbsolutePath());
             HttpHeaders headers = new HttpHeaders();
-            Resource resource =
                     new ServletContextResource(request.getServletContext(), "/WEB-INF/images/image-example.jpg");
-            res.put("data",resource.getFile().getAbsolutePath());
+          //  res.put("data",resource.getFile().getAbsolutePath());
             return ResponseEntity.status(HttpStatus.OK).body(res);
         } catch (Exception e) {
             res.put("message","Could not upload the file:");
