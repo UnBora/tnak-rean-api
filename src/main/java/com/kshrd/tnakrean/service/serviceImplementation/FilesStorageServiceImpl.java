@@ -21,7 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class FilesStorageServiceImpl implements FilesStorageService {
     private final Path root = Paths.get("/resources/images");
     String serverPath = "/root/ssh/resources/tnakrean";
-//    @Value("${base.url}")
+
+    //    @Value("${base.url}")
 //    String fileurl;
     @Override
     public void init() {
@@ -49,17 +50,31 @@ public class FilesStorageServiceImpl implements FilesStorageService {
 
     @Override
     public Resource load(String filename) {
+
         try {
-            Path file = root.resolve(filename);
-            Resource resource = new UrlResource(file.toUri());
-            if (resource.exists() || resource.isReadable()) {
+            Path filePath = this.root.resolve(filename).normalize();
+            Resource resource = new UrlResource(filePath.toUri());
+            if (resource.exists()) {
                 return resource;
             } else {
                 throw new RuntimeException("Could not read the file!");
             }
-        } catch (MalformedURLException e) {
-            throw new RuntimeException("Error: " + e.getMessage());
+        } catch (MalformedURLException ex) {
+            throw new RuntimeException("Error: " + ex.getMessage());
         }
+
+
+//        try {
+//            Path file = root.resolve(filename);
+//            Resource resource = new UrlResource(file.toUri());
+//            if (resource.exists() || resource.isReadable()) {
+//                return resource;
+//            } else {
+//                throw new RuntimeException("Could not read the file!");
+//            }
+//        } catch (MalformedURLException e) {
+//            throw new RuntimeException("Error: " + e.getMessage());
+//        }
     }
 
     @Override

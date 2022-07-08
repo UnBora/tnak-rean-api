@@ -31,16 +31,29 @@ public class FilesController {
     FilesStorageService storageService;
     @Value("${base.url}")
     String baseurl;
+
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     ApiResponse<FileInfo> uploadFile(@RequestParam("file") MultipartFile file) {
+        String fileName = storageService.save(file);
+
+        Resource resource = null;
+        resource = storageService.load(fileName);
+
         try {
-            String fileName = storageService.save(file);
-            Resource resource = storageService.load(fileName);
-            String url = resource.getFile().getAbsolutePath();
-            return ApiResponse.<FileInfo>ok(FileInfo.class.getSimpleName()).setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage()).setData(new FileInfo(url));
+            return ApiResponse.<FileInfo>ok("ok").setData(new FileInfo(fileName));
         } catch (Exception e) {
-            return ApiResponse.<FileInfo>setError(e.getMessage()).setData(new FileInfo());
+            throw new RuntimeException(e);
         }
+
+
+//        try {
+//            String fileName = storageService.save(file);
+//            Resource resource = storageService.load(fileName);
+//            String url = resource.getFile().getAbsolutePath();
+//            return ApiResponse.<FileInfo>ok(FileInfo.class.getSimpleName()).setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage()).setData(new FileInfo(url));
+//        } catch (Exception e) {
+//            return ApiResponse.<FileInfo>setError(e.getMessage()).setData(new FileInfo());
+//        }
     }
 
     @GetMapping("/get/all")
@@ -48,9 +61,9 @@ public class FilesController {
         List<FileInfo> fileInfos = storageService.loadAll().map(path -> {
             String filename = path.getFileName().toString();
 
-           // String url = MvcUriComponentsBuilder.fromMethodName(FilesController.class, "getFile", path.getFileName().toString()).build().toString();
-            String url = baseurl+filename;
-                    //MvcUriComponentsBuilder.fromMethodName(FilesController.class, "getFile", (baseurl
+            String url = MvcUriComponentsBuilder.fromMethodName(FilesController.class, "getFile", path.getFileName().toString()).build().toString();
+//            String url = baseurl+filename;
+            //   MvcUriComponentsBuilder.fromMethodName(FilesController.class, "getFile", (baseurl
             return new FileInfo(url);
         }).toList();
         return ApiResponse.<List<FileInfo>>ok(FileInfo.class.getSimpleName()).setData(fileInfos);
@@ -66,11 +79,11 @@ public class FilesController {
         try {
             contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
         } catch (IOException ex) {
-          //  loggers.info("Could not determine file type.");
+            //  loggers.info("Could not determine file type.");
         }
 
         // Fallback to the default content type if type could not be determined
-        if(contentType == null) {
+        if (contentType == null) {
             contentType = "application/octet-stream";
         }
 
