@@ -1,6 +1,7 @@
 package com.kshrd.tnakrean.service.serviceInter;
 
 
+import com.kshrd.tnakrean.model.classmaterials.request.FolderAssignClassRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.FolderClassWorkRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.FolderCourseRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.FolderRequest;
@@ -31,4 +32,6 @@ public interface FolderService {
     boolean createClassWorkFolder(FolderClassWorkRequest folderClassWorkRequest, Integer userId);
 
     boolean createCourseWorkFolder(FolderCourseRequest folderCourseRequest, Integer userId);
+
+    boolean folderAssignClass(FolderAssignClassRequest folderAssignClassRequest);
 }
