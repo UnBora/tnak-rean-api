@@ -102,12 +102,13 @@ public class SubmittedWorkController {
             return ApiResponse.setError(e.getMessage());
         }
     }
-    @GetMapping("get-not-graded-by-classId-materialId")
+    @GetMapping("get-not-graded-by-classId-teacherUserId-materialId")
     ApiResponse<List<SubmittedWorkNotGradedByClassResponse>> getNotGradedByClassId(
             @RequestParam @Min(value = 1) Integer class_id,
             @RequestParam @Min(value = 1) Integer material_id
     ) {
-        List<SubmittedWorkNotGradedByClassResponse> submittedWorkResponses = submittedWorkImpl.getNotGradedByClassId(class_id,material_id);
+        Integer userId = AuthRestController.user_id;
+        List<SubmittedWorkNotGradedByClassResponse> submittedWorkResponses = submittedWorkImpl.getNotGradedByClassId(class_id,material_id,userId);
         try {
             if (submittedWorkResponses.isEmpty()) {
                 return ApiResponse.<List<SubmittedWorkNotGradedByClassResponse>>notFound(SubmittedWorkNotGradedByClassResponse.class

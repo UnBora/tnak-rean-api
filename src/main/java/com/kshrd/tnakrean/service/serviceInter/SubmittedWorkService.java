@@ -28,7 +28,7 @@ public interface SubmittedWorkService {
 
    List<SubmittedWorkResultByClassResponse> getByClassId(Integer class_id, Integer material_id);
 
-   List<SubmittedWorkNotGradedByClassResponse> getNotGradedByClassId(Integer class_id, Integer material_id);
+   List<SubmittedWorkNotGradedByClassResponse> getNotGradedByClassId(Integer class_id, Integer material_id,Integer userId);
 
    List<StudentWorkBySubmittedWorkIdResponse> viewStudentWork(Integer submitted_work_id);
 }

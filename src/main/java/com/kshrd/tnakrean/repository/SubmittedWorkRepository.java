@@ -92,16 +92,16 @@ public interface SubmittedWorkRepository {
     List<SubmittedWorkResultByClassResponse> getResultByClassId(Integer class_id, Integer material_id);
 
     // get NotGraded By ClassId
-    @Select("SELECT class_material_id,saw.class_id, title,submittable_work_id,user_id,name,sw.id,sw.status " +
+    @Select("SELECT cm.created_by,class_material_id,saw.class_id, title,submittable_work_id,user_id,name,sw.id,sw.status " +
             "FROM submitted_work sw " +
             "JOIN submittable_work saw ON sw.submittable_work_id = saw.id " +
             "JOIN class_materials_detail cmd ON saw.class_materials_detail_id = cmd.id AND cmd.class_id = saw.class_id\n" +
             "JOIN class_materials cm ON cmd.class_material_id = cm.id\n" +
             "JOIN student st ON sw.student_id = st.id \n" +
             "JOIN users u ON st.user_id = u.id\n" +
-            "WHERE sw.status = 0 AND class_material_id = #{material_id} AND saw.class_id = #{class_id}")
+            "WHERE sw.status = 0 AND class_material_id = #{material_id} AND saw.class_id = #{class_id} AND cm.created_by = #{userId}")
     @Result(property = "submitted_work_id" , column = "id")
-    List<SubmittedWorkNotGradedByClassResponse> getNotGradedByClassId(Integer class_id, Integer material_id);
+    List<SubmittedWorkNotGradedByClassResponse> getNotGradedByClassId(Integer class_id, Integer material_id,Integer userId);
 
     // view Student Work
     @Select("SELECT saw.class_id, sw.id,st.user_id, u.name, class_material_id , student_work,  title FROM submitted_work sw \n" +

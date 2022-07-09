@@ -66,8 +66,8 @@ public class SubmittedWorkImpl implements SubmittedWorkService {
     }
 
     @Override
-    public List<SubmittedWorkNotGradedByClassResponse> getNotGradedByClassId(Integer class_id, Integer material_id) {
-        return submittedWorkRepository.getNotGradedByClassId(class_id,material_id);
+    public List<SubmittedWorkNotGradedByClassResponse> getNotGradedByClassId(Integer class_id, Integer material_id,Integer userId) {
+        return submittedWorkRepository.getNotGradedByClassId(class_id,material_id,userId);
     }
 
     @Override
