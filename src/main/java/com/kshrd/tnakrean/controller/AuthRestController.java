@@ -125,6 +125,7 @@ public class AuthRestController {
                 userServiceImp.userRegister(userRegisterRequest);
                 Integer userId= appUserRepository.lastUserId();
                 appUserRepository.studenRegistrationAndRequese(userId, userRegisterRequest.getClassroomId(),userRegisterRequest.getClassId());
+                appUserRepository.studentRegisterAddtoStudentRequest(userId);
                 return ApiResponse.<UserRegisterResponse>successCreate(UserRegisterResponse.class.getSimpleName())
                         .setData(modelMapper.map(userRegisterRequest, UserRegisterResponse.class));
             }

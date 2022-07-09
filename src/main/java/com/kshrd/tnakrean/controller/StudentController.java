@@ -111,6 +111,7 @@ public class StudentController {
                             .setData(new StudentLeaveClassRequest(user_id, classroomId, classId));
                 } else {
                     studentServiceImp.studentLeaveClassService(user_id, classroomId, classId);
+                    studentRepository.studentLeaveUser(user_id);
                     return ApiResponse.<StudentLeaveClassRequest>ok(StudentLeaveClassRequest.class.getSimpleName())
                             .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
                             .setData(new StudentLeaveClassRequest(user_id, classroomId, classId));
