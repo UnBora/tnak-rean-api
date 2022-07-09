@@ -1,5 +1,6 @@
 package com.kshrd.tnakrean;
 
+import com.kshrd.tnakrean.controller.StorageProperties;
 import com.kshrd.tnakrean.service.serviceInter.FilesStorageService;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
@@ -11,6 +12,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.cors.CorsConfiguration;
@@ -24,7 +26,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import javax.annotation.Resource;
 
 @SpringBootApplication
-
+@EnableConfigurationProperties(StorageProperties.class)
 @SecurityScheme(
         name = "bearerAuth",
         type = SecuritySchemeType.HTTP,
