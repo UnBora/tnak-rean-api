@@ -56,12 +56,6 @@ public class CommentServiceImp implements CommentService {
     public List<CommentByTeacherResponse> getByTecherId(Integer userId) {
         return commentRepository.getByTecherId(userId);
     }
-
-    @Override
-    public CommentCountResponse getCountComment(Integer class_material_id, Integer class_id, Integer classroom_id) {
-        return commentRepository.getCountComment(class_id,class_material_id,classroom_id);
-    }
-
     @Override
     public List<CommentByMaterialResponse> getByClassMaterialId(Integer material_id) {
         return commentRepository.getByClassMaterialId(material_id);

@@ -105,26 +105,26 @@ public class CommentController {
         }
     }
 
-    @GetMapping("get-by-claaId-classroomId-studentId")
-    ApiResponse<List<CommentByClassClassroomStudentResponse>> getByClassClassroomStudent(
-            @RequestParam @Min(value = 1) Integer classroom_id,
-            @RequestParam @Min(value = 1) Integer class_id,
-            @RequestParam @Min(value = 1) Integer student_id
-    ) {
-        try {
-            List<CommentByClassClassroomStudentResponse> commentResponses = commentServiceImp.getByClassClassroomStudent(classroom_id, class_id, student_id);
-            if (commentResponses.isEmpty()) {
-                return ApiResponse.<List<CommentByClassClassroomStudentResponse>>notFound(CommentByClassClassroomStudentResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
-                        .setData(null);
-            }
-            return ApiResponse.<List<CommentByClassClassroomStudentResponse>>ok(CommentByClassClassroomStudentResponse.class.getSimpleName())
-                    .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
-                    .setData(commentResponses);
-        } catch (Exception e) {
-            return ApiResponse.setError(e.getMessage());
-        }
-    }
+//    @GetMapping("get-by-claaId-classroomId-studentId")
+//    ApiResponse<List<CommentByClassClassroomStudentResponse>> getByClassClassroomStudent(
+//            @RequestParam @Min(value = 1) Integer classroom_id,
+//            @RequestParam @Min(value = 1) Integer class_id,
+//            @RequestParam @Min(value = 1) Integer student_id
+//    ) {
+//        try {
+//            List<CommentByClassClassroomStudentResponse> commentResponses = commentServiceImp.getByClassClassroomStudent(classroom_id, class_id, student_id);
+//            if (commentResponses.isEmpty()) {
+//                return ApiResponse.<List<CommentByClassClassroomStudentResponse>>notFound(CommentByClassClassroomStudentResponse.class.getSimpleName())
+//                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+//                        .setData(null);
+//            }
+//            return ApiResponse.<List<CommentByClassClassroomStudentResponse>>ok(CommentByClassClassroomStudentResponse.class.getSimpleName())
+//                    .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+//                    .setData(commentResponses);
+//        } catch (Exception e) {
+//            return ApiResponse.setError(e.getMessage());
+//        }
+//    }
 
     @DeleteMapping("delete-by-id")
     ApiResponse<Boolean> deleteById(@RequestParam @Min(value = 1) Integer id) {
@@ -190,26 +190,6 @@ public class CommentController {
         }
     }
 
-    @GetMapping("get-count-comment-by-materialId-classroomId-classId")
-    ApiResponse<CommentCountResponse> getCountComment(
-            @RequestParam @Min(value = 1) Integer class_material_id,
-            @RequestParam @Min(value = 1) Integer classroom_id,
-            @RequestParam @Min(value = 1) Integer class_id
-    ) {
-        CommentCountResponse commentCount = commentServiceImp.getCountComment(class_material_id, class_id, classroom_id);
-        try {
-            if (commentCount.getTotal_comment() == 0) {
-                return ApiResponse.<CommentCountResponse>notFound(CommentCountResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
-            }
-            commentCount.setClass_material_id(class_material_id);
-            return ApiResponse.<CommentCountResponse>ok(CommentCountResponse.class.getSimpleName())
-                    .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
-                    .setData(commentCount);
-        } catch (Exception e) {
-            return ApiResponse.setError(e.getMessage());
-        }
-    }
     @GetMapping("get-by-materialId")
     ApiResponse<List<CommentByMaterialResponse>> getByMaterialId(@RequestParam @Min(value = 1) Integer material_id) {
         try {
