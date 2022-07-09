@@ -4,7 +4,6 @@ import com.kshrd.tnakrean.model.EmailMessage;
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.OneSignalNotificationResponse;
-import com.kshrd.tnakrean.model.user.request.StudentLeaveClassRequest;
 import com.kshrd.tnakrean.model.user.response.AppUserResponse;
 import com.kshrd.tnakrean.repository.ClassRepository;
 import com.kshrd.tnakrean.repository.ClassroomRepository;

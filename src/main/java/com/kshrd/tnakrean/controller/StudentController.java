@@ -5,7 +5,7 @@ import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassResponse;
 import com.kshrd.tnakrean.model.user.request.StudentInsertRequest;
-import com.kshrd.tnakrean.model.user.request.StudentLeaveClassRequest;
+import com.kshrd.tnakrean.model.user.request.TeacherRemoveStudentByIDResponse;
 import com.kshrd.tnakrean.model.user.response.GetStudentByClassIDResponse;
 import com.kshrd.tnakrean.model.user.response.GetStudentByIDResponse;
 import com.kshrd.tnakrean.model.user.response.GetAllStudentResponse;
@@ -98,7 +98,7 @@ public class StudentController {
     }
 
     @PutMapping("leave-class")
-    public ApiResponse<StudentLeaveClassRequest> studentLeaveClass(
+    public ApiResponse<TeacherRemoveStudentByIDResponse> studentLeaveClass(
             @RequestParam @Min(value = 1, message = "{validation.classroomId.notNegative}") Integer classroomId,
             @RequestParam @Min(value = 1, message = "{validation.classId.notNegative}") Integer classId) {
         try {
@@ -106,18 +106,18 @@ public class StudentController {
             if (!user_id.equals(0)) {
                 Boolean checkId = studentRepository.checkIfStudentExists(user_id, classroomId, classId);
                 if (checkId.equals(false)) {
-                    return ApiResponse.<StudentLeaveClassRequest>notFound(StudentLeaveClassRequest.class.getSimpleName())
+                    return ApiResponse.<TeacherRemoveStudentByIDResponse>notFound(TeacherRemoveStudentByIDResponse.class.getSimpleName())
                             .setResponseMsg("Your classID and ClassroomID not Matched!")
-                            .setData(new StudentLeaveClassRequest(user_id, classroomId, classId));
+                            .setData(new TeacherRemoveStudentByIDResponse(user_id, classroomId, classId));
                 } else {
                     studentServiceImp.studentLeaveClassService(user_id, classroomId, classId);
                     studentRepository.studentLeaveUser(user_id);
-                    return ApiResponse.<StudentLeaveClassRequest>ok(StudentLeaveClassRequest.class.getSimpleName())
+                    return ApiResponse.<TeacherRemoveStudentByIDResponse>ok(TeacherRemoveStudentByIDResponse.class.getSimpleName())
                             .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
-                            .setData(new StudentLeaveClassRequest(user_id, classroomId, classId));
+                            .setData(new TeacherRemoveStudentByIDResponse(user_id, classroomId, classId));
                 }
             } else {
-                return ApiResponse.<StudentLeaveClassRequest>unAuthorized(StudentLeaveClassRequest.class.getSimpleName())
+                return ApiResponse.<TeacherRemoveStudentByIDResponse>unAuthorized(TeacherRemoveStudentByIDResponse.class.getSimpleName())
                         .setResponseMsg("Unauthorized!");
             }
         } catch (Exception e) {

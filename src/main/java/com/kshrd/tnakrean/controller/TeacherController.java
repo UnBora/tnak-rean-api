@@ -2,8 +2,11 @@ package com.kshrd.tnakrean.controller;
 
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
+import com.kshrd.tnakrean.model.user.request.TeacherRemoveStudentByIDResponse;
 import com.kshrd.tnakrean.model.user.response.TeacherByClassAndClassroomResponse;
+import com.kshrd.tnakrean.model.user.response.TeacherRemoveStudentByID;
 import com.kshrd.tnakrean.model.user.response.TeacherResponse;
+import com.kshrd.tnakrean.repository.TeacherRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.TeacherImpl;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +20,11 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class TeacherController {
     final TeacherImpl teacherImpl;
+    final TeacherRepository teacherRepository;
 
-    public TeacherController(TeacherImpl teacherImpl) {
+    public TeacherController(TeacherImpl teacherImpl, TeacherRepository teacherRepository) {
         this.teacherImpl = teacherImpl;
+        this.teacherRepository = teacherRepository;
     }
 
     @GetMapping("/get-all")
@@ -63,4 +68,33 @@ public class TeacherController {
                 .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
                 .setData(teacherByIdResponse);
     }
+
+    @DeleteMapping("/teacher-remove-student-by-id")
+    ApiResponse<TeacherRemoveStudentByID> TeacherRemoveStudentByID(
+            @RequestBody TeacherRemoveStudentByIDResponse teacherRemoveStudentByIDResponse) {
+        try {
+            Integer user_id = AuthRestController.user_id;
+            if (!user_id.equals(0)) {
+                Boolean checkId = teacherRepository.checkIfStudentExists(teacherRemoveStudentByIDResponse.getUser_id(), teacherRemoveStudentByIDResponse.getClassroom_id(), teacherRemoveStudentByIDResponse.getClass_id());
+                String studentName= teacherRepository.getStudentName(teacherRemoveStudentByIDResponse.getUser_id());
+                String className= teacherRepository.getClassName(teacherRemoveStudentByIDResponse.getClass_id());
+                if (checkId.equals(false)) {
+                    return ApiResponse.<TeacherRemoveStudentByID>notFound(TeacherRemoveStudentByID.class.getSimpleName())
+                            .setResponseMsg("Your StudentID:"+teacherRemoveStudentByIDResponse.getUser_id()+" classID and ClassroomID not Matched!")
+                            .setData(new TeacherRemoveStudentByID (teacherRemoveStudentByIDResponse.getUser_id(), studentName, className));
+                } else {
+                    teacherRepository.removeStudentById(teacherRemoveStudentByIDResponse.getUser_id(), teacherRemoveStudentByIDResponse.getClassroom_id(), teacherRemoveStudentByIDResponse.getClass_id());
+                    return ApiResponse.<TeacherRemoveStudentByID>ok(TeacherRemoveStudentByID.class.getSimpleName())
+                            .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
+                            .setData(new TeacherRemoveStudentByID (teacherRemoveStudentByIDResponse.getUser_id(), studentName, className));
+                }
+            } else {
+                return ApiResponse.<TeacherRemoveStudentByID>unAuthorized(TeacherRemoveStudentByID.class.getSimpleName())
+                        .setResponseMsg("Unauthorized!");
+            }
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
+
 }

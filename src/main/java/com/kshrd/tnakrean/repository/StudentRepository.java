@@ -29,8 +29,8 @@ public interface StudentRepository {
     void studentLeaveUser(Integer user_id);
 
     //  Get student by class ID
-    @Select("SELECT * FROM student st \n" +
-            "JOIN users u ON st.user_id = u.id\n" +
+    @Select("SELECT * FROM student st " +
+            "JOIN users u ON st.user_id = u.id " +
             "WHERE class_id = #{class_id} AND status = 2")
     @Result(column = "id", property = "stu_user_id")
     List<GetStudentByClassIDResponse> selectStudentByClassID(@Param("class_id") Integer class_id);
