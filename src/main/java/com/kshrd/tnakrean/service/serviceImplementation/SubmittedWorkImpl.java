@@ -46,11 +46,6 @@ public class SubmittedWorkImpl implements SubmittedWorkService {
     }
 
     @Override
-    public List<SubmittedWorkByStudentIdAndClassIdResponse> getByStudentIdAndClassId(Integer student_id, Integer class_id) {
-        return submittedWorkRepository.getByStudentIdAndClassId(student_id,class_id);
-    }
-
-    @Override
     public SubmittedWorkStudentScoreRequest insertScore(SubmittedWorkStudentScoreRequest submittedWorkStudentScoreRequest) {
         return submittedWorkRepository.insertScore(submittedWorkStudentScoreRequest);
     }
@@ -73,5 +68,10 @@ public class SubmittedWorkImpl implements SubmittedWorkService {
     @Override
     public List<SubmittedWorkNotGradedByClassResponse> getNotGradedByClassId(Integer class_id, Integer material_id) {
         return submittedWorkRepository.getNotGradedByClassId(class_id,material_id);
+    }
+
+    @Override
+    public List<StudentWorkBySubmittedWorkIdResponse> viewStudentWork(Integer submitted_work_id) {
+        return submittedWorkRepository.viewStudentWork(submitted_work_id);
     }
 }

@@ -20,8 +20,6 @@ public interface SubmittedWorkService {
 
    SubmittedWorkResponse getById(Integer id);
 
-   List<SubmittedWorkByStudentIdAndClassIdResponse> getByStudentIdAndClassId(Integer student_id, Integer class_id);
-
    SubmittedWorkStudentScoreRequest insertScore(SubmittedWorkStudentScoreRequest submittedWorkStudentScoreRequest);
 
    List<SubmittedWorkByMaterialIdResponse> getByClassMaterialId(Integer class_material_id);
@@ -31,4 +29,6 @@ public interface SubmittedWorkService {
    List<SubmittedWorkResultByClassResponse> getByClassId(Integer class_id, Integer material_id);
 
    List<SubmittedWorkNotGradedByClassResponse> getNotGradedByClassId(Integer class_id, Integer material_id);
+
+   List<StudentWorkBySubmittedWorkIdResponse> viewStudentWork(Integer submitted_work_id);
 }

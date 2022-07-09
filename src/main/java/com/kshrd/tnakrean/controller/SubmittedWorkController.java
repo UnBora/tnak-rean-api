@@ -82,27 +82,6 @@ public class SubmittedWorkController {
         }
     }
 
-    @GetMapping("get-by-studentId-and-classId")
-    ApiResponse<List<SubmittedWorkByStudentIdAndClassIdResponse>> getByStudentIdAndClassId(
-            @RequestParam @Min(value = 1) Integer student_id,
-            @RequestParam @Min(value = 1) Integer class_id
-
-    ) {
-        List<SubmittedWorkByStudentIdAndClassIdResponse> submittedWorkResponses = submittedWorkImpl.getByStudentIdAndClassId(student_id, class_id);
-        try {
-            if (submittedWorkResponses.isEmpty()) {
-                return ApiResponse.<List<SubmittedWorkByStudentIdAndClassIdResponse>>notFound(SubmittedWorkResponse.class
-                                .getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
-            }
-            return ApiResponse.<List<SubmittedWorkByStudentIdAndClassIdResponse>>ok(SubmittedWorkResponse.class
-                            .getSimpleName())
-                    .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
-                    .setData(submittedWorkResponses);
-        } catch (Exception e) {
-            return ApiResponse.setError(e.getMessage());
-        }
-    }
     @GetMapping("get-result-by-classId-materialId")
     ApiResponse<List<SubmittedWorkResultByClassResponse>> getByClassId(
             @RequestParam @Min(value = 1) Integer class_id,
@@ -137,6 +116,27 @@ public class SubmittedWorkController {
                         .setData(submittedWorkResponses);
             }
             return ApiResponse.<List<SubmittedWorkNotGradedByClassResponse>>ok(SubmittedWorkNotGradedByClassResponse.class
+                            .getSimpleName())
+                    .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
+                    .setData(submittedWorkResponses);
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
+
+    @GetMapping("view-student-work-by-classId-submittedWorkId")
+    ApiResponse<List<StudentWorkBySubmittedWorkIdResponse>> viewStudentWork(
+            @RequestParam @Min(value = 1) Integer submitted_work_id
+    ) {
+        List<StudentWorkBySubmittedWorkIdResponse> submittedWorkResponses = submittedWorkImpl.viewStudentWork(submitted_work_id);
+        try {
+            if (submittedWorkResponses.isEmpty()) {
+                return ApiResponse.<List<StudentWorkBySubmittedWorkIdResponse>>notFound(StudentWorkBySubmittedWorkIdResponse.class
+                                .getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setData(submittedWorkResponses);
+            }
+            return ApiResponse.<List<StudentWorkBySubmittedWorkIdResponse>>ok(StudentWorkBySubmittedWorkIdResponse.class
                             .getSimpleName())
                     .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
                     .setData(submittedWorkResponses);
