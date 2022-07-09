@@ -66,7 +66,6 @@ public class AuthRestController {
         Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         JwtTokenUtil jwtUtils = new JwtTokenUtil();
         String token = jwtUtils.generateJwtToken(authentication);
-//        System.out.println("Here is the value of the token : " + token);
         Boolean checkName= appUserRepository.checkUserName(request.getUsername());
         UserDetails findUserByUsername = userServiceImp.loadUserByUsername(request.getUsername());
         userDetails  = modelMapper.map(findUserByUsername, AppUserResponse.class);
@@ -76,7 +75,6 @@ public class AuthRestController {
         return ResponseEntity.ok(userDetails);
 
     }
-
 
     @PostMapping("/update-password")
     public ApiResponse<Boolean> updatePassword(@RequestBody UserUpdatePasswordRequestModel userUpdatePasswordRequestModel) {

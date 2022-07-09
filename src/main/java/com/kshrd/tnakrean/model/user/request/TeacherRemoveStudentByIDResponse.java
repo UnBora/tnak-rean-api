@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class StudentLeaveClassRequest {
+public class TeacherRemoveStudentByIDResponse {
     @Min(value = 1, message = "{validation.userId.notEmpty}")
     Integer user_id;
     @Min(value = 1, message = "{validation.classroomId.notEmpty}")
