@@ -39,12 +39,6 @@ public interface SubmittableWorkRepository {
     @Result(property = "submittable_work_id", column = "id")
     SubmittableWorkResponse delete(Integer submittable_work_id);
 
-    // get by Class Material Detail Type
-    @Select("SELECT * FROM submittable_work WHERE class_materials_detail_id = #{id}")
-    @Result(property = "submittable_work_id", column = "id")
-    List<SubmittableWorkResponse> getSubmittableWorkByClassMaterialDetailType(Integer id);
-
-
     @Select("SELECT cm.title as title, cm.description, cm.content, sw.deadline, sw.score " +
             " FROM class_materials cm" +
             " INNER JOIN class_materials_detail cmd on cm.id = cmd.class_material_id" +
@@ -110,4 +104,21 @@ public interface SubmittableWorkRepository {
     @Result(property = "total_comment", column = "count")
     @Result(property = "submittable_work_id", column = "id")
     List<SubmittableWorkByTeacherResponse> getByTeacherUserId(Integer user_id);
+
+    // get By MaterialId
+    @Select("SELECT f.created_by, saw.class_id, saw.id, material_id, title, description, score, assigned_date,deadline, " +
+            "(SELECT count(s.class_material_id) FROM comment c \n" +
+            "JOIN class_materials_detail s ON c.class_materials_detail_id = s.id \n" +
+            "WHERE class_material_id = material_id) " +
+            "FROM folder f " +
+            "JOIN class_materials_type cm ON f.material_type_id = cm.id " +
+            "JOIN class_material_folder cmf ON f.id = cmf.folder_id " +
+            "JOIN material_folder mf ON f.id = mf.folder_id " +
+            "JOIN class_materials clm ON mf.material_id = clm.id " +
+            "JOIN class_materials_detail cmd ON clm.id = cmd.class_material_id AND cmd.class_id = cmf.class_id AND cmd.classroom_id = cmf.classroom_id\n" +
+            "JOIN submittable_work saw ON cmd.id = saw.class_materials_detail_id AND saw.class_id = cmd.class_id AND saw.classroom_id = cmd.classroom_id \n" +
+            "WHERE material_id = #{material_id}")
+    @Result(property = "submittable_work_id", column = "id")
+    @Result(property = "total_comment", column = "count")
+    List<SubmittableWorkByMaterialResponse> getByClassMaterialId(Integer material_id);
 }

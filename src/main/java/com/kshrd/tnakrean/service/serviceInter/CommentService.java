@@ -23,7 +23,5 @@ public interface CommentService {
 
     List<CommentByTeacherResponse> getByTecherId(Integer userId);
 
-    CommentCountResponse getCountComment(Integer class_material_id, Integer class_id, Integer classroom_id);
-
     List<CommentByMaterialResponse> getByClassMaterialId(Integer material_id);
 }

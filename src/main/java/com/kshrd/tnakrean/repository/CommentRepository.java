@@ -62,12 +62,6 @@ public interface CommentRepository {
     @Result(property = "teacher_id",column = "created_by")
     List<CommentByTeacherResponse> getByTecherId(Integer userId);
 
-    // get Count Comment
-    @Select("SELECT count(*) as total_comment FROM comment c " +
-            "JOIN class_materials_detail s ON c.class_materials_detail_id = s.id " +
-            "WHERE class_material_id = #{class_material_id} AND classroom_id = #{classroom_id} AND class_id = #{class_id} ")
-    CommentCountResponse getCountComment(Integer class_id, Integer class_material_id, Integer classroom_id);
-
     //
     @Select("SELECT EXISTS(SELECT id FROM class_materials_detail WHERE id = #{class_materials_detail_id})")
     boolean ifMaterialsDetailIdExist(Integer class_materials_detail_id);
