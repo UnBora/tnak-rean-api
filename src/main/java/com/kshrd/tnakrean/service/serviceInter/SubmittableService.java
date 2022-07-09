@@ -27,4 +27,6 @@ public interface SubmittableService {
     List<SubmittableWorkByTeacherResponse> getByTeacherUserId(Integer user_id);
 
     List<SubmittableWorkByMaterialResponse> getByClassMaterialId(Integer material_id);
+
+    List<SubmittableWorkByClassIdTeacherIdResponse> getAllByClassIdTeacherUserId(Integer user_id, Integer class_id);
 }
