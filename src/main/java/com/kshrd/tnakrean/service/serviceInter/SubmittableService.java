@@ -18,8 +18,6 @@ public interface SubmittableService {
 
     SubmittedWorkResponse updateSubmittableWork(SubmittableWorkUpdateDeadlineRequest submittableWorkUpdateDeadlineRequest);
 
-    List<SubmittableWorkResponse> getSubmittableWorkByClassMaterialDetailType(Integer id);
-
     List<UpComingSubmittableWorkResponse> getUpComingSubmittableWorkByStudentId(Integer studentId, Integer classRoomId, Integer classId);
 
     List<SubmittableWorkByClassResponse> getByClassIdAndClassId(Integer classroom_id, Integer class_id);
@@ -27,4 +25,6 @@ public interface SubmittableService {
     SubmittableWorkUpdateClassClassroomRequest updateClassClassroom(SubmittableWorkUpdateClassClassroomRequest submittableWorkUpdateClassClassroomRequest);
 
     List<SubmittableWorkByTeacherResponse> getByTeacherUserId(Integer user_id);
+
+    List<SubmittableWorkByMaterialResponse> getByClassMaterialId(Integer material_id);
 }

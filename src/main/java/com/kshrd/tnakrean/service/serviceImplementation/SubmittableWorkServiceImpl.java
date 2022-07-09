@@ -48,11 +48,6 @@ public class SubmittableWorkServiceImpl implements SubmittableService {
     }
 
     @Override
-    public List<SubmittableWorkResponse> getSubmittableWorkByClassMaterialDetailType(Integer id) {
-        return submittableWorkRepository.getSubmittableWorkByClassMaterialDetailType(id);
-    }
-
-    @Override
     public List<UpComingSubmittableWorkResponse> getUpComingSubmittableWorkByStudentId(Integer studentId, Integer classId, Integer classRoomId) {
         Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.of("+07:00")));
         System.out.println(timestamp);
@@ -72,5 +67,10 @@ public class SubmittableWorkServiceImpl implements SubmittableService {
     @Override
     public List<SubmittableWorkByTeacherResponse> getByTeacherUserId(Integer user_id) {
         return submittableWorkRepository.getByTeacherUserId(user_id);
+    }
+
+    @Override
+    public List<SubmittableWorkByMaterialResponse> getByClassMaterialId(Integer material_id) {
+        return submittableWorkRepository.getByClassMaterialId(material_id);
     }
 }

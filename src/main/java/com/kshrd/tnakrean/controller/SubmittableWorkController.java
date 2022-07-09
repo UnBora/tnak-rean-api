@@ -161,24 +161,6 @@ public class SubmittableWorkController {
         }
     }
 
-    @GetMapping("/get-by-classMaterialDetailTypeId")
-    ApiResponse<List<SubmittableWorkResponse>> getSubmittableWorkByClassMaterialDetailType
-            (@RequestParam @Min(value = 1) Integer classMaterialDetailTypeId) {
-        try {
-            List<SubmittableWorkResponse> submittableWorkResponses = submittableWorkService.getSubmittableWorkByClassMaterialDetailType(classMaterialDetailTypeId);
-            if (submittableWorkResponses.isEmpty()) {
-                return ApiResponse.<List<SubmittableWorkResponse>>notFound(SubmittableWorkResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
-                        .setData(submittableWorkResponses);
-            }
-            return ApiResponse.<List<SubmittableWorkResponse>>ok(SubmittableWorkResponse.class.getSimpleName())
-                    .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
-                    .setData(submittableWorkResponses);
-        } catch (Exception e) {
-            return ApiResponse.setError(e.getMessage());
-        }
-    }
-
     @GetMapping("get-upComingWork-by-StudentId")
     ApiResponse<List<UpComingSubmittableWorkResponse>> getUpComingSubmittableWorkByStudentId(
             @RequestParam @Min(value = 1) Integer studentId,
@@ -231,6 +213,23 @@ public class SubmittableWorkController {
                         .setData(submittableWorkResponses);
             }
             return ApiResponse.<List<SubmittableWorkByTeacherResponse>>ok(SubmittableWorkByTeacherResponse.class.getSimpleName())
+                    .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+                    .setData(submittableWorkResponses);
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
+
+    @GetMapping("get-by-classMaterialId")
+    ApiResponse<List<SubmittableWorkByMaterialResponse>> getByClassMaterialId(@RequestParam @Min(value = 1) Integer material_id ) {
+        try {
+            List<SubmittableWorkByMaterialResponse> submittableWorkResponses = submittableWorkService.getByClassMaterialId(material_id);
+            if (submittableWorkResponses.isEmpty()) {
+                return ApiResponse.<List<SubmittableWorkByMaterialResponse>>notFound(SubmittableWorkByMaterialResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setData(submittableWorkResponses);
+            }
+            return ApiResponse.<List<SubmittableWorkByMaterialResponse>>ok(SubmittableWorkByMaterialResponse.class.getSimpleName())
                     .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
                     .setData(submittableWorkResponses);
         } catch (Exception e) {

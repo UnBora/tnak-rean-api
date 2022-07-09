@@ -124,7 +124,7 @@ public class SubmittedWorkController {
         }
     }
 
-    @GetMapping("view-student-work-by-classId-submittedWorkId")
+    @GetMapping("view-student-work-by-submittedWorkId")
     ApiResponse<List<StudentWorkBySubmittedWorkIdResponse>> viewStudentWork(
             @RequestParam @Min(value = 1) Integer submitted_work_id
     ) {
