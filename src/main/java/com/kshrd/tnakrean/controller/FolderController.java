@@ -2,14 +2,9 @@ package com.kshrd.tnakrean.controller;
 
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
-import com.kshrd.tnakrean.model.classmaterials.request.FolderClassWorkRequest;
-import com.kshrd.tnakrean.model.classmaterials.request.FolderCourseRequest;
-import com.kshrd.tnakrean.model.classmaterials.request.FolderDetailRequest;
-import com.kshrd.tnakrean.model.classmaterials.request.FolderRequest;
-import com.kshrd.tnakrean.model.classmaterials.response.FolderByClassResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.FolderByTeacherResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.FolderDetailResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.FolderResponse;
+import com.kshrd.tnakrean.model.classmaterials.request.*;
+import com.kshrd.tnakrean.model.classmaterials.response.*;
+import com.kshrd.tnakrean.model.user.response.GetAllStudentResponse;
 import com.kshrd.tnakrean.repository.FolderRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.FolderServiceImp;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -209,6 +204,29 @@ public class FolderController {
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
+
+    @PutMapping("assign-folder-in-class")
+    public ApiResponse<FolderAssignClassRequest> folderAssignClass(
+            @RequestBody @Valid FolderAssignClassRequest folderAssignClassRequest) {
+        Boolean checkClassId = folderRepository.findClassId(folderAssignClassRequest.getClass_id());
+        Boolean checkClassroomId = folderRepository.findClassroomId(folderAssignClassRequest.getClassroom_id());
+        try {
+            if (checkClassId == false) {
+                return ApiResponse.<FolderAssignClassRequest>setError(FolderAssignClassRequest.class.getSimpleName())
+                        .setResponseMsg("ClassId: "+folderAssignClassRequest.getClass_id()+"does not exist");
+            } else if (checkClassroomId == false) {
+                return ApiResponse.<FolderAssignClassRequest>notFound(FolderAssignClassRequest.class.getSimpleName())
+                        .setResponseMsg("ClassroomId: "+folderAssignClassRequest.getClassroom_id()+"'does not exist");
+            } else {
+                folderServiceImp.folderAssignClass(folderAssignClassRequest);
+                return ApiResponse.<FolderAssignClassRequest>ok(FolderAssignClassRequest.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
+                        .setData(folderAssignClassRequest);
+            }
+        } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
     }

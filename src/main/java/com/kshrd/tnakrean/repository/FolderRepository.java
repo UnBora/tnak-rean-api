@@ -1,6 +1,7 @@
 package com.kshrd.tnakrean.repository;
 
 
+import com.kshrd.tnakrean.model.classmaterials.request.FolderAssignClassRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.FolderClassWorkRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.FolderCourseRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.FolderRequest;
@@ -15,6 +16,10 @@ import java.util.List;
 
 @Mapper
 public interface FolderRepository {
+    @Select("SELECT EXISTS(SELECT id FROM classroom WHERE id = #{classroom_id})")
+    Boolean findClassroomId(Integer classroom_id);
+    @Select("SELECT EXISTS(SELECT id FROM class WHERE id = #{class_id})")
+    Boolean findClassId(Integer class_id);
     @InsertProvider(type = FolderProvider.class, method = "createFolder")
     boolean createFolder(@Param("folder") FolderRequest folderRequest);
 
@@ -81,4 +86,9 @@ public interface FolderRepository {
     @Insert("INSERT INTO folder (folder_name, parent_id,created_by,material_type_id) " +
             "VALUES (#{folder.folder_name},#{folder.parent_id},#{userId},1)")
     boolean createCourseWorkFolder(@Param("folder") FolderCourseRequest folderCourseRequest, Integer userId);
+
+    // Assign Class
+    @Update("UPDATE class_material_folder " +
+            "SET class_id = #{class_id}, classroom_id = #{classroom_id} WHERE folder_id = #{folder_id} ")
+    boolean folderAssignClass(FolderAssignClassRequest folderAssignClassRequest);
 }
