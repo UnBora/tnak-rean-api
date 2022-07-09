@@ -220,7 +220,29 @@ public class SubmittableWorkController {
         }
     }
 
-    @GetMapping("get-by-classMaterialId")
+    @GetMapping("get-all-by-classId-teacherUserId")
+    ApiResponse<List<SubmittableWorkByClassIdTeacherIdResponse>> getAllByClassIdTeacherUserId(@RequestParam @Min(value = 1) Integer class_id) {
+        try {
+            Integer user_id = AuthRestController.user_id;
+            List<SubmittableWorkByClassIdTeacherIdResponse> submittableWorkResponses = submittableWorkService.getAllByClassIdTeacherUserId(user_id,class_id);
+            if (user_id == 0) {
+               return ApiResponse.unAuthorized("unAuthorized");
+            }
+            else if (submittableWorkResponses.isEmpty()) {
+                return ApiResponse.<List<SubmittableWorkByClassIdTeacherIdResponse>>notFound(SubmittableWorkByClassIdTeacherIdResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setData(submittableWorkResponses);
+            } else {
+                return ApiResponse.<List<SubmittableWorkByClassIdTeacherIdResponse>>ok(SubmittableWorkByClassIdTeacherIdResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+                        .setData(submittableWorkResponses);
+            }
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
+
+    @GetMapping("view-by-classMaterialId")
     ApiResponse<List<SubmittableWorkByMaterialResponse>> getByClassMaterialId(@RequestParam @Min(value = 1) Integer material_id ) {
         try {
             List<SubmittableWorkByMaterialResponse> submittableWorkResponses = submittableWorkService.getByClassMaterialId(material_id);

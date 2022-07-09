@@ -73,4 +73,9 @@ public class SubmittableWorkServiceImpl implements SubmittableService {
     public List<SubmittableWorkByMaterialResponse> getByClassMaterialId(Integer material_id) {
         return submittableWorkRepository.getByClassMaterialId(material_id);
     }
+
+    @Override
+    public List<SubmittableWorkByClassIdTeacherIdResponse> getAllByClassIdTeacherUserId(Integer user_id, Integer class_id) {
+        return submittableWorkRepository.getAllByClassIdTeacherUserId(user_id,class_id);
+    }
 }
