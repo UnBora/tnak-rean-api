@@ -8,6 +8,7 @@ import org.springframework.core.io.UrlResource;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 
+@Service
 public interface FileService {
     public void init();
 
