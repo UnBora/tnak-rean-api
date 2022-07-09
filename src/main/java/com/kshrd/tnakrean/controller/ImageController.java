@@ -64,7 +64,7 @@ public class ImageController {
     public ApiResponse<FileInfo> uploadFile(@RequestPart(value = "file") MultipartFile file) {
         try {
             String fileName = storageService.save(file);
-            return ApiResponse.<FileInfo>ok(FileInfo.class.getSimpleName()).setData(new FileInfo(imageUrl + fileName, file.getBytes().toString()));
+            return ApiResponse.<FileInfo>ok(FileInfo.class.getSimpleName()).setData(new FileInfo(imageUrl + fileName, file.getSize()+""));
         } catch (Exception e) {
 
             return ApiResponse.<FileInfo>badRequest(FileInfo.class.getSimpleName()).setResponseMsg("message: Could not upload the file:");
