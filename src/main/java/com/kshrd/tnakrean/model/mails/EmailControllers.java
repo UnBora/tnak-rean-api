@@ -7,22 +7,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("${baseUrl}/email/")
-public class EmailController {
+@RequestMapping("/api/v1/email/")
+public class EmailControllers {
+
     @Autowired
-    private EmailService emailService;
+    private Emails emails;
     // Sending a simple Email
     @PostMapping("/sendMail")
     public String sendMail(@RequestBody SimpleEmail details)
     {
-        String status = emailService.sendSimpleMail(details);
+        String status = emails.sendSimpleMail(details);
         return status;
     }
     // Sending email with attachment
     @PostMapping("/sendMailWithAttachment")
     public String sendMailWithAttachment(@RequestBody EmailDetails details)
     {
-        String status = emailService.sendMailWithAttachment(details);
+        String status = emails.sendMailWithAttachment(details);
         return status;
     }
 }

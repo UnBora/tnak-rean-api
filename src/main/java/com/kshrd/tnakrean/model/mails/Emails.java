@@ -1,6 +1,9 @@
 package com.kshrd.tnakrean.model.mails;
 
-public interface EmailService {
+import org.springframework.stereotype.Service;
+
+@Service
+public interface Emails {
     // Method
     // To send a simple email
     String sendSimpleMail(SimpleEmail details);

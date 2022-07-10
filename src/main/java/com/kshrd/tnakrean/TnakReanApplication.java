@@ -37,9 +37,6 @@ import javax.annotation.Resource;
         }
 )
 public class TnakReanApplication {
-    @Resource
-  //  FilesStorageService storageService;
-
     public static void main(String[] args) {
         SpringApplication.run(TnakReanApplication.class, args);
     }

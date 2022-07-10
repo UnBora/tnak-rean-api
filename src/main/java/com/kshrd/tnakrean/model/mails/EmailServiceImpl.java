@@ -1,7 +1,6 @@
 package com.kshrd.tnakrean.model.mails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.mail.SimpleMailMessage;
@@ -11,11 +10,10 @@ import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.io.File;
 import java.net.MalformedURLException;
 
 @Component
-public class EmailServiceImpl implements EmailService {
+public class EmailServiceImpl implements Emails {
 
     @Autowired
     private JavaMailSender javaMailSender;
