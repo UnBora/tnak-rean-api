@@ -3,6 +3,7 @@ package com.kshrd.tnakrean.repository;
 import com.kshrd.tnakrean.model.classmaterials.response.GetClassByClassroomIDResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassroomResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.GetClassByTeacherIdResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.GetSelectClassByClassroomIDResponse;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -66,4 +67,11 @@ public interface ClassroomRepository {
     @Result(property = "img", column = "image")
     List<GetClassByClassroomIDResponse> getClassByClassroomID(Integer classroomId);
 
+    // select Class ByClassroomID
+    @Select("select c.class_name,c.id "+
+            "from classroom_detail as c3 " +
+            "join class c on c3.class_id = c.id join classroom c2 on c2.id = c3.classroom_id " +
+            "where c3.classroom_id=#{classroomId}")
+    @Result(property = "className", column = "class_name")
+    List<GetSelectClassByClassroomIDResponse> selectClassByClassroomID(Integer classroomId);
 }

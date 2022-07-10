@@ -3,6 +3,7 @@ package com.kshrd.tnakrean.service.serviceImplementation;
 import com.kshrd.tnakrean.model.classmaterials.response.GetClassByClassroomIDResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassroomResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.GetClassByTeacherIdResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.GetSelectClassByClassroomIDResponse;
 import com.kshrd.tnakrean.repository.ClassroomRepository;
 import com.kshrd.tnakrean.service.serviceInter.ClassroomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,11 @@ public class ClassroomServiceImp implements ClassroomService {
     public List<GetClassByTeacherIdResponse> getClassByTeacherId(Integer classroom_id, Integer class_id, String teacher_name, String class_name, Integer user_id) {
 
         return classroomRepository.getClassByTeacherId(classroom_id, class_id, teacher_name, class_name,user_id);
+    }
+
+    @Override
+    public List<GetSelectClassByClassroomIDResponse> selectClassByClassroomID(Integer classroomId) {
+        return classroomRepository.selectClassByClassroomID(classroomId);
     }
 
 

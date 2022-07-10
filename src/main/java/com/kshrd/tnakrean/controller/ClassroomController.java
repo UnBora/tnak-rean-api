@@ -2,12 +2,9 @@ package com.kshrd.tnakrean.controller;
 
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
-import com.kshrd.tnakrean.model.classmaterials.response.GetClassByClassroomIDResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.*;
 import com.kshrd.tnakrean.model.classmaterials.request.GetClassRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassroomRequest;
-import com.kshrd.tnakrean.model.classmaterials.response.ClassroomUpdateResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.ClassroomResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.GetClassByTeacherIdResponse;
 
 import com.kshrd.tnakrean.model.user.response.GetStudentByClassIDResponse;
 import com.kshrd.tnakrean.repository.ClassroomRepository;
@@ -169,6 +166,28 @@ public class ClassroomController {
                         .setResponseMsg("The Classroom ID:" + classroomId + " does not have!");
             } else {
                 return ApiResponse.<List<GetClassByClassroomIDResponse>>ok(GetClassByClassroomIDResponse.class.getSimpleName())
+                        .setResponseMsg("The Classroom ID:" + classroomId + " get successfully")
+                        .setData(getClassByClassroomIDResponses);
+            }
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
+
+    @GetMapping("get-select-class-by-classroom-id")
+    public ApiResponse<List<GetSelectClassByClassroomIDResponse>> selectClassByClassroomID(
+            @RequestParam @Min(value = 1, message = "{validation.id.notNegative}") @NotBlank Integer classroomId) {
+        try {
+            Boolean classroomID = classroomRepository.checkClassroomByID(classroomId);
+            List<GetSelectClassByClassroomIDResponse> getClassByClassroomIDResponses =classroomServiceImp.selectClassByClassroomID(classroomId);
+            if (classroomID == null) {
+                return ApiResponse.<List<GetSelectClassByClassroomIDResponse>>badRequest(GetSelectClassByClassroomIDResponse.class.getSimpleName())
+                        .setResponseMsg("The Classroom ID cannot not null");
+            } else if (classroomID.equals(false)) {
+                return ApiResponse.<List<GetSelectClassByClassroomIDResponse>>badRequest(GetSelectClassByClassroomIDResponse.class.getSimpleName())
+                        .setResponseMsg("The Classroom ID:" + classroomId + " does not have!");
+            } else {
+                return ApiResponse.<List<GetSelectClassByClassroomIDResponse>>ok(GetSelectClassByClassroomIDResponse.class.getSimpleName())
                         .setResponseMsg("The Classroom ID:" + classroomId + " get successfully")
                         .setData(getClassByClassroomIDResponses);
             }
