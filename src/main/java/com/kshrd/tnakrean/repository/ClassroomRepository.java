@@ -58,12 +58,13 @@ public interface ClassroomRepository {
     @Result(property = "user_id", column = "user_id")
     List<GetClassByTeacherIdResponse> getClassByTeacherId(@Param("c.id") Integer class_id, @Param("c2.id") Integer id, @Param("u.name") String teacherName, @Param("c2.class_name") String classname, @Param("user_id") Integer user_id);
 
-    @Select("select c.class_name,c3.image ,c.id, (SELECT COUNT(*) FROM classroom_detail WHERE class_id=c.id) as allStudent " +
-            "from classroom_detail as c3 " +
-            "join class c on c3.class_id = c.id join classroom c2 on c2.id = c3.classroom_id " +
-            "where c3.classroom_id=#{classroomId}")
+    @Select("SELECT class_id,class_name,c.image,\n" +
+            "(SELECT count(st.id) FROM student st JOIN users u ON st.user_id = u.id WHERE class_id = c.id AND status = 2) \n" +
+            "FROM class c \n" +
+            "JOIN classroom_detail cd ON c.id = cd.class_id " +
+            "where classroom_id = #{classroomId}")
     @Result(property = "className", column = "class_name")
-    @Result(property = "allStudent", column = "allStudent")
+    @Result(property = "allStudent", column = "count")
     @Result(property = "img", column = "image")
     List<GetClassByClassroomIDResponse> getClassByClassroomID(Integer classroomId);
 
