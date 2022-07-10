@@ -22,7 +22,7 @@ public interface ClassroomRepository {
 
     //    Insert Classroom
     @Select("INSERT INTO classroom (created_by, des, name) VALUES (#{created_by},#{des},#{name})")
-    void insertClassroom( @Param("created_by") Integer created_by, @Param("name") String name ,  @Param("des") String des);
+    void insertClassroom(@Param("created_by") Integer created_by, @Param("name") String name, @Param("des") String des);
 
     //    Update Table
     @Update("UPDATE classroom SET des=#{des}, name=#{name}  WHERE created_by = #{created_by} And  id = #{classroom_id}")
@@ -30,11 +30,12 @@ public interface ClassroomRepository {
     void updateClassroomDB(@Param("classroom_id") Integer classroom_id, @Param("created_by") Integer created_by, @Param("name") String name, @Param("des") String des);
 
     @Select("select exists (select * from classroom where id = #{id} And created_by = #{created_by})")
-    Boolean checkIfClassExists( @Param("id") Integer id, @Param("created_by") Integer created_by);
+    Boolean checkIfClassExists(@Param("id") Integer id, @Param("created_by") Integer created_by);
 
     //check ID
     @Select("select exists (select * from classroom where id = #{id})")
     Boolean checkClassroomByID(Integer id);
+
     //check class ID
     @Select("select exists (select * from class where id = #{id})")
     Boolean checkClassmByID(Integer id);
@@ -44,25 +45,25 @@ public interface ClassroomRepository {
     Boolean checkIfClassExistsDuplecateClassName(String className);
 
 
-
-//    Get Class by Teacher ID
+    //    Get Class by Teacher ID
     @Select("SELECT c.id as classroom_id, c2.id as class_id,u.username as teacher_name, c2.class_name as class_name From classroom c" +
             " inner join classroom_detail cd on c.id = cd.classroom_id" +
             " inner join class c2 on cd.class_id = c2.id inner join users u on c.created_by= u.id" +
             " where  c.created_by=#{user_id}")
-    @Result(property = "classroom_id",column = "classroom_id")
-    @Result(property = "class_id",column = "class_id")
-    @Result(property = "teacher_name",column = "teacher_name")
-    @Result(property = "class_name",column = "class_name")
-    @Result(property = "user_id",column = "user_id")
-    List<GetClassByTeacherIdResponse> getClassByTeacherId(@Param("c.id") Integer class_id, @Param("c2.id")Integer id, @Param("u.name") String teacherName, @Param("c2.class_name")String classname, @Param("user_id") Integer user_id);
+    @Result(property = "classroom_id", column = "classroom_id")
+    @Result(property = "class_id", column = "class_id")
+    @Result(property = "teacher_name", column = "teacher_name")
+    @Result(property = "class_name", column = "class_name")
+    @Result(property = "user_id", column = "user_id")
+    List<GetClassByTeacherIdResponse> getClassByTeacherId(@Param("c.id") Integer class_id, @Param("c2.id") Integer id, @Param("u.name") String teacherName, @Param("c2.class_name") String classname, @Param("user_id") Integer user_id);
 
-    @Select("select c.class_name,c.id\n" +
-            "from classroom_detail as c3\n" +
-            "join class c on c3.class_id = c.id \n" +
-            "join classroom c2 on c2.id = c3.classroom_id " +
+    @Select("select c.class_name,c3.image ,c.id, (SELECT COUNT(*) FROM classroom_detail WHERE class_id=c.id) as allStudent " +
+            "from classroom_detail as c3 " +
+            "join class c on c3.class_id = c.id join classroom c2 on c2.id = c3.classroom_id " +
             "where c3.classroom_id=#{classroomId}")
     @Result(property = "className", column = "class_name")
+    @Result(property = "allStudent", column = "allStudent")
+    @Result(property = "img", column = "image")
     List<GetClassByClassroomIDResponse> getClassByClassroomID(Integer classroomId);
 
 }

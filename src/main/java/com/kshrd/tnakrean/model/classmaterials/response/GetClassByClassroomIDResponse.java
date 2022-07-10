@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GetClassByClassroomIDResponse {
     Integer id;
+    String className;
     Integer allStudent;
-  //  String img;
+    String img;
 }
