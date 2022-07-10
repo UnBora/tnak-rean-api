@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 @Data
 public class FileInfo {
     private String name;
+    private String size;
 }

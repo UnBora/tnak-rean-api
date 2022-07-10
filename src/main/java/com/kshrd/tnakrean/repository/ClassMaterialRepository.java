@@ -86,15 +86,18 @@ public interface ClassMaterialRepository {
     @Result(property = "class_material_id",column = "id")
     List<ClassMaterialResponse> getClassMaterialByMaterialTypeId(Integer class_materials_type_id);
 
-    //Get All Class Material By teacher id and Class Id
-    @Select("SELECT d.classroom_id, d.class_id, t.type, m.* FROM class_materials m \n" +
-            "JOIN class_materials_detail d ON m.id = d.class_material_id\n" +
-            "JOIN class_materials_type t ON t.id = m.class_materials_type_id\n" +
-            "WHERE class_id = #{class_id} AND created_by = #{teacher_id}")
-    @Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class)
-    @Result(property = "class_material_id", column = "id")
-    @Result(property = "class_materials_type", column = "type")
-    @Result(property = "teacher_id", column = "created_by")
+    //Get All Class Material Course By teacher id and Class Id
+    @Select("SELECT class_id, material_id, title,description,clm.created_by ,\n" +
+            "(SELECT count(*) FROM comment c \n" +
+            "JOIN class_materials_detail s ON c.class_materials_detail_id = s.id \n" +
+            "WHERE class_material_id = clm.id)\n" +
+            "FROM folder f\n" +
+            "JOIN class_materials_type cm ON f.material_type_id = cm.id\n" +
+            "JOIN class_material_folder cmf ON f.id = cmf.folder_id \n" +
+            "JOIN material_folder mf ON f.id = mf.folder_id\n" +
+            "JOIN class_materials clm ON mf.material_id = clm.id\n" +
+            "WHERE class_materials_type_id = 1 AND clm.created_by = #{teacher_id} AND class_id = #{class_id}")
+    @Result(property = "total_comment", column = "count")
     List<ClassMaterialByTeacherIdAndClassIdResponse> getByClassIdAndTeacherId(Integer teacher_id, Integer class_id);
     // update content
     @Select("UPDATE class_materials SET content = #{classMaterialContent, jdbcType=OTHER, typeHandler = com.kshrd.tnakrean.configuration.JsonTypeHandler} WHERE id = #{class_material_id} returning *")

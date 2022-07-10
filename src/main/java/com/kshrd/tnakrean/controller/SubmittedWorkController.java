@@ -102,12 +102,13 @@ public class SubmittedWorkController {
             return ApiResponse.setError(e.getMessage());
         }
     }
-    @GetMapping("get-not-graded-by-classId-materialId")
+    @GetMapping("get-not-graded-by-classId-teacherUserId-materialId")
     ApiResponse<List<SubmittedWorkNotGradedByClassResponse>> getNotGradedByClassId(
             @RequestParam @Min(value = 1) Integer class_id,
             @RequestParam @Min(value = 1) Integer material_id
     ) {
-        List<SubmittedWorkNotGradedByClassResponse> submittedWorkResponses = submittedWorkImpl.getNotGradedByClassId(class_id,material_id);
+        Integer userId = AuthRestController.user_id;
+        List<SubmittedWorkNotGradedByClassResponse> submittedWorkResponses = submittedWorkImpl.getNotGradedByClassId(class_id,material_id,userId);
         try {
             if (submittedWorkResponses.isEmpty()) {
                 return ApiResponse.<List<SubmittedWorkNotGradedByClassResponse>>notFound(SubmittedWorkNotGradedByClassResponse.class
@@ -124,7 +125,7 @@ public class SubmittedWorkController {
         }
     }
 
-    @GetMapping("view-student-work-by-classId-submittedWorkId")
+    @GetMapping("view-student-work-by-submittedWorkId")
     ApiResponse<List<StudentWorkBySubmittedWorkIdResponse>> viewStudentWork(
             @RequestParam @Min(value = 1) Integer submitted_work_id
     ) {
@@ -226,40 +227,40 @@ public class SubmittedWorkController {
         }
     }
 
-    @GetMapping("get-by-classMaterialId")
-    ApiResponse<List<SubmittedWorkByMaterialIdResponse>> getByClassMaterialId(@RequestParam @Min(value = 1) Integer class_material_id) {
-        try {
-            List<SubmittedWorkByMaterialIdResponse> submittedWorkResponses = submittedWorkImpl.getByClassMaterialId(class_material_id);
-            if (submittedWorkResponses.isEmpty()) {
-                return ApiResponse.<List<SubmittedWorkByMaterialIdResponse>>notFound(SubmittedWorkResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
-                        .setData(submittedWorkResponses);
-            }
-            return ApiResponse.<List<SubmittedWorkByMaterialIdResponse>>ok(SubmittedWorkByMaterialIdResponse.class.getSimpleName())
-                    .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
-                    .setData(submittedWorkResponses);
-        } catch (Exception e) {
-            return ApiResponse.setError(e.getMessage());
-        }
-    }
+//    @GetMapping("get-by-classMaterialId")
+//    ApiResponse<List<SubmittedWorkByMaterialIdResponse>> getByClassMaterialId(@RequestParam @Min(value = 1) Integer class_material_id) {
+//        try {
+//            List<SubmittedWorkByMaterialIdResponse> submittedWorkResponses = submittedWorkImpl.getByClassMaterialId(class_material_id);
+//            if (submittedWorkResponses.isEmpty()) {
+//                return ApiResponse.<List<SubmittedWorkByMaterialIdResponse>>notFound(SubmittedWorkResponse.class.getSimpleName())
+//                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+//                        .setData(submittedWorkResponses);
+//            }
+//            return ApiResponse.<List<SubmittedWorkByMaterialIdResponse>>ok(SubmittedWorkByMaterialIdResponse.class.getSimpleName())
+//                    .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+//                    .setData(submittedWorkResponses);
+//        } catch (Exception e) {
+//            return ApiResponse.setError(e.getMessage());
+//        }
+//    }
 
-    @GetMapping("get-by-classroomId-classId-submittableId")
-    ApiResponse<List<SubmittedWorkByClassroomClassSubmittableResponse>> getByClassroomClassSubmittable(
-            @RequestParam @Min(value = 1) Integer classroom_id,
-            @RequestParam @Min(value = 1) Integer class_id,
-            @RequestParam @Min(value = 1) Integer submittable_work_id) {
-        try {
-            List<SubmittedWorkByClassroomClassSubmittableResponse> submittedWorkByClassroomClassSubmittableResponses = submittedWorkImpl.getByClassroomClassSubmittable(classroom_id, class_id, submittable_work_id);
-            if (submittedWorkByClassroomClassSubmittableResponses.isEmpty()) {
-                return ApiResponse.<List<SubmittedWorkByClassroomClassSubmittableResponse>>notFound(SubmittedWorkByClassroomClassSubmittableResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
-                        .setData(submittedWorkByClassroomClassSubmittableResponses);
-            }
-            return ApiResponse.<List<SubmittedWorkByClassroomClassSubmittableResponse>>ok(SubmittedWorkByClassroomClassSubmittableResponse.class.getSimpleName())
-                    .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
-                    .setData(submittedWorkByClassroomClassSubmittableResponses);
-        } catch (Exception e) {
-            return ApiResponse.setError(e.getMessage());
-        }
-    }
+//    @GetMapping("get-by-classroomId-classId-submittableId")
+//    ApiResponse<List<SubmittedWorkByClassroomClassSubmittableResponse>> getByClassroomClassSubmittable(
+//            @RequestParam @Min(value = 1) Integer classroom_id,
+//            @RequestParam @Min(value = 1) Integer class_id,
+//            @RequestParam @Min(value = 1) Integer submittable_work_id) {
+//        try {
+//            List<SubmittedWorkByClassroomClassSubmittableResponse> submittedWorkByClassroomClassSubmittableResponses = submittedWorkImpl.getByClassroomClassSubmittable(classroom_id, class_id, submittable_work_id);
+//            if (submittedWorkByClassroomClassSubmittableResponses.isEmpty()) {
+//                return ApiResponse.<List<SubmittedWorkByClassroomClassSubmittableResponse>>notFound(SubmittedWorkByClassroomClassSubmittableResponse.class.getSimpleName())
+//                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+//                        .setData(submittedWorkByClassroomClassSubmittableResponses);
+//            }
+//            return ApiResponse.<List<SubmittedWorkByClassroomClassSubmittableResponse>>ok(SubmittedWorkByClassroomClassSubmittableResponse.class.getSimpleName())
+//                    .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+//                    .setData(submittedWorkByClassroomClassSubmittableResponses);
+//        } catch (Exception e) {
+//            return ApiResponse.setError(e.getMessage());
+//        }
+//    }
 }

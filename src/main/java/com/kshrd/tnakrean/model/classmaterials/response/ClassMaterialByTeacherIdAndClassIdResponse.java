@@ -14,15 +14,10 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 public class ClassMaterialByTeacherIdAndClassIdResponse {
-    private Integer teacher_id;
     private Integer class_id;
-    private Integer class_material_id;
+    private Integer created_by;
+    private Integer material_id;
     private String title;
     private String description;
-    private Integer classroom_id;
-    private Integer class_materials_type_id;
-    private String class_materials_type;
-    private ClassMaterialContent classMaterialContent;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date created_date;
+    private Integer total_comment;
 }

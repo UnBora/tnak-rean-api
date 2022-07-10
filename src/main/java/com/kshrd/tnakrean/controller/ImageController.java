@@ -1,5 +1,7 @@
 package com.kshrd.tnakrean.controller;
 
+import com.kshrd.tnakrean.model.FileInfo;
+import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.repository.FileResponse;
 import com.kshrd.tnakrean.service.FileService;
 import com.kshrd.tnakrean.service.serviceImplementation.FileImplement;
@@ -59,18 +61,13 @@ public class ImageController {
     }
 
     @PostMapping(value = "/one", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity uploadFile(@RequestPart(value = "file") MultipartFile file) {
-        Map<String, Object> res = new HashMap<>();
+    public ApiResponse<FileInfo> uploadFile(@RequestPart(value = "file") MultipartFile file) {
         try {
             String fileName = storageService.save(file);
-            res.put("message", "You have uploaded image successfully");
-            res.put("status", true);
-            res.put("data", imageUrl + fileName);
-            return ResponseEntity.status(HttpStatus.OK).body(res);
+            return ApiResponse.<FileInfo>ok(FileInfo.class.getSimpleName()).setData(new FileInfo(imageUrl + fileName, file.getSize()+""));
         } catch (Exception e) {
-            res.put("message", "Could not upload the file:");
-            res.put("status", false);
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(res);
+
+            return ApiResponse.<FileInfo>badRequest(FileInfo.class.getSimpleName()).setResponseMsg("message: Could not upload the file:");
         }
     }
 

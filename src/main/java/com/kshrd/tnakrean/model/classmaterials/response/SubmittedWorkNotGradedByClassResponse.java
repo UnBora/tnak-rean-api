@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class SubmittedWorkNotGradedByClassResponse {
     private Integer class_material_id;
     private String class_id;
+    private Integer created_by;
     private String title;
     private Integer submitted_work_id;
     private Integer submittable_work_id;
