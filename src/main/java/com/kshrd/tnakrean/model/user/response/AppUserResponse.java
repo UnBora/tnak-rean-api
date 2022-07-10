@@ -25,6 +25,7 @@ public class AppUserResponse implements UserDetails {
     private String username;
     private String email;
     private String gender;
+    private String img;
     private String token;
     private Set<String> role;
 
