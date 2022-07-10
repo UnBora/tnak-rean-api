@@ -72,4 +72,7 @@ public interface UsersRepository {
             "join class c on c.id = cmd.class_id " +
             "where n.received_id=#{userId}")
     List<GetNotificationResponse> getNotificationByUserId(Integer userId);
+
+    @Delete("DELETE FROM users WHERE id=#{user_id}")
+    void deleteUser(Integer user_id);
 }
