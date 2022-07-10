@@ -115,7 +115,7 @@ public class AuthRestController {
             } else if (checkUserName.equals(true)) {
                 validation.setUsername("exist");
                 return ApiResponse.<UserRegisterResponse>badRequest(UserRegisterResponse.class.getSimpleName())
-                        .setResponseMsg("This Username has been exist!");
+                        .setResponseMsg("This Username has been exist!").setData(validation);
             } else if (classroomRepository.checkClassroomByID(userRegisterRequest.getClassroomId()).equals(false)) {
                 return ApiResponse.<UserRegisterResponse>badRequest(UserRegisterResponse.class.getSimpleName())
                         .setResponseMsg("The Classroom ID:" + userRegisterRequest.getClassroomId() + " does not have!");
