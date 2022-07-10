@@ -66,9 +66,9 @@ public class AuthRestController {
         Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         JwtTokenUtil jwtUtils = new JwtTokenUtil();
         String token = jwtUtils.generateJwtToken(authentication);
-        Boolean checkName= appUserRepository.checkUserName(request.getUsername());
+        Boolean checkName = appUserRepository.checkUserName(request.getUsername());
         UserDetails findUserByUsername = userServiceImp.loadUserByUsername(request.getUsername());
-        userDetails  = modelMapper.map(findUserByUsername, AppUserResponse.class);
+        userDetails = modelMapper.map(findUserByUsername, AppUserResponse.class);
         userDetails.setToken(token);
         System.out.println(userDetails.getRole());
         user_id = userDetails.getId();
@@ -102,27 +102,30 @@ public class AuthRestController {
     ApiResponse<UserRegisterResponse> register(@RequestBody @Valid UserRegisterRequest userRegisterRequest) {
         try {
             Boolean checkEmail = appUserRepository.checkEmailExist(userRegisterRequest.getEmail());
-            Boolean checkUserName= appUserRepository.checkUserName(userRegisterRequest.getUsername());
+            Boolean checkUserName = appUserRepository.checkUserName(userRegisterRequest.getUsername());
             Integer checkUserRole = userRegisterRequest.getUser_role_id();
+            UserRegisterResponse validation = modelMapper.map(userRegisterRequest, UserRegisterResponse.class);
             if (checkEmail.equals(true)) {
+                validation.setEmail("exist");
                 return ApiResponse.<UserRegisterResponse>badRequest(UserRegisterResponse.class.getSimpleName())
-                        .setResponseMsg("This Email has been exist!");
-            }else if(!(checkUserRole.equals(1)||(checkUserRole.equals(2)))){
+                        .setResponseMsg("This Email has been exist!").setData(validation);
+            } else if (!(checkUserRole.equals(1) || (checkUserRole.equals(2)))) {
                 return ApiResponse.<UserRegisterResponse>badRequest(UserRegisterResponse.class.getSimpleName())
                         .setResponseMsg("User role can use only number 1(Student) or 2(Teacher)!");
-            }else if(checkUserName.equals(true)){
+            } else if (checkUserName.equals(true)) {
+                validation.setUsername("exist");
                 return ApiResponse.<UserRegisterResponse>badRequest(UserRegisterResponse.class.getSimpleName())
                         .setResponseMsg("This Username has been exist!");
-            }else if (classroomRepository.checkClassroomByID(userRegisterRequest.getClassroomId()).equals(false)){
+            } else if (classroomRepository.checkClassroomByID(userRegisterRequest.getClassroomId()).equals(false)) {
                 return ApiResponse.<UserRegisterResponse>badRequest(UserRegisterResponse.class.getSimpleName())
                         .setResponseMsg("The Classroom ID:" + userRegisterRequest.getClassroomId() + " does not have!");
-            } else if (classroomRepository.checkClassmByID(userRegisterRequest.getClassId()).equals(false)){
+            } else if (classroomRepository.checkClassmByID(userRegisterRequest.getClassId()).equals(false)) {
                 return ApiResponse.<UserRegisterResponse>badRequest(UserRegisterResponse.class.getSimpleName())
                         .setResponseMsg("The Class ID:" + userRegisterRequest.getClassId() + " does not have!");
             } else {
                 userServiceImp.userRegister(userRegisterRequest);
-                Integer userId= appUserRepository.lastUserId();
-                appUserRepository.studenRegistrationAndRequese(userId, userRegisterRequest.getClassroomId(),userRegisterRequest.getClassId());
+                Integer userId = appUserRepository.lastUserId();
+                appUserRepository.studenRegistrationAndRequese(userId, userRegisterRequest.getClassroomId(), userRegisterRequest.getClassId());
                 appUserRepository.studentRegisterAddtoStudentRequest(userId);
                 return ApiResponse.<UserRegisterResponse>successCreate(UserRegisterResponse.class.getSimpleName())
                         .setData(modelMapper.map(userRegisterRequest, UserRegisterResponse.class));
