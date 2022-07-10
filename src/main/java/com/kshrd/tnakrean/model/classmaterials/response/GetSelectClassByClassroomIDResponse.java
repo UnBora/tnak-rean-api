@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetClassByClassroomIDResponse {
+public class GetSelectClassByClassroomIDResponse {
     Integer id;
     String className;
-    Integer allStudent;
-    String img;
 }
