@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GetStudentByClassIDResponse {
     Integer stu_user_id;
+    Integer user_id;
     String name;
     String email;
     String gender;
