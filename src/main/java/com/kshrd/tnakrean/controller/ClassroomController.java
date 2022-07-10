@@ -169,7 +169,7 @@ public class ClassroomController {
                         .setResponseMsg("The Classroom ID:" + classroomId + " does not have!");
             } else {
                 return ApiResponse.<List<GetClassByClassroomIDResponse>>ok(GetClassByClassroomIDResponse.class.getSimpleName())
-                        .setResponseMsg("The Classroom ID:" + classroomId + " get successfully")
+                        .setResponseMsg("The Class In Classroom ID:" + classroomId + " get successfully")
                         .setData(getClassByClassroomIDResponses);
             }
         } catch (Exception e) {
