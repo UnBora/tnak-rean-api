@@ -1,7 +1,4 @@
 package com.kshrd.tnakrean;
-
-import com.kshrd.tnakrean.controller.StorageProperties;
-import com.kshrd.tnakrean.service.serviceInter.FilesStorageService;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
@@ -26,7 +23,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import javax.annotation.Resource;
 
 @SpringBootApplication
-@EnableConfigurationProperties(StorageProperties.class)
+//@EnableConfigurationProperties(StorageProperties.class)
 @SecurityScheme(
         name = "bearerAuth",
         type = SecuritySchemeType.HTTP,
