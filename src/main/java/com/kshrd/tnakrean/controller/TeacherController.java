@@ -7,8 +7,10 @@ import com.kshrd.tnakrean.model.user.response.TeacherByClassAndClassroomResponse
 import com.kshrd.tnakrean.model.user.response.TeacherRemoveStudentByID;
 import com.kshrd.tnakrean.model.user.response.TeacherResponse;
 import com.kshrd.tnakrean.repository.TeacherRepository;
+import com.kshrd.tnakrean.repository.UsersRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.TeacherImpl;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Min;
@@ -21,10 +23,13 @@ import java.util.List;
 public class TeacherController {
     final TeacherImpl teacherImpl;
     final TeacherRepository teacherRepository;
+    final UsersRepository usersRepository;
 
-    public TeacherController(TeacherImpl teacherImpl, TeacherRepository teacherRepository) {
+    @Autowired
+    public TeacherController(TeacherImpl teacherImpl, TeacherRepository teacherRepository, UsersRepository usersRepository) {
         this.teacherImpl = teacherImpl;
         this.teacherRepository = teacherRepository;
+        this.usersRepository = usersRepository;
     }
 
     @GetMapping("/get-all")
@@ -84,8 +89,9 @@ public class TeacherController {
                             .setData(new TeacherRemoveStudentByID (teacherRemoveStudentByIDResponse.getUser_id(), studentName, className));
                 } else {
                     teacherRepository.removeStudentById(teacherRemoveStudentByIDResponse.getUser_id(), teacherRemoveStudentByIDResponse.getClassroom_id(), teacherRemoveStudentByIDResponse.getClass_id());
+                    usersRepository.deleteUser(teacherRemoveStudentByIDResponse.getUser_id());
                     return ApiResponse.<TeacherRemoveStudentByID>ok(TeacherRemoveStudentByID.class.getSimpleName())
-                            .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
+                            .setResponseMsg("Teacher Remover Student successfully")
                             .setData(new TeacherRemoveStudentByID (teacherRemoveStudentByIDResponse.getUser_id(), studentName, className));
                 }
             } else {

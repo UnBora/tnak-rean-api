@@ -113,7 +113,7 @@ public class StudentController {
                     studentServiceImp.studentLeaveClassService(user_id, classroomId, classId);
                     studentRepository.studentLeaveUser(user_id);
                     return ApiResponse.<TeacherRemoveStudentByIDResponse>ok(TeacherRemoveStudentByIDResponse.class.getSimpleName())
-                            .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
+                            .setResponseMsg("Student Leave Class Successfully")
                             .setData(new TeacherRemoveStudentByIDResponse(user_id, classroomId, classId));
                 }
             } else {

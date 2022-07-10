@@ -46,7 +46,7 @@ public interface TeacherRepository {
     String getClassName(Integer classId);
 
     @Delete("DELETE  from student where user_id= #{user_id} AND classroom_id=#{classroom_id} AND class_id= #{class_id}")
-    @Result(property = "user_id", column = "usee_id")
+    @Result(property = "user_id", column = "user_id")
     @Result(property = "classroom_id", column = "classroom_id")
     void removeStudentById(@Param("user_id") Integer user_id, @Param("classroom_id") Integer classroom_id, @Param("class_id") Integer class_id);
 }
