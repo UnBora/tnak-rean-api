@@ -14,6 +14,23 @@ import java.util.List;
 @Mapper
 @Repository
 public interface ClassMaterialRepository {
+
+    @Select("SELECT EXISTS(SELECT id FROM users WHERE id = #{created_by})")
+    Boolean checkCreatedBy(Integer created_by);
+    @Select("SELECT EXISTS(SELECT id FROM class_materials_type WHERE id = #{class_materials_type_id})")
+    Boolean checkMaterialsTypeId(Integer class_materials_type_id);
+
+    @Select("SELECT EXISTS(SELECT * FROM class_materials WHERE id = #{id})")
+    Boolean checkMaterialsId(Integer id);
+
+    @Select("SELECT EXISTS(SELECT id FROM class_materials WHERE id = #{id})")
+    boolean findMaterialId(Integer id);
+
+    @Select("SELECT EXISTS(SELECT class_material_id FROM class_materials_detail WHERE class_material_id = #{id})")
+    boolean findMaterialIdInMaterialsDetail(Integer id);
+
+    @Select("SELECT EXISTS(SELECT id FROM class WHERE id = #{class_id})")
+    boolean findClassId(Integer class_id);
     @Select("SELECT * FROM class_materials_type WHERE id = #{id}")
     ClassMaterialType getClassMaterialTypeById(int id);
     // get all
@@ -30,12 +47,13 @@ public interface ClassMaterialRepository {
     @Result(property = "classMaterialType", column = "class_materials_type_id", one = @One(select = "getClassMaterialTypeById"))
     ClassMaterialResponse getClassMaterials(int id);
 
-    // insert
+    // insert course
     @Insert("INSERT INTO class_materials(created_date,created_by,title,description,class_materials_type_id,content) " +
-            "VALUES (#{classMaterial.created_date},#{user_id},#{classMaterial.title},#{classMaterial.description},#{classMaterial.class_materials_type_id},#{classMaterial.classMaterialContent,jdbcType=OTHER, typeHandler = com.kshrd.tnakrean.configuration.JsonTypeHandler})")
+            "VALUES (#{classMaterial.created_date},#{user_id},#{classMaterial.title},#{classMaterial.description},1, " +
+            "#{classMaterial.classMaterialContent,jdbcType=OTHER, typeHandler = com.kshrd.tnakrean.configuration.JsonTypeHandler})")
 
     @Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class)
-    boolean insertClassMaterial(@Param("classMaterial") ClassMaterialRequest classMaterialRequest, Integer user_id);
+    boolean insertCourse(@Param("classMaterial") ClassMaterialRequest classMaterialRequest, Integer user_id);
 
 //    @Select("SELECT * FROM class_materials ORDER BY id DESC LIMIT 1")
 //    @Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class)
@@ -163,17 +181,10 @@ public interface ClassMaterialRepository {
     @Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class)
     List<ClassMaterialByStudentIdClassIdAndClassroomIdResponse> getByUserClassClassroom(Integer user_id, Integer class_id, Integer classroom_id);
 
-    @Select("SELECT EXISTS(SELECT id FROM users WHERE id = #{created_by})")
-    Boolean checkCreatedBy(Integer created_by);
-    @Select("SELECT EXISTS(SELECT id FROM class_materials_type WHERE id = #{class_materials_type_id})")
-    Boolean checkMaterialsTypeId(Integer class_materials_type_id);
-
-    @Select("SELECT EXISTS(SELECT * FROM class_materials WHERE id = #{id})")
-    Boolean checkMaterialsId(Integer id);
-
-    @Select("SELECT EXISTS(SELECT id FROM class_materials WHERE id = #{id})")
-    boolean findMaterialId(Integer id);
-
-    @Select("SELECT EXISTS(SELECT class_material_id FROM class_materials_detail WHERE class_material_id = #{id})")
-    boolean findMaterialIdInMaterialsDetail(Integer id);
+    // assign Course
+    @Select("SELECT EXISTS(SELECT id FROM class_materials_detail WHERE class_id = #{class_id} AND class_material_id = #{class_material_id}) ")
+    boolean findClassIdANDMaterialIdInMD(int class_id, int class_material_id);
+    @Insert("INSERT INTO class_materials_detail (class_material_id,class_id,classroom_id)\n" +
+            "VALUES (#{class_material_id},#{class_id},#{class_room_id})")
+    boolean assignCourse(int class_material_id, int class_room_id, int class_id);
 }

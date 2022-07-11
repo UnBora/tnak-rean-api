@@ -55,17 +55,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             builder.propertyNamingStrategy(PropertyNamingStrategies.UPPER_CAMEL_CASE);
         };
     }
-@Override
-	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/static/css/**, /static/js/**, *.ico");
-		
-		// swagger
-    web.ignoring().antMatchers(
-		    "/v2/api-docs",  "/configuration/ui",
-             "/swagger-resources", "/configuration/security",
-             "/swagger-ui.html", "/webjars/**","/swagger/**");
-	}
-	
+//@Override
+//	public void configure(WebSecurity web) throws Exception {
+//		web.ignoring().antMatchers("/static/css/**, /static/js/**, *.ico");
+//
+//		// swagger
+//    web.ignoring().antMatchers(
+//		    "/v2/api-docs",  "/configuration/ui",
+//             "/swagger-resources", "/configuration/security",
+//             "/swagger-ui.html", "/webjars/**","/swagger/**");
+//	}
+//
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and()

@@ -2,6 +2,7 @@ package com.kshrd.tnakrean.controller;
 
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
+import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateClassClassroomRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateDeadlineRequest;
@@ -14,10 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 
@@ -104,14 +103,13 @@ public class SubmittableWorkController {
             @RequestParam @Min(value = 1) @Max(value = 1000) float score
     ) {
         boolean checkClassId = submittableWorkRepository.findClassId(class_id);
-        boolean checkClassIdInMDT = submittableWorkRepository.findClassIdInMDT(class_id);
-        boolean checkMaterialIdInMDT = submittableWorkRepository.findMaterialIdInMDT(class_material_id);
+        boolean checkClassIdANDMaterialIdInMD = submittableWorkRepository.findClassIdANDMaterialIdInMD(class_id,class_material_id);
        try{
            if (checkClassId == false ){
                return ApiResponse.notFound("")
                        .setResponseMsg("Class Id: "+class_id+ " doesn't exist ");
            }
-           else if ((checkClassIdInMDT && checkMaterialIdInMDT) == true ){
+           else if (checkClassIdANDMaterialIdInMD == true ){
                return ApiResponse.notFound("")
                        .setResponseMsg("Class Id: "+class_id+ " and ClassMaterialId: "+class_material_id+" already exist ");
            } else {
@@ -290,6 +288,69 @@ public class SubmittableWorkController {
             return ApiResponse.<List<SubmittableWorkByMaterialResponse>>ok(SubmittableWorkByMaterialResponse.class.getSimpleName())
                     .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
                     .setData(submittableWorkResponses);
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
+
+    @PostMapping("create-quiz")
+    ApiResponse<ClassMaterialRequest> createQuiz(
+            @RequestBody @Valid ClassMaterialRequest classMaterialRequest
+    ) {
+        Integer user_id = AuthRestController.user_id;
+        int typeId = 5;
+        try {
+            if (user_id == 0) {
+                return ApiResponse.unAuthorized("unAuthorized");
+            } else {
+                classMaterialRequest.setTitle(classMaterialRequest.getTitle().trim());
+                classMaterialRequest.setDescription(classMaterialRequest.getDescription().trim());
+                submittableWorkService.createClassworks(classMaterialRequest,user_id,typeId);
+                return ApiResponse.<ClassMaterialRequest>ok(ClassMaterialRequest.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
+                        .setData(classMaterialRequest);
+            }
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
+    @PostMapping("create-homework")
+    ApiResponse<ClassMaterialRequest> creatHomework(
+            @RequestBody @Valid ClassMaterialRequest classMaterialRequest
+    ) {
+        Integer user_id = AuthRestController.user_id;
+        int typeId = 4;
+        try {
+            if (user_id == 0) {
+                return ApiResponse.unAuthorized("unAuthorized");
+            } else {
+                classMaterialRequest.setTitle(classMaterialRequest.getTitle().trim());
+                classMaterialRequest.setDescription(classMaterialRequest.getDescription().trim());
+                submittableWorkService.createClassworks(classMaterialRequest,user_id,typeId);
+                return ApiResponse.<ClassMaterialRequest>ok(ClassMaterialRequest.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
+                        .setData(classMaterialRequest);
+            }
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }    @PostMapping("create-assigment")
+    ApiResponse<ClassMaterialRequest> creatassigment(
+                    @RequestBody @Valid ClassMaterialRequest classMaterialRequest
+            ) {
+        Integer user_id = AuthRestController.user_id;
+        int typeId = 3;
+        try {
+            if (user_id == 0) {
+                return ApiResponse.unAuthorized("unAuthorized");
+            } else {
+                classMaterialRequest.setTitle(classMaterialRequest.getTitle().trim());
+                classMaterialRequest.setDescription(classMaterialRequest.getDescription().trim());
+                submittableWorkService.createClassworks(classMaterialRequest,user_id,typeId);
+                return ApiResponse.<ClassMaterialRequest>ok(ClassMaterialRequest.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
+                        .setData(classMaterialRequest);
+            }
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }

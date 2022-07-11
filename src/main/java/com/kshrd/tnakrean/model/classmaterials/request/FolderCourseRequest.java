@@ -13,6 +13,6 @@ import javax.validation.constraints.NotBlank;
 public class FolderCourseRequest {
     @NotBlank(message = "{validation.folder.notEmpty}")
     String folder_name;
-    @Min(value = 1,message = "{validation.parentId.notNegative}")
+    @Min(value = 0,message = "{validation.parentId.notNegative}")
     Integer parent_id;
 }

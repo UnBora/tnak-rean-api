@@ -1,6 +1,7 @@
 package com.kshrd.tnakrean.service.serviceImplementation;
 
 
+import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateClassClassroomRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateDeadlineRequest;
@@ -77,5 +78,10 @@ public class SubmittableWorkServiceImpl implements SubmittableService {
     @Override
     public List<SubmittableWorkByClassIdTeacherIdResponse> getAllByClassIdTeacherUserId(Integer user_id, Integer class_id) {
         return submittableWorkRepository.getAllByClassIdTeacherUserId(user_id,class_id);
+    }
+
+    @Override
+    public boolean createClassworks(ClassMaterialRequest classMaterialRequest, Integer user_id, Integer typeId) {
+        return submittableWorkRepository.createQuiz(classMaterialRequest,user_id,typeId);
     }
 }

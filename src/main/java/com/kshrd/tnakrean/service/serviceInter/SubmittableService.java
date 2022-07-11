@@ -1,5 +1,6 @@
 package com.kshrd.tnakrean.service.serviceInter;
 
+import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateClassClassroomRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateDeadlineRequest;
@@ -29,4 +30,6 @@ public interface SubmittableService {
     List<SubmittableWorkByMaterialResponse> getByClassMaterialId(Integer material_id);
 
     List<SubmittableWorkByClassIdTeacherIdResponse> getAllByClassIdTeacherUserId(Integer user_id, Integer class_id);
+
+    boolean createClassworks(ClassMaterialRequest classMaterialRequest, Integer user_id, Integer typeId);
 }

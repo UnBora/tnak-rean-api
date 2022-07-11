@@ -1,6 +1,7 @@
 package com.kshrd.tnakrean.repository;
 
 import com.kshrd.tnakrean.configuration.JsonTypeHandler;
+import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateClassClassroomRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateDeadlineRequest;
@@ -25,6 +26,8 @@ public interface SubmittableWorkRepository {
 
     @Select("SELECT EXISTS(SELECT id FROM class WHERE id = #{class_id})")
     boolean findClassId(Integer class_id);
+    @Select("SELECT EXISTS(SELECT id FROM class_materials_detail WHERE class_id = #{class_id} AND #{class_material_id})")
+    boolean findClassIdANDMaterialIdInMD(int class_id,int class_material_id);
 
     @Select("SELECT EXISTS(SELECT id FROM submittable_work WHERE id = #{submittable_work_id})")
     boolean findSubmittableId(Integer submittable_work_id);
@@ -153,9 +156,10 @@ public interface SubmittableWorkRepository {
             "VALUES (#{mdt}, #{assigndate}, #{deadline}, #{class_room_id}, #{class_id},#{score});")
     Integer insertInotSubmitableWork(Integer mdt,Timestamp assigndate, Timestamp deadline, int class_room_id, int class_id, float score);
 
-    @Select("SELECT EXISTS(SELECT id FROM class_materials_detail WHERE class_id = #{class_id})")
-    boolean findClassIdInMDT(int class_id);
-
-    @Select("SELECT EXISTS(SELECT id FROM class_materials_detail WHERE class_material_id = #{class_material_id}) ")
-    boolean findMaterialIdInMDT(int class_material_id);
+    // create classworks
+    @Insert("INSERT INTO class_materials(created_date,created_by,title,description,class_materials_type_id,content) " +
+            "VALUES (#{classMaterial.created_date},#{user_id},#{classMaterial.title},#{classMaterial.description},#{typeId}, " +
+            "#{classMaterial.classMaterialContent,jdbcType=OTHER, typeHandler = com.kshrd.tnakrean.configuration.JsonTypeHandler})")
+    @Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class)
+    boolean createQuiz(@Param("classMaterial") ClassMaterialRequest classMaterialRequest, Integer user_id,Integer typeId);
 }

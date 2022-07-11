@@ -21,8 +21,6 @@ public class ClassMaterialRequest {
     private String title;
     @NotBlank(message = "{validation.description.notEmpty}")
     private String description;
-    @Min(value = 1 , message="{validation.MaterialTypeId.notNegative}")
-    private Integer class_materials_type_id;
     @Valid
     private ClassMaterialContent classMaterialContent;
     @JsonIgnore

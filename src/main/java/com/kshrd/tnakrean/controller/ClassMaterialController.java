@@ -14,7 +14,11 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 //@Builder
@@ -49,22 +53,18 @@ public class ClassMaterialController {
         }
     }
 
-    @PostMapping("insert-classMaterial")
-    ApiResponse<ClassMaterialRequest> insertClassMaterial(
+    @PostMapping("create-course")
+    ApiResponse<ClassMaterialRequest> insertCourse(
             @RequestBody @Valid ClassMaterialRequest classMaterialRequest
     ) {
         Integer user_id = AuthRestController.user_id;
-        Boolean materialsTypeId = classMaterialRepository.checkMaterialsTypeId(classMaterialRequest.getClass_materials_type_id());
         try {
             if (user_id == 0) {
                 return ApiResponse.unAuthorized("unAuthorized");
-            } else if (materialsTypeId == false) {
-                return ApiResponse.<ClassMaterialRequest>notFound(ClassMaterialRequest.class.getSimpleName())
-                        .setResponseMsg("The class_materials_type_id: "+classMaterialRequest.getClass_materials_type_id()+" doesn't exit in the table");
             } else {
                 classMaterialRequest.setTitle(classMaterialRequest.getTitle().trim());
                 classMaterialRequest.setDescription(classMaterialRequest.getDescription().trim());
-                classMaterialServiceImp.insertClassMaterial(classMaterialRequest,user_id);
+                classMaterialServiceImp.insertCourse(classMaterialRequest,user_id);
                 return ApiResponse.<ClassMaterialRequest>ok(ClassMaterialRequest.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
                         .setData(classMaterialRequest);
@@ -73,7 +73,30 @@ public class ClassMaterialController {
             return ApiResponse.setError(e.getMessage());
         }
     }
-
+    @PostMapping("/assign-course")
+    ApiResponse<Boolean> assignCourse (
+            @RequestParam @Min(value = 1) int class_material_id,
+            @RequestParam @Min(value = 1) int class_room_id,
+            @RequestParam @Min(value = 1) int class_id
+    ) {
+        boolean checkClassId = classMaterialRepository.findClassId(class_id);
+        boolean findClassIdANDMaterialIdInMD = classMaterialRepository.findClassIdANDMaterialIdInMD(class_id,class_material_id);
+        try{
+            if (checkClassId == false ){
+                return ApiResponse.<Boolean>notFound("")
+                        .setResponseMsg("Class Id: "+class_id+ " doesn't exist ").setData(true);
+            } else if (findClassIdANDMaterialIdInMD == true ){
+                return ApiResponse.<Boolean>notFound("")
+                        .setResponseMsg("Class Id: "+class_id+ " and ClassMaterialId: "+class_material_id+" already exist ");
+            } else {
+                classMaterialRepository.assignCourse(class_material_id,class_room_id,class_id);
+                return  ApiResponse.<Boolean>notFound("")
+                        .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage());
+            }
+        }catch (Exception e){
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
     @PutMapping("update-title-and-description")
     ApiResponse<ClassMaterialUpdateTitleDesRequest> updateClassMaterial(
             @RequestBody @Valid ClassMaterialUpdateTitleDesRequest classMaterialUpdateTitleDesRequest

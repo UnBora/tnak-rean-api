@@ -11,7 +11,7 @@ public interface ClassMaterialService {
 
     ClassMaterialResponse getClassMaterial(int createdId);
 
-    boolean insertClassMaterial(ClassMaterialRequest classMaterialRequest, Integer user_id);
+    boolean insertCourse(ClassMaterialRequest classMaterialRequest, Integer user_id);
 
     ClassMaterialUpdateTitleDesRequest updateClassMaterial(ClassMaterialUpdateTitleDesRequest classMaterialUpdateTitleDesRequest);
 
