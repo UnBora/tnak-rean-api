@@ -38,12 +38,13 @@ public interface TeacherRepository {
             "AND classroom_id=#{classroomId} AND class_id= #{classId})")
     Boolean checkIfStudentExists(Integer student_id, Integer classroomId, Integer classId);
 
-
     @Select("select username from users where id= #{student_id}")
     String getStudentName(Integer student_id);
 
     @Select("select class_name from class where id= #{classId}")
     String getClassName(Integer classId);
+
+
 
     @Delete("DELETE  from student where user_id= #{user_id} AND classroom_id=#{classroom_id} AND class_id= #{class_id}")
     @Result(property = "user_id", column = "user_id")
