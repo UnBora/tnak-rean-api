@@ -154,4 +154,22 @@ public class ClassController {
             return ApiResponse.setError(e.getMessage());
         }
     }
+
+    @GetMapping("/search-class")
+    public ApiResponse<List<SearchClassResponse>> searchClass(@RequestParam String className) {
+        try {
+            List<SearchClassResponse> searchClass = classRepository.nameSearched(className);
+            if (searchClass.isEmpty()) {
+                return ApiResponse.<List<SearchClassResponse>>ok("Search Class")
+                        .setResponseMsg("Don't have!")
+                        .setData(searchClass);
+            } else {
+                return ApiResponse.<List<SearchClassResponse>>ok("Search Class")
+                        .setResponseMsg("Your Class are!")
+                        .setData(searchClass);
+            }
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
 }
