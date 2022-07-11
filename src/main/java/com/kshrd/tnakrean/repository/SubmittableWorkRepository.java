@@ -7,13 +7,31 @@ import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateDead
 import com.kshrd.tnakrean.model.classmaterials.response.*;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Mapper
 @Repository
 public interface SubmittableWorkRepository {
+    @Select("SELECT EXISTS(SELECT id FROM class_materials_detail WHERE id = #{class_materials_detail_id})")
+    boolean findClassMaterialsDetailId(Integer class_materials_detail_id);
+
+    @Select("SELECT EXISTS(SELECT id FROM classroom WHERE id = #{classroom_id})")
+    boolean findClassroomId(Integer classroom_id);
+
+    @Select("SELECT EXISTS(SELECT id FROM class WHERE id = #{class_id})")
+    boolean findClassId(Integer class_id);
+
+    @Select("SELECT EXISTS(SELECT id FROM submittable_work WHERE id = #{submittable_work_id})")
+    boolean findSubmittableId(Integer submittable_work_id);
+
+    @Select("SELECT EXISTS(SELECT submittable_work_id FROM submitted_work WHERE submittable_work_id = #{submittable_work_id})")
+    boolean findSubmittableIdInSubmiitedWork(Integer submittable_work_id);
+
     // select all
     @Select("SELECT * FROM submittable_work")
     @Result(property = "submittable_work_id", column = "id")
@@ -73,21 +91,6 @@ public interface SubmittableWorkRepository {
     @Result(property = "submittable_work_id", column = "id")
     SubmittableWorkUpdateClassClassroomRequest updateClassClassroom(SubmittableWorkUpdateClassClassroomRequest submittableWorkUpdateClassClassroomRequest);
 
-    @Select("SELECT EXISTS(SELECT id FROM class_materials_detail WHERE id = #{class_materials_detail_id})")
-    boolean findClassMaterialsDetailId(Integer class_materials_detail_id);
-
-    @Select("SELECT EXISTS(SELECT id FROM classroom WHERE id = #{classroom_id})")
-    boolean findClassroomId(Integer classroom_id);
-
-    @Select("SELECT EXISTS(SELECT id FROM class WHERE id = #{class_id})")
-    boolean findClassId(Integer class_id);
-
-    @Select("SELECT EXISTS(SELECT id FROM submittable_work WHERE id = #{submittable_work_id})")
-    boolean findSubmittableId(Integer submittable_work_id);
-
-    @Select("SELECT EXISTS(SELECT submittable_work_id FROM submitted_work WHERE submittable_work_id = #{submittable_work_id})")
-    boolean findSubmittableIdInSubmiitedWork(Integer submittable_work_id);
-
     // get all By TeacherUserId
     @Select("SELECT f.created_by ,saw.class_id, saw.id, material_id, title, description, score, assigned_date,deadline,\n" +
             "(SELECT count(s.class_material_id) FROM comment c \n" +
@@ -138,4 +141,21 @@ public interface SubmittableWorkRepository {
     @Result(property = "submittable_work_id", column = "id")
     @Result(property = "total_comment", column = "count")
     List<SubmittableWorkByClassIdTeacherIdResponse> getAllByClassIdTeacherUserId(Integer user_id, Integer class_id);
+
+    // assign submittable
+    @Select("insert into class_materials_detail" +
+            "(classroom_id, class_material_id, class_id)\n" +
+            "VALUES (#{class_room_id},#{class_material_id},#{class_id}) returning id")
+    Integer insertInotClassMaterialDetail(int class_material_id, int class_room_id, int class_id);
+
+    @Select("insert into submittable_work " +
+            "(class_materials_detail_id, assigned_date, deadline, classroom_id, class_id, score)\n" +
+            "VALUES (#{mdt}, #{assigndate}, #{deadline}, #{class_room_id}, #{class_id},#{score});")
+    Integer insertInotSubmitableWork(Integer mdt,Timestamp assigndate, Timestamp deadline, int class_room_id, int class_id, float score);
+
+    @Select("SELECT EXISTS(SELECT id FROM class_materials_detail WHERE class_id = #{class_id})")
+    boolean findClassIdInMDT(int class_id);
+
+    @Select("SELECT EXISTS(SELECT id FROM class_materials_detail WHERE class_material_id = #{class_material_id}) ")
+    boolean findMaterialIdInMDT(int class_material_id);
 }

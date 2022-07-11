@@ -24,8 +24,8 @@ public class ClassMaterialImp implements ClassMaterialService {
     }
 
     @Override
-    public boolean insertClassMaterial(ClassMaterialRequest classMaterialRequest) {
-        return classMaterialRepository.insertClassMaterial(classMaterialRequest);
+    public boolean insertClassMaterial(ClassMaterialRequest classMaterialRequest, Integer user_id) {
+        return classMaterialRepository.insertClassMaterial(classMaterialRequest,user_id);
     }
 
     @Override

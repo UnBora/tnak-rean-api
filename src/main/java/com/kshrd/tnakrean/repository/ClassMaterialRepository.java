@@ -32,10 +32,10 @@ public interface ClassMaterialRepository {
 
     // insert
     @Insert("INSERT INTO class_materials(created_date,created_by,title,description,class_materials_type_id,content) " +
-            "VALUES (#{classMaterial.created_date},#{classMaterial.created_by},#{classMaterial.title},#{classMaterial.description},#{classMaterial.class_materials_type_id},#{classMaterial.classMaterialContent,jdbcType=OTHER, typeHandler = com.kshrd.tnakrean.configuration.JsonTypeHandler})")
+            "VALUES (#{classMaterial.created_date},#{user_id},#{classMaterial.title},#{classMaterial.description},#{classMaterial.class_materials_type_id},#{classMaterial.classMaterialContent,jdbcType=OTHER, typeHandler = com.kshrd.tnakrean.configuration.JsonTypeHandler})")
 
     @Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class)
-    boolean insertClassMaterial(@Param("classMaterial") ClassMaterialRequest classMaterialRequest);
+    boolean insertClassMaterial(@Param("classMaterial") ClassMaterialRequest classMaterialRequest, Integer user_id);
 
 //    @Select("SELECT * FROM class_materials ORDER BY id DESC LIMIT 1")
 //    @Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class)

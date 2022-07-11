@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class FolderByClassResponse {
     Integer folder_id;
     String folder_name;
+    Integer created_by;
     Integer parent_id;
     String type;
     Integer class_id;

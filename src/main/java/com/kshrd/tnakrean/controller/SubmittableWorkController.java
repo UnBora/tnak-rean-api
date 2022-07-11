@@ -12,7 +12,13 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 @RestController
@@ -88,6 +94,36 @@ public class SubmittableWorkController {
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
+    }
+    @PostMapping("/assign-submittable")
+    ApiResponse<?> insertMater (
+            @RequestParam @Min(value = 1) int class_material_id,
+            @RequestParam @Min(value = 1) int class_room_id,
+            @RequestParam @Min(value = 1) int class_id,
+            @RequestParam Timestamp deadline,
+            @RequestParam @Min(value = 1) @Max(value = 1000) float score
+    ) {
+        boolean checkClassId = submittableWorkRepository.findClassId(class_id);
+        boolean checkClassIdInMDT = submittableWorkRepository.findClassIdInMDT(class_id);
+        boolean checkMaterialIdInMDT = submittableWorkRepository.findMaterialIdInMDT(class_material_id);
+       try{
+           if (checkClassId == false ){
+               return ApiResponse.notFound("")
+                       .setResponseMsg("Class Id: "+class_id+ " doesn't exist ");
+           }
+           else if ((checkClassIdInMDT && checkMaterialIdInMDT) == true ){
+               return ApiResponse.notFound("")
+                       .setResponseMsg("Class Id: "+class_id+ " and ClassMaterialId: "+class_material_id+" already exist ");
+           } else {
+               Integer mdt = submittableWorkRepository.insertInotClassMaterialDetail(class_material_id,class_room_id,class_id);
+               Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.of("+07:00")));
+               submittableWorkRepository.insertInotSubmitableWork(mdt,timestamp,deadline,class_room_id,class_id,score);
+               return  ApiResponse.ok("")
+                       .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage());
+           }
+       }catch (Exception e){
+           return ApiResponse.setError(e.getMessage());
+       }
     }
     @PutMapping("update-classroomId-classId")
     ApiResponse<SubmittableWorkUpdateClassClassroomRequest> updateClassClassroom(
