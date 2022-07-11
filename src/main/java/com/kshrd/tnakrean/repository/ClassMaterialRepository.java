@@ -2,6 +2,7 @@ package com.kshrd.tnakrean.repository;
 
 import com.kshrd.tnakrean.configuration.JsonTypeHandler;
 import com.kshrd.tnakrean.model.ClassMaterialType;
+import com.kshrd.tnakrean.model.classmaterials.json.ClassMaterialContent;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialUpdateContentRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialUpdateTitleDesRequest;
@@ -9,6 +10,7 @@ import com.kshrd.tnakrean.model.classmaterials.response.*;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Mapper
@@ -22,6 +24,9 @@ public interface ClassMaterialRepository {
 
     @Select("SELECT EXISTS(SELECT * FROM class_materials WHERE id = #{id})")
     Boolean checkMaterialsId(Integer id);
+
+    @Select("SELECT EXISTS(SELECT id FROM classroom WHERE id = #{classroom_id})")
+    Boolean findClassroomId(Integer classroom_id);
 
     @Select("SELECT EXISTS(SELECT id FROM class_materials WHERE id = #{id})")
     boolean findMaterialId(Integer id);
@@ -187,4 +192,15 @@ public interface ClassMaterialRepository {
     @Insert("INSERT INTO class_materials_detail (class_material_id,class_id,classroom_id)\n" +
             "VALUES (#{class_material_id},#{class_id},#{class_room_id})")
     boolean assignCourse(int class_material_id, int class_room_id, int class_id);
+
+    // create course in classId
+    @Select("INSERT INTO class_materials(created_date,created_by,title,description,class_materials_type_id,content) " +
+            "VALUES (#{createdDate},#{user_id},#{title},#{description},1, " +
+            "#{content,jdbcType=OTHER, typeHandler = com.kshrd.tnakrean.configuration.JsonTypeHandler}) RETURNING id")
+   // @Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class)
+    Integer creatNewCourse(Integer user_id, String title, String description, Timestamp createdDate, ClassMaterialContent content);
+
+    @Select("INSERT INTO class_materials_detail (class_material_id,class_id,classroom_id)\n" +
+            "VALUES (#{materialId},#{class_id},#{classroom_id})")
+    Integer createCourseByClass(Integer materialId, int classroom_id, int class_id);
 }

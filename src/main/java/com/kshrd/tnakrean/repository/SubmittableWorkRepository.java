@@ -1,6 +1,7 @@
 package com.kshrd.tnakrean.repository;
 
 import com.kshrd.tnakrean.configuration.JsonTypeHandler;
+import com.kshrd.tnakrean.model.classmaterials.json.ClassMaterialContent;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateClassClassroomRequest;
@@ -162,4 +163,16 @@ public interface SubmittableWorkRepository {
             "#{classMaterial.classMaterialContent,jdbcType=OTHER, typeHandler = com.kshrd.tnakrean.configuration.JsonTypeHandler})")
     @Result(property = "classMaterialContent", column = "content", typeHandler = JsonTypeHandler.class)
     boolean createQuiz(@Param("classMaterial") ClassMaterialRequest classMaterialRequest, Integer user_id,Integer typeId);
+
+    //
+    @Select("INSERT INTO class_materials(created_date,created_by,title,description,class_materials_type_id,content) " +
+            "VALUES (#{createdDate},#{user_id},#{title},#{description},#{material_type_id}, " +
+            "#{content,jdbcType=OTHER, typeHandler = com.kshrd.tnakrean.configuration.JsonTypeHandler}) RETURNING id")
+    Integer createNewClasswork(int material_type_id, Integer user_id, String title, String description, Timestamp createdDate, ClassMaterialContent content);
+    @Select("INSERT INTO class_materials_detail (class_material_id,class_id,classroom_id)\n" +
+            "VALUES (#{materialId},#{class_id},#{classroom_id}) RETURNING id")
+    Integer createClassworkInMaterialDetail(Integer materialId, int classroom_id, int class_id);
+    @Select("INSERT INTO submittable_work (class_materials_detail_id,assigned_date,deadline,class_id,classroom_id,score)\n" +
+            "VALUES (#{mdt},#{createdDate},#{deadline},#{classroom_id},#{class_id},#{score}) ")
+    Integer createClassworkByClass(Integer mdt, Timestamp createdDate, Timestamp deadline, int classroom_id, int class_id, float score);
 }

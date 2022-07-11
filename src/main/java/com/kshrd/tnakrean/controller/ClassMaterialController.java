@@ -3,6 +3,7 @@ package com.kshrd.tnakrean.controller;
 
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
+import com.kshrd.tnakrean.model.classmaterials.json.ClassMaterialContent;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialUpdateContentRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.ClassMaterialUpdateTitleDesRequest;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -65,9 +68,45 @@ public class ClassMaterialController {
                 classMaterialRequest.setTitle(classMaterialRequest.getTitle().trim());
                 classMaterialRequest.setDescription(classMaterialRequest.getDescription().trim());
                 classMaterialServiceImp.insertCourse(classMaterialRequest,user_id);
-                return ApiResponse.<ClassMaterialRequest>ok(ClassMaterialRequest.class.getSimpleName())
+                return ApiResponse.<ClassMaterialRequest>ok("Create Course")
                         .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
                         .setData(classMaterialRequest);
+            }
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
+
+    @PostMapping("create-course-by-class")
+    ApiResponse<Boolean> createCourseByClass(
+            @RequestParam @NotEmpty @NotBlank String title,
+            @RequestParam @NotEmpty @NotBlank String description,
+            @RequestBody @Valid  ClassMaterialContent classMaterialContent,
+            @RequestParam @Min(value = 1) int class_id,
+            @RequestParam @Min(value = 1) int classroom_id
+    ) {
+        Integer user_id = AuthRestController.user_id;
+        boolean checkClassId = classMaterialRepository.findClassId(class_id);
+        boolean checkClassroomId = classMaterialRepository.findClassroomId(classroom_id);
+
+        try {
+            if (user_id == 0) {
+                return ApiResponse.unAuthorized("unAuthorized");
+            } else if (checkClassId == false ){
+                return ApiResponse.<Boolean>notFound(ClassMaterialRequest.class.getSimpleName())
+                        .setResponseMsg("Class Id: "+class_id+ " doesn't exist ");
+            } else if (checkClassroomId == false ){
+                return ApiResponse.<Boolean>notFound(ClassMaterialRequest.class.getSimpleName())
+                        .setResponseMsg("Classroom Id: "+classroom_id+ " doesn't exist ");
+            } else {
+                title.trim();
+                description.trim();
+                Timestamp createdDate = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.of("+07:00")));
+                Integer materialId = classMaterialRepository.creatNewCourse(user_id,title,description,createdDate,classMaterialContent);
+                classMaterialRepository.createCourseByClass(materialId,classroom_id,class_id);
+                return ApiResponse.<Boolean>ok("Create Course")
+                        .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
+                        .setData(true);
             }
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
@@ -80,17 +119,17 @@ public class ClassMaterialController {
             @RequestParam @Min(value = 1) int class_id
     ) {
         boolean checkClassId = classMaterialRepository.findClassId(class_id);
-        boolean findClassIdANDMaterialIdInMD = classMaterialRepository.findClassIdANDMaterialIdInMD(class_id,class_material_id);
+        boolean checkClassIdANDMaterialIdInMD = classMaterialRepository.findClassIdANDMaterialIdInMD(class_id,class_material_id);
         try{
             if (checkClassId == false ){
                 return ApiResponse.<Boolean>notFound("")
-                        .setResponseMsg("Class Id: "+class_id+ " doesn't exist ").setData(true);
-            } else if (findClassIdANDMaterialIdInMD == true ){
+                        .setResponseMsg("Class Id: "+class_id+ " doesn't exist ");
+            } else if (checkClassIdANDMaterialIdInMD == true ){
                 return ApiResponse.<Boolean>notFound("")
                         .setResponseMsg("Class Id: "+class_id+ " and ClassMaterialId: "+class_material_id+" already exist ");
             } else {
                 classMaterialRepository.assignCourse(class_material_id,class_room_id,class_id);
-                return  ApiResponse.<Boolean>notFound("")
+                return  ApiResponse.<Boolean>ok("Assign Course")
                         .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage());
             }
         }catch (Exception e){
