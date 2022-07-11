@@ -19,8 +19,6 @@ import java.util.Date;
 public class ClassMaterialRequest {
     @NotBlank(message = "{validation.title.notEmpty}")
     private String title;
-    @Min(value = 1 , message="{validation.createdBy.notNegative}")
-    private Integer created_by;
     @NotBlank(message = "{validation.description.notEmpty}")
     private String description;
     @Min(value = 1 , message="{validation.MaterialTypeId.notNegative}")

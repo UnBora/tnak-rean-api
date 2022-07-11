@@ -49,23 +49,22 @@ public class ClassMaterialController {
         }
     }
 
-    @PostMapping("insert")
+    @PostMapping("insert-classMaterial")
     ApiResponse<ClassMaterialRequest> insertClassMaterial(
             @RequestBody @Valid ClassMaterialRequest classMaterialRequest
     ) {
-        Boolean created = classMaterialRepository.checkCreatedBy(classMaterialRequest.getCreated_by());
+        Integer user_id = AuthRestController.user_id;
         Boolean materialsTypeId = classMaterialRepository.checkMaterialsTypeId(classMaterialRequest.getClass_materials_type_id());
         try {
-            if (created == false) {
-                return ApiResponse.<ClassMaterialRequest>notFound(ClassMaterialRequest.class.getSimpleName())
-                        .setResponseMsg("The Created_by_id: "+classMaterialRequest.getCreated_by()+" doesn't exit in the table");
+            if (user_id == 0) {
+                return ApiResponse.unAuthorized("unAuthorized");
             } else if (materialsTypeId == false) {
                 return ApiResponse.<ClassMaterialRequest>notFound(ClassMaterialRequest.class.getSimpleName())
                         .setResponseMsg("The class_materials_type_id: "+classMaterialRequest.getClass_materials_type_id()+" doesn't exit in the table");
             } else {
                 classMaterialRequest.setTitle(classMaterialRequest.getTitle().trim());
                 classMaterialRequest.setDescription(classMaterialRequest.getDescription().trim());
-                classMaterialServiceImp.insertClassMaterial(classMaterialRequest);
+                classMaterialServiceImp.insertClassMaterial(classMaterialRequest,user_id);
                 return ApiResponse.<ClassMaterialRequest>ok(ClassMaterialRequest.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
                         .setData(classMaterialRequest);

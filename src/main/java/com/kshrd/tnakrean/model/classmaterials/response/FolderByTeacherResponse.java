@@ -11,6 +11,5 @@ public class FolderByTeacherResponse {
     Integer folder_id;
     String folder_name;
     Integer parent_id;
-    Integer class_id;
     Integer created_by;
 }

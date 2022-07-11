@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @RestController
@@ -208,16 +210,21 @@ public class FolderController {
         }
     }
 
-    @PutMapping("assign-folder-in-class")
+    @PostMapping("assign-folder-in-any-class")
     public ApiResponse<FolderAssignClassRequest> folderAssignClass(
             @RequestBody @Valid FolderAssignClassRequest folderAssignClassRequest) {
         Boolean checkClassId = folderRepository.findClassId(folderAssignClassRequest.getClass_id());
+        Boolean checkClassIdInCMF = folderRepository.findClassIdInCMF(folderAssignClassRequest.getClass_id());
+        Boolean checkFolderIdInCMF = folderRepository.findFolderIdInCMF(folderAssignClassRequest.getFolder_id());
         Boolean checkClassroomId = folderRepository.findClassroomId(folderAssignClassRequest.getClassroom_id());
         try {
             if (checkClassId == false) {
                 return ApiResponse.<FolderAssignClassRequest>setError(FolderAssignClassRequest.class.getSimpleName())
                         .setResponseMsg("ClassId: "+folderAssignClassRequest.getClass_id()+"does not exist");
-            } else if (checkClassroomId == false) {
+            } else if ((checkClassIdInCMF && checkFolderIdInCMF) == true) {
+                return ApiResponse.<FolderAssignClassRequest>notFound(FolderAssignClassRequest.class.getSimpleName())
+                        .setResponseMsg("ClassIdInCMF:"+folderAssignClassRequest.getClass_id()+ " and FolderIdInCMF:"+folderAssignClassRequest.getFolder_id()+" already exist");
+            }  else if (checkClassroomId == false) {
                 return ApiResponse.<FolderAssignClassRequest>notFound(FolderAssignClassRequest.class.getSimpleName())
                         .setResponseMsg("ClassroomId: "+folderAssignClassRequest.getClassroom_id()+"'does not exist");
             } else {
@@ -230,5 +237,74 @@ public class FolderController {
             return ApiResponse.setError(e.getMessage());
         }
     }
-
+    @PostMapping("/create-courseFolder-in-class")
+    ApiResponse<?> createCourseFolderInClass(
+            @RequestParam int parent_id,
+            @RequestParam String folder_name,
+            @RequestParam int classroom_id,
+            @RequestParam int class_id
+            ) {
+        Integer userId = AuthRestController.user_id;
+        boolean checkParentId = folderRepository.findParentId(parent_id);
+        Boolean checkClassId = folderRepository.findClassId(class_id);
+        Boolean checkClassroomId = folderRepository.findClassroomId(classroom_id);
+        try {
+            if (userId == 0){
+                return ApiResponse.unAuthorized("Unauthorized");
+            } else if (checkParentId == false) {
+                return ApiResponse.<FolderCourseRequest>notFound(FolderCourseRequest.class.getSimpleName())
+                        .setResponseMsg("The parent_id: " +parent_id+ " doesn't exist in the table");
+            } else if (checkClassId == false) {
+                return ApiResponse.<FolderCourseRequest>setError(FolderCourseRequest.class.getSimpleName())
+                        .setResponseMsg("ClassId: "+class_id+"does not exist");
+            } else if (checkClassroomId == false) {
+                return ApiResponse.<FolderCourseRequest>notFound(FolderCourseRequest.class.getSimpleName())
+                        .setResponseMsg("ClassroomId: "+classroom_id+"'does not exist");
+            } else {
+                folder_name.trim();
+                Integer folderId = folderRepository.createCourseFolderForClass(folder_name,parent_id,userId);
+                folderRepository.createCourseFolderInClass(folderId,classroom_id,class_id);
+                return ApiResponse.ok(FolderCourseRequest.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
+                        .setData(true);
+            }
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
+    @PostMapping("/create-classworkFolder-in-class")
+    ApiResponse<?> createClassWorkFolderInClass(
+            @RequestParam @Min(value = 1) int parent_id,
+            @RequestParam @NotBlank @NotEmpty String folder_name,
+            @RequestParam @Min(value = 1) int classroom_id,
+            @RequestParam @Min(value = 1) int class_id
+    ) {
+        Integer userId = AuthRestController.user_id;
+        boolean checkParentId = folderRepository.findParentId(parent_id);
+        Boolean checkClassId = folderRepository.findClassId(class_id);
+        Boolean checkClassroomId = folderRepository.findClassroomId(classroom_id);
+        try {
+            if (userId == 0){
+                return ApiResponse.unAuthorized("Unauthorized");
+            } else if (checkParentId == false) {
+                return ApiResponse.<FolderClassWorkRequest>notFound(FolderClassWorkRequest.class.getSimpleName())
+                        .setResponseMsg("The parent_id: " +parent_id+ " doesn't exist in the table");
+            } else if (checkClassId == false) {
+                return ApiResponse.<FolderClassWorkRequest>setError(FolderClassWorkRequest.class.getSimpleName())
+                        .setResponseMsg("ClassId: "+class_id+"does not exist");
+            } else if (checkClassroomId == false) {
+                return ApiResponse.<FolderClassWorkRequest>notFound(FolderClassWorkRequest.class.getSimpleName())
+                        .setResponseMsg("ClassroomId: "+classroom_id+"'does not exist");
+            } else {
+                folder_name.trim();
+                Integer folderId = folderRepository.createClassWorkFolderForClass(folder_name,parent_id,userId);
+                folderRepository.createClassWorkFolderInClass(folderId,classroom_id,class_id);
+                return ApiResponse.ok("Folder")
+                        .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
+                        .setData(true);
+            }
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
 }
