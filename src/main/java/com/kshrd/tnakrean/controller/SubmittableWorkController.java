@@ -70,33 +70,33 @@ public class SubmittableWorkController {
         }
     }
 
-    @PostMapping("/insert")
-    ApiResponse<SubmittableWorkRequest> insertSubmittableWork(
-            @RequestBody @Valid SubmittableWorkRequest submittableWorkRequest
-    ) {
-        boolean checkClassMaterialsDetailId = submittableWorkRepository.findClassMaterialsDetailId(submittableWorkRequest.getClass_materials_detail_id());
-        boolean checkClassroomId = submittableWorkRepository.findClassroomId(submittableWorkRequest.getClassroom_id());
-        boolean checkClassId = submittableWorkRepository.findClassId(submittableWorkRequest.getClass_id());
-        try {
-            if (checkClassMaterialsDetailId == false) {
-                return ApiResponse.<SubmittableWorkRequest>notFound(SubmittableWorkRequest.class.getSimpleName())
-                        .setResponseMsg("The Class_materials_detail_id: " + submittableWorkRequest.getClass_materials_detail_id() + " doesn't exist in the table");
-            } else if (checkClassroomId == false) {
-                return ApiResponse.<SubmittableWorkRequest>notFound(SubmittableWorkRequest.class.getSimpleName())
-                        .setResponseMsg("The ClassroomId: " + submittableWorkRequest.getClassroom_id() + " doesn't exist in the table");
-            } else if (checkClassId == false) {
-                return ApiResponse.<SubmittableWorkRequest>notFound(SubmittableWorkRequest.class.getSimpleName())
-                        .setResponseMsg("The ClassId: " + submittableWorkRequest.getClass_id() + " doesn't exist in the table");
-            } else {
-                submittableWorkService.insertSubmittableWork(submittableWorkRequest);
-                return ApiResponse.<SubmittableWorkRequest>ok(SubmittableWorkRequest.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
-                        .setData(submittableWorkRequest);
-            }
-        } catch (Exception e) {
-            return ApiResponse.setError(e.getMessage());
-        }
-    }
+//    @PostMapping("/insert")
+//    ApiResponse<SubmittableWorkRequest> insertSubmittableWork(
+//            @RequestBody @Valid SubmittableWorkRequest submittableWorkRequest
+//    ) {
+//        boolean checkClassMaterialsDetailId = submittableWorkRepository.findClassMaterialsDetailId(submittableWorkRequest.getClass_materials_detail_id());
+//        boolean checkClassroomId = submittableWorkRepository.findClassroomId(submittableWorkRequest.getClassroom_id());
+//        boolean checkClassId = submittableWorkRepository.findClassId(submittableWorkRequest.getClass_id());
+//        try {
+//            if (checkClassMaterialsDetailId == false) {
+//                return ApiResponse.<SubmittableWorkRequest>notFound(SubmittableWorkRequest.class.getSimpleName())
+//                        .setResponseMsg("The Class_materials_detail_id: " + submittableWorkRequest.getClass_materials_detail_id() + " doesn't exist in the table");
+//            } else if (checkClassroomId == false) {
+//                return ApiResponse.<SubmittableWorkRequest>notFound(SubmittableWorkRequest.class.getSimpleName())
+//                        .setResponseMsg("The ClassroomId: " + submittableWorkRequest.getClassroom_id() + " doesn't exist in the table");
+//            } else if (checkClassId == false) {
+//                return ApiResponse.<SubmittableWorkRequest>notFound(SubmittableWorkRequest.class.getSimpleName())
+//                        .setResponseMsg("The ClassId: " + submittableWorkRequest.getClass_id() + " doesn't exist in the table");
+//            } else {
+//                submittableWorkService.insertSubmittableWork(submittableWorkRequest);
+//                return ApiResponse.<SubmittableWorkRequest>ok(SubmittableWorkRequest.class.getSimpleName())
+//                        .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
+//                        .setData(submittableWorkRequest);
+//            }
+//        } catch (Exception e) {
+//            return ApiResponse.setError(e.getMessage());
+//        }
+//    }
 
     @PostMapping("/assign-submittable")
     ApiResponse<?> insertMater(
@@ -362,8 +362,8 @@ public class SubmittableWorkController {
         }
     }
 
-    @PostMapping("create-quiz-by-class")
-    ApiResponse<?> createQuizByClass(
+    @PostMapping("create-quiz-in-class")
+    ApiResponse<Boolean> createQuizByClass(
             @RequestParam @NotEmpty @NotBlank String title,
             @RequestParam @NotEmpty @NotBlank String description,
             @RequestBody @Valid ClassMaterialContent classMaterialContent,
@@ -401,8 +401,8 @@ public class SubmittableWorkController {
         }
     }
 
-    @PostMapping("create-homework-by-class")
-    ApiResponse<?> createHomeworkByClass(
+    @PostMapping("create-homework-in-class")
+    ApiResponse<Boolean> createHomeworkByClass(
             @RequestParam @NotEmpty @NotBlank String title,
             @RequestParam @NotEmpty @NotBlank String description,
             @RequestBody @Valid ClassMaterialContent classMaterialContent,
@@ -432,6 +432,45 @@ public class SubmittableWorkController {
                 Integer mdt = submittableWorkRepository.createClassworkInMaterialDetail(materialId, classroom_id, class_id);
                 submittableWorkRepository.createClassworkByClass(mdt, createdDate, deadline, classroom_id, class_id, score);
                 return ApiResponse.<Boolean>ok("Create Homework")
+                        .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
+                        .setData(true);
+            }
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
+
+    @PostMapping("create-assignment-in-class")
+    ApiResponse<Boolean> createAssignmentByClass(
+            @RequestParam @NotEmpty @NotBlank String title,
+            @RequestParam @NotEmpty @NotBlank String description,
+            @RequestBody @Valid ClassMaterialContent classMaterialContent,
+            @RequestParam Timestamp deadline,
+            @RequestParam @Min(value = 1) int class_id,
+            @RequestParam @Min(value = 1) int classroom_id,
+            @RequestParam @Min(value = 1) @Max(value = 1000) float score
+    ) {
+        Integer user_id = AuthRestController.user_id;
+        boolean checkClassId = submittableWorkRepository.findClassId(class_id);
+        boolean checkClassroomId = submittableWorkRepository.findClassroomId(classroom_id);
+        try {
+            if (user_id == 0) {
+                return ApiResponse.unAuthorized("unAuthorized");
+            } else if (checkClassId == false) {
+                return ApiResponse.<Boolean>notFound(ClassMaterialRequest.class.getSimpleName())
+                        .setResponseMsg("Class Id: " + class_id + " doesn't exist ");
+            } else if (checkClassroomId == false) {
+                return ApiResponse.<Boolean>notFound(ClassMaterialRequest.class.getSimpleName())
+                        .setResponseMsg("Classroom Id: " + classroom_id + " doesn't exist ");
+            } else {
+                title.trim();
+                description.trim();
+                int material_type_id = 3;
+                Timestamp createdDate = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.of("+07:00")));
+                Integer materialId = submittableWorkRepository.createNewClasswork(material_type_id, user_id, title, description, createdDate, classMaterialContent);
+                Integer mdt = submittableWorkRepository.createClassworkInMaterialDetail(materialId, classroom_id, class_id);
+                submittableWorkRepository.createClassworkByClass(mdt, createdDate, deadline, classroom_id, class_id, score);
+                return ApiResponse.<Boolean>ok("Create Assignment")
                         .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
                         .setData(true);
             }

@@ -77,7 +77,7 @@ public class ClassMaterialController {
         }
     }
 
-    @PostMapping("create-course-by-class")
+    @PostMapping("create-course-in-class")
     ApiResponse<Boolean> createCourseByClass(
             @RequestParam @NotEmpty @NotBlank String title,
             @RequestParam @NotEmpty @NotBlank String description,
