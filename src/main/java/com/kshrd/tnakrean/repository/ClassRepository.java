@@ -2,6 +2,7 @@ package com.kshrd.tnakrean.repository;
 
 import com.kshrd.tnakrean.model.classmaterials.request.GetClassRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassByUserTeacherIdResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.SearchClassResponse;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -35,7 +36,7 @@ public interface ClassRepository {
 
     //    Create User By Teacher's ID
     @Insert("INSERT INTO class (id, class_name) VALUES (#{id},#{class_name})")
-    void creatClassByUserID(@Param("id") Integer id,@Param("class_name") String class_ame);
+    void creatClassByUserID(@Param("id") Integer id, @Param("class_name") String class_ame);
 
     @Select("select exists (select * from classroom_detail where id = #{id})")
     Boolean checkIfClassRoomDetailExists(Integer id);
@@ -48,12 +49,17 @@ public interface ClassRepository {
             "FROM class c \n" +
             "JOIN teacher t ON c.id = t.class_id\n" +
             "WHERE user_id = #{user_id} AND classroom_id = #{classroom_id}")
-    @Result(property = "classId",column = "id")
-    @Result(property = "className",column = "class_name")
-    @Result(property = "totalStudentInClass",column = "count")
+    @Result(property = "classId", column = "id")
+    @Result(property = "className", column = "class_name")
+    @Result(property = "totalStudentInClass", column = "count")
     List<ClassByUserTeacherIdResponse> getByTeacherUserId(Integer user_id, Integer classroom_id);
 
-//    Catch name
+    //    Catch name
     @Select("select class_name from class where id = #{id}")
     String catchClassName(Integer id);
+
+    //    Search Name
+    @Select("SELECT id,class_name, image FROM class WHERE class_name ilike LOWER('%' || #{className} || '%')")
+    @Result(property = "class_id", column = "id")
+    List<SearchClassResponse> nameSearched(@Param("className") String className);
 }
