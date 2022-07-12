@@ -9,11 +9,8 @@ import com.kshrd.tnakrean.model.classmaterials.request.SubmittableWorkUpdateDead
 import com.kshrd.tnakrean.model.classmaterials.response.*;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.util.List;
 
 @Mapper
@@ -73,20 +70,18 @@ public interface SubmittableWorkRepository {
     @Result(property = "content", column = "content", typeHandler = JsonTypeHandler.class)
     List<UpComingSubmittableWorkResponse> getUpComingSubmittableWorkByStudentId(@Param("studentId") Integer studentId, @Param("classId") Integer classId, @Param("classRoomId") Integer classRoomId, @Param("currentTime") Timestamp currentTime);
 
-    // get By ClassId
-    @Select("SELECT saw.class_id, saw.id, material_id, title, description, score, assigned_date,deadline,\n" +
-            "(SELECT count(s.class_material_id) FROM comment c \n" +
+    // get classwork By ClassId
+    @Select("SELECT saw.id,title,description,score,assigned_date,deadline,saw.class_id,class_material_id, " +
+            "(SELECT count(*) FROM comment c \n" +
             "JOIN class_materials_detail s ON c.class_materials_detail_id = s.id \n" +
-            "WHERE class_material_id = material_id)\n" +
-            "FROM folder f\n" +
-            "JOIN class_materials_type cm ON f.material_type_id = cm.id\n" +
-            "JOIN class_material_folder cmf ON f.id = cmf.folder_id \n" +
-            "JOIN material_folder mf ON f.id = mf.folder_id\n" +
-            "JOIN class_materials clm ON mf.material_id = clm.id " +
-            "JOIN class_materials_detail cmd ON clm.id = cmd.class_material_id AND cmd.class_id = cmf.class_id AND cmd.classroom_id = cmf.classroom_id\n" +
-            "JOIN submittable_work saw ON cmd.id = saw.class_materials_detail_id AND saw.class_id = cmd.class_id AND saw.classroom_id = cmd.classroom_id\n" +
-            "WHERE (class_materials_type_id = 3 OR class_materials_type_id = 4 OR class_materials_type_id = 5) AND saw.classroom_id = #{classroom_id} AND saw.class_id = #{class_id}")
+            "WHERE class_material_id = cm.id) " +
+            "FROM class_materials cm \n" +
+            "JOIN class_materials_detail cmd ON cm.id = cmd.class_material_id\n" +
+            "JOIN submittable_work saw ON cmd.id = saw.class_materials_detail_id\n" +
+            "JOIN class_materials_type mt ON cm.class_materials_type_id = mt.id\n" +
+            "WHERE (mt.id = 2 OR mt.id = 3 OR mt.id = 4 OR mt.id = 5) AND saw.class_id = #{class_id} AND saw.classroom_id = #{classroom_id}")
     @Result(property = "submittable_work_id", column = "id")
+    @Result(property = "material_id", column = "class_material_id")
     @Result(property = "total_comment", column = "count")
     List<SubmittableWorkByClassResponse> getByClassIdAndClassId(Integer classroom_id, Integer class_id);
 
@@ -95,7 +90,7 @@ public interface SubmittableWorkRepository {
     @Result(property = "submittable_work_id", column = "id")
     SubmittableWorkUpdateClassClassroomRequest updateClassClassroom(SubmittableWorkUpdateClassClassroomRequest submittableWorkUpdateClassClassroomRequest);
 
-    // get all By TeacherUserId
+    // get classwork By TeacherUserId
     @Select("SELECT DISTINCT cm.id,title,description,score,deadline,assigned_date,created_by, " +
             "(SELECT count(*) FROM comment c \n" +
             "JOIN class_materials_detail s ON c.class_materials_detail_id = s.id \n" +
@@ -110,19 +105,17 @@ public interface SubmittableWorkRepository {
     List<SubmittableWorkByTeacherResponse> getByTeacherUserId(Integer user_id);
 
     // get By MaterialId
-    @Select("SELECT f.created_by, saw.class_id, saw.id, material_id, title, description, score, assigned_date,deadline, " +
-            "(SELECT count(s.class_material_id) FROM comment c \n" +
+    @Select("SELECT DISTINCT saw.id,title,description,score,assigned_date,deadline,saw.class_id,class_material_id,\n" +
+            "(SELECT count(*) FROM comment c \n" +
             "JOIN class_materials_detail s ON c.class_materials_detail_id = s.id \n" +
-            "WHERE class_material_id = material_id) " +
-            "FROM folder f " +
-            "JOIN class_materials_type cm ON f.material_type_id = cm.id " +
-            "JOIN class_material_folder cmf ON f.id = cmf.folder_id " +
-            "JOIN material_folder mf ON f.id = mf.folder_id " +
-            "JOIN class_materials clm ON mf.material_id = clm.id " +
-            "JOIN class_materials_detail cmd ON clm.id = cmd.class_material_id AND cmd.class_id = cmf.class_id AND cmd.classroom_id = cmf.classroom_id\n" +
-            "JOIN submittable_work saw ON cmd.id = saw.class_materials_detail_id AND saw.class_id = cmd.class_id AND saw.classroom_id = cmd.classroom_id \n" +
-            "WHERE material_id = #{material_id}")
+            "WHERE class_material_id = cm.id) \n" +
+            "FROM class_materials cm \n" +
+            "JOIN class_materials_detail cmd ON cm.id = cmd.class_material_id\n" +
+            "JOIN submittable_work saw ON cmd.id = saw.class_materials_detail_id\n" +
+            "JOIN class_materials_type mt ON cm.class_materials_type_id = mt.id\n" +
+            "WHERE (mt.id = 2 OR mt.id = 3 OR mt.id = 4 OR mt.id = 5) AND cm.id = #{material_id}")
     @Result(property = "submittable_work_id", column = "id")
+    @Result(property = "material_id", column = "class_material_id")
     @Result(property = "total_comment", column = "count")
     List<SubmittableWorkByMaterialResponse> getByClassMaterialId(Integer material_id);
 
@@ -172,4 +165,36 @@ public interface SubmittableWorkRepository {
     @Select("INSERT INTO submittable_work (class_materials_detail_id,assigned_date,deadline,class_id,classroom_id,score)\n" +
             "VALUES (#{mdt},#{createdDate},#{deadline},#{classroom_id},#{class_id},#{score}) ")
     Integer createClassworkByClass(Integer mdt, Timestamp createdDate, Timestamp deadline, int classroom_id, int class_id, float score);
+
+    // get By FolderId in ClassId
+    @Select("SELECT DISTINCT saw.id,title,description,score,assigned_date,deadline,saw.class_id,class_material_id,folder_id,\n" +
+            "(SELECT count(*) FROM comment c \n" +
+            "JOIN class_materials_detail s ON c.class_materials_detail_id = s.id \n" +
+            "WHERE class_material_id = cm.id) \n" +
+            "FROM class_materials cm \n" +
+            "JOIN class_materials_detail cmd ON cm.id = cmd.class_material_id\n" +
+            "JOIN submittable_work saw ON cmd.id = saw.class_materials_detail_id\n" +
+            "JOIN class_materials_type mt ON cm.class_materials_type_id = mt.id\n" +
+            "JOIN material_folder mf ON cm.id = mf.material_id\n" +
+            "WHERE (mt.id = 2 OR mt.id = 3 OR mt.id = 4 OR mt.id = 5) AND saw.class_id = #{folderId} AND folder_id = #{class_id} AND saw.classroom_id = #{classroom_id}")
+    @Result(property = "submittable_work_id", column = "id")
+    @Result(property = "material_id", column = "class_material_id")
+    @Result(property = "total_comment", column = "count")
+    List<ClassWorkByFolderIDClassIDResponse> getByFolderIdClassId(Integer class_id, Integer classroom_id, Integer folderId);
+
+    // get By FolderId in TeacherId
+    @Select("SELECT DISTINCT saw.id,title,description,score,assigned_date,deadline,created_by,class_material_id,folder_id,\n" +
+            "(SELECT count(*) FROM comment c \n" +
+            "JOIN class_materials_detail s ON c.class_materials_detail_id = s.id \n" +
+            "WHERE class_material_id = cm.id) \n" +
+            "FROM class_materials cm \n" +
+            "JOIN class_materials_detail cmd ON cm.id = cmd.class_material_id\n" +
+            "JOIN submittable_work saw ON cmd.id = saw.class_materials_detail_id\n" +
+            "JOIN class_materials_type mt ON cm.class_materials_type_id = mt.id\n" +
+            "JOIN material_folder mf ON cm.id = mf.material_id\n" +
+            "WHERE (mt.id = 2 OR mt.id = 3 OR mt.id = 4 OR mt.id = 5) AND created_by = #{user_id} AND folder_id = #{folderId}")
+    @Result(property = "submittable_work_id", column = "id")
+    @Result(property = "material_id", column = "class_material_id")
+    @Result(property = "total_comment", column = "count")
+    List<ClassWorkByFolderIDTeacherIDResponse> getByFolderIdTeacherId(Integer user_id, Integer folderId);
 }

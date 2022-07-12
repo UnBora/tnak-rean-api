@@ -239,13 +239,37 @@ public class SubmittableWorkController {
             return ApiResponse.setError(e.getMessage());
         }
     }
+    @GetMapping("get-classwork-by-folderId-with-classId")
+    ApiResponse<List<ClassWorkByFolderIDClassIDResponse>> getByFolderIdClassId(
+            @RequestParam @Min(value = 1) Integer class_id,
+            @RequestParam @Min(value = 1) Integer classroom_id,
+            @RequestParam @Min(value = 1) Integer folderId
+    ) {
+        try {
+            List<ClassWorkByFolderIDClassIDResponse> responses = submittableWorkService.getByFolderIdClassId(classroom_id, class_id,folderId);
+            if (responses.isEmpty()) {
+                return ApiResponse.<List<ClassWorkByFolderIDClassIDResponse>>notFound(ClassWorkByFolderIDClassIDResponse.class
+                                .getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setData(responses);
+            }
+            return ApiResponse.<List<ClassWorkByFolderIDClassIDResponse>>ok(ClassWorkByFolderIDClassIDResponse.class
+                            .getSimpleName())
+                    .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+                    .setData(responses);
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
 
     @GetMapping("get-by-teacherUserId")
     ApiResponse<List<SubmittableWorkByTeacherResponse>> getByTeacherUserId() {
         try {
             Integer user_id = AuthRestController.user_id;
             List<SubmittableWorkByTeacherResponse> submittableWorkResponses = submittableWorkService.getByTeacherUserId(user_id);
-            if (submittableWorkResponses.isEmpty()) {
+            if (user_id == 0){
+                return ApiResponse.unAuthorized("unAuthorized");
+            } else if (submittableWorkResponses.isEmpty()) {
                 return ApiResponse.<List<SubmittableWorkByTeacherResponse>>notFound(SubmittableWorkByTeacherResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
                         .setData(submittableWorkResponses);
@@ -257,7 +281,27 @@ public class SubmittableWorkController {
             return ApiResponse.setError(e.getMessage());
         }
     }
-
+    @GetMapping("get-classwork-by-folderId-with-teacherId")
+    ApiResponse<List<ClassWorkByFolderIDTeacherIDResponse>> getByFolderIdTeacherId(
+            @RequestParam @Min(value = 1) Integer folderId
+    ) {
+        try {
+            Integer user_id = AuthRestController.user_id;
+            List<ClassWorkByFolderIDTeacherIDResponse> responses = submittableWorkService.getByFolderIdTeacherId(user_id,folderId);
+            if (user_id == 0){
+                return ApiResponse.unAuthorized("unAuthorized");
+            } else if (responses.isEmpty()) {
+                return ApiResponse.<List<ClassWorkByFolderIDTeacherIDResponse>>notFound(ClassWorkByFolderIDTeacherIDResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setData(responses);
+            }
+            return ApiResponse.<List<ClassWorkByFolderIDTeacherIDResponse>>ok(ClassWorkByFolderIDTeacherIDResponse.class.getSimpleName())
+                    .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+                    .setData(responses);
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
     @GetMapping("get-all-by-classId-teacherUserId")
     ApiResponse<List<SubmittableWorkByClassIdTeacherIdResponse>> getAllByClassIdTeacherUserId(@RequestParam @Min(value = 1) Integer class_id) {
         try {
@@ -279,7 +323,7 @@ public class SubmittableWorkController {
         }
     }
 
-    @GetMapping("view-by-classMaterialId")
+    @GetMapping("view-classwork-by-classMaterialId")
     ApiResponse<List<SubmittableWorkByMaterialResponse>> getByClassMaterialId(@RequestParam @Min(value = 1) Integer material_id) {
         try {
             List<SubmittableWorkByMaterialResponse> submittableWorkResponses = submittableWorkService.getByClassMaterialId(material_id);

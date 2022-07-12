@@ -253,6 +253,28 @@ public class ClassMaterialController {
             return ApiResponse.setError(e.getMessage());
         }
     }
+
+    @GetMapping("/get-course-by-folderId-with-classId")
+    ApiResponse<List<ClassMaterialByClassIdAndClassroomIdResponse>> getCourseMaterialByFolderIdInClass(
+            @RequestParam @Min(value = 1) Integer folder_id,
+            @RequestParam @Min(value = 1) Integer class_id,
+            @RequestParam @Min(value = 1) Integer classroom_id
+    ){
+        try {
+            Integer user_id = AuthRestController.user_id;
+            List<ClassMaterialByClassIdAndClassroomIdResponse> responses = classMaterialServiceImp.getCourseMaterialByFolderIdInClass(folder_id,class_id,classroom_id);
+            if (responses.isEmpty()) {
+                return ApiResponse.<List<ClassMaterialByClassIdAndClassroomIdResponse>>notFound("Course Material By FolderId")
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setData(responses);
+            }
+            return ApiResponse.<List<ClassMaterialByClassIdAndClassroomIdResponse>>ok("Course Material By FolderId")
+                    .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+                    .setData(responses);
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
     @PostMapping("set-course-and-classwork-to-folder")
     ApiResponse<?> setMaterialToFolder(
             @RequestParam @Min(value = 1) int folder_id,
@@ -335,23 +357,6 @@ public class ClassMaterialController {
         }
     }
 
-//    @GetMapping("/get-by-classId")
-//    ApiResponse<List<ClassMaterialByClassIdResponse>> getByClassId(@RequestParam @Min(value = 1) Integer class_id) {
-//        try {
-//            List<ClassMaterialByClassIdResponse> classMaterialByClassIdResponses = classMaterialServiceImp.getByClassId(class_id);
-//            if (classMaterialByClassIdResponses.isEmpty()) {
-//                return ApiResponse.<List<ClassMaterialByClassIdResponse>>notFound(ClassMaterialByClassIdResponse.class.getSimpleName())
-//                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
-//                        .setData(classMaterialByClassIdResponses);
-//            }
-//            return ApiResponse.<List<ClassMaterialByClassIdResponse>>ok(ClassMaterialByClassIdResponse.class.getSimpleName())
-//                    .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
-//                    .setData(classMaterialByClassIdResponses);
-//        } catch (Exception e) {
-//            return ApiResponse.setError(e.getMessage());
-//        }
-//    }
-
     @GetMapping("/get-by-classId-and-classroomId")
     ApiResponse<List<ClassMaterialByClassIdAndClassroomIdResponse>> getByClassIdAndClassroomId(
             @RequestParam @Min(value = 1) Integer class_id,
@@ -371,6 +376,25 @@ public class ClassMaterialController {
             return ApiResponse.setError(e.getMessage());
         }
     }
+
+//    @GetMapping("/get-by-classId")
+//    ApiResponse<List<ClassMaterialByClassIdResponse>> getByClassId(@RequestParam @Min(value = 1) Integer class_id) {
+//        try {
+//            List<ClassMaterialByClassIdResponse> classMaterialByClassIdResponses = classMaterialServiceImp.getByClassId(class_id);
+//            if (classMaterialByClassIdResponses.isEmpty()) {
+//                return ApiResponse.<List<ClassMaterialByClassIdResponse>>notFound(ClassMaterialByClassIdResponse.class.getSimpleName())
+//                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+//                        .setData(classMaterialByClassIdResponses);
+//            }
+//            return ApiResponse.<List<ClassMaterialByClassIdResponse>>ok(ClassMaterialByClassIdResponse.class.getSimpleName())
+//                    .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
+//                    .setData(classMaterialByClassIdResponses);
+//        } catch (Exception e) {
+//            return ApiResponse.setError(e.getMessage());
+//        }
+//    }
+
+
 
 //    @GetMapping("/get-by-materialType-and-classId")
 //    ApiResponse<List<ClassMaterialByClassIdAndMaterialTypeResponse>> getByMaterialTypeAndClassId(
@@ -392,22 +416,22 @@ public class ClassMaterialController {
 //        }
 //    }
 
-    @GetMapping("get-by-studentUserId")
-    ApiResponse<List<ClassMaterialByStudentIdResponse>> getByStudentId(@RequestParam @Min(value = 1) Integer student_user_id) throws IllegalStateException {
-        try {
-            List<ClassMaterialByStudentIdResponse> classMaterialResponses = classMaterialServiceImp.getByStudentId(student_user_id);
-            if (classMaterialResponses.isEmpty()) {
-                return ApiResponse.<List<ClassMaterialByStudentIdResponse>>notFound(ClassMaterialByStudentIdResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
-                        .setData(classMaterialResponses);
-            }
-            return ApiResponse.<List<ClassMaterialByStudentIdResponse>>ok(ClassMaterialByStudentIdResponse.class.getSimpleName())
-                    .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
-                    .setData(classMaterialResponses);
-        } catch (Exception e) {
-            return ApiResponse.setError(e.getMessage());
-        }
-    }
+//    @GetMapping("get-by-studentUserId")
+//    ApiResponse<List<ClassMaterialByStudentIdResponse>> getByStudentId(@RequestParam @Min(value = 1) Integer student_user_id) throws IllegalStateException {
+//        try {
+//            List<ClassMaterialByStudentIdResponse> classMaterialResponses = classMaterialServiceImp.getByStudentId(student_user_id);
+//            if (classMaterialResponses.isEmpty()) {
+//                return ApiResponse.<List<ClassMaterialByStudentIdResponse>>notFound(ClassMaterialByStudentIdResponse.class.getSimpleName())
+//                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+//                        .setData(classMaterialResponses);
+//            }
+//            return ApiResponse.<List<ClassMaterialByStudentIdResponse>>ok(ClassMaterialByStudentIdResponse.class.getSimpleName())
+//                    .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
+//                    .setData(classMaterialResponses);
+//        } catch (Exception e) {
+//            return ApiResponse.setError(e.getMessage());
+//        }
+//    }
 
 //    @GetMapping("get-by-studentUserId-classId-classroomId")
 //    ApiResponse<List<ClassMaterialByStudentIdClassIdAndClassroomIdResponse>> getByUserClassClassroom(

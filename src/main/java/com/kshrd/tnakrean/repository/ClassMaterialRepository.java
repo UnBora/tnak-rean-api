@@ -218,5 +218,19 @@ public interface ClassMaterialRepository {
             "JOIN material_folder mf on cm.id = mf.material_id\n" +
             "JOIN class_materials_type mt on cm.class_materials_type_id = mt.id\n" +
             "WHERE mt.id = 1 AND created_by = #{user_id} AND folder_id = #{folder_id}")
+    @Result(property = "total_comment", column = "count")
     List<ClassMaterialByTeacherResponse> CourseMaterialByFolderId(int folder_id,int user_id);
+
+    // get Course Material By FolderId In Class
+    @Select("SELECT DISTINCT material_id,created_by,class_materials_type_id,title,description,class_id,\n" +
+            "(SELECT count(*) FROM comment c \n" +
+            "JOIN class_materials_detail s ON c.class_materials_detail_id = s.id \n" +
+            "WHERE class_material_id = cm.id) \n" +
+            "FROM class_materials cm \n" +
+            "JOIN material_folder mf on cm.id = mf.material_id\n" +
+            "JOIN class_materials_type mt on cm.class_materials_type_id = mt.id\n" +
+            "JOIN class_materials_detail cmd on cm.id = cmd.class_material_id\n" +
+            "WHERE mt.id = 1 AND class_id = #{class_id} AND classroom_id = #{classroom_id} AND folder_id = #{folder_id}")
+    @Result(property = "total_comment", column = "count")
+    List<ClassMaterialByClassIdAndClassroomIdResponse> getCourseMaterialByFolderIdInClass(Integer folder_id, Integer class_id,Integer classroom_id);
 }

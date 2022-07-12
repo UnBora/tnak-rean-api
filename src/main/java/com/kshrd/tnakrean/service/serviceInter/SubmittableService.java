@@ -32,4 +32,8 @@ public interface SubmittableService {
     List<SubmittableWorkByClassIdTeacherIdResponse> getAllByClassIdTeacherUserId(Integer user_id, Integer class_id);
 
     boolean createClassworks(ClassMaterialRequest classMaterialRequest, Integer user_id, Integer typeId);
+
+    List<ClassWorkByFolderIDClassIDResponse> getByFolderIdClassId(Integer classroom_id, Integer class_id, Integer folderId);
+
+    List<ClassWorkByFolderIDTeacherIDResponse> getByFolderIdTeacherId(Integer user_id, Integer folderId);
 }

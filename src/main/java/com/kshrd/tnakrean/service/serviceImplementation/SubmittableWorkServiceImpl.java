@@ -84,4 +84,14 @@ public class SubmittableWorkServiceImpl implements SubmittableService {
     public boolean createClassworks(ClassMaterialRequest classMaterialRequest, Integer user_id, Integer typeId) {
         return submittableWorkRepository.createQuiz(classMaterialRequest,user_id,typeId);
     }
+
+    @Override
+    public List<ClassWorkByFolderIDClassIDResponse> getByFolderIdClassId(Integer classroom_id, Integer class_id, Integer folderId) {
+        return submittableWorkRepository.getByFolderIdClassId(class_id,classroom_id,folderId);
+    }
+
+    @Override
+    public List<ClassWorkByFolderIDTeacherIDResponse> getByFolderIdTeacherId(Integer user_id, Integer folderId) {
+        return submittableWorkRepository.getByFolderIdTeacherId(user_id,folderId);
+    }
 }
