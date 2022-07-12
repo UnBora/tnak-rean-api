@@ -75,4 +75,6 @@ public interface UsersRepository {
 
     @Delete("DELETE FROM users WHERE id=#{user_id}")
     void deleteUser(Integer user_id);
+
+
 }
