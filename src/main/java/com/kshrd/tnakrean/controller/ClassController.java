@@ -109,7 +109,7 @@ public class ClassController {
                 String className = "Class ID: " + classUpdateResponse.getId() + " Class new name: " + classUpdateResponse.getClassname().toUpperCase();
                 return ApiResponse
                         .<ClassUpdateResponse>ok(className)
-                        .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
+                        .setResponseMsg(className+" update successfully")
                         .setData(new ClassUpdateResponse(classUpdateResponse.getId(), classUpdateResponse.getClassname().toUpperCase(),classUpdateResponse.getImage()));
             }
         } catch (Exception e) {
