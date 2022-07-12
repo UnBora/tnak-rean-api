@@ -11,9 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SubmittableWorkByTeacherResponse {
-    Integer class_id;
     Integer created_by;
-    Integer submittable_work_id;
     Integer material_id;
     String title;
     String description;

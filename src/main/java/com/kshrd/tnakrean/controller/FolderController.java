@@ -216,12 +216,13 @@ public class FolderController {
         Boolean checkClassId = folderRepository.findClassId(folderAssignClassRequest.getClass_id());
         Boolean checkClassIdInCMF = folderRepository.findClassIdInCMF(folderAssignClassRequest.getClass_id());
         Boolean checkFolderIdInCMF = folderRepository.findFolderIdInCMF(folderAssignClassRequest.getFolder_id());
+        Boolean checkFolderIdAndClassIdInCMF = folderRepository.findFolderIdAndClassIdInCMF(folderAssignClassRequest.getFolder_id(),folderAssignClassRequest.getClass_id());
         Boolean checkClassroomId = folderRepository.findClassroomId(folderAssignClassRequest.getClassroom_id());
         try {
             if (checkClassId == false) {
                 return ApiResponse.<FolderAssignClassRequest>setError(FolderAssignClassRequest.class.getSimpleName())
                         .setResponseMsg("ClassId: "+folderAssignClassRequest.getClass_id()+"does not exist");
-            } else if ((checkClassIdInCMF && checkFolderIdInCMF) == true) {
+            } else if (checkFolderIdAndClassIdInCMF == true) {
                 return ApiResponse.<FolderAssignClassRequest>notFound(FolderAssignClassRequest.class.getSimpleName())
                         .setResponseMsg("ClassIdInCMF:"+folderAssignClassRequest.getClass_id()+ " and FolderIdInCMF:"+folderAssignClassRequest.getFolder_id()+" already exist");
             }  else if (checkClassroomId == false) {

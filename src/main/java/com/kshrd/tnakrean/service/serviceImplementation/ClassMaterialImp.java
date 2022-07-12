@@ -92,4 +92,9 @@ public class ClassMaterialImp implements ClassMaterialService {
     public List<ClassMaterialByStudentIdClassIdAndClassroomIdResponse> getByUserClassClassroom(Integer user_id, Integer class_id, Integer classroom_id) {
         return classMaterialRepository.getByUserClassClassroom(user_id,class_id,classroom_id);
     }
+
+    @Override
+    public boolean setMaterialToFolder(int folder_id, int material_id) {
+        return classMaterialRepository.setMaterialToFolder(folder_id,material_id);
+    }
 }

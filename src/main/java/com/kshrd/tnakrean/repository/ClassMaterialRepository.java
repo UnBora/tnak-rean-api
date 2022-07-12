@@ -89,17 +89,15 @@ public interface ClassMaterialRepository {
     List<ClassMaterialResponse> getClassMaterialByCreatedByAndMaterialType(Integer created_by, Integer class_materials_type_id);
 
     // Get All Class Material By teacher User Id
-    @Select("SELECT class_id, material_id, title,description,f.created_by, " +
-            " (SELECT count(*) FROM comment c \n" +
+    @Select("SELECT cm.id, title,description,created_by,\n" +
+            "(SELECT count(*) FROM comment c \n" +
             "JOIN class_materials_detail s ON c.class_materials_detail_id = s.id \n" +
-            "WHERE class_material_id = mf.material_id) " +
-            "FROM folder f\n" +
-            "JOIN class_materials_type cm ON f.material_type_id = cm.id\n" +
-            "JOIN class_material_folder cmf ON f.id = cmf.folder_id \n" +
-            "JOIN material_folder mf ON f.id = mf.folder_id\n" +
-            "JOIN class_materials clm ON mf.material_id = clm.id " +
-            "WHERE f.created_by = #{user_id} AND class_materials_type_id = 1")
+            "WHERE class_material_id = cm.id) \n" +
+            "FROM class_materials cm \n" +
+            "JOIN class_materials_type cmd ON cm.class_materials_type_id = cmd.id\n" +
+            "WHERE created_by = #{user_id} AND class_materials_type_id = 1")
     @Result(property = "total_comment", column = "count")
+    @Result(property = "material_id", column = "id")
     List<ClassMaterialByTeacherResponse> getAllClassMaterialByTeacherUserId(@Param("user_id") Integer user_id);
 
     // Get All Class Material class_materials_type_id
@@ -203,4 +201,11 @@ public interface ClassMaterialRepository {
     @Select("INSERT INTO class_materials_detail (class_material_id,class_id,classroom_id)\n" +
             "VALUES (#{materialId},#{class_id},#{classroom_id})")
     Integer createCourseByClass(Integer materialId, int classroom_id, int class_id);
+
+    @Select("SELECT EXISTS(SELECT material_id FROM material_folder WHERE folder_id = #{folder_id} AND material_id = #{material_id})\n")
+    boolean findFolderIdAndMaterialIdInMF(int folder_id, int material_id);
+
+    @Insert("INSERT INTO material_folder (folder_id,material_id)\n" +
+            "VALUES (#{folder_id},#{material_id}) ")
+    boolean setMaterialToFolder(int folder_id, int material_id);
 }

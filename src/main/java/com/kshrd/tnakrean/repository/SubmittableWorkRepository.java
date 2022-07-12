@@ -96,20 +96,17 @@ public interface SubmittableWorkRepository {
     SubmittableWorkUpdateClassClassroomRequest updateClassClassroom(SubmittableWorkUpdateClassClassroomRequest submittableWorkUpdateClassClassroomRequest);
 
     // get all By TeacherUserId
-    @Select("SELECT f.created_by ,saw.class_id, saw.id, material_id, title, description, score, assigned_date,deadline,\n" +
-            "(SELECT count(s.class_material_id) FROM comment c \n" +
+    @Select("SELECT DISTINCT cm.id,title,description,score,deadline,assigned_date,created_by, " +
+            "(SELECT count(*) FROM comment c \n" +
             "JOIN class_materials_detail s ON c.class_materials_detail_id = s.id \n" +
-            "WHERE class_material_id = material_id)\n" +
-            "FROM folder f\n" +
-            "JOIN class_materials_type cm ON f.material_type_id = cm.id\n" +
-            "JOIN class_material_folder cmf ON f.id = cmf.folder_id \n" +
-            "JOIN material_folder mf ON f.id = mf.folder_id\n" +
-            "JOIN class_materials clm ON mf.material_id = clm.id " +
-            "JOIN class_materials_detail cmd ON clm.id = cmd.class_material_id AND cmd.class_id = cmf.class_id AND cmd.classroom_id = cmf.classroom_id\n" +
-            "JOIN submittable_work saw ON cmd.id = saw.class_materials_detail_id AND saw.class_id = cmd.class_id AND saw.classroom_id = cmd.classroom_id\n" +
-            "WHERE f.created_by = #{user_id} AND (class_materials_type_id = 3 OR class_materials_type_id = 4 OR class_materials_type_id = 5 OR class_materials_type_id = 2) ")
+            "WHERE class_material_id = cm.id) " +
+            "FROM class_materials cm \n" +
+            "JOIN class_materials_detail cmd ON cm.id = cmd.class_material_id\n" +
+            "JOIN submittable_work saw ON cmd.id = saw.class_materials_detail_id\n" +
+            "JOIN class_materials_type mt ON cm.class_materials_type_id = mt.id\n" +
+            "WHERE created_by = 1 AND (mt.id = 2 OR mt.id = 3 OR mt.id = 4 OR mt.id = 5)")
     @Result(property = "total_comment", column = "count")
-    @Result(property = "submittable_work_id", column = "id")
+    @Result(property = "material_id", column = "id")
     List<SubmittableWorkByTeacherResponse> getByTeacherUserId(Integer user_id);
 
     // get By MaterialId

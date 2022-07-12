@@ -38,4 +38,6 @@ public interface ClassMaterialService {
     List<ClassMaterialByStudentIdResponse> getByStudentId(Integer user_id);
 
     List<ClassMaterialByStudentIdClassIdAndClassroomIdResponse> getByUserClassClassroom(Integer user_id, Integer class_id, Integer classroom_id);
+
+    boolean setMaterialToFolder(int folder_id, int material_id);
 }

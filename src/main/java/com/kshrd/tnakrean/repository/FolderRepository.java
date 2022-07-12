@@ -21,6 +21,8 @@ public interface FolderRepository {
     Boolean findClassIdInCMF(Integer class_id);
     @Select("SELECT EXISTS(SELECT folder_id FROM class_material_folder WHERE folder_id = #{folder_id})")
     Boolean findFolderIdInCMF(Integer folder_id);
+    @Select("SELECT EXISTS(SELECT folder_id FROM class_material_folder WHERE folder_id = #{folder_id} AND class_id = #{class_id})")
+    Boolean findFolderIdAndClassIdInCMF(Integer folder_id, Integer class_id);
     @Select("SELECT EXISTS(SELECT id FROM classroom WHERE id = #{classroom_id})")
     Boolean findClassroomId(Integer classroom_id);
     @Select("SELECT EXISTS(SELECT id FROM class WHERE id = #{class_id})")
@@ -110,4 +112,6 @@ public interface FolderRepository {
     @Select("INSERT INTO class_material_folder (folder_id, classroom_id,class_id) " +
             "VALUES (#{folderId} ,#{classroom_id} ,#{class_id})")
     Integer createClassWorkFolderInClass(Integer folderId, int classroom_id, int class_id);
+
+
 }

@@ -235,6 +235,26 @@ public class ClassMaterialController {
         }
     }
 
+    @PostMapping("set-course-and-classwork-to-folder")
+    ApiResponse<?> setMaterialToFolder(
+            @RequestParam @Min(value = 1) int folder_id,
+            @RequestParam @Min(value = 1) int material_id
+    ) {
+        boolean checkFolderIdAndMaterialIdInMF = classMaterialRepository.findFolderIdAndMaterialIdInMF(folder_id,material_id);
+        try {
+            if (checkFolderIdAndMaterialIdInMF == true) {
+                return ApiResponse.<Boolean>notFound("")
+                        .setResponseMsg("folder_id:" +folder_id+ " And material_id:"+material_id+" already exist")
+                        .setData(true);
+            }
+            classMaterialServiceImp.setMaterialToFolder(folder_id,material_id);
+            return ApiResponse.<Boolean>ok("Set Material: "+material_id+" To Folder:" +folder_id+" successful")
+                    .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
+                    .setData(true);
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
 //    @GetMapping("/get-by-teacherId-and-materialTypeId")
 //    ApiResponse<List<ClassMaterialResponse>> getClassMaterialByTeacherUserIdAndMaterialType(
 //            @RequestParam @Min(value = 1) Integer teacher_id,
