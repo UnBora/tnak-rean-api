@@ -99,7 +99,7 @@ public interface FolderRepository {
     // create CourseFolderInClass
     @Select("INSERT INTO folder (folder_name,parent_id,created_by,material_type_id)\n" +
             "VALUES (#{folder_name},#{parent_id},#{userId},1) RETURNING id")
-    Integer createCourseFolderForClass(String folder_name, int parent_id, Integer userId);
+    Integer createCourseFolderForClass(String folder_name, Integer parent_id, Integer userId);
 
     @Select("INSERT INTO class_material_folder (folder_id, classroom_id,class_id) " +
             "VALUES (#{folderId} ,#{classroom_id} ,#{class_id})")
@@ -108,10 +108,9 @@ public interface FolderRepository {
     // create ClassWorkFolderInClass
     @Select("INSERT INTO folder (folder_name,parent_id,created_by,material_type_id)\n" +
             "VALUES (#{folder_name},#{parent_id},#{userId},2) RETURNING id")
-    Integer createClassWorkFolderForClass(String folder_name, int parent_id, Integer userId);
+    Integer createClassWorkFolderForClass(String folder_name, Integer parent_id, Integer userId);
     @Select("INSERT INTO class_material_folder (folder_id, classroom_id,class_id) " +
             "VALUES (#{folderId} ,#{classroom_id} ,#{class_id})")
     Integer createClassWorkFolderInClass(Integer folderId, int classroom_id, int class_id);
-
 
 }

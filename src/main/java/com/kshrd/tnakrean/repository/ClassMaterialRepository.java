@@ -202,10 +202,21 @@ public interface ClassMaterialRepository {
             "VALUES (#{materialId},#{class_id},#{classroom_id})")
     Integer createCourseByClass(Integer materialId, int classroom_id, int class_id);
 
+    // set material to folder
     @Select("SELECT EXISTS(SELECT material_id FROM material_folder WHERE folder_id = #{folder_id} AND material_id = #{material_id})\n")
     boolean findFolderIdAndMaterialIdInMF(int folder_id, int material_id);
-
     @Insert("INSERT INTO material_folder (folder_id,material_id)\n" +
             "VALUES (#{folder_id},#{material_id}) ")
     boolean setMaterialToFolder(int folder_id, int material_id);
+
+    // get Course By FolderId with Teacher id
+    @Select("SELECT  DISTINCT material_id,created_by,class_materials_type_id,title,description,\n" +
+            "(SELECT count(*) FROM comment c \n" +
+            "JOIN class_materials_detail s ON c.class_materials_detail_id = s.id \n" +
+            "WHERE class_material_id = cm.id) \n" +
+            "FROM class_materials cm \n" +
+            "JOIN material_folder mf on cm.id = mf.material_id\n" +
+            "JOIN class_materials_type mt on cm.class_materials_type_id = mt.id\n" +
+            "WHERE mt.id = 1 AND created_by = #{user_id} AND folder_id = #{folder_id}")
+    List<ClassMaterialByTeacherResponse> CourseMaterialByFolderId(int folder_id,int user_id);
 }

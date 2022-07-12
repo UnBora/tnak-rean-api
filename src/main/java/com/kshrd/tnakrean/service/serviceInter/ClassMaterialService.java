@@ -40,4 +40,6 @@ public interface ClassMaterialService {
     List<ClassMaterialByStudentIdClassIdAndClassroomIdResponse> getByUserClassClassroom(Integer user_id, Integer class_id, Integer classroom_id);
 
     boolean setMaterialToFolder(int folder_id, int material_id);
+
+    List<ClassMaterialByTeacherResponse> getCourseMaterialByTFolderId(int folder_id,int user_id);
 }

@@ -234,7 +234,25 @@ public class ClassMaterialController {
             return ApiResponse.setError(e.getMessage());
         }
     }
-
+    @GetMapping("/get-course-by-folderId-with-teacherId")
+    ApiResponse<List<ClassMaterialByTeacherResponse>> getCourseMaterialByFolderId(
+            @RequestParam @Min(value = 1) int folder_id
+    ){
+        try {
+            Integer user_id = AuthRestController.user_id;
+            List<ClassMaterialByTeacherResponse> responses = classMaterialServiceImp.getCourseMaterialByTFolderId(folder_id,user_id);
+            if (responses.isEmpty()) {
+                return ApiResponse.<List<ClassMaterialByTeacherResponse>>notFound("Course Material By FolderId")
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setData(responses);
+            }
+            return ApiResponse.<List<ClassMaterialByTeacherResponse>>ok("Course Material By FolderId")
+                    .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+                    .setData(responses);
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
     @PostMapping("set-course-and-classwork-to-folder")
     ApiResponse<?> setMaterialToFolder(
             @RequestParam @Min(value = 1) int folder_id,

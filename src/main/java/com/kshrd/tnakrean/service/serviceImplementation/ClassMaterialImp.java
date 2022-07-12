@@ -97,4 +97,9 @@ public class ClassMaterialImp implements ClassMaterialService {
     public boolean setMaterialToFolder(int folder_id, int material_id) {
         return classMaterialRepository.setMaterialToFolder(folder_id,material_id);
     }
+
+    @Override
+    public List<ClassMaterialByTeacherResponse> getCourseMaterialByTFolderId(int folder_id,int user_id) {
+        return classMaterialRepository.CourseMaterialByFolderId(folder_id,user_id);
+    }
 }
