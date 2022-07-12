@@ -242,7 +242,7 @@ public class FolderController {
         }
     }
     @PostMapping("/create-courseFolder-in-class")
-    ApiResponse<FolderInClassRequest> createCourseFolderInClass(FolderInClassRequest folder) {
+    ApiResponse<FolderInClassRequest> createCourseFolderInClass(@RequestBody @Valid FolderInClassRequest folder) {
         Integer userId = AuthRestController.user_id;
         boolean checkParentId = folderRepository.findParentId(folder.getParent_id());
         Boolean checkClassId = folderRepository.findClassId(folder.getClass_id());
@@ -272,7 +272,7 @@ public class FolderController {
         }
     }
     @PostMapping("/create-classworkFolder-in-class")
-    ApiResponse<FolderInClassRequest> createClassWorkFolderInClass(FolderInClassRequest folder
+    ApiResponse<FolderInClassRequest> createClassWorkFolderInClass(@RequestBody @Valid FolderInClassRequest folder
     ) {
         Integer userId = AuthRestController.user_id;
         boolean checkParentId = folderRepository.findParentId(folder.getParent_id());
