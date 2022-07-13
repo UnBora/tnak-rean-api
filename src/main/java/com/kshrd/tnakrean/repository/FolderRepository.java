@@ -1,10 +1,7 @@
 package com.kshrd.tnakrean.repository;
 
 
-import com.kshrd.tnakrean.model.classmaterials.request.FolderAssignClassRequest;
-import com.kshrd.tnakrean.model.classmaterials.request.FolderClassWorkRequest;
-import com.kshrd.tnakrean.model.classmaterials.request.FolderCourseRequest;
-import com.kshrd.tnakrean.model.classmaterials.request.FolderRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.*;
 import com.kshrd.tnakrean.model.classmaterials.response.*;
 import com.kshrd.tnakrean.repository.provider.FolderProvider;
 import org.apache.ibatis.annotations.*;
@@ -118,4 +115,11 @@ public interface FolderRepository {
             "JOIN student st ON cmf.class_id = st.class_id\n" +
             "WHERE cmt.id = #{material_type_id}AND user_id = #{user_id}")
     List<FolderByStudentIdResponse> getFolderByStudentId(@Param("user_id") Integer user_id,@Param("material_type_id") Integer material_type_id);
+
+    // update folder
+    @Select("SELECT EXISTS(SELECT id FROM folder WHERE id = #{id})")
+    Boolean findFolderId(Integer id);
+
+    @Update("UPDATE folder SET folder_name = #{folder_name} WHERE id = #{id} ")
+    Boolean editFolder(FolderUpdateRequest folderUpdateRequest);
 }

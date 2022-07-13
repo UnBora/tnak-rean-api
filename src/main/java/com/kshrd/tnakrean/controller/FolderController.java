@@ -328,4 +328,24 @@ public class FolderController {
             return ApiResponse.setError(e.getMessage());
         }
     }
+
+    @PutMapping("edit-folder")
+    ApiResponse<FolderUpdateRequest> editFolder(
+            @RequestBody @Valid  FolderUpdateRequest folderUpdateRequest
+    ) {
+        try {
+            Boolean checkFolderId = folderRepository.findFolderId(folderUpdateRequest.getId());
+            folderServiceImp.editFolder(folderUpdateRequest);
+            if (checkFolderId == false ) {
+                return ApiResponse.<FolderUpdateRequest>notFound(FolderUpdateRequest.class.getSimpleName())
+                        .setResponseMsg("Can't update! FolderId: " +folderUpdateRequest.getId()+ " doesn't exist");
+            }
+            folderUpdateRequest.setFolder_name(folderUpdateRequest.getFolder_name().trim());
+            return ApiResponse.<FolderUpdateRequest>ok(FolderUpdateRequest.class.getSimpleName())
+                    .setResponseMsg(BaseMessage.Success.UPDATE_SUCCESS.getMessage())
+                    .setData(folderUpdateRequest);
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
 }

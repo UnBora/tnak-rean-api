@@ -1,10 +1,7 @@
 package com.kshrd.tnakrean.service.serviceInter;
 
 
-import com.kshrd.tnakrean.model.classmaterials.request.FolderAssignClassRequest;
-import com.kshrd.tnakrean.model.classmaterials.request.FolderClassWorkRequest;
-import com.kshrd.tnakrean.model.classmaterials.request.FolderCourseRequest;
-import com.kshrd.tnakrean.model.classmaterials.request.FolderRequest;
+import com.kshrd.tnakrean.model.classmaterials.request.*;
 import com.kshrd.tnakrean.model.classmaterials.response.FolderByClassResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.FolderByStudentIdResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.FolderByTeacherResponse;
@@ -37,4 +34,6 @@ public interface FolderService {
     boolean folderAssignClass(FolderAssignClassRequest folderAssignClassRequest);
 
     List<FolderByStudentIdResponse> getFolderByStudentId(Integer user_id,Integer material_type_id);
+
+    Boolean editFolder(FolderUpdateRequest folderUpdateRequest);
 }
