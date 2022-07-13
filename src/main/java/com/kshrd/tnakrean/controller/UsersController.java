@@ -198,11 +198,6 @@ public class UsersController {
                 Boolean checkEmail= usersRepository.checkEmailExist(userUpdateRequest.getEmail());
                 String email= usersRepository.selectEmail(userId);
                 String name=usersRepository.catchName(userUpdateRequest.getUsername().trim());
-                String newImg =userUpdateRequest.getImg();
-                String img= usersRepository.selectImage(userId);
-                if (newImg.equals(null)){
-                    newImg=img;
-                }
                 if (checkUsername.equals(true)&&(!(name.equals(userUpdateRequest.getUsername().trim())))){
                     return ApiResponse.<UserUpdateRequest>badRequest(UserUpdateRequest.class.getSimpleName())
                             .setResponseMsg("This Username is exist!");
@@ -210,10 +205,10 @@ public class UsersController {
                     return ApiResponse.<UserUpdateRequest>badRequest(UserUpdateRequest.class.getSimpleName())
                             .setResponseMsg("This Email is Exist!");
                 }else {
-                    userServiceImp.updateProfileByID(userId, userUpdateRequest.getName(), userUpdateRequest.getUsername(), userUpdateRequest.getEmail(), userUpdateRequest.getGender(),newImg);
+                    userServiceImp.updateProfileByID(userId, userUpdateRequest.getName(), userUpdateRequest.getUsername(), userUpdateRequest.getEmail(), userUpdateRequest.getGender());
                     return ApiResponse.<UserUpdateRequest>ok(UserUpdateRequest.class.getSimpleName())
                             .setResponseMsg("Your account activated successfully")
-                            .setData(new UserUpdateRequest(userId, userUpdateRequest.getName(), userUpdateRequest.getUsername(), userUpdateRequest.getEmail(), userUpdateRequest.getImg(), userUpdateRequest.getGender()));
+                            .setData(new UserUpdateRequest(userId, userUpdateRequest.getName(), userUpdateRequest.getUsername(), userUpdateRequest.getEmail(), userUpdateRequest.getGender()));
                 }
             } else {
                 return ApiResponse.<UserUpdateRequest>unAuthorized(UserUpdateRequest.class.getSimpleName())

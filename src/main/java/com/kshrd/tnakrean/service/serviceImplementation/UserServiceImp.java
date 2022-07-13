@@ -51,8 +51,8 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public void updateProfileByID(Integer user_id, String name, String username, String email, String gender, String img) {
-        usersRepository.updateProfile(user_id, name, username,email,gender, img);
+    public void updateProfileByID(Integer user_id, String name, String username, String email, String gender) {
+        usersRepository.updateProfile(user_id, name, username,email,gender);
     }
 
     @Override
