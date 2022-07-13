@@ -116,6 +116,6 @@ public interface FolderRepository {
             "JOIN class_materials_type cmt ON f.material_type_id = cmt.id\n" +
             "JOIN class_material_folder cmf ON f.id = cmf.folder_id \n" +
             "JOIN student st ON cmf.class_id = st.class_id\n" +
-            "WHERE cmt.id = 2 AND user_id = 3")
-    List<FolderByStudentIdResponse> getFolderByStudentId(Integer user_id,Integer material_type_id);
+            "WHERE cmt.id = #{material_type_id}AND user_id = #{user_id}")
+    List<FolderByStudentIdResponse> getFolderByStudentId(@Param("user_id") Integer user_id,@Param("material_type_id") Integer material_type_id);
 }

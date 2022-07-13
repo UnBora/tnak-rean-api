@@ -102,11 +102,13 @@ public class FolderController {
             @RequestParam @Min(value = 0) Integer material_type_id
     ) {
         Integer user_id = AuthRestController.user_id;
-        List<FolderByStudentIdResponse> responseList = folderServiceImp.getFolderByStudentId(material_type_id, user_id);
+        List<FolderByStudentIdResponse> responseList = folderServiceImp.getFolderByStudentId(user_id, material_type_id);
         try {
             if (user_id == 0) {
                return ApiResponse.unAuthorized("unAuthorized");
             } else if (responseList.isEmpty()) {
+                System.out.println("u"+user_id);
+                System.out.println("m"+material_type_id);
                 return ApiResponse.<List<FolderByStudentIdResponse>>notFound(FolderByStudentIdResponse.class.getSimpleName())
                         .setData(responseList)
                         .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
