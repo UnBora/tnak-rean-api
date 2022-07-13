@@ -36,4 +36,6 @@ public interface SubmittableService {
     List<ClassWorkByFolderIDClassIDResponse> getByFolderIdClassId(Integer classroom_id, Integer class_id, Integer folderId);
 
     List<ClassWorkByFolderIDTeacherIDResponse> getByFolderIdTeacherId(Integer user_id, Integer folderId);
+
+    List<ClassWorkByStudentIdResponse> getClassWorkByStudentId(Integer user_id);
 }

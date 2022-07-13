@@ -261,6 +261,28 @@ public class SubmittableWorkController {
             return ApiResponse.setError(e.getMessage());
         }
     }
+    @GetMapping("get-classwork-by-studentId")
+    ApiResponse<List<ClassWorkByStudentIdResponse>> getClassWorkByStudentId(
+    ) {
+        try {
+            Integer user_id = AuthRestController.user_id;
+            List<ClassWorkByStudentIdResponse> responses = submittableWorkService.getClassWorkByStudentId(user_id);
+            if (user_id == 0){
+                return ApiResponse.unAuthorized("unAuthorized");
+            } else if (responses.isEmpty()) {
+                return ApiResponse.<List<ClassWorkByStudentIdResponse>>notFound(ClassWorkByStudentIdResponse.class
+                                .getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setData(responses);
+            }
+            return ApiResponse.<List<ClassWorkByStudentIdResponse>>ok(ClassWorkByStudentIdResponse.class
+                            .getSimpleName())
+                    .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+                    .setData(responses);
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
 
     @GetMapping("get-by-teacherUserId")
     ApiResponse<List<SubmittableWorkByTeacherResponse>> getByTeacherUserId() {

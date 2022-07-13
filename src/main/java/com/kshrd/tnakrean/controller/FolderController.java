@@ -97,6 +97,29 @@ public class FolderController {
         }
     }
 
+    @GetMapping("/get-folders-by-studentId")
+    ApiResponse<List<FolderByStudentIdResponse>> getFolderByStudentId(
+            @RequestParam @Min(value = 0) Integer material_type_id
+    ) {
+        Integer user_id = AuthRestController.user_id;
+        List<FolderByStudentIdResponse> responseList = folderServiceImp.getFolderByStudentId(material_type_id, user_id);
+        try {
+            if (user_id == 0) {
+               return ApiResponse.unAuthorized("unAuthorized");
+            } else if (responseList.isEmpty()) {
+                return ApiResponse.<List<FolderByStudentIdResponse>>notFound(FolderByStudentIdResponse.class.getSimpleName())
+                        .setData(responseList)
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
+            } else {
+                return ApiResponse.<List<FolderByStudentIdResponse>>ok(FolderByStudentIdResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+                        .setData(responseList);
+            }
+        } catch (Exception e) {
+            return ApiResponse.badRequest(FolderByClassResponse.class.getSimpleName());
+        }
+    }
+
     @GetMapping("/get-folder-detail-by-folder-id")
     ApiResponse<List<FolderDetailResponse>> getFolderDetail(@RequestParam int id) {
         List<FolderDetailResponse> responseList = folderRepository.getFolderDetail(id);
@@ -115,14 +138,15 @@ public class FolderController {
 
     @DeleteMapping("delete-by-id")
         // delete child folder too
-    ApiResponse<Boolean> deleteByParentId(@RequestParam @Min(value = 1) Integer parent_id) {
-        FolderResponse folderResponse = folderServiceImp.deleteByParentId(parent_id);
+    ApiResponse<Boolean> deleteByParentId(@RequestParam @Min(value = 1) Integer id) {
+        FolderResponse folderResponse = folderServiceImp.deleteByParentId(id);
         if (folderResponse == null) {
             return ApiResponse.<Boolean>notFound("Folder")
-                    .setResponseMsg("Can't Delete! Folder Id: " + parent_id + " is not exist");
+                    .setResponseMsg("Can't Delete! Folder Id: " +id+ " is not exist");
         }
         return ApiResponse.<Boolean>ok("Folder")
-                .setResponseMsg("Delete folder on Id: " + parent_id + " successfully with their child id").setData(true);
+                .setResponseMsg("Delete folder on Id: " +id+ " successfully with their child id")
+                .setData(true);
     }
 
     @GetMapping("/get-courseFolder-by-teacherUserId")

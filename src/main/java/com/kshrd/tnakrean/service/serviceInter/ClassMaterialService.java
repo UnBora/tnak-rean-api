@@ -44,4 +44,6 @@ public interface ClassMaterialService {
     List<ClassMaterialByTeacherResponse> getCourseMaterialByTFolderId(int folder_id,int user_id);
 
     List<ClassMaterialByClassIdAndClassroomIdResponse> getCourseMaterialByFolderIdInClass(Integer folder_id, Integer class_id,Integer classroom_id);
+
+    List<CourseByStudentIdResponse> getCourseByStudentId(Integer user_id);
 }

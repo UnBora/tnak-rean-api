@@ -5,10 +5,7 @@ import com.kshrd.tnakrean.model.classmaterials.request.FolderAssignClassRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.FolderClassWorkRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.FolderCourseRequest;
 import com.kshrd.tnakrean.model.classmaterials.request.FolderRequest;
-import com.kshrd.tnakrean.model.classmaterials.response.FolderByClassResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.FolderByTeacherResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.FolderDetailResponse;
-import com.kshrd.tnakrean.model.classmaterials.response.FolderResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.*;
 import com.kshrd.tnakrean.repository.provider.FolderProvider;
 import org.apache.ibatis.annotations.*;
 
@@ -53,8 +50,8 @@ public interface FolderRepository {
     List<FolderDetailResponse> getFolderDetail(int id);
 
     // delete
-    @Select("DELETE FROM folder WHERE id = #{parent_id} RETURNING *")
-    FolderResponse deleteByParentId(Integer parent_id);
+    @Select("DELETE FROM folder WHERE id = #{id} RETURNING *")
+    FolderResponse deleteByParentId(Integer id);
 
     // get Course Folder ByClassId
     @Select("SELECT created_by, folder_id, type ,folder_name, f.parent_id, class_id FROM folder f\n" +
@@ -113,4 +110,12 @@ public interface FolderRepository {
             "VALUES (#{folderId} ,#{classroom_id} ,#{class_id})")
     Integer createClassWorkFolderInClass(Integer folderId, int classroom_id, int class_id);
 
+    // get Folder By StudentId
+    @Select("SELECT folder_id,folder_name,created_by,f.parent_id,type,cmf.class_id,user_id,material_type_id\n" +
+            "FROM folder f\n" +
+            "JOIN class_materials_type cmt ON f.material_type_id = cmt.id\n" +
+            "JOIN class_material_folder cmf ON f.id = cmf.folder_id \n" +
+            "JOIN student st ON cmf.class_id = st.class_id\n" +
+            "WHERE cmt.id = 2 AND user_id = 3")
+    List<FolderByStudentIdResponse> getFolderByStudentId(Integer user_id,Integer material_type_id);
 }

@@ -94,4 +94,9 @@ public class SubmittableWorkServiceImpl implements SubmittableService {
     public List<ClassWorkByFolderIDTeacherIDResponse> getByFolderIdTeacherId(Integer user_id, Integer folderId) {
         return submittableWorkRepository.getByFolderIdTeacherId(user_id,folderId);
     }
+
+    @Override
+    public List<ClassWorkByStudentIdResponse> getClassWorkByStudentId(Integer user_id) {
+        return submittableWorkRepository.getClassWorkByStudentId(user_id);
+    }
 }

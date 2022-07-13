@@ -197,4 +197,20 @@ public interface SubmittableWorkRepository {
     @Result(property = "material_id", column = "class_material_id")
     @Result(property = "total_comment", column = "count")
     List<ClassWorkByFolderIDTeacherIDResponse> getByFolderIdTeacherId(Integer user_id, Integer folderId);
+
+    // get ClassWork By StudentId
+    @Select("SELECT DISTINCT cmd.class_id, class_material_id, title, description, created_by,saw.id,score,assigned_date,deadline,user_id,\n" +
+            "(SELECT count(*) FROM comment c \n" +
+            "JOIN class_materials_detail s ON c.class_materials_detail_id = s.id \n" +
+            "WHERE class_material_id = cm.id) \n" +
+            "FROM class_materials cm \n" +
+            "JOIN class_materials_type cmt ON cm.class_materials_type_id = cmt.id\n" +
+            "JOIN class_materials_detail cmd ON cm.id = cmd.class_material_id\n" +
+            "JOIN submittable_work saw ON cmd.id = saw.class_materials_detail_id\n" +
+            "JOIN student st ON cmd.class_id = st.id\n" +
+            "WHERE (cmt.id = 2 OR cmt.id = 3 OR cmt.id = 4 OR cmt.id = 4) AND user_id = #{user_id}")
+    @Result(property = "total_comment", column = "count")
+    @Result(property = "submittable_work_id", column = "id")
+    @Result(property = "student_id", column = "user_id")
+    List<ClassWorkByStudentIdResponse> getClassWorkByStudentId(Integer user_id);
 }

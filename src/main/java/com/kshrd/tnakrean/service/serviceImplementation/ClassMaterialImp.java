@@ -107,4 +107,9 @@ public class ClassMaterialImp implements ClassMaterialService {
     public List<ClassMaterialByClassIdAndClassroomIdResponse> getCourseMaterialByFolderIdInClass(Integer classroom_id,Integer folder_id, Integer class_id) {
         return classMaterialRepository.getCourseMaterialByFolderIdInClass(folder_id,class_id,classroom_id);
     }
+
+    @Override
+    public List<CourseByStudentIdResponse> getCourseByStudentId(Integer user_id) {
+        return classMaterialRepository.getCourseByStudentId(user_id);
+    }
 }
