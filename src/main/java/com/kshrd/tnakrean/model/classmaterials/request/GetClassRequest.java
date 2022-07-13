@@ -15,4 +15,5 @@ public class GetClassRequest {
     Integer class_id;
     @NotBlank(message = "{validation.className.notEmpty}")
     String class_name;
+    String image;
 }
