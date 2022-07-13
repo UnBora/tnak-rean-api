@@ -246,4 +246,10 @@ public interface ClassMaterialRepository {
             "WHERE class_materials_type_id = 1 AND user_id = #{user_id}")
     @Result(property = "total_comment", column = "count")
     List<CourseByStudentIdResponse> getCourseByStudentId(Integer user_id);
+
+    // delete By Created By And MaterialId
+    @Select("SELECT EXISTS(SELECT FROM class_materials WHERE id = #{material_id} AND created_by = #{teacher_id})")
+    Boolean findMaterialIdWithCreatedBy(Integer material_id, Integer teacher_id);
+    @Delete("DELETE FROM class_materials WHERE id = #{material_id} AND created_by = #{teacher_id} ")
+    Boolean deleteByCreatedByAndMaterialId(Integer material_id, Integer teacher_id);
 }

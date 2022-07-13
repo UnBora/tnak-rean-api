@@ -112,4 +112,9 @@ public class ClassMaterialImp implements ClassMaterialService {
     public List<CourseByStudentIdResponse> getCourseByStudentId(Integer user_id) {
         return classMaterialRepository.getCourseByStudentId(user_id);
     }
+
+    @Override
+    public Boolean deleteByCreatedByAndMaterialId(Integer material_id, Integer teacher_id) {
+        return classMaterialRepository.deleteByCreatedByAndMaterialId(material_id,teacher_id);
+    }
 }

@@ -138,8 +138,7 @@ public class FolderController {
         }
     }
 
-    @DeleteMapping("delete-by-id")
-        // delete child folder too
+    @DeleteMapping("delete-by-FolderId")
     ApiResponse<Boolean> deleteByParentId(@RequestParam @Min(value = 1) Integer id) {
         FolderResponse folderResponse = folderServiceImp.deleteByParentId(id);
         if (folderResponse == null) {

@@ -46,4 +46,6 @@ public interface ClassMaterialService {
     List<ClassMaterialByClassIdAndClassroomIdResponse> getCourseMaterialByFolderIdInClass(Integer folder_id, Integer class_id,Integer classroom_id);
 
     List<CourseByStudentIdResponse> getCourseByStudentId(Integer user_id);
+
+    Boolean deleteByCreatedByAndMaterialId(Integer material_id, Integer teacher_id);
 }
