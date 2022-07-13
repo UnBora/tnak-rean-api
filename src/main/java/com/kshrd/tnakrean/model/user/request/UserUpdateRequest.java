@@ -20,7 +20,6 @@ public class UserUpdateRequest {
     String username;
     @NotBlank(message = "{validation.gender.notEmpty}")
     String gender;
-    String img;
     @Email
     String email;
 }
