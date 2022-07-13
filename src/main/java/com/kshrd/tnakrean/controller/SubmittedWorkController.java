@@ -63,19 +63,26 @@ public class SubmittedWorkController {
         }
     }
 
-    @GetMapping("get-by-studentId")
-    ApiResponse<List<SubmittedWorkResponse>> getSubmittedByStudentId(@RequestParam @Min(value = 1) Integer studentId) throws IllegalStateException {
+    @GetMapping("get-result-by-studentId-MaterialId")
+    ApiResponse<List<SubmittedWorkResultByStudentIdResponse>> getResultByStudentIdMaterialId(
+            @RequestParam @Min(value = 1) Integer material_id)
+    {
         try {
-            List<SubmittedWorkResponse> submittedWorkResponses = submittedWorkImpl.getSubmittedByStudentId(studentId);
-            if (submittedWorkResponses.isEmpty()) {
-                return ApiResponse.<List<SubmittedWorkResponse>>notFound(SubmittedWorkResponse.class
+            Integer user_id = AuthRestController.user_id;
+            List<SubmittedWorkResultByStudentIdResponse> submittedWorkResponses = submittedWorkImpl.getResultByStudentIdMaterialId(material_id,user_id);
+            if (user_id == 0){
+               return ApiResponse.unAuthorized("unAuthorized");
+            } else if (submittedWorkResponses.isEmpty()) {
+                return ApiResponse.<List<SubmittedWorkResultByStudentIdResponse>>notFound(SubmittedWorkResultByStudentIdResponse.class
                                 .getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setData(submittedWorkResponses);
+            } else {
+                return ApiResponse.<List<SubmittedWorkResultByStudentIdResponse>>ok(SubmittedWorkResultByStudentIdResponse.class
+                                .getSimpleName())
+                        .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
+                        .setData(submittedWorkResponses);
             }
-            return ApiResponse.<List<SubmittedWorkResponse>>ok(SubmittedWorkResponse.class
-                            .getSimpleName())
-                    .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
-                    .setData(submittedWorkResponses);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return ApiResponse.setError(e.getMessage());
@@ -159,7 +166,6 @@ public class SubmittedWorkController {
                 return ApiResponse.<SubmittedWorkStudentWorkRequest>notFound(SubmittedWorkStudentWorkRequest.class.getSimpleName())
                         .setResponseMsg("The Submittable_work_id: " + submittedWorkStudentWorkRequest.getSubmittable_work_id() + " doesn't exist in the table");
             } else {
-
                 submittedWorkImpl.addSubmittedWork(submittedWorkStudentWorkRequest, userId);
                 return ApiResponse.<SubmittedWorkStudentWorkRequest>ok(SubmittedWorkStudentWorkRequest.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())

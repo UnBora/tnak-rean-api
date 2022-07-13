@@ -22,8 +22,8 @@ public class SubmittedWorkImpl implements SubmittedWorkService {
     }
 
     @Override
-    public List<SubmittedWorkResponse> getSubmittedByStudentId(int studentId) {
-        return submittedWorkRepository.getSubmittedByStudentId(studentId);
+    public List<SubmittedWorkResponse> getSubmittedByStudentId(Integer material_id, Integer user_id) {
+        return submittedWorkRepository.getSubmittedByStudentId(material_id,user_id);
     }
 
     @Override
@@ -73,5 +73,10 @@ public class SubmittedWorkImpl implements SubmittedWorkService {
     @Override
     public List<StudentWorkBySubmittedWorkIdResponse> viewStudentWork(Integer submitted_work_id) {
         return submittedWorkRepository.viewStudentWork(submitted_work_id);
+    }
+
+    @Override
+    public List<SubmittedWorkResultByStudentIdResponse> getResultByStudentIdMaterialId(Integer material_id, Integer user_id) {
+        return submittedWorkRepository.getResultByStudentIdMaterialId(material_id,user_id);
     }
 }

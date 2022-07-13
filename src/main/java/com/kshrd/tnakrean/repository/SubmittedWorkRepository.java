@@ -24,9 +24,8 @@ public interface SubmittedWorkRepository {
     List<SubmittedWorkResponse> getAllSubmittedWork();
 
     // get by student id
-    @Select("SELECT * FROM submitted_work WHERE student_id = #{studentId}")
-    @ResultMap("submitted")
-    List<SubmittedWorkResponse> getSubmittedByStudentId(int studentId);
+    @Select("")
+    List<SubmittedWorkResponse> getSubmittedByStudentId(Integer material_id, Integer user_id);
 
     // insert student work
     @Insert("INSERT INTO submitted_work(submitted_date,student_id,status,submittable_work_id,student_work)" +
@@ -75,7 +74,7 @@ public interface SubmittedWorkRepository {
     @Result(property = "studentWork", column = "student_work", typeHandler = JsonTypeHandler.class)
     List<SubmittedWorkByClassroomClassSubmittableResponse> getByClassroomClassSubmittable(Integer classroom_id, Integer class_id, Integer submittable_work_id);
 
-    // get Result By ClassId
+    // get Result By ClassId and Material_id
     @Select("SELECT (CASE \n" +
             "     WHEN ( deadline - submitted_date > INTERVAL '0' ) THEN 'handed in '\n" +
             "\t\t WHEN (deadline - submitted_date < INTERVAL '0' ) THEN 'handed in late'\n" +
@@ -114,4 +113,23 @@ public interface SubmittedWorkRepository {
     @Result(property = "submitted_work_id" , column = "id")
     @Result(property = "studentWork", column = "student_work", typeHandler = JsonTypeHandler.class)
     List<StudentWorkBySubmittedWorkIdResponse> viewStudentWork(Integer submitted_work_id);
+
+    // get Result By StudentId and MaterialId
+    @Select("SELECT DISTINCT class_material_id,title,sw.id,submittable_work_id,st.user_id,u.name,u.gender,student_score,sw.status,saw.class_id,stc.user_id as login_id, " +
+            "(CASE \n" +
+            "     WHEN ( deadline - submitted_date > INTERVAL '0' ) THEN 'handed in '\n" +
+            "\t\t WHEN (deadline - submitted_date < INTERVAL '0' ) THEN 'handed in late'\n" +
+            " END) as ui_status\n" +
+            "FROM submitted_work sw \n" +
+            "JOIN submittable_work saw ON sw.submittable_work_id = saw.id\n" +
+            "JOIN class_materials_detail cmd ON saw.class_materials_detail_id = cmd.id AND cmd.class_id = saw.class_id\n" +
+            "JOIN class_materials cm ON cmd.class_material_id = cm.id\n" +
+            "JOIN student st ON sw.student_id = st.id \n" +
+            "JOIN users u ON st.user_id = u.id\n" +
+            "JOIN student stc ON stc.class_id = cmd.class_id\n" +
+            "WHERE cmd.class_material_id = #{material_id} AND stc.user_id = #{user_id} AND (sw.status = 1 OR sw.status = 2)")
+    @Result(property = "submitted_work_id" , column = "id")
+    @Result(property = "submitted_work_status" , column = "status")
+    @Result(property = "login_student_id" , column = "login_id")
+    List<SubmittedWorkResultByStudentIdResponse> getResultByStudentIdMaterialId(Integer material_id, Integer user_id);
 }

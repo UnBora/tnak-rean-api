@@ -10,7 +10,7 @@ import java.util.List;
 public interface SubmittedWorkService {
    List<SubmittedWorkResponse> getAllSubmittedWork();
 
-   List<SubmittedWorkResponse> getSubmittedByStudentId(int studentId);
+   List<SubmittedWorkResponse> getSubmittedByStudentId(Integer material_id, Integer user_id);
 
    boolean addSubmittedWork(SubmittedWorkStudentWorkRequest submittedWorkStudentWorkRequest, Integer userId);
 
@@ -31,4 +31,6 @@ public interface SubmittedWorkService {
    List<SubmittedWorkNotGradedByClassResponse> getNotGradedByClassId(Integer class_id, Integer material_id,Integer userId);
 
    List<StudentWorkBySubmittedWorkIdResponse> viewStudentWork(Integer submitted_work_id);
+
+   List<SubmittedWorkResultByStudentIdResponse> getResultByStudentIdMaterialId(Integer material_id, Integer user_id);
 }

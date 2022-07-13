@@ -354,28 +354,7 @@ public class ClassMaterialController {
 //        }
 //    }
 
-    @GetMapping("/get-all-by-classId-and-teacherId")
-    ApiResponse<List<ClassMaterialByTeacherIdAndClassIdResponse>> getByClassIdAndTeacherId(
-            @RequestParam @Min(value = 1) Integer class_id
-    ) {
-        try {
-            Integer teacher_id = AuthRestController.user_id;
-            List<ClassMaterialByTeacherIdAndClassIdResponse> classMaterialResponses = classMaterialServiceImp.getByClassIdAndTeacherId(teacher_id, class_id);
-            if (teacher_id == 0){
-                return ApiResponse.unAuthorized("unAuthorized");
-            } else if (classMaterialResponses.isEmpty()) {
-                return ApiResponse.<List<ClassMaterialByTeacherIdAndClassIdResponse>>notFound(ClassMaterialByTeacherIdAndClassIdResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
-                        .setData(classMaterialResponses);
-            } else {
-                return ApiResponse.<List<ClassMaterialByTeacherIdAndClassIdResponse>>ok(ClassMaterialByTeacherIdAndClassIdResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
-                        .setData(classMaterialResponses);
-            }
-        } catch (Exception e) {
-            return ApiResponse.setError(e.getMessage());
-        }
-    }
+
 
     @GetMapping("/get-by-classId-and-classroomId")
     ApiResponse<List<ClassMaterialByClassIdAndClassroomIdResponse>> getByClassIdAndClassroomId(
@@ -492,6 +471,29 @@ public class ClassMaterialController {
 //            return ApiResponse.<List<ClassMaterialByStudentIdClassIdAndClassroomIdResponse>>ok(ClassMaterialResponse.class.getSimpleName())
 //                    .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
 //                    .setData(classMaterialResponses);
+//        } catch (Exception e) {
+//            return ApiResponse.setError(e.getMessage());
+//        }
+//    }
+
+//    @GetMapping("/get-all-by-classId-and-teacherId")
+//    ApiResponse<List<ClassMaterialByTeacherIdAndClassIdResponse>> getByClassIdAndTeacherId(
+//            @RequestParam @Min(value = 1) Integer class_id
+//    ) {
+//        try {
+//            Integer teacher_id = AuthRestController.user_id;
+//            List<ClassMaterialByTeacherIdAndClassIdResponse> classMaterialResponses = classMaterialServiceImp.getByClassIdAndTeacherId(teacher_id, class_id);
+//            if (teacher_id == 0){
+//                return ApiResponse.unAuthorized("unAuthorized");
+//            } else if (classMaterialResponses.isEmpty()) {
+//                return ApiResponse.<List<ClassMaterialByTeacherIdAndClassIdResponse>>notFound(ClassMaterialByTeacherIdAndClassIdResponse.class.getSimpleName())
+//                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+//                        .setData(classMaterialResponses);
+//            } else {
+//                return ApiResponse.<List<ClassMaterialByTeacherIdAndClassIdResponse>>ok(ClassMaterialByTeacherIdAndClassIdResponse.class.getSimpleName())
+//                        .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+//                        .setData(classMaterialResponses);
+//            }
 //        } catch (Exception e) {
 //            return ApiResponse.setError(e.getMessage());
 //        }
