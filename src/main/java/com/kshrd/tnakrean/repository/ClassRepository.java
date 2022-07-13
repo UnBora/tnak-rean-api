@@ -62,4 +62,8 @@ public interface ClassRepository {
     @Select("SELECT id,class_name, image FROM class WHERE class_name ilike LOWER('%' || #{className} || '%')")
     @Result(property = "class_id", column = "id")
     List<SearchClassResponse> nameSearched(@Param("className") String className);
+
+    @Select("select id, class_name, image from class where id = #{classId}")
+    @Result(property = "class_id", column = "id")
+    GetClassRequest getClassByID(Integer classId);
 }

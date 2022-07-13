@@ -172,4 +172,22 @@ public class ClassController {
             return ApiResponse.setError(e.getMessage());
         }
     }
+
+    @GetMapping("/get-class-by-id")
+    public ApiResponse<GetClassRequest> getAllStudent(@RequestParam Integer classId) {
+        try {
+            GetClassRequest classResponse = classRepository.getClassByID(classId);
+            if (classRepository.checkIfClassExists(classId).equals(false)) {
+                return ApiResponse.<GetClassRequest>notFound("")
+                        .setResponseMsg("The Class ID: "+classId+" not found!")
+                        .setData(classResponse );
+            } else {
+                return ApiResponse.<GetClassRequest>ok(GetClassRequest.class.getSimpleName())
+                        .setResponseMsg("The Class ID: "+classId+" had been found")
+                        .setData(classResponse );
+            }
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
 }
