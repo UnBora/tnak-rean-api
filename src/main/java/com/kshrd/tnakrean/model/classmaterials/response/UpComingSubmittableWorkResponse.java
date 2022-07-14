@@ -19,5 +19,6 @@ public class UpComingSubmittableWorkResponse {
     Integer score;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     Date deadline;
+    Integer total_comments;
 
 }

@@ -58,7 +58,10 @@ public interface SubmittableWorkRepository {
     @Result(property = "submittable_work_id", column = "id")
     SubmittableWorkResponse delete(Integer submittable_work_id);
 
-    @Select("SELECT cm.title as title, cm.description, cm.content, sw.deadline, sw.score " +
+    @Select("SELECT cm.title as title, cm.description, cm.content, sw.deadline, sw.score, " +
+            " (SELECT count(*) FROM comment c " +
+            " JOIN class_materials_detail s ON c.class_materials_detail_id = s.id " +
+            " WHERE class_material_id = cm.id)" +
             " FROM class_materials cm" +
             " INNER JOIN class_materials_detail cmd on cm.id = cmd.class_material_id" +
             " INNER JOIN submittable_work sw on cmd.id = sw.class_materials_detail_id" +
@@ -68,6 +71,7 @@ public interface SubmittableWorkRepository {
             " AND sw.deadline - #{currentTime} >= INTERVAL '0'" +
             " AND sw.deadline - #{currentTime} <= INTERVAL '2 Days'")
     @Result(property = "content", column = "content", typeHandler = JsonTypeHandler.class)
+    @Result(property = "total_comments", column = "count")
     List<UpComingSubmittableWorkResponse> getUpComingSubmittableWorkByStudentId(@Param("studentId") Integer studentId, @Param("classId") Integer classId, @Param("classRoomId") Integer classRoomId, @Param("currentTime") Timestamp currentTime);
 
     // get classwork By ClassId
