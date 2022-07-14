@@ -386,8 +386,10 @@ public class SubmittableWorkController {
     }
 
     @PostMapping("create-quiz")
-    ApiResponse<ClassMaterialRequest> createQuiz(
-            @RequestBody @Valid ClassMaterialRequest classMaterialRequest
+    ApiResponse<Boolean> createQuiz(
+            @RequestParam @NotBlank String title,
+            @RequestParam @NotBlank String description,
+            @RequestBody @Valid ClassMaterialContent classMaterialContent
     ) {
         Integer user_id = AuthRestController.user_id;
         int typeId = 5;
@@ -395,12 +397,13 @@ public class SubmittableWorkController {
             if (user_id == 0) {
                 return ApiResponse.unAuthorized("unAuthorized");
             } else {
-                classMaterialRequest.setTitle(classMaterialRequest.getTitle().trim());
-                classMaterialRequest.setDescription(classMaterialRequest.getDescription().trim());
-                submittableWorkService.createClassworks(classMaterialRequest, user_id, typeId);
-                return ApiResponse.<ClassMaterialRequest>ok("Create Course")
+                Timestamp created_date = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.of("+07:00")));
+                title.trim();
+                description.trim();
+                submittableWorkRepository.createClassworks(created_date,title,description, user_id, typeId,classMaterialContent);
+                return ApiResponse.<Boolean>ok("Create Course")
                         .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
-                        .setData(classMaterialRequest);
+                        .setData(true);
             }
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
@@ -408,8 +411,10 @@ public class SubmittableWorkController {
     }
 
     @PostMapping("create-homework")
-    ApiResponse<ClassMaterialRequest> creatHomework(
-            @RequestBody @Valid ClassMaterialRequest classMaterialRequest
+    ApiResponse<Boolean> creatHomework(
+            @RequestParam @NotBlank String title,
+            @RequestParam @NotBlank String description,
+            @RequestBody @Valid ClassMaterialContent classMaterialContent
     ) {
         Integer user_id = AuthRestController.user_id;
         int typeId = 4;
@@ -417,12 +422,13 @@ public class SubmittableWorkController {
             if (user_id == 0) {
                 return ApiResponse.unAuthorized("unAuthorized");
             } else {
-                classMaterialRequest.setTitle(classMaterialRequest.getTitle().trim());
-                classMaterialRequest.setDescription(classMaterialRequest.getDescription().trim());
-                submittableWorkService.createClassworks(classMaterialRequest, user_id, typeId);
-                return ApiResponse.<ClassMaterialRequest>ok("Create Homework")
+                Timestamp created_date = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.of("+07:00")));
+                title.trim();
+                description.trim();
+                submittableWorkRepository.createClassworks(created_date,title,description, user_id, typeId,classMaterialContent);
+                return ApiResponse.<Boolean>ok("Create Homework")
                         .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
-                        .setData(classMaterialRequest);
+                        .setData(true);
             }
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
@@ -430,8 +436,10 @@ public class SubmittableWorkController {
     }
 
     @PostMapping("create-assigment")
-    ApiResponse<ClassMaterialRequest> creatassigment(
-            @RequestBody @Valid ClassMaterialRequest classMaterialRequest
+    ApiResponse<Boolean> creatassigment(
+            @RequestParam @NotBlank String title,
+            @RequestParam @NotBlank String description,
+            @RequestBody @Valid ClassMaterialContent classMaterialContent
     ) {
         Integer user_id = AuthRestController.user_id;
         int typeId = 3;
@@ -439,12 +447,13 @@ public class SubmittableWorkController {
             if (user_id == 0) {
                 return ApiResponse.unAuthorized("unAuthorized");
             } else {
-                classMaterialRequest.setTitle(classMaterialRequest.getTitle().trim());
-                classMaterialRequest.setDescription(classMaterialRequest.getDescription().trim());
-                submittableWorkService.createClassworks(classMaterialRequest, user_id, typeId);
-                return ApiResponse.<ClassMaterialRequest>ok("Create Assigment")
+                Timestamp created_date = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.of("+07:00")));
+                title.trim();
+                description.trim();
+                submittableWorkRepository.createClassworks(created_date,title,description, user_id, typeId,classMaterialContent);
+                return ApiResponse.<Boolean>ok("Create Course")
                         .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage())
-                        .setData(classMaterialRequest);
+                        .setData(true);
             }
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());

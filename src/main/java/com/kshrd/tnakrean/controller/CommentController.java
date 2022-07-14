@@ -62,6 +62,22 @@ public class CommentController {
             return ApiResponse.setError(e.getMessage());
         }
     }
+    @GetMapping("get-by-materialDetailId")
+    ApiResponse<List<CommentResponse>> getByMaterialDetailId(@RequestParam @Min(value = 1) Integer material_detail_id) {
+        try {
+            List<CommentResponse> commentResponses = commentRepository.getByMaterialDetailId(material_detail_id);
+            if (commentResponses.isEmpty()) {
+                return ApiResponse.<List<CommentResponse>>notFound(CommentResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setData(commentResponses);
+            }
+            return ApiResponse.<List<CommentResponse>>ok(CommentResponse.class.getSimpleName())
+                    .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
+                    .setData(commentResponses);
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
 
 //    @GetMapping("get-by-studentId")
 //    ApiResponse<List<CommentResponse>> getByStudentId() {

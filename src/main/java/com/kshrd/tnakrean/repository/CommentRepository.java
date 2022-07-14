@@ -81,4 +81,9 @@ public interface CommentRepository {
             "JOIN users u ON st.user_id = u.id " +
             "WHERE class_material_id = #{material_id}")
     List<CommentByMaterialResponse> getByClassMaterialId(Integer material_id);
+
+    // get By MaterialDetailId
+    @Select("SELECT * FROM comment WHERE class_materials_detail_id = #{material_detail_id} ")
+    @Result(property = "comment_id",column = "id")
+    List<CommentResponse> getByMaterialDetailId(Integer material_detail_id);
 }

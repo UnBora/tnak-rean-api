@@ -244,4 +244,12 @@ public interface SubmittableWorkRepository {
     @Result(property = "class_material_id",column = "id")
     @Result(property = "student_logged_id",column = "user_id")
     List<ClassWorkResultByStudentIdResponse> getClassWorkResultByStudentId(Integer user_id);
+
+
+
+    // create classwork
+    @Insert("INSERT INTO class_materials(created_date,created_by,title,description,class_materials_type_id,content) " +
+            "VALUES (#{created_date},#{user_id},#{title},#{description},#{typeId}, " +
+            "#{classMaterialContent,jdbcType=OTHER, typeHandler = com.kshrd.tnakrean.configuration.JsonTypeHandler})")
+    Boolean createClassworks(Timestamp created_date, String title, String description, Integer user_id, int typeId, ClassMaterialContent classMaterialContent);
 }
