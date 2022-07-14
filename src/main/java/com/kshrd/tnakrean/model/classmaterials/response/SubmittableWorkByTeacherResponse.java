@@ -21,5 +21,7 @@ public class SubmittableWorkByTeacherResponse {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     Date deadline;
     Integer total_comment;
+    Integer class_id;
+    String class_name;
 
 }

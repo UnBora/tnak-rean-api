@@ -96,7 +96,7 @@ public interface SubmittableWorkRepository {
     SubmittableWorkUpdateClassClassroomRequest updateClassClassroom(SubmittableWorkUpdateClassClassroomRequest submittableWorkUpdateClassClassroomRequest);
 
     // get classwork By TeacherUserId
-    @Select("SELECT DISTINCT cm.id,title,description,score,deadline,assigned_date,created_by, " +
+    @Select("SELECT DISTINCT cm.id,title,description,score,deadline,assigned_date,created_by,saw.class_id,class_name, " +
             "(SELECT count(*) FROM comment c \n" +
             "JOIN class_materials_detail s ON c.class_materials_detail_id = s.id \n" +
             "WHERE class_material_id = cm.id) " +
@@ -104,6 +104,7 @@ public interface SubmittableWorkRepository {
             "JOIN class_materials_detail cmd ON cm.id = cmd.class_material_id\n" +
             "JOIN submittable_work saw ON cmd.id = saw.class_materials_detail_id\n" +
             "JOIN class_materials_type mt ON cm.class_materials_type_id = mt.id\n" +
+            "JOIN class cl ON cl.id = saw.class_id " +
             "WHERE created_by = 1 AND (mt.id = 2 OR mt.id = 3 OR mt.id = 4 OR mt.id = 5)")
     @Result(property = "total_comment", column = "count")
     @Result(property = "material_id", column = "id")
