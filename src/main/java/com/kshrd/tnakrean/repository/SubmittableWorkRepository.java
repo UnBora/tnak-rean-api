@@ -217,4 +217,28 @@ public interface SubmittableWorkRepository {
     @Result(property = "submittable_work_id", column = "id")
     @Result(property = "student_id", column = "user_id")
     List<ClassWorkByStudentIdResponse> getClassWorkByStudentId(Integer user_id);
+
+    // get ClassWork have Result By ClassId
+    @Select("SELECT DISTINCT cm.id,title,description,saw.class_id,submittable_work_id,created_by\n" +
+            "FROM class_materials cm \n" +
+            "JOIN class_materials_detail cmd ON cm.id = cmd.class_material_id\n" +
+            "JOIN submittable_work saw ON cmd.id = saw.class_materials_detail_id\n" +
+            "JOIN class_materials_type mt ON cm.class_materials_type_id = mt.id\n" +
+            "JOIN submitted_work sw ON saw.id = sw.submittable_work_id\n" +
+            "WHERE (mt.id = 2 OR mt.id = 3 OR mt.id = 4 OR mt.id = 5) AND saw.class_id = #{class_id}")
+    @Result(property = "class_material_id",column = "id")
+    List<ClassWorkResultByClassIdResponse> getClassWorkResultByClassId(Integer class_id);
+
+    // get ClassWork have Result By StudentId
+    @Select("SELECT DISTINCT cm.id,title,created_by,description,score,assigned_date,deadline,saw.class_id,sw.id,submittable_work_id,st.user_id\n" +
+            "FROM class_materials cm \n" +
+            "JOIN class_materials_detail cmd ON cm.id = cmd.class_material_id\n" +
+            "JOIN submittable_work saw ON cmd.id = saw.class_materials_detail_id\n" +
+            "JOIN class_materials_type mt ON cm.class_materials_type_id = mt.id\n" +
+            "JOIN submitted_work sw ON saw.id = sw.submittable_work_id\n" +
+            "JOIN student st ON saw.class_id = st.class_id\n" +
+            "WHERE (mt.id = 2 OR mt.id = 3 OR mt.id = 4 OR mt.id = 5) AND user_id = #{user_id}")
+    @Result(property = "class_material_id",column = "id")
+    @Result(property = "student_logged_id",column = "user_id")
+    List<ClassWorkResultByStudentIdResponse> getClassWorkResultByStudentId(Integer user_id);
 }
