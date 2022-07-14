@@ -130,4 +130,34 @@ public interface FolderRepository {
     // deleteSharedFolderToClass
     @Delete("DELETE from class_material_folder where folder_id = #{folder_id} and class_id = #{class_id}")
     Boolean deleteSharedFolderToClass(Integer class_id, Integer folder_id);
+
+    // assign Folder To All Classes
+    @Select("do $$\n" +
+            "declare c_id INTEGER;\n" +
+            "begin\n" +
+            "for c_id in SELECT DISTINCT class_id from class c \n" +
+            "JOIN class_material_folder cf on c.id = cf.class_id\n" +
+            "where c.id not in(SELECT class_id FROM class_material_folder WHERE folder_id = #{folder_id})\n" +
+            "loop\n" +
+            "insert into class_material_folder(folder_id,classroom_id,class_id)\n" +
+            "VALUES(#{folder_id},1,c_id);\n" +
+            "end loop;\n" +
+            "end;\n" +
+            "$$;")
+    Boolean assignFolderToAllClasses(Integer folder_id);
+
+    // assign Folder To All Class
+    @Insert("do $$\n" +
+            "declare c_id INTEGER;\n" +
+            "begin\n" +
+            "for c_id in SELECT DISTINCT class_id from class c \n" +
+            "JOIN class_material_folder cf on c.id = cf.class_id\n" +
+            "where c.id not in(SELECT class_id FROM class_material_folder WHERE folder_id=${folder_id})\n" +
+            "loop\n" +
+            "insert into class_material_folder(folder_id,classroom_id,class_id)\n" +
+            "VALUES(${folder_id},1,c_id);\n" +
+            "end loop;\n" +
+            "end;\n" +
+            "$$;")
+    Boolean assignFolderToAllClass(@Param("folder_id") int folder_id);
 }

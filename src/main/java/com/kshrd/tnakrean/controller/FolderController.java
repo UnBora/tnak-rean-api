@@ -363,6 +363,29 @@ public class FolderController {
         }
     }
 
+    @PostMapping("/assign-folder-to-all-class")
+    ApiResponse<Boolean> assignFolderToAllClasses(
+            @RequestParam @Min(value = 1) int folder_id
+    ) {
+        System.out.println("folder_id:"+folder_id);
+        System.out.println("repo:"+folderRepository.findFolderId(folder_id));
+        Boolean checkFolderId = folderRepository.findFolderId(folder_id);
+        try {
+             if (checkFolderId == false) {
+                return ApiResponse.<Boolean>notFound("")
+                        .setResponseMsg("FolderId: "+folder_id+" does not exist");
+            } else {
+                 System.out.println("service:");
+                folderServiceImp.assignFolderToAllClass(folder_id);
+                return ApiResponse.<Boolean>ok("")
+                        .setResponseMsg("FolderId: "+folder_id+" has been assigned to all classes successfully")
+                        .setData(true);
+            }
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
+
     @PutMapping("edit-folder")
     ApiResponse<FolderUpdateRequest> editFolder(
             @RequestBody @Valid  FolderUpdateRequest folderUpdateRequest

@@ -97,4 +97,15 @@ public class FolderServiceImp implements FolderService {
     public Boolean deleteSharedFolderToClass(Integer class_id, Integer folder_id) {
         return folderRepository.deleteSharedFolderToClass(class_id,folder_id);
     }
+
+    @Override
+    public Boolean assignFolderToAllClasses(Integer folder_id) {
+        return folderRepository.assignFolderToAllClasses(folder_id);
+    }
+
+    @Override
+    public Boolean assignFolderToAllClass(int folder_id) {
+        System.out.println("in repo:"+folderRepository.assignFolderToAllClass(folder_id).toString());
+        return folderRepository.assignFolderToAllClass(folder_id);
+    }
 }

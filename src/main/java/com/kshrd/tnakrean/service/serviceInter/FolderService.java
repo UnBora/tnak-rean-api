@@ -40,4 +40,8 @@ public interface FolderService {
     List<FolderResponse> getFolderByParentId(Integer parent_id);
 
     Boolean deleteSharedFolderToClass(Integer class_id, Integer folder_id);
+
+    Boolean assignFolderToAllClasses(Integer folder_id);
+
+    Boolean assignFolderToAllClass(int folder_id);
 }
