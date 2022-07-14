@@ -2,6 +2,7 @@ package com.kshrd.tnakrean.service.serviceInter;
 
 import com.kshrd.tnakrean.model.classmaterials.request.GetClassRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassByUserTeacherIdResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.SharedClassByFolderResponse;
 
 import java.util.List;
 
@@ -23,4 +24,8 @@ public interface ClassService {
     void creatClassByUserID(Integer id, String className);
 
     List<ClassByUserTeacherIdResponse> getByTeacherUserId(Integer user_id,Integer classroom_id);
+
+    List<SharedClassByFolderResponse> getSharedClassByFolder(Integer folder_id);
+
+    List<SharedClassByFolderResponse> getNotSharedClassByFolder(Integer folder_id);
 }

@@ -110,6 +110,7 @@ public interface SubmittableWorkRepository {
     @Result(property = "material_id", column = "id")
     List<SubmittableWorkByTeacherResponse> getByTeacherUserId(Integer user_id);
 
+
     // get By MaterialId
     @Select("SELECT DISTINCT saw.id,title,description,score,assigned_date,deadline,saw.class_id,class_material_id,\n" +
             "(SELECT count(*) FROM comment c \n" +

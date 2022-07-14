@@ -252,4 +252,7 @@ public interface ClassMaterialRepository {
     Boolean findMaterialIdWithCreatedBy(Integer material_id, Integer teacher_id);
     @Delete("DELETE FROM class_materials WHERE id = #{material_id} AND created_by = #{teacher_id} ")
     Boolean deleteByCreatedByAndMaterialId(Integer material_id, Integer teacher_id);
+
+    @Select("SELECT EXISTS(SELECT id FROM folder WHERE id = #{folder_id})")
+    Boolean findFolderId(int folder_id);
 }

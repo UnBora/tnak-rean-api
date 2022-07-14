@@ -154,7 +154,39 @@ public class ClassController {
             return ApiResponse.setError(e.getMessage());
         }
     }
+    @GetMapping("get-sharedClass-by-folderId")
+    public ApiResponse<List<SharedClassByFolderResponse>> getSharedClassByFolder(@RequestParam Integer folder_id) {
+        try {
+            List<SharedClassByFolderResponse> sharedClass = classServiceImp.getSharedClassByFolder(folder_id);
+            if (sharedClass.isEmpty()) {
+                return ApiResponse.<List<SharedClassByFolderResponse>>notFound(SharedClassByFolderResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setData(sharedClass);
+            }
+            return ApiResponse.<List<SharedClassByFolderResponse>>ok(SharedClassByFolderResponse.class.getSimpleName())
+                    .setResponseMsg("Get All Class by folderId: " + folder_id + " Successfully")
+                    .setData(sharedClass);
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
 
+    @GetMapping("get-notSharedClass-by-folderId")
+    public ApiResponse<List<SharedClassByFolderResponse>> getNotSharedClassByFolder(@RequestParam Integer folder_id) {
+        try {
+            List<SharedClassByFolderResponse> sharedClass = classServiceImp.getNotSharedClassByFolder(folder_id);
+            if (sharedClass.isEmpty()) {
+                return ApiResponse.<List<SharedClassByFolderResponse>>notFound(SharedClassByFolderResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setData(sharedClass);
+            }
+            return ApiResponse.<List<SharedClassByFolderResponse>>ok(SharedClassByFolderResponse.class.getSimpleName())
+                    .setResponseMsg("Get not shared Class by folderId: " + folder_id + " Successfully")
+                    .setData(sharedClass);
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
     @GetMapping("/search-class")
     public ApiResponse<List<SearchClassResponse>> searchClass(@RequestParam String className) {
         try {

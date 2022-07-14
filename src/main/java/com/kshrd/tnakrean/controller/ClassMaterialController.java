@@ -295,17 +295,24 @@ public class ClassMaterialController {
             return ApiResponse.setError(e.getMessage());
         }
     }
-    @PostMapping("set-course-and-classwork-to-folder")
+    @PostMapping("set-course-or-classwork-to-folder")
     ApiResponse<?> setMaterialToFolder(
             @RequestParam @Min(value = 1) int folder_id,
             @RequestParam @Min(value = 1) int material_id
     ) {
         boolean checkFolderIdAndMaterialIdInMF = classMaterialRepository.findFolderIdAndMaterialIdInMF(folder_id,material_id);
+        Boolean checkMaterialId = classMaterialRepository.findMaterialId(material_id);
+        Boolean checkFolderId = classMaterialRepository.findFolderId(folder_id);
         try {
-            if (checkFolderIdAndMaterialIdInMF == true) {
+            if (checkMaterialId == false){
                 return ApiResponse.<Boolean>notFound("")
-                        .setResponseMsg("folder_id:" +folder_id+ " And material_id:"+material_id+" already exist")
-                        .setData(true);
+                        .setResponseMsg("Material_id:"+material_id+" does not exist");
+            } else if (checkFolderId == false){
+                return ApiResponse.<Boolean>notFound("")
+                        .setResponseMsg("Folder_id:"+folder_id+" does not exist");
+            } else if (checkFolderIdAndMaterialIdInMF == true) {
+                return ApiResponse.<Boolean>notFound("")
+                        .setResponseMsg("folder_id:" +folder_id+ " And material_id:"+material_id+" already exist");
             }
             classMaterialServiceImp.setMaterialToFolder(folder_id,material_id);
             return ApiResponse.<Boolean>ok("Set Material: "+material_id+" To Folder:" +folder_id+" successful")

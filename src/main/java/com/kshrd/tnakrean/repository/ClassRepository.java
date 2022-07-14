@@ -3,6 +3,7 @@ package com.kshrd.tnakrean.repository;
 import com.kshrd.tnakrean.model.classmaterials.request.GetClassRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassByUserTeacherIdResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.SearchClassResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.SharedClassByFolderResponse;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -66,4 +67,15 @@ public interface ClassRepository {
     @Select("select id, class_name, image from class where id = #{classId}")
     @Result(property = "class_id", column = "id")
     GetClassRequest getClassByID(Integer classId);
+
+    // get SharedClass By Folder
+    @Select("SELECT DISTINCT class_id,folder_id,class_name from class_material_folder a " +
+            "JOIN class c on c.id = a.class_id where folder_id = #{folder_id}")
+    List<SharedClassByFolderResponse> getSharedClassByFolder(Integer folder_id);
+
+    // get NotSharedClass By Folder
+    @Select("SELECT DISTINCT class_id,c.class_name,folder_id from class c \n" +
+            "JOIN class_material_folder cf on c.id = cf.class_id\n" +
+            "where c.id not in(SELECT class_id FROM class_material_folder WHERE folder_id= #{folder_id})")
+    List<SharedClassByFolderResponse> getNotSharedClassByFolder(Integer folder_id);
 }

@@ -126,4 +126,8 @@ public interface FolderRepository {
     // get Folder By ParentId
     @Select("SELECT * FROM folder WHERE parent_id = #{parent_id}")
     List<FolderResponse> getFolderByParentId(Integer parent_id);
+
+    // deleteSharedFolderToClass
+    @Delete("DELETE from class_material_folder where folder_id = #{folder_id} and class_id = #{class_id}")
+    Boolean deleteSharedFolderToClass(Integer class_id, Integer folder_id);
 }

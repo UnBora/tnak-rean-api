@@ -38,4 +38,6 @@ public interface FolderService {
     Boolean editFolder(FolderUpdateRequest folderUpdateRequest);
 
     List<FolderResponse> getFolderByParentId(Integer parent_id);
+
+    Boolean deleteSharedFolderToClass(Integer class_id, Integer folder_id);
 }

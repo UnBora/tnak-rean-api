@@ -2,6 +2,7 @@ package com.kshrd.tnakrean.service.serviceImplementation;
 
 import com.kshrd.tnakrean.model.classmaterials.request.GetClassRequest;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassByUserTeacherIdResponse;
+import com.kshrd.tnakrean.model.classmaterials.response.SharedClassByFolderResponse;
 import com.kshrd.tnakrean.repository.ClassRepository;
 import com.kshrd.tnakrean.service.serviceInter.ClassService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,5 +48,15 @@ public class ClassServiceImp implements ClassService {
     @Override
     public List<ClassByUserTeacherIdResponse> getByTeacherUserId(Integer user_id,Integer classroom_id) {
         return classRepository.getByTeacherUserId(user_id,classroom_id);
+    }
+
+    @Override
+    public List<SharedClassByFolderResponse> getSharedClassByFolder(Integer folder_id) {
+        return classRepository.getSharedClassByFolder(folder_id);
+    }
+
+    @Override
+    public List<SharedClassByFolderResponse> getNotSharedClassByFolder(Integer folder_id) {
+        return classRepository.getNotSharedClassByFolder(folder_id);
     }
 }

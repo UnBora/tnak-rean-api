@@ -92,4 +92,9 @@ public class FolderServiceImp implements FolderService {
     public List<FolderResponse> getFolderByParentId(Integer parent_id) {
         return folderRepository.getFolderByParentId(parent_id);
     }
+
+    @Override
+    public Boolean deleteSharedFolderToClass(Integer class_id, Integer folder_id) {
+        return folderRepository.deleteSharedFolderToClass(class_id,folder_id);
+    }
 }

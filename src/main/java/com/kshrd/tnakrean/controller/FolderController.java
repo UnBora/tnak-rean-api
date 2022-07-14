@@ -170,6 +170,21 @@ public class FolderController {
                 .setData(true);
     }
 
+    @DeleteMapping("delete-sharedFolderToClass")
+    ApiResponse<Boolean> deleteSharedFolderToClass(
+            @RequestParam @Min(value = 1) Integer folder_id,
+            @RequestParam @Min(value = 1) Integer class_id) {
+        Boolean checkFolderIdAndClassIdInCMF = folderRepository.findFolderIdAndClassIdInCMF(folder_id,class_id);
+        folderServiceImp.deleteSharedFolderToClass(class_id,folder_id);
+        if (checkFolderIdAndClassIdInCMF == false) {
+            return ApiResponse.<Boolean>notFound("Folder")
+                    .setResponseMsg("Can't Delete! FolderId: " +folder_id+ " and ClassId: "+class_id+" is not shared together");
+        }
+        return ApiResponse.<Boolean>ok("Folder")
+                .setResponseMsg(BaseMessage.Success.DELETE_SUCCESS.getMessage())
+                .setData(true);
+    }
+
     @GetMapping("/get-courseFolder-by-teacherUserId")
     ApiResponse<List<FolderByTeacherResponse>> getCourseFolderByTeacher() {
         Integer user_id = AuthRestController.user_id;
