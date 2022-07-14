@@ -20,5 +20,5 @@ public class UpComingSubmittableWorkResponse {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     Date deadline;
     Integer total_comments;
-
+    Integer material_id;
 }
