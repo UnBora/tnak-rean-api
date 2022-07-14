@@ -21,4 +21,5 @@ public class FolderInClassRequest {
     Integer class_id;
 //    @Min(value = 2,message = "Type ID should not less than 2")
 //    Integer material_type_id;
+
 }
