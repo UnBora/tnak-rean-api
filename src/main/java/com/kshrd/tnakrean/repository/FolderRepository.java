@@ -116,10 +116,14 @@ public interface FolderRepository {
             "WHERE cmt.id = #{material_type_id}AND user_id = #{user_id}")
     List<FolderByStudentIdResponse> getFolderByStudentId(@Param("user_id") Integer user_id,@Param("material_type_id") Integer material_type_id);
 
-    // update folder
+    // update folder name
     @Select("SELECT EXISTS(SELECT id FROM folder WHERE id = #{id})")
     Boolean findFolderId(Integer id);
 
     @Update("UPDATE folder SET folder_name = #{folder_name} WHERE id = #{id} ")
     Boolean editFolder(FolderUpdateRequest folderUpdateRequest);
+
+    // get Folder By ParentId
+    @Select("SELECT * FROM folder WHERE parent_id = #{parent_id}")
+    List<FolderResponse> getFolderByParentId(Integer parent_id);
 }

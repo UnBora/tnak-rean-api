@@ -63,47 +63,47 @@ public class CommentController {
         }
     }
 
-    @GetMapping("get-by-studentId")
-    ApiResponse<List<CommentResponse>> getByStudentId() {
-        try {
-            Integer userId = AuthRestController.user_id;
-            List<CommentResponse> commentResponses = commentServiceImp.getByStudentId(userId);
-            if (userId == 0) {
-                return ApiResponse.<List<CommentResponse>>unAuthorized(CommentResponse.class.getSimpleName())
-                        .setResponseMsg("Unauthorized");
-            } else if (commentResponses.isEmpty()) {
-                return ApiResponse.<List<CommentResponse>>notFound(CommentResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
-            } else {
-                return ApiResponse.<List<CommentResponse>>ok(CommentResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
-                        .setData(commentResponses);
-            }
-        } catch (Exception e) {
-            return ApiResponse.setError(e.getMessage());
-        }
-    }
+//    @GetMapping("get-by-studentId")
+//    ApiResponse<List<CommentResponse>> getByStudentId() {
+//        try {
+//            Integer userId = AuthRestController.user_id;
+//            List<CommentResponse> commentResponses = commentServiceImp.getByStudentId(userId);
+//            if (userId == 0) {
+//                return ApiResponse.<List<CommentResponse>>unAuthorized(CommentResponse.class.getSimpleName())
+//                        .setResponseMsg("Unauthorized");
+//            } else if (commentResponses.isEmpty()) {
+//                return ApiResponse.<List<CommentResponse>>notFound(CommentResponse.class.getSimpleName())
+//                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
+//            } else {
+//                return ApiResponse.<List<CommentResponse>>ok(CommentResponse.class.getSimpleName())
+//                        .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+//                        .setData(commentResponses);
+//            }
+//        } catch (Exception e) {
+//            return ApiResponse.setError(e.getMessage());
+//        }
+//    }
 
-    @GetMapping("get-by-teacherUserId")
-    ApiResponse<List<CommentByTeacherResponse>> getByTecherId() {
-        try {
-            Integer userId = AuthRestController.user_id;
-            List<CommentByTeacherResponse> commentResponses = commentServiceImp.getByTecherId(userId);
-            if (userId == 0) {
-                return ApiResponse.<List<CommentByTeacherResponse>>unAuthorized(CommentByTeacherResponse.class.getSimpleName())
-                        .setResponseMsg("Unauthorized");
-            } else if (commentResponses.isEmpty()) {
-                return ApiResponse.<List<CommentByTeacherResponse>>notFound(CommentByTeacherResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
-            } else {
-                return ApiResponse.<List<CommentByTeacherResponse>>ok(CommentByTeacherResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
-                        .setData(commentResponses);
-            }
-        } catch (Exception e) {
-            return ApiResponse.setError(e.getMessage());
-        }
-    }
+//    @GetMapping("get-by-teacherUserId")
+//    ApiResponse<List<CommentByTeacherResponse>> getByTecherId() {
+//        try {
+//            Integer userId = AuthRestController.user_id;
+//            List<CommentByTeacherResponse> commentResponses = commentServiceImp.getByTecherId(userId);
+//            if (userId == 0) {
+//                return ApiResponse.<List<CommentByTeacherResponse>>unAuthorized(CommentByTeacherResponse.class.getSimpleName())
+//                        .setResponseMsg("Unauthorized");
+//            } else if (commentResponses.isEmpty()) {
+//                return ApiResponse.<List<CommentByTeacherResponse>>notFound(CommentByTeacherResponse.class.getSimpleName())
+//                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
+//            } else {
+//                return ApiResponse.<List<CommentByTeacherResponse>>ok(CommentByTeacherResponse.class.getSimpleName())
+//                        .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+//                        .setData(commentResponses);
+//            }
+//        } catch (Exception e) {
+//            return ApiResponse.setError(e.getMessage());
+//        }
+//    }
 
 //    @GetMapping("get-by-claaId-classroomId-studentId")
 //    ApiResponse<List<CommentByClassClassroomStudentResponse>> getByClassClassroomStudent(

@@ -122,6 +122,26 @@ public class FolderController {
         }
     }
 
+    @GetMapping("/get-folders-by-parentId")
+    ApiResponse<List<FolderResponse>> getFolderByParentId(
+            @RequestParam @Min(value = 0) Integer parent_id
+    ) {
+        List<FolderResponse> responseList = folderServiceImp.getFolderByParentId(parent_id);
+        try {
+            if (responseList.isEmpty()) {
+                return ApiResponse.<List<FolderResponse>>notFound(FolderResponse.class.getSimpleName())
+                        .setData(responseList)
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage());
+            } else {
+                return ApiResponse.<List<FolderResponse>>ok(FolderResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+                        .setData(responseList);
+            }
+        } catch (Exception e) {
+            return ApiResponse.badRequest(FolderByClassResponse.class.getSimpleName());
+        }
+    }
+
     @GetMapping("/get-folder-detail-by-folder-id")
     ApiResponse<List<FolderDetailResponse>> getFolderDetail(@RequestParam int id) {
         List<FolderDetailResponse> responseList = folderRepository.getFolderDetail(id);

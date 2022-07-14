@@ -87,4 +87,9 @@ public class FolderServiceImp implements FolderService {
     public Boolean editFolder(FolderUpdateRequest folderUpdateRequest) {
         return folderRepository.editFolder(folderUpdateRequest);
     }
+
+    @Override
+    public List<FolderResponse> getFolderByParentId(Integer parent_id) {
+        return folderRepository.getFolderByParentId(parent_id);
+    }
 }

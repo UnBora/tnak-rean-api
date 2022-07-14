@@ -36,4 +36,6 @@ public interface FolderService {
     List<FolderByStudentIdResponse> getFolderByStudentId(Integer user_id,Integer material_type_id);
 
     Boolean editFolder(FolderUpdateRequest folderUpdateRequest);
+
+    List<FolderResponse> getFolderByParentId(Integer parent_id);
 }
