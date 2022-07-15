@@ -9,7 +9,6 @@ public interface UserService extends UserDetailsService {
     void userRegister(UserRegisterRequest userRegisterRequest);
     void resetPassword(String new_password,int user_id);
 
-
     //    Delete Student User
     void userDeleteAccount(int user_id);
 
@@ -18,7 +17,6 @@ public interface UserService extends UserDetailsService {
 
     //    Student activate x
     void userActivateAccount(int user_id);
-
 
     void updateProfileByID(Integer user_id, String name, String username, String email, String gender);
 
