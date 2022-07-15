@@ -206,7 +206,8 @@ public interface SubmittableWorkRepository {
             "JOIN class_materials_detail cmd ON cm.id = cmd.class_material_id\n" +
             "JOIN submittable_work saw ON cmd.id = saw.class_materials_detail_id\n" +
             "JOIN class_materials_type mt ON cm.class_materials_type_id = mt.id\n" +
-            "WHERE (mt.id = 2 OR mt.id = 3 OR mt.id = 4 OR mt.id = 5) AND saw.class_id = (SELECT class_id FROM student WHERE user_id = #{user_id}) ")
+            "JOIN student st ON st.class_id = saw.class_id " +
+            "WHERE (mt.id = 2 OR mt.id = 3 OR mt.id = 4 OR mt.id = 5) AND st.user_id = #{user_id}")
     @Result(property = "total_comment", column = "count")
     @Result(property = "submittable_work_id", column = "id")
     @Result(property = "student_id", column = "user_id")
