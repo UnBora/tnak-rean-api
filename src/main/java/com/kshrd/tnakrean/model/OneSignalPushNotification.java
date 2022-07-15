@@ -7,12 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OneSignalPushNotification {
-
+public class OneSignalPushNotification{
     private Long id;
-
     private String userName;
-
     private String idOneSignal;
 
 

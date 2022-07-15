@@ -1,5 +1,6 @@
 package com.kshrd.tnakrean.controller;
 
+import com.kshrd.tnakrean.configuration.SecurityContextBean;
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.user.request.UserDeactivateAccountRequest;
@@ -44,7 +45,7 @@ public class UsersController {
     public ApiResponse<UserDeleteAccountRequest> deleteAccount(
             @RequestParam @Size(min = 3, max = 16, message = "{validation.password.sizenotlesthen3}") String password,
             @RequestParam @Size(min = 3, max = 16, message = "{validation.password.sizenotlesthen3}")String confirmPassword) {
-        Integer userId = AuthRestController.user_id;
+        Integer userId = SecurityContextBean.getRequestingUser().getId();
         String oldPassword = usersRepository.getPassword(userId);
         boolean isMatch = passwordEncoder.matches(password, oldPassword);
         try {
@@ -89,7 +90,7 @@ public class UsersController {
     public ApiResponse<UserDeactivateAccountRequest> deactivateAccount(
             @RequestParam @Size(min = 3, max = 16,message = "{validation.password.sizenotlesthen3}") String password,
             @RequestParam @Size(min = 3, max = 16, message = "{validation.password.sizenotlesthen3}") String confirmPassword) {
-        Integer userId = AuthRestController.user_id;
+        Integer userId = SecurityContextBean.getRequestingUser().getId();
         String oldPassword = usersRepository.getPassword(userId);
         Integer status = usersRepository.getStatus(userId);
 
@@ -139,7 +140,7 @@ public class UsersController {
     public ApiResponse<UserActivateAccountRequest> activateAccount(
             @RequestParam @Size(min = 3, max = 16, message = "{validation.password.sizenotlesthen3}") String password,
             @RequestParam @Size(min = 3, max = 16, message = "{validation.password.sizenotlesthen3}")String passwordConfirm) {
-        Integer userId = AuthRestController.user_id;
+        Integer userId = SecurityContextBean.getRequestingUser().getId();
 
         String oldPassword = usersRepository.getPassword(userId);
         boolean isMatch = passwordEncoder.matches(password, oldPassword);
@@ -192,7 +193,7 @@ public class UsersController {
     @PutMapping("update-profile")
     public ApiResponse<UserUpdateRequest> studentUpdateProfile(@RequestBody @Valid UserUpdateRequest userUpdateRequest) {
         try {
-            Integer userId = AuthRestController.user_id;
+            Integer userId = SecurityContextBean.getRequestingUser().getId();
             if (!userId.equals(0)) {
                 Boolean checkUsername= usersRepository.checkUserName(userUpdateRequest.getUsername());
                 Boolean checkEmail= usersRepository.checkEmailExist(userUpdateRequest.getEmail());
@@ -220,7 +221,7 @@ public class UsersController {
     }
     @GetMapping("get-notification-by-userId")
     public ApiResponse<List<GetNotificationResponse>> getNotificationByUserId(){
-            Integer userId= AuthRestController.user_id;
+            Integer userId= SecurityContextBean.getRequestingUser().getId();
         try {
             if (userId.equals(0)){
                 return ApiResponse.<List<GetNotificationResponse>>notFound(GetNotificationResponse.class.getSimpleName())

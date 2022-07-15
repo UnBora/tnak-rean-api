@@ -1,5 +1,6 @@
 package com.kshrd.tnakrean.controller;
 
+import com.kshrd.tnakrean.configuration.SecurityContextBean;
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.json.ClassMaterialContent;
@@ -265,7 +266,7 @@ public class SubmittableWorkController {
     ApiResponse<List<ClassWorkByStudentIdResponse>> getClassWorkByStudentId(
     ) {
         try {
-            Integer user_id = AuthRestController.user_id;
+            Integer user_id = SecurityContextBean.getRequestingUser().getId();
             List<ClassWorkByStudentIdResponse> responses = submittableWorkService.getClassWorkByStudentId(user_id);
             if (user_id == 0){
                 return ApiResponse.unAuthorized("unAuthorized");
@@ -287,7 +288,7 @@ public class SubmittableWorkController {
     @GetMapping("get-by-teacherUserId")
     ApiResponse<List<SubmittableWorkByTeacherResponse>> getByTeacherUserId() {
         try {
-            Integer user_id = AuthRestController.user_id;
+            Integer user_id = SecurityContextBean.getRequestingUser().getId();
             List<SubmittableWorkByTeacherResponse> submittableWorkResponses = submittableWorkService.getByTeacherUserId(user_id);
             if (user_id == 0){
                 return ApiResponse.unAuthorized("unAuthorized");
@@ -308,7 +309,7 @@ public class SubmittableWorkController {
             @RequestParam @Min(value = 1) Integer folderId
     ) {
         try {
-            Integer user_id = AuthRestController.user_id;
+            Integer user_id = SecurityContextBean.getRequestingUser().getId();
             List<ClassWorkByFolderIDTeacherIDResponse> responses = submittableWorkService.getByFolderIdTeacherId(user_id,folderId);
             if (user_id == 0){
                 return ApiResponse.unAuthorized("unAuthorized");
@@ -350,7 +351,7 @@ public class SubmittableWorkController {
     ApiResponse<List<ClassWorkResultByStudentIdResponse>> getClassWorkResultByStudentId(
     ) {
         try {
-            Integer user_id = AuthRestController.user_id;
+            Integer user_id = SecurityContextBean.getRequestingUser().getId();
             List<ClassWorkResultByStudentIdResponse> responses = submittableWorkService.getClassWorkResultByStudentId(user_id);
             if (user_id == 0){
                 return ApiResponse.unAuthorized("unAuthorized");
@@ -391,7 +392,7 @@ public class SubmittableWorkController {
             @RequestParam @NotBlank String description,
             @RequestBody @Valid ClassMaterialContent classMaterialContent
     ) {
-        Integer user_id = AuthRestController.user_id;
+        Integer user_id = SecurityContextBean.getRequestingUser().getId();
         int typeId = 5;
         try {
             if (user_id == 0) {
@@ -416,7 +417,7 @@ public class SubmittableWorkController {
             @RequestParam @NotBlank String description,
             @RequestBody @Valid ClassMaterialContent classMaterialContent
     ) {
-        Integer user_id = AuthRestController.user_id;
+        Integer user_id = SecurityContextBean.getRequestingUser().getId();
         int typeId = 4;
         try {
             if (user_id == 0) {
@@ -441,7 +442,7 @@ public class SubmittableWorkController {
             @RequestParam @NotBlank String description,
             @RequestBody @Valid ClassMaterialContent classMaterialContent
     ) {
-        Integer user_id = AuthRestController.user_id;
+        Integer user_id = SecurityContextBean.getRequestingUser().getId();
         int typeId = 3;
         try {
             if (user_id == 0) {
@@ -470,7 +471,7 @@ public class SubmittableWorkController {
             @RequestParam @Min(value = 1) int classroom_id,
             @RequestParam @Min(value = 1) @Max(value = 1000) float score
     ) {
-        Integer user_id = AuthRestController.user_id;
+        Integer user_id = SecurityContextBean.getRequestingUser().getId();
         boolean checkClassId = submittableWorkRepository.findClassId(class_id);
         boolean checkClassroomId = submittableWorkRepository.findClassroomId(classroom_id);
         try {
@@ -509,7 +510,7 @@ public class SubmittableWorkController {
             @RequestParam @Min(value = 1) int classroom_id,
             @RequestParam @Min(value = 1) @Max(value = 1000) float score
     ) {
-        Integer user_id = AuthRestController.user_id;
+        Integer user_id = SecurityContextBean.getRequestingUser().getId();
         boolean checkClassId = submittableWorkRepository.findClassId(class_id);
         boolean checkClassroomId = submittableWorkRepository.findClassroomId(classroom_id);
         try {
@@ -548,7 +549,7 @@ public class SubmittableWorkController {
             @RequestParam @Min(value = 1) int classroom_id,
             @RequestParam @Min(value = 1) @Max(value = 1000) float score
     ) {
-        Integer user_id = AuthRestController.user_id;
+        Integer user_id = SecurityContextBean.getRequestingUser().getId();
         boolean checkClassId = submittableWorkRepository.findClassId(class_id);
         boolean checkClassroomId = submittableWorkRepository.findClassroomId(classroom_id);
         try {
@@ -580,7 +581,7 @@ public class SubmittableWorkController {
     //@GetMapping("get-all-by-classId-teacherUserId")
 //    ApiResponse<List<SubmittableWorkByClassIdTeacherIdResponse>> getAllByClassIdTeacherUserId(@RequestParam @Min(value = 1) Integer class_id) {
 //        try {
-//            Integer user_id = AuthRestController.user_id;
+//            Integer user_id = SecurityContextBean.getRequestingUser().getId();
 //            List<SubmittableWorkByClassIdTeacherIdResponse> submittableWorkResponses = submittableWorkService.getAllByClassIdTeacherUserId(user_id, class_id);
 //            if (user_id == 0) {
 //                return ApiResponse.unAuthorized("unAuthorized");

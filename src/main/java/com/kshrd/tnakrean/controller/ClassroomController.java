@@ -1,5 +1,6 @@
 package com.kshrd.tnakrean.controller;
 
+import com.kshrd.tnakrean.configuration.SecurityContextBean;
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.response.*;
@@ -77,7 +78,7 @@ public class ClassroomController {
     @PostMapping("/insert-classroom")
     public ApiResponse<ClassroomRequest> insertClassroom(@RequestBody @Valid ClassroomRequest classroomRequest) {
         try {
-            Integer createdby = AuthRestController.user_id;
+            Integer createdby = SecurityContextBean.getRequestingUser().getId();
             String dec = classroomRequest.getDes(), name = classroomRequest.getName();
             Boolean classroomName= classroomRepository.checkIfClassExistsDuplecateClassName(name.toUpperCase());
 
@@ -105,7 +106,7 @@ public class ClassroomController {
 
     @GetMapping("/get-classroom-by-teacher-id")
     public ApiResponse<List<GetClassByTeacherIdResponse>> getClassByTeacherId() {
-        Integer userId = AuthRestController.user_id;
+        Integer userId = SecurityContextBean.getRequestingUser().getId();
         GetClassByTeacherIdResponse obj = new GetClassByTeacherIdResponse();
         Integer classId = obj.getClass_id(), classroomId = obj.getClassroom_id();
         String teacher = obj.getTeacher_name(), className = obj.getClass_name();

@@ -1,5 +1,6 @@
 package com.kshrd.tnakrean.controller;
 
+import com.kshrd.tnakrean.configuration.SecurityContextBean;
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.response.ScheduleResponse;
@@ -27,7 +28,7 @@ public class ScheduleController {
     ApiResponse<List<ScheduleResponse>> getScheduleByTeacherDayClassClassroom(
             @RequestParam @Min(value = 1) Integer classroomId,
             @RequestParam @Min(value = 1) Integer dayId) {
-        Integer user_id = AuthRestController.user_id;
+        Integer user_id = SecurityContextBean.getRequestingUser().getId();
         List<ScheduleResponse> responses = scheduleServiceImp.getScheduleByTeacherDayClassClassroom(classroomId, dayId,user_id);
         try {
             if (user_id == 0){
@@ -48,7 +49,7 @@ public class ScheduleController {
 
     @GetMapping("/get-schedule-by-studentUserId")
     ApiResponse<List<ScheduleResponse>> getScheduleByStudentUserId(@RequestParam @Min(value = 1) Integer dayId) {
-        Integer user_id = AuthRestController.user_id;
+        Integer user_id = SecurityContextBean.getRequestingUser().getId();
         List<ScheduleResponse> responses = scheduleServiceImp.getScheduleByStudentUserId(user_id,dayId);
         try {
             if (user_id == 0){
