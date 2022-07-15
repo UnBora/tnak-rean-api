@@ -73,33 +73,33 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests().antMatchers("/api/v1/auth/**").permitAll()
                 .antMatchers("/swagger-resources/**").permitAll()
-                .antMatchers("/api/v1/teacher/**",
-                        "/api/v1/class/**",
-                        "/api/v1/classroom/**",
-                        "/api/v1/classMaterialsType/**",
-                        "/api/v1/classMaterial/**",
-                        "/api/v1/comment/get-by-teacher_user_id",
-                        "/api/v1/folder/**",
-                        "/api/v1/schedule/**",
-                        "/api/v1/student/accept-student",
-                        "/api/v1/submittedWork/**"
+                .antMatchers("/api/v/teacher/**",
+//                        "/api/v1/class/**",
+//                        "/api/v1/classroom/**",
+//                        "/api/v1/classMaterialsType/**",
+//                        "/api/v1/classMaterial/**",
+//                        "/api/v1/comment/get-by-teacher_user_id",
+//                        "/api/v1/folder/**",
+//                        "/api/v1/schedule/**",
+//                        "/api/v1/student/accept-student",
+                        "/api/v/submittedWork/**"
                 )
                 .hasAnyAuthority("Teacher")
 
 
-                .antMatchers("/api/v1/student/**",
-                        "/api/v1/comment/**",
-                        "/api/v1/classMaterial/get-by-studentId",
-                        "/api/v1/classMaterial/get-by-studentId-classId-classroomId",
-                        "/api/v1/schedule/get-schedule-by-studentUserId",
-                        "/api/v1/submittableWork/**",
-                        "/api/v1/submittedWork/insert-student-work",
-                        "/api/v1/submittedWork/get-studentScore-by-classroomId-and-classId",
-                        "/api/v1/submittedWork/delete-by-Id"
+                .antMatchers("/api/v/student/**",
+//                        "/api/v1/comment/**",
+//                        "/api/v1/classMaterial/get-by-studentId",
+//                        "/api/v1/classMaterial/get-by-studentId-classId-classroomId",
+//                        "/api/v1/schedule/get-schedule-by-studentUserId",
+//                        "/api/v1/submittableWork/**",
+//                        "/api/v1/submittedWork/insert-student-work",
+//                        "/api/v1/submittedWork/get-studentScore-by-classroomId-and-classId",
+                        "/api/v/submittedWork/delete-by-Id"
                 )
                 .hasAnyAuthority("Student")
 
-                .antMatchers(HttpMethod.GET, "/api/v1/student/get-student-by-classId")
+                .antMatchers(HttpMethod.GET, "/api/v/student/get-student-by-classId")
                 .hasAnyAuthority("Teacher")
 
         ;
