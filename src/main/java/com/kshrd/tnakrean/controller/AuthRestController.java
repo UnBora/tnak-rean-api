@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import com.kshrd.tnakrean.configuration.SecurityContextBean;
 
 import javax.validation.Valid;
 
@@ -55,7 +56,7 @@ public class AuthRestController {
     }
 
 
-    static int user_id;
+//    static int user_id;
     static AppUserResponse userDetails;
 
     @PostMapping("/login")
@@ -71,7 +72,6 @@ public class AuthRestController {
         userDetails = modelMapper.map(findUserByUsername, AppUserResponse.class);
         userDetails.setToken(token);
         System.out.println(userDetails.getRole());
-        user_id = userDetails.getId();
         return ResponseEntity.ok(userDetails);
 
     }
@@ -80,12 +80,12 @@ public class AuthRestController {
     public ApiResponse<Boolean> updatePassword(@RequestBody UserUpdatePasswordRequestModel userUpdatePasswordRequestModel) {
 
         ApiResponse<String> response = new ApiResponse<>();
-        String password = appUserRepository.getPassword(user_id);
+        String password = appUserRepository.getPassword(SecurityContextBean.getRequestingUser().getId());
         boolean is_match = passwordEncoder.matches(userUpdatePasswordRequestModel.getOld_password(), password);
         try {
             if (is_match) {
                 String new_pass = passwordEncoder.encode(userUpdatePasswordRequestModel.getNew_password());
-                userServiceImp.resetPassword(new_pass, user_id);
+                userServiceImp.resetPassword(new_pass, SecurityContextBean.getRequestingUser().getId());
                 return ApiResponse.<Boolean>updateSuccess("User")
                         .setResponseMsg("Your password update successful");
             } else {

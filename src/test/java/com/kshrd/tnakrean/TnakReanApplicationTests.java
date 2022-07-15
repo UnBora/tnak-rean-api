@@ -14,26 +14,26 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
-@RequiredArgsConstructor
-@AutoConfigureMockMvc
+//@RequiredArgsConstructor
+//@AutoConfigureMockMvc
 class TnakReanApplicationTests {
 
-    @Autowired
-    private MockMvc mvc;
+//    @Autowired
+//    private MockMvc mvc;
 
     @Test
     void contextLoads() {
     }
 
-    @Test
-    void getCourseByStudentId() throws Exception {
-        mvc.perform(get("/api/v1/classMaterial/get-course-by-studentId")
-                        .contentType("application/json")
-                        .header("Authorization", "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkYWxlbiIsImlhdCI6MTY1Nzg2MzYxOCwiZXhwIjoxNjU3OTUwMDE4fQ.yfPLrWSlD4rM5VF-D21lsR9719kX8wM_9U9N-ESqmVVPRFJDu0sEUdyC_dm0Rn3Jt-gap-gvsqn5AZjen3WO8g")
-                )
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
-//                .andExpect((ResultMatcher) jsonPath("$[0].responseCode", is("404")));
-    }
+//    @Test
+//    void getCourseByStudentId() throws Exception {
+//        mvc.perform(get("/api/v1/classMaterial/get-course-by-studentId")
+//                        .contentType("application/json")
+//                        .header("Authorization", "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkYWxlbiIsImlhdCI6MTY1Nzg2MzYxOCwiZXhwIjoxNjU3OTUwMDE4fQ.yfPLrWSlD4rM5VF-D21lsR9719kX8wM_9U9N-ESqmVVPRFJDu0sEUdyC_dm0Rn3Jt-gap-gvsqn5AZjen3WO8g")
+//                )
+//                .andExpect(status().isOk())
+//                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+////                .andExpect((ResultMatcher) jsonPath("$[0].responseCode", is("404")));
+//    }
 
 }
