@@ -10,6 +10,7 @@ import com.kshrd.tnakrean.model.user.response.GetNotificationResponse;
 import com.kshrd.tnakrean.repository.UsersRepository;
 import com.kshrd.tnakrean.service.serviceImplementation.UserServiceImp;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -84,11 +85,10 @@ public class UsersController {
         }
     }
 
-    @PutMapping("/deactivate-account")
+    @DeleteMapping("/deactivate-account")
     public ApiResponse<UserDeactivateAccountRequest> deactivateAccount(
             @RequestParam @Size(min = 3, max = 16,message = "{validation.password.sizenotlesthen3}") String password,
             @RequestParam @Size(min = 3, max = 16, message = "{validation.password.sizenotlesthen3}") String confirmPassword) {
-        System.out.println("user id:"+AuthRestController.user_id);
         Integer userId = AuthRestController.user_id;
         String oldPassword = usersRepository.getPassword(userId);
         Integer status = usersRepository.getStatus(userId);
@@ -198,7 +198,7 @@ public class UsersController {
                 Boolean checkEmail= usersRepository.checkEmailExist(userUpdateRequest.getEmail());
                 String email= usersRepository.selectEmail(userId);
                 String name=usersRepository.catchName(userUpdateRequest.getUsername().trim());
-                if (checkUsername.equals(true)&&(!(name.equals(userUpdateRequest.getUsername().trim())))){
+                if (checkUsername.equals(true)&&(!(name.equals(userUpdateRequest.getUsername())))){
                     return ApiResponse.<UserUpdateRequest>badRequest(UserUpdateRequest.class.getSimpleName())
                             .setResponseMsg("This Username is exist!");
                 }else if (checkEmail.equals(true)&&(!(email.equals(userUpdateRequest.getEmail().trim())))){
