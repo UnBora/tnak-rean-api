@@ -225,7 +225,7 @@ public interface SubmittableWorkRepository {
     List<ClassWorkResultByClassIdResponse> getClassWorkResultByClassId(Integer class_id);
 
     // get ClassWork have Result By StudentId
-    @Select("SELECT DISTINCT cm.id,title,created_by,description,score,assigned_date,deadline,saw.class_id,sw.id,submittable_work_id,st.user_id\n" +
+    @Select("SELECT DISTINCT cm.id,title,created_by,description,score,assigned_date,deadline,saw.class_id,submittable_work_id,st.user_id\n" +
             "FROM class_materials cm \n" +
             "JOIN class_materials_detail cmd ON cm.id = cmd.class_material_id\n" +
             "JOIN submittable_work saw ON cmd.id = saw.class_materials_detail_id\n" +
