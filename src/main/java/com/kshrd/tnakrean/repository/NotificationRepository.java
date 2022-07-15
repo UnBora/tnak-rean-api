@@ -37,4 +37,8 @@ public interface NotificationRepository {
 
     @Select("select class_name from class where id =#{class_id};")
     String findClassName(int class_id);
+
+    @Select("select title from class_materials where id=#{material_id};")
+    String findMaterial(int material_id);
+
 }
