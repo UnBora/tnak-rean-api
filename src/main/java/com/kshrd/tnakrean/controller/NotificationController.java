@@ -113,7 +113,7 @@ public class NotificationController {
 
     @PostMapping("/send-notification-to-class")
     ApiResponse<NotificationClassRequest> sendNotificationToClass(@RequestBody @Valid NotificationClassRequest notificationClassRequest, NOTI_TYPE notificationType) {
-
+        System.out.println("noti:"+notificationType);
         try {
             if (AuthRestController.userDetails == null) {
                 return ApiResponse.<NotificationClassRequest>unAuthorized(NotificationClassRequest.class.getSimpleName())
@@ -127,11 +127,13 @@ public class NotificationController {
             }
             notificationClassRequest.setNotification_type_id(notificationType.id);
             notificationClassRequest.setSender_id(AuthRestController.userDetails.getId());
+            String username = notificationRepository.findUsername(AuthRestController.userDetails.getId());
+            String class_name = notificationRepository.findClassName(notificationClassRequest.getClassId());
+            String message = username+" "+notificationType.toString()+" "+ class_name;
             notificationRepository.sendNotificationToClass(notificationClassRequest);
             return ApiResponse.<NotificationClassRequest>
                             ok(NotificationClassRequest.class.getSimpleName())
-                    .setResponseMsg(BaseMessage.Success.INSERT_SUCCESS
-                            .getMessage()).setData(notificationClassRequest);
+                    .setResponseMsg(message);
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
