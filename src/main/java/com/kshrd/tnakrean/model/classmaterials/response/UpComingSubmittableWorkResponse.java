@@ -21,4 +21,5 @@ public class UpComingSubmittableWorkResponse {
     Date deadline;
     Integer total_comment;
     Integer class_material_id;
+    Integer class_materials_detail_id;
 }
