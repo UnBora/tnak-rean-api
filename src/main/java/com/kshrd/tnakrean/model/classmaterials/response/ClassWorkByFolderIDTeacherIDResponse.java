@@ -15,6 +15,7 @@ public class ClassWorkByFolderIDTeacherIDResponse {
     Integer folder_id;
     Integer submittable_work_id;
     Integer material_id;
+    Integer class_materials_detail_id;
     String title;
     String description;
     Float score;

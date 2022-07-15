@@ -75,10 +75,9 @@ public interface SubmittableWorkRepository {
     List<UpComingSubmittableWorkResponse> getUpComingSubmittableWorkByStudentId(@Param("studentId") Integer studentId, @Param("classId") Integer classId, @Param("classRoomId") Integer classRoomId, @Param("currentTime") Timestamp currentTime);
 
     // get classwork By ClassId
-    @Select("SELECT saw.id,title,description,score,assigned_date,deadline,saw.class_id,class_material_id, " +
+    @Select("SELECT saw.id,cmd.id as class_materials_detail_id,title,description,score,assigned_date,deadline,saw.class_id,class_material_id, " +
             "(SELECT count(*) FROM comment c \n" +
-            "JOIN class_materials_detail s ON c.class_materials_detail_id = s.id \n" +
-            "WHERE class_material_id = cm.id) " +
+            "WHERE class_materials_detail_id = cmd.id) " +
             "FROM class_materials cm \n" +
             "JOIN class_materials_detail cmd ON cm.id = cmd.class_material_id\n" +
             "JOIN submittable_work saw ON cmd.id = saw.class_materials_detail_id\n" +
@@ -94,10 +93,9 @@ public interface SubmittableWorkRepository {
     SubmittableWorkUpdateClassClassroomRequest updateClassClassroom(SubmittableWorkUpdateClassClassroomRequest submittableWorkUpdateClassClassroomRequest);
 
     // get classwork By TeacherUserId
-    @Select("SELECT DISTINCT cm.id,title,description,score,deadline,assigned_date,created_by,saw.class_id,class_name, " +
+    @Select("SELECT DISTINCT cm.id,saw.id as submittable_work_id,cmd.id as class_materials_detail_id,title,description,score,deadline,assigned_date,created_by,saw.class_id,class_name, " +
             "(SELECT count(*) FROM comment c \n" +
-            "JOIN class_materials_detail s ON c.class_materials_detail_id = s.id \n" +
-            "WHERE class_material_id = cm.id) " +
+            "WHERE class_materials_detail_id = cmd.id) " +
             "FROM class_materials cm \n" +
             "JOIN class_materials_detail cmd ON cm.id = cmd.class_material_id\n" +
             "JOIN submittable_work saw ON cmd.id = saw.class_materials_detail_id\n" +
@@ -172,10 +170,9 @@ public interface SubmittableWorkRepository {
     Integer createClassworkByClass(Integer mdt, Timestamp createdDate, Timestamp deadline, int classroom_id, int class_id, float score);
 
     // get By FolderId in ClassId
-    @Select("SELECT DISTINCT saw.id,title,description,score,assigned_date,deadline,saw.class_id,class_material_id,folder_id,\n" +
+    @Select("SELECT DISTINCT saw.id,cmd.id as class_materials_detail_id,title,description,score,assigned_date,deadline,saw.class_id,class_material_id,folder_id,\n" +
             "(SELECT count(*) FROM comment c \n" +
-            "JOIN class_materials_detail s ON c.class_materials_detail_id = s.id \n" +
-            "WHERE class_material_id = cm.id) \n" +
+            "WHERE class_materials_detail_id = cmd.id) \n" +
             "FROM class_materials cm \n" +
             "JOIN class_materials_detail cmd ON cm.id = cmd.class_material_id\n" +
             "JOIN submittable_work saw ON cmd.id = saw.class_materials_detail_id\n" +
@@ -188,10 +185,9 @@ public interface SubmittableWorkRepository {
     List<ClassWorkByFolderIDClassIDResponse> getByFolderIdClassId(Integer class_id, Integer classroom_id, Integer folderId);
 
     // get By FolderId in TeacherId
-    @Select("SELECT DISTINCT saw.id,title,description,score,assigned_date,deadline,created_by,class_material_id,folder_id,\n" +
+    @Select("SELECT DISTINCT saw.id,cmd.id as class_materials_detail_id,title,description,score,assigned_date,deadline,created_by,class_material_id,folder_id,\n" +
             "(SELECT count(*) FROM comment c \n" +
-            "JOIN class_materials_detail s ON c.class_materials_detail_id = s.id \n" +
-            "WHERE class_material_id = cm.id) \n" +
+            "WHERE class_materials_detail_id = cmd.id) \n" +
             "FROM class_materials cm \n" +
             "JOIN class_materials_detail cmd ON cm.id = cmd.class_material_id\n" +
             "JOIN submittable_work saw ON cmd.id = saw.class_materials_detail_id\n" +
