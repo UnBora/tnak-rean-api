@@ -47,7 +47,9 @@ public class NotificationController {
 
     @GetMapping("/get")
     ApiResponse<List<NotificationResponse>> getNotificationByUserId(@RequestParam int userId) {
+        System.out.println("id:"+userId);
         List<NotificationResponse> notificationResponseList = notificationImp.notificationList(userId);
+        System.out.println(notificationResponseList.get(0).toString());
         System.out.println(notificationResponseList);
         try {
             if (notificationResponseList.isEmpty()) {
@@ -95,20 +97,48 @@ public class NotificationController {
     }
 
     @PostMapping("/send-notification-to-user")
-    ApiResponse<NotificationUserRequest> sendNotificationToUser(@RequestBody @Valid NotificationUserRequest notificationUserRequest, NOTI_TYPE notificationType) {
+    ApiResponse<?> sendNotificationToUser(@RequestBody @Valid NotificationUserRequest notificationClassRequest, NOTI_TYPE notificationType) {
         if (AuthRestController.userDetails == null) {
             return ApiResponse.<NotificationUserRequest>unAuthorized(NotificationUserRequest.class.getSimpleName()).setResponseMsg("Unauthorized!");
-        } else if (!usersRepository.checkUserById(notificationUserRequest.getReceived_id())) {
+        } else if (!usersRepository.checkUserById(notificationClassRequest.getReceived_id())) {
             return ApiResponse.<NotificationUserRequest>notFound(NotificationUserRequest.class.getSimpleName()).setResponseMsg("Received id does not exist");
-        } else if (!classMaterialRepository.checkMaterialsId(notificationUserRequest.getAction_id())) {
-            return ApiResponse.<NotificationUserRequest>notFound(NotificationUserRequest.class.getSimpleName()).setResponseMsg("Action id does not exist");
         }
-        notificationUserRequest.setNotification_type_id(notificationType.id);
-        notificationUserRequest.setSender_id(AuthRestController.userDetails.getId());
-        notificationRepository.sendNotificationToUser(notificationUserRequest);
-        return ApiResponse.<NotificationUserRequest>ok(NotificationUserRequest.class.getSimpleName()).setResponseMsg(BaseMessage.Success.INSERT_SUCCESS.getMessage()).setData(notificationUserRequest);
-
+        notificationClassRequest.setNotification_type_id(notificationType.id);
+        notificationClassRequest.setSender_id(AuthRestController.userDetails.getId());
+        String username = notificationRepository.findUsername(notificationClassRequest.getReceived_id());
+        String class_name = null;
+        String materail = null;
+        String result = null;
+        String message;
+        String messages=null;
+        if(notificationType.toString().equalsIgnoreCase("request")){
+            message = "request to join";
+            class_name = notificationRepository.findClassName(notificationClassRequest.getAction_id());
+            messages = username+" "+" "+message+" "+ class_name;
+        }
+        if(notificationType.toString().equalsIgnoreCase("comment")){
+            message = "add new commented on ";
+            materail = notificationRepository.findMaterial(notificationClassRequest.getAction_id());
+            messages = username+" "+message+" "+materail;
+        }
+        if(notificationType.toString().equalsIgnoreCase("upload")){
+            message = "has been uplaod new rescource ";
+            materail = notificationRepository.findMaterial(notificationClassRequest.getAction_id());
+            messages = username+" "+message+" "+materail;
+        }
+        if(notificationType.toString().equalsIgnoreCase("result")){
+            message = "has been sent the result of ";
+            materail = notificationRepository.findMaterial(notificationClassRequest.getAction_id());
+            messages = username+" "+message+" "+materail;
+        }
+        notificationClassRequest.setContent(messages);
+        notificationRepository.sendNotificationToUser(notificationClassRequest);
+        return ApiResponse.<NotificationClassRequest>
+                        ok(NotificationUserRequest.class.getSimpleName())
+                .setResponseMsg(messages);
     }
+
+
 
 
     @PostMapping("/send-notification-to-class")
@@ -156,7 +186,7 @@ public class NotificationController {
                 materail = notificationRepository.findMaterial(notificationClassRequest.getAction_id());
                 messages = username+" "+message+" "+materail+" in "+ class_name;
             }
-
+            notificationClassRequest.setContent(messages);
             notificationRepository.sendNotificationToClass(notificationClassRequest);
             return ApiResponse.<NotificationClassRequest>
                             ok(NotificationClassRequest.class.getSimpleName())

@@ -13,13 +13,12 @@ import java.util.List;
 
 @Mapper
 public interface NotificationRepository {
-    @Select("SELECT nt.id,n.content, n.received_date, nt.title, nt.action_on,nt.type, n.received_id" +
-            " from notification n" +
-            " JOIN notification_type nt on n.notification_type_id = nt.id" +
-            " JOIN notification_detail nd on n.id = nd.noti_id" +
-            " JOIN class_materials_detail cmd on nd.action_id = cmd.id" +
-            " WHERE n.received_id = #{id}")
-    List<NotificationResponse> getNotificationByUserId(Integer id);
+    @Select("SELECT nt.id as id,n.content as content, n.received_date as received_date ,nt.title as title\n" +
+            "from notification n\n" +
+            "JOIN notification_type nt on n.notification_type_id = nt.id\n" +
+            "JOIN notification_detail nd on n.id = nd.noti_id\n" +
+            "WHERE n.received_id = #{id}")
+    List<NotificationResponse> getNotificationByUserId(@Param("id") Integer id);
 
 
     @Insert("insert into notification_draft(notification_type_id, received_id, content, received_date, received_class_id, sender_id, action_id)" +
