@@ -86,7 +86,7 @@ public class UsersController {
         }
     }
 
-    @DeleteMapping("/deactivate-account")
+    @PutMapping("/deactivate-account")
     public ApiResponse<UserDeactivateAccountRequest> deactivateAccount(
             @RequestParam @Size(min = 3, max = 16,message = "{validation.password.sizenotlesthen3}") String password,
             @RequestParam @Size(min = 3, max = 16, message = "{validation.password.sizenotlesthen3}") String confirmPassword) {
@@ -208,7 +208,7 @@ public class UsersController {
                 }else {
                     userServiceImp.updateProfileByID(userId, userUpdateRequest.getName(), userUpdateRequest.getUsername(), userUpdateRequest.getEmail(), userUpdateRequest.getGender());
                     return ApiResponse.<UserUpdateRequest>ok(UserUpdateRequest.class.getSimpleName())
-                            .setResponseMsg("Your account activated successfully")
+                            .setResponseMsg("Your account update successfully")
                             .setData(new UserUpdateRequest(userId, userUpdateRequest.getName(), userUpdateRequest.getUsername(), userUpdateRequest.getEmail(), userUpdateRequest.getGender()));
                 }
             } else {
