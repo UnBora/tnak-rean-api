@@ -199,15 +199,14 @@ public interface SubmittableWorkRepository {
     List<ClassWorkByFolderIDTeacherIDResponse> getByFolderIdTeacherId(Integer user_id, Integer folderId);
 
     // get ClassWork By StudentId
-    @Select("SELECT DISTINCT cmd.class_id,cmd.id as class_materials_detail_id, class_material_id, title, description, created_by,saw.id,score,assigned_date,deadline,user_id,\n" +
+    @Select("SELECT created_by,user_id,saw.id,cmd.id as class_materials_detail_id,title,description,score,assigned_date,deadline,saw.class_id,class_material_id, " +
             "(SELECT count(*) FROM comment c \n" +
-            "WHERE class_materials_detail_id = cmd.id) \n" +
+            "WHERE class_materials_detail_id = cmd.id) " +
             "FROM class_materials cm \n" +
-            "JOIN class_materials_type cmt ON cm.class_materials_type_id = cmt.id\n" +
             "JOIN class_materials_detail cmd ON cm.id = cmd.class_material_id\n" +
             "JOIN submittable_work saw ON cmd.id = saw.class_materials_detail_id\n" +
-            "JOIN student st ON cmd.class_id = st.class_id\n" +
-            "WHERE (cmt.id = 2 OR cmt.id = 3 OR cmt.id = 4 OR cmt.id = 4) AND user_id = #{user_id}")
+            "JOIN class_materials_type mt ON cm.class_materials_type_id = mt.id\n" +
+            "WHERE (mt.id = 2 OR mt.id = 3 OR mt.id = 4 OR mt.id = 5) AND saw.class_id = (SELECT class_id FROM student WHERE user_id = #{user_id})")
     @Result(property = "total_comment", column = "count")
     @Result(property = "submittable_work_id", column = "id")
     @Result(property = "student_id", column = "user_id")
