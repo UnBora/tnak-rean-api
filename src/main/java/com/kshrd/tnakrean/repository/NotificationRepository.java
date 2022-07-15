@@ -32,5 +32,9 @@ public interface NotificationRepository {
             ",#{notificationRequest.received_date},#{notificationRequest.classId},#{notificationRequest.sender_id},#{notificationRequest.action_id})")
     void sendNotificationToClass(@Param("notificationRequest") NotificationClassRequest notificationClassRequest);
 
+    @Select("select username from users where id=#{user_id};")
+    String findUsername(int user_id);
 
+    @Select("select class_name from class where id =#{class_id};")
+    String findClassName(int class_id);
 }
