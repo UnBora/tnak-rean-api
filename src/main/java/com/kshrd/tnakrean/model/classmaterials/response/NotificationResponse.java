@@ -16,7 +16,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class NotificationResponse {
     private Integer id;
-    private String type;
+    private String title;
     private Integer received_id;
     private String content;
     private String action_on;
