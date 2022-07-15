@@ -18,8 +18,12 @@ public class UpComingSubmittableWorkResponse {
     ClassMaterialContent content;
     Integer score;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    Date assigned_date;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     Date deadline;
     Integer total_comment;
     Integer class_material_id;
     Integer class_materials_detail_id;
+    Integer submittable_work_id;
+    Integer class_id;
 }

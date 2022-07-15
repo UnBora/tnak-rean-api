@@ -75,7 +75,7 @@ public interface CommentRepository {
     boolean ifCommentIdExist(Integer id);
 
  // get By ClassMaterialId
-    @Select("SELECT class_material_id, u.name ,img, comment, comment_date FROM comment c " +
+    @Select("SELECT class_materials_detail_id, u.name ,img, comment, comment_date FROM comment c " +
             "JOIN class_materials_detail cmd ON c.class_materials_detail_id = cmd.id " +
             "JOIN student st ON c.student_id = st.id AND st.class_id = cmd.class_id AND st.classroom_id = cmd.classroom_id\n" +
             "JOIN users u ON st.user_id = u.id " +
@@ -83,7 +83,11 @@ public interface CommentRepository {
     List<CommentByMaterialResponse> getByClassMaterialId(Integer material_id);
 
     // get By MaterialDetailId
-    @Select("SELECT * FROM comment WHERE class_materials_detail_id = #{material_detail_id} ")
+    @Select("SELECT class_materials_detail_id, u.name ,img, comment, comment_date FROM comment c " +
+            "JOIN class_materials_detail cmd ON c.class_materials_detail_id = cmd.id " +
+            "JOIN student st ON c.student_id = st.id AND st.class_id = cmd.class_id AND st.classroom_id = cmd.classroom_id\n" +
+            "JOIN users u ON st.user_id = u.id " +
+            "WHERE class_materials_detail_id = #{material_detail_id}")
     @Result(property = "comment_id",column = "id")
-    List<CommentResponse> getByMaterialDetailId(Integer material_detail_id);
+    List<CommentByMaterialDetailResponse> getByMaterialDetailId(Integer material_detail_id);
 }

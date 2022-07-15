@@ -58,10 +58,9 @@ public interface SubmittableWorkRepository {
     @Result(property = "submittable_work_id", column = "id")
     SubmittableWorkResponse delete(Integer submittable_work_id);
 
-    @Select("SELECT cm.title as title, cm.description, cm.content, sw.deadline, sw.score, cm.id,sw.class_materials_detail_id, " +
+    @Select("SELECT cm.title as title,cmd.class_id, cm.description, cm.content, sw.deadline,assigned_date, sw.score, cm.id,cmd.id as class_materials_detail_id, sw.id as submittable_work_id, " +
             " (SELECT count(*) FROM comment c " +
-            " JOIN class_materials_detail s ON c.class_materials_detail_id = s.id " +
-            " WHERE class_material_id = cm.id)" +
+            " WHERE class_materials_detail_id = cmd.id)" +
             " FROM class_materials cm" +
             " INNER JOIN class_materials_detail cmd on cm.id = cmd.class_material_id" +
             " INNER JOIN submittable_work sw on cmd.id = sw.class_materials_detail_id" +
@@ -71,8 +70,8 @@ public interface SubmittableWorkRepository {
             " AND sw.deadline - #{currentTime} >= INTERVAL '0'" +
             " AND sw.deadline - #{currentTime} <= INTERVAL '2 Days'")
     @Result(property = "content", column = "content", typeHandler = JsonTypeHandler.class)
-    @Result(property = "total_comments", column = "count")
-    @Result(property = "material_id", column = "id")
+    @Result(property = "total_comment", column = "count")
+    @Result(property = "class_material_id", column = "id")
     List<UpComingSubmittableWorkResponse> getUpComingSubmittableWorkByStudentId(@Param("studentId") Integer studentId, @Param("classId") Integer classId, @Param("classRoomId") Integer classRoomId, @Param("currentTime") Timestamp currentTime);
 
     // get classwork By ClassId
@@ -207,8 +206,7 @@ public interface SubmittableWorkRepository {
     // get ClassWork By StudentId
     @Select("SELECT DISTINCT cmd.class_id,cmd.id as class_materials_detail_id, class_material_id, title, description, created_by,saw.id,score,assigned_date,deadline,user_id,\n" +
             "(SELECT count(*) FROM comment c \n" +
-            "JOIN class_materials_detail s ON c.class_materials_detail_id = s.id \n" +
-            "WHERE class_material_id = cm.id) \n" +
+            "WHERE class_materials_detail_id = cmd.id) \n" +
             "FROM class_materials cm \n" +
             "JOIN class_materials_type cmt ON cm.class_materials_type_id = cmt.id\n" +
             "JOIN class_materials_detail cmd ON cm.id = cmd.class_material_id\n" +

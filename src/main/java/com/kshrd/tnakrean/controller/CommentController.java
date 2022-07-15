@@ -63,15 +63,15 @@ public class CommentController {
         }
     }
     @GetMapping("get-by-materialDetailId")
-    ApiResponse<List<CommentResponse>> getByMaterialDetailId(@RequestParam @Min(value = 1) Integer material_detail_id) {
+    ApiResponse<List<CommentByMaterialDetailResponse>> getByMaterialDetailId(@RequestParam @Min(value = 1) Integer material_detail_id) {
         try {
-            List<CommentResponse> commentResponses = commentRepository.getByMaterialDetailId(material_detail_id);
+            List<CommentByMaterialDetailResponse> commentResponses = commentRepository.getByMaterialDetailId(material_detail_id);
             if (commentResponses.isEmpty()) {
-                return ApiResponse.<List<CommentResponse>>notFound(CommentResponse.class.getSimpleName())
+                return ApiResponse.<List<CommentByMaterialDetailResponse>>notFound(CommentByMaterialDetailResponse.class.getSimpleName())
                         .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
                         .setData(commentResponses);
             }
-            return ApiResponse.<List<CommentResponse>>ok(CommentResponse.class.getSimpleName())
+            return ApiResponse.<List<CommentByMaterialDetailResponse>>ok(CommentByMaterialDetailResponse.class.getSimpleName())
                     .setResponseMsg(BaseMessage.Success.SELECT_ONE_RECORD_SUCCESS.getMessage())
                     .setData(commentResponses);
         } catch (Exception e) {
