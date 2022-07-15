@@ -295,6 +295,48 @@ public class ClassMaterialController {
             return ApiResponse.setError(e.getMessage());
         }
     }
+    @GetMapping("/get-by-classId-and-classroomId")
+    ApiResponse<List<ClassMaterialByClassIdAndClassroomIdResponse>> getByClassIdAndClassroomId(
+            @RequestParam @Min(value = 1) Integer class_id,
+            @RequestParam @Min(value = 1) Integer classroom_id
+    ) {
+        try {
+            List<ClassMaterialByClassIdAndClassroomIdResponse> classMaterialByClassIdAndClassroomIdResponses = classMaterialServiceImp.getByClassIdAndClassroomId(class_id, classroom_id);
+            if (classMaterialByClassIdAndClassroomIdResponses.isEmpty()) {
+                return ApiResponse.<List<ClassMaterialByClassIdAndClassroomIdResponse>>notFound(ClassMaterialByClassIdAndClassroomIdResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setData(classMaterialByClassIdAndClassroomIdResponses);
+            }
+            return ApiResponse.<List<ClassMaterialByClassIdAndClassroomIdResponse>>ok(ClassMaterialByClassIdAndClassroomIdResponse.class.getSimpleName())
+                    .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
+                    .setData(classMaterialByClassIdAndClassroomIdResponses);
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("delete-course-or-classwork-by-createdBy-and-materialId")
+    ApiResponse<Boolean> deleteByCreatedByAndMaterialId(
+            @RequestParam @Min(value = 1) Integer material_id
+    ) {
+        Integer teacher_id = AuthRestController.user_id;
+        Boolean checkMaterialId = classMaterialRepository.findMaterialId(material_id);
+        Boolean checkMaterialIdWithCreatedBy = classMaterialRepository.findMaterialIdWithCreatedBy(material_id,teacher_id);
+        classMaterialServiceImp.deleteByCreatedByAndMaterialId(material_id,teacher_id);
+        if (teacher_id == 0) {
+            return ApiResponse.unAuthorized("unAuthorized");
+        } else if (checkMaterialId == false) {
+            return ApiResponse.<Boolean>notFound("Material")
+                    .setResponseMsg("Material Id: " +material_id+ " is not exist");
+        } else if (checkMaterialIdWithCreatedBy == false) {
+            return ApiResponse.<Boolean>notFound("Material")
+                    .setResponseMsg("TeacherId: " +teacher_id+ " didn't create MaterialId: "+material_id);
+        } else {
+            return ApiResponse.<Boolean>ok("Material")
+                    .setResponseMsg("Delete MaterialId: " +material_id+ " successfully")
+                    .setData(true);
+        }
+    }
     @PostMapping("set-course-or-classwork-to-folder")
     ApiResponse<?> setMaterialToFolder(
             @RequestParam @Min(value = 1) int folder_id,
@@ -360,51 +402,6 @@ public class ClassMaterialController {
 //            return ApiResponse.setError(e.getMessage());
 //        }
 //    }
-
-
-
-    @GetMapping("/get-by-classId-and-classroomId")
-    ApiResponse<List<ClassMaterialByClassIdAndClassroomIdResponse>> getByClassIdAndClassroomId(
-            @RequestParam @Min(value = 1) Integer class_id,
-            @RequestParam @Min(value = 1) Integer classroom_id
-    ) {
-        try {
-            List<ClassMaterialByClassIdAndClassroomIdResponse> classMaterialByClassIdAndClassroomIdResponses = classMaterialServiceImp.getByClassIdAndClassroomId(class_id, classroom_id);
-            if (classMaterialByClassIdAndClassroomIdResponses.isEmpty()) {
-                return ApiResponse.<List<ClassMaterialByClassIdAndClassroomIdResponse>>notFound(ClassMaterialByClassIdAndClassroomIdResponse.class.getSimpleName())
-                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
-                        .setData(classMaterialByClassIdAndClassroomIdResponses);
-            }
-            return ApiResponse.<List<ClassMaterialByClassIdAndClassroomIdResponse>>ok(ClassMaterialByClassIdAndClassroomIdResponse.class.getSimpleName())
-                    .setResponseMsg(BaseMessage.Success.SELECT_ALL_RECORD_SUCCESS.getMessage())
-                    .setData(classMaterialByClassIdAndClassroomIdResponses);
-        } catch (Exception e) {
-            return ApiResponse.setError(e.getMessage());
-        }
-    }
-
-    @DeleteMapping("delete-course-or-classwork-by-createdBy-and-materialId")
-    ApiResponse<Boolean> deleteByCreatedByAndMaterialId(
-            @RequestParam @Min(value = 1) Integer material_id
-            ) {
-        Integer teacher_id = AuthRestController.user_id;
-        Boolean checkMaterialId = classMaterialRepository.findMaterialId(material_id);
-        Boolean checkMaterialIdWithCreatedBy = classMaterialRepository.findMaterialIdWithCreatedBy(material_id,teacher_id);
-        classMaterialServiceImp.deleteByCreatedByAndMaterialId(material_id,teacher_id);
-        if (teacher_id == 0) {
-            return ApiResponse.unAuthorized("unAuthorized");
-        } else if (checkMaterialId == false) {
-            return ApiResponse.<Boolean>notFound("Material")
-                        .setResponseMsg("Material Id: " +material_id+ " is not exist");
-        } else if (checkMaterialIdWithCreatedBy == false) {
-            return ApiResponse.<Boolean>notFound("Material")
-                    .setResponseMsg("TeacherId: " +teacher_id+ " didn't create MaterialId: "+material_id);
-        } else {
-            return ApiResponse.<Boolean>ok("Material")
-                    .setResponseMsg("Delete MaterialId: " +material_id+ " successfully")
-                    .setData(true);
-        }
-    }
 
 //    @GetMapping("/get-by-classId")
 //    ApiResponse<List<ClassMaterialByClassIdResponse>> getByClassId(@RequestParam @Min(value = 1) Integer class_id) {

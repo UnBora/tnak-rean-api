@@ -110,8 +110,7 @@ public interface SubmittableWorkRepository {
     // get By MaterialId
     @Select("SELECT DISTINCT saw.id,title,description,score,assigned_date,deadline,saw.class_id,class_material_id,\n" +
             "(SELECT count(*) FROM comment c \n" +
-            "JOIN class_materials_detail s ON c.class_materials_detail_id = s.id \n" +
-            "WHERE class_material_id = cm.id) \n" +
+            "WHERE class_materials_detail_id = cmd.id) \n" +
             "FROM class_materials cm \n" +
             "JOIN class_materials_detail cmd ON cm.id = cmd.class_material_id\n" +
             "JOIN submittable_work saw ON cmd.id = saw.class_materials_detail_id\n" +

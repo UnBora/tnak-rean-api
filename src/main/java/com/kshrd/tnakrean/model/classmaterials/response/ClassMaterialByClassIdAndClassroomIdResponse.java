@@ -16,6 +16,7 @@ import java.util.Date;
 public class ClassMaterialByClassIdAndClassroomIdResponse {
     private Integer class_id;
     private Integer material_id;
+    private Integer class_materials_detail_id;
     private String title;
     private String description;
     private Integer total_comment;

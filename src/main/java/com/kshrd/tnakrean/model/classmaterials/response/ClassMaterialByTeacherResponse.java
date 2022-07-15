@@ -10,8 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class ClassMaterialByTeacherResponse {
-    // private Integer class_id;
+    private Integer class_id;
     private Integer material_id;
+    private Integer class_materials_detail_id;
     private String title;
     private String description;
     private Integer total_comment;

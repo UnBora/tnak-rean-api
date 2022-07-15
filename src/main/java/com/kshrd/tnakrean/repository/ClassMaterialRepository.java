@@ -89,12 +89,12 @@ public interface ClassMaterialRepository {
     List<ClassMaterialResponse> getClassMaterialByCreatedByAndMaterialType(Integer created_by, Integer class_materials_type_id);
 
     // Get All Class Material By teacher User Id
-    @Select("SELECT cm.id, title,description,created_by,\n" +
+    @Select("SELECT cm.id,cmd.id as class_materials_detail_id, title,description,created_by,cmd.class_id\n" +
             "(SELECT count(*) FROM comment c \n" +
-            "JOIN class_materials_detail s ON c.class_materials_detail_id = s.id \n" +
-            "WHERE class_material_id = cm.id) \n" +
+            "WHERE class_materials_detail_id = cmd.id) \n" +
             "FROM class_materials cm \n" +
             "JOIN class_materials_type cmd ON cm.class_materials_type_id = cmd.id\n" +
+            "JOIN class_materials_detail cmd ON cmd.class_material_id = cm.id " +
             "WHERE created_by = #{user_id} AND class_materials_type_id = 1")
     @Result(property = "total_comment", column = "count")
     @Result(property = "material_id", column = "id")
@@ -137,16 +137,15 @@ public interface ClassMaterialRepository {
     List<ClassMaterialByClassIdResponse> getByClassId(@Param("class_id") Integer class_id);
 
     // get By ClassId And ClassroomId
-    @Select("SELECT class_id, material_id, title,description,clm.created_by , (SELECT count(*) FROM comment c \n" +
-            "JOIN class_materials_detail s ON c.class_materials_detail_id = s.id \n" +
-            "WHERE class_material_id = mf.material_id)\n" +
-            "FROM folder f\n" +
-            "JOIN class_materials_type cm ON f.material_type_id = cm.id\n" +
-            "JOIN class_material_folder cmf ON f.id = cmf.folder_id \n" +
-            "JOIN material_folder mf ON f.id = mf.folder_id\n" +
-            "JOIN class_materials clm ON mf.material_id = clm.id " +
-            "WHERE class_materials_type_id = 1 AND classroom_id = #{classroom_id} AND class_id = #{class_id} ")
+    @Select("SELECT cmd.class_id,cmd.id as class_materials_detail_id, class_material_id,cmd.id,title,description,created_by ,\n" +
+            "(SELECT count(*) FROM comment c \n" +
+            "WHERE class_materials_detail_id = cmd.id) \n" +
+            "FROM class_materials cm \n" +
+            "JOIN class_materials_type cmt ON cm.class_materials_type_id = cmt.id\n" +
+            "JOIN class_materials_detail cmd ON cm.id = cmd.class_material_id\n" +
+            "WHERE class_materials_type_id = 1 AND cmd.class_id = #{class_id} AND cmd.classroom_id = #{classroom_id} ")
     @Result(property = "total_comment", column = "count")
+    @Result(property = "material_id", column = "class_material_id")
     List<ClassMaterialByClassIdAndClassroomIdResponse> getByClassIdAndClassroomId(Integer class_id, Integer classroom_id);
 
     // get By MaterialType And ClassId
@@ -210,28 +209,30 @@ public interface ClassMaterialRepository {
     boolean setMaterialToFolder(int folder_id, int material_id);
 
     // get Course By FolderId with Teacher id
-    @Select("SELECT  DISTINCT material_id,created_by,class_materials_type_id,title,description,\n" +
+    @Select("SELECT  DISTINCT cmd.id,material_id,created_by,class_materials_type_id,title,description,\n" +
             "(SELECT count(*) FROM comment c \n" +
-            "JOIN class_materials_detail s ON c.class_materials_detail_id = s.id \n" +
-            "WHERE class_material_id = cm.id) \n" +
+            "WHERE class_materials_detail_id = cmd.id) \n" +
             "FROM class_materials cm \n" +
             "JOIN material_folder mf on cm.id = mf.material_id\n" +
+            "JOIN class_materials_detail cmd ON cmd.class_material_id = cm.id " +
             "JOIN class_materials_type mt on cm.class_materials_type_id = mt.id\n" +
             "WHERE mt.id = 1 AND created_by = #{user_id} AND folder_id = #{folder_id}")
     @Result(property = "total_comment", column = "count")
+    @Result(property = "class_materials_detail_id", column = "id")
     List<ClassMaterialByTeacherResponse> CourseMaterialByFolderId(int folder_id,int user_id);
 
     // get Course Material By FolderId In Class
-    @Select("SELECT DISTINCT material_id,created_by,class_materials_type_id,title,description,class_id,\n" +
+    @Select("SELECT DISTINCT cmd.id,material_id,created_by,class_materials_type_id,title,description,class_id,\n" +
             "(SELECT count(*) FROM comment c \n" +
-            "JOIN class_materials_detail s ON c.class_materials_detail_id = s.id \n" +
-            "WHERE class_material_id = cm.id) \n" +
+            "WHERE class_materials_detail_id = cmd.id) \n" +
             "FROM class_materials cm \n" +
             "JOIN material_folder mf on cm.id = mf.material_id\n" +
             "JOIN class_materials_type mt on cm.class_materials_type_id = mt.id\n" +
             "JOIN class_materials_detail cmd on cm.id = cmd.class_material_id\n" +
             "WHERE mt.id = 1 AND class_id = #{class_id} AND classroom_id = #{classroom_id} AND folder_id = #{folder_id}")
     @Result(property = "total_comment", column = "count")
+    @Result(property = "class_materials_detail_id", column = "id")
+
     List<ClassMaterialByClassIdAndClassroomIdResponse> getCourseMaterialByFolderIdInClass(Integer folder_id, Integer class_id,Integer classroom_id);
 
     // get Course By StudentId
