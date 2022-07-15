@@ -1,0 +1,11 @@
+version: '2.9'
+
+services:
+  
+  tnak-rean-api:
+    build: .
+    ports:
+      - "8884:8080"
+    
+
+  

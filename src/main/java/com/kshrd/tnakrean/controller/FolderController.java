@@ -1,5 +1,6 @@
 package com.kshrd.tnakrean.controller;
 
+import com.kshrd.tnakrean.configuration.SecurityContextBean;
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.request.*;
@@ -101,7 +102,7 @@ public class FolderController {
     ApiResponse<List<FolderByStudentIdResponse>> getFolderByStudentId(
             @RequestParam @Min(value = 0) Integer material_type_id
     ) {
-        Integer user_id = AuthRestController.user_id;
+        Integer user_id = SecurityContextBean.getRequestingUser().getId();
         List<FolderByStudentIdResponse> responseList = folderServiceImp.getFolderByStudentId(user_id, material_type_id);
         try {
             if (user_id == 0) {
@@ -187,7 +188,7 @@ public class FolderController {
 
     @GetMapping("/get-courseFolder-by-teacherUserId")
     ApiResponse<List<FolderByTeacherResponse>> getCourseFolderByTeacher() {
-        Integer user_id = AuthRestController.user_id;
+        Integer user_id = SecurityContextBean.getRequestingUser().getId();
         List<FolderByTeacherResponse> responseList = folderServiceImp.getCourseFolderByTeacher(user_id);
         try {
             if (!responseList.isEmpty()) {
@@ -206,7 +207,7 @@ public class FolderController {
 
     @GetMapping("/get-classworkFolder-by-teacherUserId")
     ApiResponse<List<FolderByTeacherResponse>> getClassworkFolderByteacherUserId() {
-        Integer user_id = AuthRestController.user_id;
+        Integer user_id = SecurityContextBean.getRequestingUser().getId();
         List<FolderByTeacherResponse> responseList = folderServiceImp.getClassworkFolderByteacherUserId(user_id);
         try {
             if (!responseList.isEmpty()) {
@@ -224,7 +225,7 @@ public class FolderController {
     @PostMapping("/create-classWorkFolder")
     ApiResponse<FolderClassWorkRequest> createClassWorkFolder(
             @RequestBody @Valid FolderClassWorkRequest folderClassWorkRequest) {
-        Integer userId = AuthRestController.user_id;
+        Integer userId = SecurityContextBean.getRequestingUser().getId();
         boolean checkParentId = folderRepository.findParentId(folderClassWorkRequest.getParent_id());
         boolean checkMaterialTypeId = folderRepository.findMaterialTypeId(folderClassWorkRequest.getMaterial_type_id());
         try {
@@ -252,7 +253,7 @@ public class FolderController {
     @PostMapping("/create-courseWorkFolder")
     ApiResponse<FolderCourseRequest> createCourseWorkFolder(
             @RequestBody @Valid FolderCourseRequest folderCourseRequest) {
-        Integer userId = AuthRestController.user_id;
+        Integer userId = SecurityContextBean.getRequestingUser().getId();
         boolean checkParentId = folderRepository.findParentId(folderCourseRequest.getParent_id());
         try {
             if (userId == 0){
@@ -303,7 +304,7 @@ public class FolderController {
     }
     @PostMapping("/create-courseFolder-in-class")
     ApiResponse<FolderInClassRequest> createCourseFolderInClass(@RequestBody @Valid FolderInClassRequest folder) {
-        Integer userId = AuthRestController.user_id;
+        Integer userId = SecurityContextBean.getRequestingUser().getId();
         boolean checkParentId = folderRepository.findParentId(folder.getParent_id());
         Boolean checkClassId = folderRepository.findClassId(folder.getClass_id());
         Boolean checkClassroomId = folderRepository.findClassroomId(folder.getClassroom_id());
@@ -334,7 +335,7 @@ public class FolderController {
     @PostMapping("/create-classworkFolder-in-class")
     ApiResponse<FolderInClassRequest> createClassWorkFolderInClass(@RequestBody @Valid FolderInClassRequest folder
     ) {
-        Integer userId = AuthRestController.user_id;
+        Integer userId = SecurityContextBean.getRequestingUser().getId();
         boolean checkParentId = folderRepository.findParentId(folder.getParent_id());
         Boolean checkClassId = folderRepository.findClassId(folder.getClass_id());
         Boolean checkClassroomId = folderRepository.findClassroomId(folder.getClassroom_id());

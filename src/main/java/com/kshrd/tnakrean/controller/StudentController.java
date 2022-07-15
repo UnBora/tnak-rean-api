@@ -1,6 +1,7 @@
 package com.kshrd.tnakrean.controller;
 
 
+import com.kshrd.tnakrean.configuration.SecurityContextBean;
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassResponse;
@@ -60,7 +61,7 @@ public class StudentController {
     @GetMapping("/get-by-id")
     public ApiResponse<GetStudentByIDResponse> getAllStudentFromDBById() {
         try {
-            Integer user_id = AuthRestController.user_id;
+            Integer user_id = SecurityContextBean.getRequestingUser().getId();
             GetStudentByIDResponse getStudentByIDResponses = studentServiceImp.getStudentById(user_id);
             if (!user_id.equals(0)) {
                 if (getStudentByIDResponses == null) {
@@ -102,7 +103,7 @@ public class StudentController {
             @RequestParam @Min(value = 1, message = "{validation.classroomId.notNegative}") Integer classroomId,
             @RequestParam @Min(value = 1, message = "{validation.classId.notNegative}") Integer classId) {
         try {
-            Integer user_id = AuthRestController.user_id;
+            Integer user_id = SecurityContextBean.getRequestingUser().getId();
             if (!user_id.equals(0)) {
                 Boolean checkId = studentRepository.checkIfStudentExists(user_id, classroomId, classId);
                 if (checkId.equals(false)) {

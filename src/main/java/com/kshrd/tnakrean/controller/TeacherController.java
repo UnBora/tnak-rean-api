@@ -1,5 +1,6 @@
 package com.kshrd.tnakrean.controller;
 
+import com.kshrd.tnakrean.configuration.SecurityContextBean;
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.user.request.TeacherRemoveStudentByIDResponse;
@@ -49,7 +50,7 @@ public class TeacherController {
             @RequestParam @Min(value = 1) Integer class_id,
             @RequestParam @Min(value = 1) Integer classroom_id
     ) {
-        Integer user_id = AuthRestController.user_id;
+        Integer user_id = SecurityContextBean.getRequestingUser().getId();
         List<TeacherByClassAndClassroomResponse> teacherResponses = teacherImpl.getByClassAndClassrooms(user_id,class_id, classroom_id);
         if (teacherResponses.isEmpty()) {
             return ApiResponse.<List<TeacherByClassAndClassroomResponse>>notFound(TeacherByClassAndClassroomResponse.class.getSimpleName())
@@ -63,7 +64,7 @@ public class TeacherController {
 
     @GetMapping("/get-by-teacherUserId")
     ApiResponse<TeacherResponse> getTeacherById() {
-        Integer user_id = AuthRestController.user_id;
+        Integer user_id = SecurityContextBean.getRequestingUser().getId();
         TeacherResponse teacherByIdResponse = teacherImpl.getTeacherById(user_id);
         if (user_id == 0) {
             return ApiResponse.<TeacherResponse>unAuthorized(TeacherResponse.class.getSimpleName())
@@ -78,7 +79,7 @@ public class TeacherController {
     ApiResponse<TeacherRemoveStudentByID> TeacherRemoveStudentByID(
             @RequestBody TeacherRemoveStudentByIDResponse teacherRemoveStudentByIDResponse) {
         try {
-            Integer user_id = AuthRestController.user_id;
+            Integer user_id = SecurityContextBean.getRequestingUser().getId();
             if (!user_id.equals(0)) {
                 Boolean checkId = teacherRepository.checkIfStudentExists(teacherRemoveStudentByIDResponse.getUser_id(), teacherRemoveStudentByIDResponse.getClassroom_id(), teacherRemoveStudentByIDResponse.getClass_id());
                 String studentName= teacherRepository.getStudentName(teacherRemoveStudentByIDResponse.getUser_id());

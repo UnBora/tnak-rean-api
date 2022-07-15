@@ -1,6 +1,7 @@
 package com.kshrd.tnakrean.controller;
 
 import com.fasterxml.jackson.databind.ser.Serializers;
+import com.kshrd.tnakrean.configuration.SecurityContextBean;
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.request.CommentInsertRequest;
@@ -82,7 +83,7 @@ public class CommentController {
 //    @GetMapping("get-by-studentId")
 //    ApiResponse<List<CommentResponse>> getByStudentId() {
 //        try {
-//            Integer userId = AuthRestController.user_id;
+//            Integer userId = SecurityContextBean.getRequestingUser().getId();
 //            List<CommentResponse> commentResponses = commentServiceImp.getByStudentId(userId);
 //            if (userId == 0) {
 //                return ApiResponse.<List<CommentResponse>>unAuthorized(CommentResponse.class.getSimpleName())
@@ -103,7 +104,7 @@ public class CommentController {
 //    @GetMapping("get-by-teacherUserId")
 //    ApiResponse<List<CommentByTeacherResponse>> getByTecherId() {
 //        try {
-//            Integer userId = AuthRestController.user_id;
+//            Integer userId = SecurityContextBean.getRequestingUser().getId();
 //            List<CommentByTeacherResponse> commentResponses = commentServiceImp.getByTecherId(userId);
 //            if (userId == 0) {
 //                return ApiResponse.<List<CommentByTeacherResponse>>unAuthorized(CommentByTeacherResponse.class.getSimpleName())
@@ -163,7 +164,7 @@ public class CommentController {
     ApiResponse<CommentInsertRequest> insertComment(
             @RequestBody @Valid CommentInsertRequest commentInsertRequest
     ) {
-        Integer userId = AuthRestController.user_id;
+        Integer userId = SecurityContextBean.getRequestingUser().getId();
         boolean checkUserId = commentRepository.ifUserIdExist(userId);
         boolean checkMaterialsDetailId = commentRepository.ifMaterialsDetailIdExist(commentInsertRequest.getClass_materials_detail_id());
         try {

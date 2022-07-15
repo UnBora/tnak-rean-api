@@ -1,5 +1,6 @@
 package com.kshrd.tnakrean.controller;
 
+import com.kshrd.tnakrean.configuration.SecurityContextBean;
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.request.*;
@@ -68,7 +69,7 @@ public class SubmittedWorkController {
             @RequestParam @Min(value = 1) Integer material_id)
     {
         try {
-            Integer user_id = AuthRestController.user_id;
+            Integer user_id = SecurityContextBean.getRequestingUser().getId();
             List<SubmittedWorkResultByStudentIdResponse> submittedWorkResponses = submittedWorkImpl.getResultByStudentIdMaterialId(material_id,user_id);
             if (user_id == 0){
                return ApiResponse.unAuthorized("unAuthorized");
@@ -114,7 +115,7 @@ public class SubmittedWorkController {
             @RequestParam @Min(value = 1) Integer class_id,
             @RequestParam @Min(value = 1) Integer material_id
     ) {
-        Integer userId = AuthRestController.user_id;
+        Integer userId = SecurityContextBean.getRequestingUser().getId();
         List<SubmittedWorkNotGradedByClassResponse> submittedWorkResponses = submittedWorkImpl.getNotGradedByClassId(class_id,material_id,userId);
         try {
             if (submittedWorkResponses.isEmpty()) {
@@ -157,7 +158,7 @@ public class SubmittedWorkController {
     ApiResponse<SubmittedWorkStudentWorkRequest> addSubmittedWork(
             @RequestBody @Valid SubmittedWorkStudentWorkRequest submittedWorkStudentWorkRequest
     ) {
-        Integer userId = AuthRestController.user_id;
+        Integer userId = SecurityContextBean.getRequestingUser().getId();
         boolean checkSubmiitableId = submittedWorkRepository.checkIfSubmiitableIdExist(submittedWorkStudentWorkRequest.getSubmittable_work_id());
         try {
             if (userId == 0) {

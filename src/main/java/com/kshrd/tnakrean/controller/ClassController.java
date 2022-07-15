@@ -1,5 +1,6 @@
 package com.kshrd.tnakrean.controller;
 
+import com.kshrd.tnakrean.configuration.SecurityContextBean;
 import com.kshrd.tnakrean.model.apiresponse.ApiResponse;
 import com.kshrd.tnakrean.model.apiresponse.BaseMessage;
 import com.kshrd.tnakrean.model.classmaterials.request.GetClassRequest;
@@ -158,7 +159,7 @@ public class ClassController {
     @GetMapping("get-by-teacherUserId")
     public ApiResponse<List<ClassByUserTeacherIdResponse>> getByTeacherUserId(@RequestParam Integer classroom_id) {
         try {
-            Integer user_id = AuthRestController.user_id;
+            Integer user_id = SecurityContextBean.getRequestingUser().getId();
             List<ClassByUserTeacherIdResponse> getClassRequests = classServiceImp.getByTeacherUserId(user_id,classroom_id);
             if (user_id == 0) {
                 return ApiResponse.unAuthorized("Unauthorized");
