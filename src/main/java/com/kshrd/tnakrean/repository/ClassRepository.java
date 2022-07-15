@@ -1,6 +1,7 @@
 package com.kshrd.tnakrean.repository;
 
 import com.kshrd.tnakrean.model.classmaterials.request.GetClassRequest;
+import com.kshrd.tnakrean.model.classmaterials.response.ClassByStudentResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.ClassByUserTeacherIdResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.SearchClassResponse;
 import com.kshrd.tnakrean.model.classmaterials.response.SharedClassByFolderResponse;
@@ -78,4 +79,10 @@ public interface ClassRepository {
             "JOIN class_material_folder cf on c.id = cf.class_id\n" +
             "where c.id not in(SELECT class_id FROM class_material_folder WHERE folder_id= #{folder_id})")
     List<SharedClassByFolderResponse> getNotSharedClassByFolder(Integer folder_id);
+
+    // get Class ByStudent
+    @Select("SELECT user_id,class_id,class_name FROM student s \n" +
+            "JOIN class c ON s.class_id = c.id\n" +
+            "WHERE user_id = #{user_id}")
+    List<ClassByStudentResponse> getClassByStudent(Integer user_id);
 }

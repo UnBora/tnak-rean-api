@@ -134,6 +134,27 @@ public class ClassController {
         }
     }
 
+    @GetMapping("/get-class-by-studentUserId")
+    public ApiResponse<List<ClassByStudentResponse>> getClassByStudent(
+            @RequestParam @Min(value = 1) Integer user_id
+    ) {
+        try {
+            List<ClassByStudentResponse> classByStudentResponses = classRepository.getClassByStudent(user_id);
+            if (user_id == 0){
+                return ApiResponse.unAuthorized("unAuthorized");
+            } else if (classByStudentResponses.isEmpty()) {
+                return ApiResponse.<List<ClassByStudentResponse>>ok(ClassByStudentResponse.class.getSimpleName())
+                        .setResponseMsg(BaseMessage.Error.SELECT_ERROR.getMessage())
+                        .setData(classByStudentResponses);
+            } else {
+                return ApiResponse.<List<ClassByStudentResponse>>ok(ClassByStudentResponse.class.getSimpleName())
+                        .setData(classByStudentResponses);
+            }
+        } catch (Exception e) {
+            return ApiResponse.setError(e.getMessage());
+        }
+    }
+
     @GetMapping("get-by-teacherUserId")
     public ApiResponse<List<ClassByUserTeacherIdResponse>> getByTeacherUserId(@RequestParam Integer classroom_id) {
         try {
