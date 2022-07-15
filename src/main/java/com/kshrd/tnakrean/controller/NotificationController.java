@@ -121,19 +121,46 @@ public class NotificationController {
             } else if (!classRepository.checkIfClassRoomDetailExists(notificationClassRequest.getClassId())) {
                 return ApiResponse.<NotificationClassRequest>notFound(NotificationClassRequest.class.getSimpleName())
                         .setResponseMsg("class id does not exist");
-            } else if (!classMaterialRepository.checkMaterialsId(notificationClassRequest.getAction_id())) {
-                return ApiResponse.<NotificationClassRequest>notFound(NotificationClassRequest.class.getSimpleName())
-                        .setResponseMsg("Action id does not exist");
+//            } else if (!classMaterialRepository.checkMaterialsId(notificationClassRequest.getAction_id())) {
+//                return ApiResponse.<NotificationClassRequest>notFound(NotificationClassRequest.class.getSimpleName())
+//                        .setResponseMsg("Action id does not exist");
             }
             notificationClassRequest.setNotification_type_id(notificationType.id);
             notificationClassRequest.setSender_id(AuthRestController.userDetails.getId());
             String username = notificationRepository.findUsername(AuthRestController.userDetails.getId());
-            String class_name = notificationRepository.findClassName(notificationClassRequest.getClassId());
-            String message = username+" "+notificationType.toString()+" "+ class_name;
+            String class_name = null;
+            String materail = null;
+            String result = null;
+            String message;
+            String messages=null;
+            if(notificationType.toString().equalsIgnoreCase("request")){
+                message = "request to join";
+                class_name = notificationRepository.findClassName(notificationClassRequest.getClassId());
+                messages = username+" "+" "+message+" "+ class_name;
+            }
+            if(notificationType.toString().equalsIgnoreCase("comment")){
+                message = "add new commented on ";
+                materail = notificationRepository.findMaterial(notificationClassRequest.getAction_id());
+                class_name = notificationRepository.findClassName(notificationClassRequest.getClassId());
+                messages = username+" "+message+" "+materail+" on class "+class_name;
+            }
+            if(notificationType.toString().equalsIgnoreCase("upload")){
+                message = "has been uplaod new rescource ";
+                class_name = notificationRepository.findClassName(notificationClassRequest.getClassId());
+                materail = notificationRepository.findMaterial(notificationClassRequest.getAction_id());
+                messages = username+" "+message+" "+materail+" in "+ class_name;
+            }
+            if(notificationType.toString().equalsIgnoreCase("result")){
+                message = "has been sent the result of ";
+                class_name = notificationRepository.findClassName(notificationClassRequest.getClassId());
+                materail = notificationRepository.findMaterial(notificationClassRequest.getAction_id());
+                messages = username+" "+message+" "+materail+" in "+ class_name;
+            }
+
             notificationRepository.sendNotificationToClass(notificationClassRequest);
             return ApiResponse.<NotificationClassRequest>
                             ok(NotificationClassRequest.class.getSimpleName())
-                    .setResponseMsg(message);
+                    .setResponseMsg(messages);
         } catch (Exception e) {
             return ApiResponse.setError(e.getMessage());
         }
