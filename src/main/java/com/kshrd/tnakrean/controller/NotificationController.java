@@ -148,13 +148,13 @@ public class NotificationController {
                 message = "has been uplaod new rescource ";
                 class_name = notificationRepository.findClassName(notificationClassRequest.getClassId());
                 materail = notificationRepository.findMaterial(notificationClassRequest.getAction_id());
-                messages = username+" "+messages+" "+materail+"in "+ class_name;
+                messages = username+" "+message+" "+materail+" in "+ class_name;
             }
             if(notificationType.toString().equalsIgnoreCase("result")){
                 message = "has been sent the result of ";
                 class_name = notificationRepository.findClassName(notificationClassRequest.getClassId());
                 materail = notificationRepository.findMaterial(notificationClassRequest.getAction_id());
-                messages = username+" "+message+" "+materail+"in "+ class_name;
+                messages = username+" "+message+" "+materail+" in "+ class_name;
             }
 
             notificationRepository.sendNotificationToClass(notificationClassRequest);
