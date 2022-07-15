@@ -165,7 +165,7 @@ public interface SubmittableWorkRepository {
             "VALUES (#{materialId},#{class_id},#{classroom_id}) RETURNING id")
     Integer createClassworkInMaterialDetail(Integer materialId, int classroom_id, int class_id);
     @Select("INSERT INTO submittable_work (class_materials_detail_id,assigned_date,deadline,class_id,classroom_id,score)\n" +
-            "VALUES (#{mdt},#{createdDate},#{deadline},#{classroom_id},#{class_id},#{score}) ")
+            "VALUES (#{mdt},#{createdDate},#{deadline},#{class_id},#{classroom_id},#{score}) ")
     Integer createClassworkByClass(Integer mdt, Timestamp createdDate, Timestamp deadline, int classroom_id, int class_id, float score);
 
     // get By FolderId in ClassId
