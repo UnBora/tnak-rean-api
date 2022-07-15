@@ -235,14 +235,13 @@ public interface ClassMaterialRepository {
     List<ClassMaterialByClassIdAndClassroomIdResponse> getCourseMaterialByFolderIdInClass(Integer folder_id, Integer class_id,Integer classroom_id);
 
     // get Course By StudentId
-    @Select("SELECT DISTINCT cmd.class_id, class_material_id, title, description, created_by,\n" +
+    @Select("SELECT DISTINCT cmd.class_id,cmd.id as class_materials_detail_id, class_material_id, title, description, created_by,\n" +
             "(SELECT count(*) FROM comment c \n" +
-            "JOIN class_materials_detail s ON c.class_materials_detail_id = s.id \n" +
-            "WHERE class_material_id = cm.id) \n" +
+            "WHERE class_materials_detail_id = cmd.id) \n" +
             "FROM class_materials cm \n" +
             "JOIN class_materials_type cmt ON cm.class_materials_type_id = cmt.id\n" +
             "JOIN class_materials_detail cmd ON cm.id = cmd.class_material_id\n" +
-            "JOIN student st ON cmd.class_id = st.id\n" +
+            "JOIN student st ON cmd.class_id = st.class_id\n" +
             "WHERE class_materials_type_id = 1 AND user_id = #{user_id}")
     @Result(property = "total_comment", column = "count")
     List<CourseByStudentIdResponse> getCourseByStudentId(Integer user_id);

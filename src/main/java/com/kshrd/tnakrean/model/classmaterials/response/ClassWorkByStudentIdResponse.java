@@ -14,6 +14,7 @@ public class ClassWorkByStudentIdResponse {
     Integer class_id;
     Integer submittable_work_id;
     Integer class_material_id;
+    Integer class_materials_detail_id;
     Integer created_by;
     String title;
     String description;

@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class CourseByStudentIdResponse {
     private Integer class_id;
     private Integer class_material_id;
+    private Integer class_materials_detail_id;
     private String title;
     private String description;
     private Integer total_comment;
