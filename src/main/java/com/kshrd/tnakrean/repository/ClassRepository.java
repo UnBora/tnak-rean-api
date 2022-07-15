@@ -84,5 +84,5 @@ public interface ClassRepository {
     @Select("SELECT user_id,class_id,class_name FROM student s \n" +
             "JOIN class c ON s.class_id = c.id\n" +
             "WHERE user_id = #{user_id}")
-    List<ClassByStudentResponse> getClassByStudent(Integer user_id);
+    ClassByStudentResponse getClassByStudent(Integer user_id);
 }
