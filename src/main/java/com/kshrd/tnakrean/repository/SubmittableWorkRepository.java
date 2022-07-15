@@ -86,7 +86,6 @@ public interface SubmittableWorkRepository {
             "JOIN class_materials_type mt ON cm.class_materials_type_id = mt.id\n" +
             "WHERE (mt.id = 2 OR mt.id = 3 OR mt.id = 4 OR mt.id = 5) AND saw.class_id = #{class_id} AND saw.classroom_id = #{classroom_id}")
     @Result(property = "submittable_work_id", column = "id")
-    @Result(property = "material_id", column = "class_material_id")
     @Result(property = "total_comment", column = "count")
     List<SubmittableWorkByClassResponse> getByClassIdAndClassId(Integer classroom_id, Integer class_id);
 
