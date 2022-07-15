@@ -89,12 +89,12 @@ public interface ClassMaterialRepository {
     List<ClassMaterialResponse> getClassMaterialByCreatedByAndMaterialType(Integer created_by, Integer class_materials_type_id);
 
     // Get All Class Material By teacher User Id
-    @Select("SELECT cm.id,cmd.id as class_materials_detail_id, title,description,created_by,cmd.class_id\n" +
+    @Select("SELECT cm.id,cmd.id as class_materials_detail_id, title,description,created_by,cmd.class_id,\n" +
             "(SELECT count(*) FROM comment c \n" +
-            "WHERE class_materials_detail_id = cmd.id) \n" +
+            "WHERE class_materials_detail_id = cmd.id)\n" +
             "FROM class_materials cm \n" +
-            "JOIN class_materials_type cmd ON cm.class_materials_type_id = cmd.id\n" +
-            "JOIN class_materials_detail cmd ON cmd.class_material_id = cm.id " +
+            "JOIN class_materials_type cmt ON cm.class_materials_type_id = cmt.id\n" +
+            "JOIN class_materials_detail cmd ON cmd.class_material_id = cm.id \n" +
             "WHERE created_by = #{user_id} AND class_materials_type_id = 1")
     @Result(property = "total_comment", column = "count")
     @Result(property = "material_id", column = "id")
